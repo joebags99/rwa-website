@@ -24,8 +24,8 @@ app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
-// Serve static files from the root directory
-app.use(express.static(path.join(__dirname, '/')));
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
 app.get('/api/health', (req, res) => {
@@ -64,7 +64,7 @@ app.get('/api/youtube/playlist/:playlistId', async (req, res) => {
 
 // Handle any other routes by serving index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server
