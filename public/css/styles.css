@@ -190,11 +190,17 @@ a:not(.btn):not(.video-thumbnail):not(.social-icon):not(.logo a):hover::after {
 .section-header h2 {
     margin-bottom: var(--spacing-xs);
     display: inline-block;
+    position: relative;
 }
 
+/* Remove the existing star content from before/after */
 .section-header h2::before,
 .section-header h2::after {
-    content: '★';
+    content: none; /* Remove the existing stars */
+}
+
+/* Add new span elements for stars */
+.section-header h2 .star-decoration {
     display: inline-block;
     color: var(--primary-purple);
     margin: 0 15px;

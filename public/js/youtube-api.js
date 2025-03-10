@@ -142,51 +142,105 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
 }
 
 /**
+ * Helper function to inspect YouTube API response
+ * Add this to your youtube-api.js file
+ */
+function inspectYouTubeResponse(data) {
+    console.log('YouTube API Response Structure:');
+    console.log(data);
+    
+    if (data.items && data.items.length > 0) {
+      const firstItem = data.items[0];
+      console.log('First Item Structure:');
+      console.log(firstItem);
+      
+      if (firstItem.snippet) {
+        console.log('Snippet Structure:');
+        console.log(firstItem.snippet);
+        
+        if (firstItem.snippet.thumbnails) {
+          console.log('Available Thumbnail Types:');
+          console.log(Object.keys(firstItem.snippet.thumbnails));
+          
+          Object.keys(firstItem.snippet.thumbnails).forEach(type => {
+            console.log(`Thumbnail Type: ${type}`);
+            console.log(firstItem.snippet.thumbnails[type]);
+          });
+        } else {
+          console.log('No thumbnails available in the snippet');
+        }
+      }
+    }
+  }
+
+/**
  * Render YouTube videos to the container
  * @param {Array} videos - Array of video data from YouTube API
  * @param {HTMLElement} container - The container to render videos into
  */
 function renderVideos(videos, container) {
-  if (!videos || videos.length === 0) {
-    container.innerHTML = '<p>No videos found.</p>';
-    return;
-  }
-  
-  container.innerHTML = '';
-  
-  videos.forEach(item => {
-    const video = item.snippet;
-    const videoId = video.resourceId.videoId;
-    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    if (!videos || videos.length === 0) {
+      container.innerHTML = '<p>No videos found.</p>';
+      return;
+    }
     
-    // Create video card
-    const videoCard = document.createElement('div');
-    videoCard.className = 'video-card';
+    container.innerHTML = '';
     
-    // Format date
-    const publishedDate = new Date(video.publishedAt);
-    const formattedDate = publishedDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-    
-    videoCard.innerHTML = `
-      <a href="${videoUrl}" target="_blank" class="video-thumbnail">
-        <img src="${video.thumbnails.high.url}" alt="${video.title}">
-      </a>
-      <div class="video-info">
-        <h3><a href="${videoUrl}" target="_blank">${video.title}</a></h3>
-        <p>${video.description.substring(0, 100)}${video.description.length > 100 ? '...' : ''}</p>
-        <div class="video-meta">
-          <span>Published: ${formattedDate}</span>
+    videos.forEach(item => {
+      const video = item.snippet;
+      const videoId = video.resourceId.videoId;
+      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      
+      // Select the best available thumbnail
+      let thumbnailUrl;
+      if (video.thumbnails) {
+        if (video.thumbnails.maxres) {
+          thumbnailUrl = video.thumbnails.maxres.url;
+        } else if (video.thumbnails.high) {
+          thumbnailUrl = video.thumbnails.high.url;
+        } else if (video.thumbnails.medium) {
+          thumbnailUrl = video.thumbnails.medium.url;
+        } else if (video.thumbnails.standard) {
+          thumbnailUrl = video.thumbnails.standard.url;
+        } else if (video.thumbnails.default) {
+          thumbnailUrl = video.thumbnails.default.url;
+        } else {
+          // Fallback to YouTube's standard thumbnail URL format
+          thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        }
+      } else {
+        // If thumbnails object is missing entirely, use direct YouTube thumbnail URL
+        thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      }
+      
+      // Create video card
+      const videoCard = document.createElement('div');
+      videoCard.className = 'video-card';
+      
+      // Format date
+      const publishedDate = new Date(video.publishedAt);
+      const formattedDate = publishedDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      
+      videoCard.innerHTML = `
+        <a href="${videoUrl}" target="_blank" class="video-thumbnail">
+          <img src="${thumbnailUrl}" alt="${video.title}" onerror="this.src='https://via.placeholder.com/320x180.png?text=Thumbnail+Unavailable'; this.onerror=null;">
+        </a>
+        <div class="video-info">
+          <h3><a href="${videoUrl}" target="_blank">${video.title}</a></h3>
+          <p>${video.description ? (video.description.substring(0, 100) + (video.description.length > 100 ? '...' : '')) : 'No description available.'}</p>
+          <div class="video-meta">
+            <span>Published: ${formattedDate}</span>
+          </div>
         </div>
-      </div>
-    `;
-    
-    container.appendChild(videoCard);
-  });
-}
+      `;
+      
+      container.appendChild(videoCard);
+    });
+  }
 
 /**
  * Render dummy videos for development and preview purposes
