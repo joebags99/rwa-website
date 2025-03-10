@@ -77,10 +77,10 @@ const commonConfig = {
   videoMaxResults: 6,
   contactEmail: 'info@rollwithadvantage.com',
   socialLinks: {
-    youtube: 'https://www.youtube.com/channel/YOUR_CHANNEL_ID',
-    twitch: 'https://www.twitch.tv/YOUR_TWITCH_USERNAME',
-    twitter: 'https://twitter.com/YOUR_TWITTER_HANDLE',
-    instagram: 'https://instagram.com/YOUR_INSTAGRAM_HANDLE'
+    youtube: 'https://www.youtube.com/@RollWithAdvantage5e',
+    twitch: 'https://www.twitch.tv/rollwithadvantage5e',
+    instagram: 'https://www.instagram.com/rollwithadv5e/',
+    discord: 'https://discord.gg/Yjx3vJzN5Q'
   }
 };
 

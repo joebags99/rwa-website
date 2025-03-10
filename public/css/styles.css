@@ -253,6 +253,12 @@ nav ul li a {
     transition: color var(--transition-speed) ease;
 }
 
+nav ul li a i {
+    margin-right: 0.5rem;
+    width: 1.2rem;
+    text-align: center;
+}
+
 nav ul li a:hover,
 nav ul li a.active {
     color: var(--primary-blue);
@@ -433,21 +439,16 @@ TOOLS SECTION
     width: 60px;
     height: 60px;
     margin: 0 auto var(--spacing-sm);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-purple);
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.dice-icon {
-    background-image: url('../assets/images/dice-icon.svg');
-}
-
-.character-icon {
-    background-image: url('../assets/images/character-icon.svg');
-}
-
-.map-icon {
-    background-image: url('../assets/images/map-icon.svg');
+.tool-card:hover .tool-icon {
+    transform: scale(1.1);
+    color: var(--primary-purple-dark);
 }
 
 /* 
@@ -554,32 +555,45 @@ footer {
 .social-icon {
     width: 40px;
     height: 40px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    transition: opacity var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    transition: transform var(--transition-speed) ease, color var(--transition-speed) ease;
     opacity: 0.8;
-    font-size: 0;
 }
 
 .social-icon:hover {
     opacity: 1;
+    transform: translateY(-3px);
 }
 
-.youtube {
-    background-image: url('../assets/images/youtube-icon.svg');
+.social-icon .fab.fa-youtube:hover {
+    color: #FF0000;
 }
 
-.twitch {
-    background-image: url('../assets/images/twitch-icon.svg');
+.social-icon .fab.fa-twitch:hover {
+    color: #9146FF;
 }
 
-.twitter {
-    background-image: url('../assets/images/twitter-icon.svg');
+.social-icon .fab.fa-instagram:hover {
+    color: #E1306C;
 }
 
-.instagram {
-    background-image: url('../assets/images/instagram-icon.svg');
+.social-icon .fab.fa-discord:hover {
+    color: #7289DA;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
 /* 
