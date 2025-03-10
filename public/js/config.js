@@ -75,19 +75,16 @@ const commonConfig = {
 };
 
 // Create the merged configuration
-const config = {
+window.RWA_CONFIG = {
   ...commonConfig,
   ...activeConfig
 };
-
-// Make it available globally
-window.RWA_CONFIG = config;
 
 // Fetch configuration from the server
 async function fetchServerConfig() {
   try {
     console.log('Fetching configuration from server...');
-    const response = await fetch(`${config.apiBaseUrl}/config`);
+    const response = await fetch(`${window.RWA_CONFIG.apiBaseUrl}/config`);
     if (!response.ok) {
       throw new Error(`Failed to fetch configuration from server: ${response.status} ${response.statusText}`);
     }
@@ -118,4 +115,4 @@ async function fetchServerConfig() {
 }
 
 // Call the function to fetch server config after a short delay to ensure other scripts are loaded
-setTimeout(fetchServerConfig, 100);
+setTimeout(fetchServerConfig, 500);
