@@ -6,37 +6,53 @@
     <title>Roll With Advantage - D&D Actual Play & DM Advice</title>
     <meta name="description" content="Roll With Advantage features The Crimson Court campaign and expert DM advice for tabletop RPG enthusiasts.">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script></head>
+<body class="loading">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="dice-loader">
+            <svg class="dice" viewBox="0 0 100 100">
+                <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
+                <path class="dice-number" d="M50 55 A5 5 0 1 1 50 45 A5 5 0 1 1 50 55z"/>
+            </svg>
+        </div>
+        <p class="loading-text">Rolling initiative...</p>
+    </div>
     
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
-</head>
-<body>
+    <!-- Custom Cursor Removed -->
+
+    <!-- Magical Particles Background -->
+    <div class="particles-container"></div>
+    
     <header>
         <div class="container">
             <div class="logo">
                 <a href="index.html">
                     <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
+                    <div class="logo-glow"></div>
                 </a>
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="crimson-court.html"><i class="fas fa-crown"></i> The Crimson Court</a></li>
-                    <li><a href="dm-advice.html"><i class="fas fa-book-open"></i> DM Advice</a></li>
-                    <li><a href="meet-the-cast.html"><i class="fas fa-users"></i> Meet the Cast</a></li>
-                    <li><a href="tools.html"><i class="fas fa-dice-d20"></i> D&D Tools</a></li>
-                    <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="index.html" class="active nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="dm-advice.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
+                    <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="tools.html" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                    <li><a href="contact.html" class="nav-item" data-text="Contact"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
                 </ul>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -49,156 +65,274 @@
 
     <main>
         <!-- Hero Section -->
-        <section class="hero">
+        <section class="hero parallax-section">
+            <div class="hero-background"></div>
+            <div class="magical-overlay"></div>
+            <div class="floating-dice-container">
+                <!-- Dice will be added by JavaScript -->
+            </div>
             <div class="container">
-                <h1>Welcome to Roll With Advantage</h1>
-                <p>Immerse yourself in the political intrigue of The Crimson Court campaign and level up your game with expert DM advice.</p>
-                <div class="cta-buttons">
-                    <a href="crimson-court.html" class="btn btn-primary"><i class="fas fa-play-circle"></i> Watch The Crimson Court</a>
-                    <a href="dm-advice.html" class="btn btn-secondary"><i class="fas fa-book"></i> Explore DM Advice</a>
+                <div class="hero-content reveal-content">
+                    <h1 class="magical-text">Welcome to Roll With Advantage</h1>
+                    <p class="animated-text">Immerse yourself in the political intrigue of The Crimson Court campaign and level up your game with expert DM advice.</p>
+                    <div class="magic-line"></div>
+                    <div class="cta-buttons">
+                        <a href="crimson-court.html" class="btn btn-primary magical-btn"><span class="btn-text"><i class="fas fa-play-circle"></i> Watch The Crimson Court</span></a>
+                        <a href="dm-advice.html" class="btn btn-secondary magical-btn"><span class="btn-text"><i class="fas fa-book"></i> Explore DM Advice</span></a>
+                    </div>
                 </div>
+            </div>
+            <div class="hero-divider">
+                <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="divider-fill"></path>
+                    <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="divider-fill"></path>
+                    <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="divider-fill"></path>
+                </svg>
             </div>
         </section>
 
         <!-- Featured Content -->
-        <section class="featured-content">
+        <section class="featured-content section-appear">
             <div class="container">
-                <h2>Featured Content</h2>
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-star"></i></div>
+                    <h2 class="magical-heading">Featured Content</h2>
+                    <div class="magical-underline"></div>
+                    <p>Discover our most popular videos and latest releases</p>
+                </div>
                 <div class="featured-carousel" id="featured-videos">
                     <!-- JavaScript will populate this section -->
-                    <div class="loading">Loading featured videos...</div>
+                    <div class="loading-spinner">
+                        <div class="spinner-d20">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading featured videos...</p>
+                    </div>
                 </div>
+            </div>
+            <div class="section-divider">
+                <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="divider-fill"></path>
+                </svg>
             </div>
         </section>
 
         <!-- The Crimson Court Preview -->
-        <section class="crimson-court-preview">
+        <section class="crimson-court-preview parallax-section section-appear">
+            <div class="section-background crimson-bg"></div>
+            <div class="floating-elements">
+                <div class="float-element crown"></div>
+                <div class="float-element scroll"></div>
+                <div class="float-element sword"></div>
+                <div class="float-element shield"></div>
+                <div class="float-element goblet"></div>
+            </div>
             <div class="container">
                 <div class="section-header">
-                    <h2><span class="star-decoration">★</span>Crimson Court<span class="star-decoration">★</span></h2>
+                    <div class="section-icon crimson-icon"><i class="fas fa-crown"></i></div>
+                    <h2 class="magical-heading crimson-heading">Crimson Court</h2>
+                    <div class="magical-underline crimson-underline"></div>
                     <p>A Game of Thrones-inspired campaign where the five heirs to the throne must unite to save their kingdom.</p>
                 </div>
                 <div class="latest-episodes" id="crimson-court-videos">
                     <!-- JavaScript will populate this section -->
-                    <div class="loading">Loading latest episodes...</div>
+                    <div class="loading-spinner">
+                        <div class="spinner-d20 crimson-spinner">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading latest episodes...</p>
+                    </div>
                 </div>
-                <a href="crimson-court.html" class="btn btn-primary">View All Episodes</a>
+                <a href="crimson-court.html" class="btn btn-primary magical-btn crimson-btn"><span class="btn-text">View All Episodes</span></a>
+            </div>
+            <div class="section-divider reverse">
+                <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0v90.72l598.97 29.28 601.03-29.28V0z" class="divider-fill"></path>
+                </svg>
             </div>
         </section>
 
         <!-- DM Advice Preview -->
-        <section class="dm-advice-preview">
+        <section class="dm-advice-preview section-appear">
+            <div class="energy-lines"></div>
             <div class="container">
                 <div class="section-header">
-                    <h2><span class="star-decoration">★</span>DM Advice<span class="star-decoration">★</span></h2>
+                    <div class="section-icon purple-icon"><i class="fas fa-book-open"></i></div>
+                    <h2 class="magical-heading purple-heading">DM Advice</h2>
+                    <div class="magical-underline purple-underline"></div>
                     <p>Tips, tricks, and techniques to elevate your Dungeon Master skills.</p>
                 </div>
                 <div class="advice-categories" id="dm-advice-videos">
                     <!-- JavaScript will populate this section -->
-                    <div class="loading">Loading DM advice...</div>
+                    <div class="loading-spinner">
+                        <div class="spinner-d20 purple-spinner">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading DM advice...</p>
+                    </div>
                 </div>
-                <a href="dm-advice.html" class="btn btn-secondary">View All DM Advice</a>
+                <a href="dm-advice.html" class="btn btn-secondary magical-btn purple-btn"><span class="btn-text">View All DM Advice</span></a>
+            </div>
+            <div class="section-divider">
+                <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="divider-fill"></path>
+                </svg>
             </div>
         </section>
 
         <!-- Interactive Tools Preview -->
-        <section class="tools-preview">
+        <section class="tools-preview parallax-section section-appear">
+            <div class="section-background tools-bg"></div>
+            <div class="floating-dice">
+                <div class="float-dice d4"></div>
+                <div class="float-dice d6"></div>
+                <div class="float-dice d8"></div>
+                <div class="float-dice d10"></div>
+                <div class="float-dice d12"></div>
+                <div class="float-dice d20"></div>
+            </div>
             <div class="container">
                 <div class="section-header">
-                    <h2><span class="star-decoration">★</span>Interactive D&D Tools<span class="star-decoration">★</span></h2>
+                    <div class="section-icon blue-icon"><i class="fas fa-dice-d20"></i></div>
+                    <h2 class="magical-heading blue-heading">Interactive D&D Tools</h2>
+                    <div class="magical-underline blue-underline"></div>
                     <p>Enhance your gameplay with our custom tools and generators.</p>
                 </div>
                 <div class="tools-grid">
-                    <div class="tool-card">
+                    <div class="tool-card" data-tool="dice">
+                        <div class="card-glint"></div>
                         <div class="tool-icon">
-                            <i class="fas fa-dice-d20 fa-3x"></i>
+                            <i class="fas fa-dice-d20"></i>
                         </div>
                         <h3>Dice Roller</h3>
-                        <p>Roll any combination of dice with our custom dice roller.</p>
-                        <a href="tools.html#dice-roller" class="btn btn-tertiary"><i class="fas fa-dice"></i> Roll Dice</a>
+                        <p>Roll any combination of dice with our custom dice roller. Perfect for quick checks or complex rolls.</p>
+                        <a href="tools.html#dice-roller" class="btn btn-tertiary magical-btn blue-btn"><span class="btn-text"><i class="fas fa-dice"></i> Roll Dice</span></a>
+                        <div class="tool-preview dice-preview">
+                            <div class="mini-dice"></div>
+                        </div>
                     </div>
-                    <div class="tool-card">
+                    <div class="tool-card" data-tool="quiz">
+                        <div class="card-glint"></div>
                         <div class="tool-icon">
-                            <i class="fas fa-user-shield fa-3x"></i>
+                            <i class="fas fa-user-shield"></i>
                         </div>
                         <h3>Character Quiz</h3>
-                        <p>Which Crimson Court heir are you most like?</p>
-                        <a href="tools.html#character-quiz" class="btn btn-tertiary"><i class="fas fa-question-circle"></i> Take Quiz</a>
+                        <p>Which Crimson Court heir are you most like? Take our personality quiz to find your royal match.</p>
+                        <a href="tools.html#character-quiz" class="btn btn-tertiary magical-btn blue-btn"><span class="btn-text"><i class="fas fa-question-circle"></i> Take Quiz</span></a>
+                        <div class="tool-preview quiz-preview">
+                            <div class="quiz-options">
+                                <div class="option"></div>
+                                <div class="option"></div>
+                                <div class="option"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tool-card">
+                    <div class="tool-card" data-tool="map">
+                        <div class="card-glint"></div>
                         <div class="tool-icon">
-                            <i class="fas fa-map-marked-alt fa-3x"></i>
+                            <i class="fas fa-map-marked-alt"></i>
                         </div>
                         <h3>Interactive Map</h3>
-                        <p>Explore the kingdom of Ederia and its political landscape.</p>
-                        <a href="tools.html#interactive-map" class="btn btn-tertiary"><i class="fas fa-compass"></i> Explore Map</a>
+                        <p>Explore the kingdom of Ederia and its political landscape. Discover the secrets of each noble house.</p>
+                        <a href="tools.html#interactive-map" class="btn btn-tertiary magical-btn blue-btn"><span class="btn-text"><i class="fas fa-compass"></i> Explore Map</span></a>
+                        <div class="tool-preview map-preview">
+                            <div class="map-marker"></div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="section-divider reverse">
+                <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M649.97 0L599.91 54.12 550.03 0 0 0 0 120 1200 120 1200 0 649.97 0z" class="divider-fill"></path>
+                </svg>
             </div>
         </section>
 
         <!-- Newsletter Signup -->
-        <section class="newsletter">
+        <section class="newsletter section-appear">
+            <div class="glowing-particles"></div>
             <div class="container">
-                <h2>Stay Updated</h2>
-                <p>Subscribe to our newsletter for the latest episodes, DM tips, and Roll With Advantage news.</p>
-                <form id="newsletter-form">
+                <div class="section-header light-header">
+                    <div class="section-icon light-icon"><i class="fas fa-envelope"></i></div>
+                    <h2 class="magical-heading light-heading">Stay Updated</h2>
+                    <div class="magical-underline light-underline"></div>
+                    <p>Subscribe to our newsletter for the latest episodes, DM tips, and Roll With Advantage news.</p>
+                </div>
+                <form id="newsletter-form" class="newsletter-form">
+                    <div class="form-glow"></div>
                     <input type="email" placeholder="Your email address" required>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Subscribe</button>
+                    <button type="submit" class="btn-newsletter"><i class="fas fa-paper-plane"></i> <span>Subscribe</span></button>
                 </form>
+                <div class="scroll-to-top">
+                    <button id="scroll-top-btn" aria-label="Scroll to top">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <img src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
-                    <p>Roll With Advantage &copy; 2025</p>
-                </div>
-                <div class="footer-links">
-                    <div class="link-column">
-                        <h4>Content</h4>
-                        <ul>
-                            <li><a href="crimson-court.html">The Crimson Court</a></li>
-                            <li><a href="dm-advice.html">DM Advice</a></li>
-                            <li><a href="meet-the-cast.html">Meet the Cast</a></li>
-                        </ul>
+        <div class="footer-top">
+            <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z" class="footer-fill"></path>
+            </svg>
+        </div>
+        <div class="footer-content">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <p>Roll With Advantage &copy; 2025</p>
                     </div>
-                    <div class="link-column">
-                        <h4>Tools</h4>
-                        <ul>
-                            <li><a href="tools.html#dice-roller">Dice Roller</a></li>
-                            <li><a href="tools.html#character-quiz">Character Quiz</a></li>
-                            <li><a href="tools.html#interactive-map">Interactive Map</a></li>
-                        </ul>
+                    <div class="footer-links">
+                        <div class="link-column">
+                            <h4>Content</h4>
+                            <ul>
+                                <li><a href="crimson-court.html">The Crimson Court</a></li>
+                                <li><a href="dm-advice.html">DM Advice</a></li>
+                                <li><a href="meet-the-cast.html">Meet the Cast</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li><a href="tools.html#dice-roller">Dice Roller</a></li>
+                                <li><a href="tools.html#character-quiz">Character Quiz</a></li>
+                                <li><a href="tools.html#interactive-map">Interactive Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
+                                <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
+                                <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="link-column">
-                        <h4>Connect</h4>
-                        <ul>
-                            <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
-                            <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
-                            <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
+                        <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
+                        <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
+                        <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
                     </div>
                 </div>
-                <div class="social-links">
-                    <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon"><i class="fab fa-youtube fa-2x"></i><span class="sr-only">YouTube</span></a>
-                    <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon"><i class="fab fa-twitch fa-2x"></i><span class="sr-only">Twitch</span></a>
-                    <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon"><i class="fab fa-instagram fa-2x"></i><span class="sr-only">Instagram</span></a>
-                    <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon"><i class="fab fa-discord fa-2x"></i><span class="sr-only">Discord</span></a>
-                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
+                <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
             </div>
         </div>
     </footer>
 
-<!-- Updated JavaScript Loading (for index.html bottom section) -->
-<!-- Load config first -->
-<script src="js/config.js"></script>
-<!-- Then load the main scripts after a short delay -->
-<script src="js/main.js" defer></script>
-<script src="js/youtube-api.js" defer></script>
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/youtube-api.js"></script>
+    <script src="js/particles.js"></script>
 </body>
 </html>

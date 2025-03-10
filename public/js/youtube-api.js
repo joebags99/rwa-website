@@ -146,32 +146,32 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
  * Add this to your youtube-api.js file
  */
 function inspectYouTubeResponse(data) {
-    console.log('YouTube API Response Structure:');
-    console.log(data);
+  console.log('YouTube API Response Structure:');
+  console.log(data);
+  
+  if (data.items && data.items.length > 0) {
+    const firstItem = data.items[0];
+    console.log('First Item Structure:');
+    console.log(firstItem);
     
-    if (data.items && data.items.length > 0) {
-      const firstItem = data.items[0];
-      console.log('First Item Structure:');
-      console.log(firstItem);
+    if (firstItem.snippet) {
+      console.log('Snippet Structure:');
+      console.log(firstItem.snippet);
       
-      if (firstItem.snippet) {
-        console.log('Snippet Structure:');
-        console.log(firstItem.snippet);
+      if (firstItem.snippet.thumbnails) {
+        console.log('Available Thumbnail Types:');
+        console.log(Object.keys(firstItem.snippet.thumbnails));
         
-        if (firstItem.snippet.thumbnails) {
-          console.log('Available Thumbnail Types:');
-          console.log(Object.keys(firstItem.snippet.thumbnails));
-          
-          Object.keys(firstItem.snippet.thumbnails).forEach(type => {
-            console.log(`Thumbnail Type: ${type}`);
-            console.log(firstItem.snippet.thumbnails[type]);
-          });
-        } else {
-          console.log('No thumbnails available in the snippet');
-        }
+        Object.keys(firstItem.snippet.thumbnails).forEach(type => {
+          console.log(`Thumbnail Type: ${type}`);
+          console.log(firstItem.snippet.thumbnails[type]);
+        });
+      } else {
+        console.log('No thumbnails available in the snippet');
       }
     }
   }
+}
 
 /**
  * Render YouTube videos to the container
@@ -179,68 +179,74 @@ function inspectYouTubeResponse(data) {
  * @param {HTMLElement} container - The container to render videos into
  */
 function renderVideos(videos, container) {
-    if (!videos || videos.length === 0) {
-      container.innerHTML = '<p>No videos found.</p>';
-      return;
-    }
+  if (!videos || videos.length === 0) {
+    container.innerHTML = '<p>No videos found.</p>';
+    return;
+  }
+  
+  container.innerHTML = '';
+  
+  videos.forEach(item => {
+    const video = item.snippet;
+    const videoId = video.resourceId.videoId;
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
     
-    container.innerHTML = '';
-    
-    videos.forEach(item => {
-      const video = item.snippet;
-      const videoId = video.resourceId.videoId;
-      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-      
-      // Select the best available thumbnail
-      let thumbnailUrl;
-      if (video.thumbnails) {
-        if (video.thumbnails.maxres) {
-          thumbnailUrl = video.thumbnails.maxres.url;
-        } else if (video.thumbnails.high) {
-          thumbnailUrl = video.thumbnails.high.url;
-        } else if (video.thumbnails.medium) {
-          thumbnailUrl = video.thumbnails.medium.url;
-        } else if (video.thumbnails.standard) {
-          thumbnailUrl = video.thumbnails.standard.url;
-        } else if (video.thumbnails.default) {
-          thumbnailUrl = video.thumbnails.default.url;
-        } else {
-          // Fallback to YouTube's standard thumbnail URL format
-          thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-        }
+    // Select the best available thumbnail
+    let thumbnailUrl;
+    if (video.thumbnails) {
+      if (video.thumbnails.maxres) {
+        thumbnailUrl = video.thumbnails.maxres.url;
+      } else if (video.thumbnails.high) {
+        thumbnailUrl = video.thumbnails.high.url;
+      } else if (video.thumbnails.medium) {
+        thumbnailUrl = video.thumbnails.medium.url;
+      } else if (video.thumbnails.standard) {
+        thumbnailUrl = video.thumbnails.standard.url;
+      } else if (video.thumbnails.default) {
+        thumbnailUrl = video.thumbnails.default.url;
       } else {
-        // If thumbnails object is missing entirely, use direct YouTube thumbnail URL
+        // Fallback to YouTube's standard thumbnail URL format
         thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       }
-      
-      // Create video card
-      const videoCard = document.createElement('div');
-      videoCard.className = 'video-card';
-      
-      // Format date
-      const publishedDate = new Date(video.publishedAt);
-      const formattedDate = publishedDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-      
-      videoCard.innerHTML = `
-        <a href="${videoUrl}" target="_blank" class="video-thumbnail">
-          <img src="${thumbnailUrl}" alt="${video.title}" onerror="this.src='https://via.placeholder.com/320x180.png?text=Thumbnail+Unavailable'; this.onerror=null;">
-        </a>
-        <div class="video-info">
-          <h3><a href="${videoUrl}" target="_blank">${video.title}</a></h3>
-          <p>${video.description ? (video.description.substring(0, 100) + (video.description.length > 100 ? '...' : '')) : 'No description available.'}</p>
-          <div class="video-meta">
-            <span>Published: ${formattedDate}</span>
-          </div>
-        </div>
-      `;
-      
-      container.appendChild(videoCard);
+    } else {
+      // If thumbnails object is missing entirely, use direct YouTube thumbnail URL
+      thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    }
+    
+    // Create video card
+    const videoCard = document.createElement('div');
+    videoCard.className = 'video-card';
+    
+    // Format date
+    const publishedDate = new Date(video.publishedAt);
+    const formattedDate = publishedDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
+    
+    videoCard.innerHTML = `
+      <a href="${videoUrl}" target="_blank" class="video-thumbnail">
+        <img src="${thumbnailUrl}" alt="${video.title}" onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAC0CAMAAADROZcIAAAAMFBMVEXy8vL6+vr19fX4+Pjt7e3v7+/r6+v29vb8/Pzp6eno6Oj7+/vz8/Px8fHu7u7q6urfXciFAAACFUlEQVR4nO3a61LDIBCA0YY2Ul/3f7Ga6YxttOhaDsGZ5ftlQnYJEJMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAZ5jQJIaQ0jV3H3GrXAVSTPXIdc4vvOoA08sBjq5nHXceHrDyy2Hrby04DKOqRh6pHbtN1AFnLI4stu8suA0hdB1BnPPKr6/dBjxxejWXeZQA+hqHrAGq6G8u86wD2m17/G0t9Ky3xysV39XfyRlz//AZVebzSLO887wcBAAAAAAAAAAAAAID3YuO49K6/1D2t93DXW3T5tW3b9vq75qp52TaWaTR5qbcMdbxnGT+Wsc01QI90a8cRzrK8lNvE+FjmFnmpu92tbeRHo5vj0g8w9pj9GDfywy0R+jLjSJkfJZnxrOG6PuNXfLBr4cdGkZ9mHKh4udv11IvnMbpd6LvOIu/1I75Jkb/OLnHPNznyGd+a3fTF+hSJvf8y7kMvQ4/uUVvJzMa3O6RY5Ne9xUfxrTRN0x+qNnnKbwxLmbMsPXzwVxWnPLk8yfE/bv1+C3PxxdcU+aLrPlPkC6XkPi9ZfrxSfmD8kOUbCwAAAAAAAAAAAAAAb+/8+YXz1ydenF7/euT4sU9+6Lv4AZc/gn3m/MsXJa+Dj19/EjlfvNKYpnl+c+KVqXn98+nnbxM//wWv8O/56S8JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAnfQPuQgV9cnTEJQAAAABJRU5ErkJggg=='; this.onerror=null;">
+        <div class="video-preview-container"></div>
+      </a>
+      <div class="video-info">
+        <h3><a href="${videoUrl}" target="_blank">${video.title}</a></h3>
+        <p>${video.description ? (video.description.substring(0, 100) + (video.description.length > 100 ? '...' : '')) : 'No description available.'}</p>
+        <div class="video-meta">
+          <span>Published: ${formattedDate}</span>
+        </div>
+      </div>
+    `;
+    
+    container.appendChild(videoCard);
+  });
+  
+  // Initialize video thumbnail previews if available
+  if (window.enhanceVideoThumbnails) {
+    window.enhanceVideoThumbnails();
   }
+}
 
 /**
  * Render dummy videos for development and preview purposes
@@ -268,6 +274,19 @@ function renderDummyVideos(container, count) {
     'Make your combat encounters more dynamic and engaging with these DM tips.'
   ];
   
+  // Base64 encoded placeholder image (small 320x180 gray rectangle with text)
+  const placeholderImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAC0CAMAAADROZcIAAAAMFBMVEXy8vL6+vr19fX4+Pjt7e3v7+/r6+v29vb8/Pzp6eno6Oj7+/vz8/Px8fHu7u7q6urfXciFAAACFUlEQVR4nO3a61LDIBCA0YY2Ul/3f7Ga6YxttOhaDsGZ5ftlQnYJEJMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAZ5jQJIaQ0jV3H3GrXAVSTPXIdc4vvOoA08sBjq5nHXceHrDyy2Hrby04DKOqRh6pHbtN1AFnLI4stu8suA0hdB1BnPPKr6/dBjxxejWXeZQA+hqHrAGq6G8u86wD2m17/G0t9Ky3xysV39XfyRlz//AZVebzSLO887wcBAAAAAAAAAAAAAID3YuO49K6/1D2t93DXW3T5tW3b9vq75qp52TaWaTR5qbcMdbxnGT+Wsc01QI90a8cRzrK8lNvE+FjmFnmpu92tbeRHo5vj0g8w9pj9GDfywy0R+jLjSJkfJZnxrOG6PuNXfLBr4cdGkZ9mHKh4udv11IvnMbpd6LvOIu/1I75Jkb/OLnHPNznyGd+a3fTF+hSJvf8y7kMvQ4/uUVvJzMa3O6RY5Ne9xUfxrTRN0x+qNnnKbwxLmbMsPXzwVxWnPLk8yfE/bv1+C3PxxdcU+aLrPlPkC6XkPi9ZfrxSfmD8kOUbCwAAAAAAAAAAAAAAb+/8+YXz1ydenF7/euT4sU9+6Lv4AZc/gn3m/MsXJa+Dj19/EjlfvNKYpnl+c+KVqXn98+nnbxM//wWv8O/56S8JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAnfQPuQgV9cnTEJQAAAABJRU5ErkJggg==';
+  
+  // Indexed placeholder images with text
+  const thumbnailTexts = [
+    'The Gathering Storm', 
+    'Palace Secrets', 
+    'Memorable NPCs', 
+    'Political Intrigue', 
+    'Council Betrayal', 
+    'Combat Strategies'
+  ];
+  
   container.innerHTML = '';
   
   for (let i = 0; i < Math.min(count, titles.length); i++) {
@@ -276,7 +295,8 @@ function renderDummyVideos(container, count) {
     
     videoCard.innerHTML = `
       <a href="#" class="video-thumbnail">
-        <img src="https://via.placeholder.com/320x180.png?text=Thumbnail+${i+1}" alt="${titles[i]}">
+        <img src="${placeholderImage}" alt="${titles[i]}">
+        <div class="video-preview-container"></div>
       </a>
       <div class="video-info">
         <h3><a href="#">${titles[i]}</a></h3>
@@ -288,5 +308,10 @@ function renderDummyVideos(container, count) {
     `;
     
     container.appendChild(videoCard);
+  }
+  
+  // Initialize video thumbnail previews if available
+  if (window.enhanceVideoThumbnails) {
+    window.enhanceVideoThumbnails();
   }
 }
