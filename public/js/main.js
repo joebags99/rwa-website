@@ -14,14 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show hero content after a small delay
         setTimeout(() => {
-            document.querySelector('.reveal-content').classList.add('show');
-            document.querySelector('.magic-line').classList.add('animated');
+            document.querySelector('.reveal-content')?.classList.add('show');
+            document.querySelector('.magic-line')?.classList.add('animated');
         }, 300);
     });
     
     // Initialize all components
     initializeDeviceDetection();
-    // Custom cursor removed
     initializeMobileMenu();
     initializeParallaxEffects();
     initializeScrollEffects();
@@ -29,7 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNewsletterForm();
     initializeScrollToTop();
     initializeCardEffects();
-    enhanceVideoThumbnails();
+    
+    // We'll initialize thumbnails after a slight delay to ensure DOM is loaded
+    setTimeout(enhanceVideoThumbnails, 300);
     
     // If we're on the tools page, initialize those components
     if (document.querySelector('.dice-roller')) {
@@ -64,10 +65,6 @@ function initializeDeviceDetection() {
         });
     }
 }
-
-/**
- * Custom Cursor functionality removed
- */
 
 /**
  * Initialize Mobile Menu Toggle
@@ -545,6 +542,42 @@ function initializeDiceRoller() {
 }
 
 /**
+ * More advanced dice animation
+ */
+function animateEnhancedDice(element) {
+    const dice = element.querySelector('.mini-dice') || element;
+    
+    // Create a more random, realistic dice rolling effect
+    let rotX = 0, rotY = 0, rotZ = 0;
+    let speedX = Math.random() * 10 + 5;
+    let speedY = Math.random() * 10 + 5;
+    let speedZ = Math.random() * 5 + 3;
+    
+    // Update animation frame by frame
+    function updateDice() {
+        rotX += speedX;
+        rotY += speedY;
+        rotZ += speedZ;
+        
+        // Add slight changes to speed for natural feel
+        speedX += (Math.random() - 0.5) * 0.2;
+        speedY += (Math.random() - 0.5) * 0.2;
+        
+        // Keep speeds in bounds
+        speedX = Math.max(3, Math.min(12, speedX));
+        speedY = Math.max(3, Math.min(12, speedY));
+        
+        // Apply the 3D rotation
+        dice.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)`;
+        
+        requestAnimationFrame(updateDice);
+    }
+    
+    // Start the animation
+    updateDice();
+}
+
+/**
  * Roll a specified number of dice with a given number of sides
  */
 function rollDice(count, sides) {
@@ -556,11 +589,140 @@ function rollDice(count, sides) {
 }
 
 /**
- * Initialize video preview functionality
+ * Initialize the tilt effect on all tool cards
+ */
+function initializeTiltEffect() {
+    const toolCards = document.querySelectorAll('.tool-card');
+    
+    toolCards.forEach(card => {
+        // Add the js-tilt class for styling
+        card.classList.add('js-tilt');
+        
+        // Add a glare effect element
+        const glareElement = document.createElement('div');
+        glareElement.className = 'js-tilt-glare';
+        card.appendChild(glareElement);
+        
+        // Apply tilt depth classes to important elements
+        const icon = card.querySelector('.tool-icon');
+        if (icon) icon.classList.add('tilt-child', 'tilt-depth-3');
+        
+        const heading = card.querySelector('h3');
+        if (heading) heading.classList.add('tilt-child', 'tilt-depth-2');
+        
+        const paragraph = card.querySelector('p');
+        if (paragraph) paragraph.classList.add('tilt-child', 'tilt-depth-1');
+        
+        const button = card.querySelector('.btn');
+        if (button) button.classList.add('tilt-child', 'tilt-depth-4');
+        
+        const preview = card.querySelector('.tool-preview');
+        if (preview) preview.classList.add('tilt-child', 'tilt-depth-2');
+        
+        // Store the card's dimensions and position
+        let rect = card.getBoundingClientRect();
+        
+        // Update dimensions on window resize
+        window.addEventListener('resize', () => {
+            rect = card.getBoundingClientRect();
+        });
+        
+        // Add mouse move event for tilt effect
+        card.addEventListener('mousemove', e => {
+            applyTiltEffect(e, card, glareElement, rect);
+        });
+        
+        // Reset on mouse leave
+        card.addEventListener('mouseleave', () => {
+            resetTiltEffect(card);
+        });
+        
+        // Update on scroll to handle position changes
+        window.addEventListener('scroll', () => {
+            rect = card.getBoundingClientRect();
+        });
+    });
+}
+
+/**
+ * Apply the tilt effect based on mouse position
+ * 
+ * @param {MouseEvent} e - The mouse event
+ * @param {HTMLElement} card - The card element
+ * @param {HTMLElement} glare - The glare element
+ * @param {DOMRect} rect - The card's bounding rectangle
+ */
+function applyTiltEffect(e, card, glare, rect) {
+    // Calculate mouse position relative to card
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    // Convert to percentage (0-100)
+    const xPercent = mouseX / rect.width * 100;
+    const yPercent = mouseY / rect.height * 100;
+    
+    // Calculate the tilt amount based on mouse position
+    // -10 to +10 degrees for a pleasing effect
+    const tiltX = ((yPercent - 50) / 50) * -10; // Inverted for natural feel
+    const tiltY = ((xPercent - 50) / 50) * 10;
+    
+    // Apply the 3D transform
+    card.style.transform = `perspective(1000px) 
+                          rotateX(${tiltX}deg) 
+                          rotateY(${tiltY}deg) 
+                          scale3d(1.02, 1.02, 1.02)`;
+    
+    // Update glare position
+    glare.style.setProperty('--x', `${xPercent}%`);
+    glare.style.setProperty('--y', `${yPercent}%`);
+}
+
+/**
+ * Reset the tilt effect to neutral position
+ * 
+ * @param {HTMLElement} card - The card element
+ */
+function resetTiltEffect(card) {
+    // Smooth transition back to flat
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+}
+
+/**
+ * Apply enhanced animation to tool card previews
+ * This is a more advanced version of the animations
+ */
+function enhanceToolPreviews() {
+    const toolCards = document.querySelectorAll('.tool-card');
+    
+    toolCards.forEach(card => {
+        const toolType = card.getAttribute('data-tool');
+        const preview = card.querySelector('.tool-preview');
+        
+        if (toolType && preview) {
+            // Different animations based on tool type
+            switch(toolType) {
+                case 'dice':
+                    animateEnhancedDice(preview);
+                    break;
+                case 'quiz':
+                    animateEnhancedQuiz(preview);
+                    break;
+                case 'map':
+                    animateEnhancedMap(preview);
+                    break;
+            }
+        }
+    });
+}
+
+/**
+ * Enhanced video thumbnail preview functionality
  * Creates a larger preview when clicking on video thumbnails
  */
 function enhanceVideoThumbnails() {
-    // First, add the video preview container to the body
+    console.log('Initializing enhanced video thumbnails');
+    
+    // First, add the video preview container to the body if it doesn't exist
     if (!document.getElementById('video-preview-container')) {
         const previewContainer = document.createElement('div');
         previewContainer.id = 'video-preview-container';
@@ -605,80 +767,116 @@ function enhanceVideoThumbnails() {
     const previewTitle = previewContainer.querySelector('.video-preview-title');
     
     // Add click event to all video thumbnails
-    const videoCards = document.querySelectorAll('.video-card');
+    const videoThumbnails = document.querySelectorAll('.video-thumbnail');
     
-    videoCards.forEach(card => {
-        const thumbnail = card.querySelector('.video-thumbnail');
-        if (!thumbnail) return;
-        
+    console.log(`Found ${videoThumbnails.length} video thumbnails`);
+    
+    videoThumbnails.forEach(thumbnail => {
         const img = thumbnail.querySelector('img');
-        if (!img) return;
+        if (!img) {
+            console.warn('Thumbnail has no image element:', thumbnail);
+            return;
+        }
         
-        const titleElement = card.querySelector('.video-info h3');
+        // Find the parent video card and get the title
+        const videoCard = thumbnail.closest('.video-card');
+        const titleElement = videoCard ? videoCard.querySelector('.video-info h3') : null;
         const title = titleElement ? titleElement.textContent.trim() : 'Video Preview';
         
-        // Show large preview when clicking on the thumbnail
-        thumbnail.addEventListener('click', (e) => {
+        // Get the original thumbnail URL (for debugging)
+        console.log(`Thumbnail image src: ${img.src}`);
+        
+        // Make sure the thumbnail is properly styled
+        thumbnail.style.cursor = 'pointer';
+        
+        // Create a separate click handler function that we can reference
+        function thumbnailClickHandler(e) {
             e.preventDefault();
+            e.stopPropagation(); // Prevent event bubbling
             
-            const imgSrc = img.src;
-            previewImage.src = imgSrc;
+            console.log('Thumbnail clicked, opening preview');
+            
+            // Show loading state
+            previewContainer.classList.add('loading');
+            
+            // Get the video URL from the anchor tag
+            const videoUrl = thumbnail.getAttribute('href');
+            
+            // Set the image source and title
+            previewImage.src = img.src;
             previewTitle.textContent = title;
+            
+            // When image loads, remove loading state
+            previewImage.onload = function() {
+                previewContainer.classList.remove('loading');
+            };
             
             // Show the preview
             previewContainer.classList.add('active');
-        });
-        
-        // Add hover effect to show it's clickable
-        thumbnail.style.cursor = 'pointer';
-        
-        // Add custom hover animation
-        thumbnail.addEventListener('mouseenter', () => {
-            const overlay = document.createElement('div');
-            overlay.className = 'thumbnail-hover-overlay';
-            overlay.innerHTML = '<i class="fas fa-search-plus"></i>';
-            overlay.style.cssText = `
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                z-index: 5;
-            `;
             
-            const icon = overlay.querySelector('i');
-            icon.style.cssText = `
-                font-size: 2rem;
-                color: white;
-                transform: scale(0.8);
-                transition: transform 0.3s ease;
-            `;
-            
-            thumbnail.appendChild(overlay);
-            
-            // Animate the overlay
-            setTimeout(() => {
-                overlay.style.opacity = '1';
-                icon.style.transform = 'scale(1)';
-            }, 10);
-        });
-        
-        thumbnail.addEventListener('mouseleave', () => {
-            const overlay = thumbnail.querySelector('.thumbnail-hover-overlay');
-            if (overlay) {
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.remove();
-                }, 300);
+            // Add click handler to play button to navigate to video
+            const playButton = previewContainer.querySelector('.video-preview-play');
+            if (playButton) {
+                playButton.onclick = function(e) {
+                    e.stopPropagation();
+                    if (videoUrl) {
+                        window.open(videoUrl, '_blank');
+                    }
+                };
             }
-        });
+        }
+        
+        // Remove any existing click handlers to avoid duplicates
+        thumbnail.removeEventListener('click', thumbnailClickHandler);
+        
+        // Add the click handler
+        thumbnail.addEventListener('click', thumbnailClickHandler);
     });
+    
+    console.log(`Enhanced ${videoThumbnails.length} video thumbnails`);
+}
+
+/**
+ * Helper function to get a better thumbnail URL for a video
+ * @param {Object} video - Video object from the YouTube API
+ * @param {String} videoId - YouTube video ID
+ * @returns {String} - Best available thumbnail URL
+ */
+function getBestThumbnailUrl(video, videoId) {
+    // Check for available thumbnails in the video object
+    if (video && video.thumbnails) {
+        if (video.thumbnails.maxres) return video.thumbnails.maxres.url;
+        if (video.thumbnails.high) return video.thumbnails.high.url;
+        if (video.thumbnails.medium) return video.thumbnails.medium.url;
+        if (video.thumbnails.standard) return video.thumbnails.standard.url;
+        if (video.thumbnails.default) return video.thumbnails.default.url;
+    }
+    
+    // Fallback to direct YouTube thumbnail URL
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+}
+
+/**
+ * Handle thumbnail loading errors
+ * @param {HTMLImageElement} img - Image element that failed to load
+ * @param {String} videoId - YouTube video ID
+ */
+function handleThumbnailError(img, videoId) {
+    console.warn(`Failed to load thumbnail for video ID: ${videoId}`);
+    
+    // Try lower quality thumbnail
+    img.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+    
+    // If that also fails, use a placeholder
+    img.onerror = function() {
+        img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAC0CAMAAADROZcIAAAAMFBMVEXy8vL6+vr19fX4+Pjt7e3v7+/r6+v29vb8/Pzp6eno6Oj7+/vz8/Px8fHu7u7q6urfXciFAAACFUlEQVR4nO3a61LDIBCA0YY2Ul/3f7Ga6YxttOhaDsGZ5ftlQnYJEJMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAZ5jQJIaQ0jV3H3GrXAVSTPXIdc4vvOoA08sBjq5nHXceHrDyy2Hrby04DKOqRh6pHbtN1AFnLI4stu8suA0hdB1BnPPKr6/dBjxxejWXeZQA+hqHrAGq6G8u86wD2m17/G0t9Ky3xysV39XfyRlz//AZVebzSLO887wcBAAAAAAAAAAAAAID3YuO49K6/1D2t93DXW3T5tW3b9vq75qp52TaWaTR5qbcMdbxnGT+Wsc01QI90a8cRzrK8lNvE+FjmFnmpu92tbeRHo5vj0g8w9pj9GDfywy0R+jLjSJkfJZnxrOG6PuNXfLBr4cdGkZ9mHKh4udv11IvnMbpd6LvOIu/1I75Jkb/OLnHPNznyGd+a3fTF+hSJvf8y7kMvQ4/uUVvJzMa3O6RY5Ne9xUfxrTRN0x+qNnnKbwxLmbMsPXzwVxWnPLk8yfE/bv1+C3PxxdcU+aLrPlPkC6XkPi9ZfrxSfmD8kOUbCwAAAAAAAAAAAAAAb+/8+YXz1ydenF7/euT4sU9+6Lv4AZc/gn3m/MsXJa+Dj19/EjlfvNKYpnl+c+KVqXn98+nnbxM//wWv8O/56S8JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAnfQPuQgV9cnTEJQAAAABJRU5ErkJggg==';
+        img.onerror = null;
+        
+        // Remove loading class if it exists
+        if (img.parentNode) {
+            img.parentNode.classList.remove('loading');
+        }
+    };
 }
 
 /**
@@ -724,6 +922,8 @@ function displayResults(results, total, container) {
             
             // Add glow effect based on value
             const value = parseInt(die.textContent);
+            const sides = result ? parseInt(result.type.substring(1)) : 20;
+            
             if (value === 20 || value === sides) {
                 die.classList.add('critical-success');
             } else if (value === 1) {
@@ -754,3 +954,8 @@ function initializeInteractiveMap() {
     // This will be implemented in a separate file
     console.log('Interactive Map Ready');
 }
+
+// Make these functions globally available
+window.enhanceVideoThumbnails = enhanceVideoThumbnails;
+window.getBestThumbnailUrl = getBestThumbnailUrl;
+window.handleThumbnailError = handleThumbnailError;

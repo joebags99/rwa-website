@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="css/styles.css">
     
     <!-- Font Awesome from CDN -->
-    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script></head>
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
 <body class="loading">
     <!-- Preloader -->
     <div class="preloader">
@@ -32,8 +33,6 @@
         <p class="loading-text">Rolling initiative...</p>
     </div>
     
-    <!-- Custom Cursor Removed -->
-
     <!-- Magical Particles Background -->
     <div class="particles-container"></div>
     
@@ -329,10 +328,30 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
+    <!-- JavaScript - Order is important! -->
     <script src="js/config.js"></script>
-    <script src="js/main.js"></script>
     <script src="js/youtube-api.js"></script>
+    <script src="js/sliding-thumbnail.js"></script>
+    <script src="js/card-tilt-effect.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/particles.js"></script>
+    
+    <!-- Initialize effects explicitly once DOM is loaded -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for content to load before applying effects
+            setTimeout(function() {
+                // Initialize sliding thumbnails
+                if (typeof initializeSlidingThumbnails === 'function') {
+                    initializeSlidingThumbnails();
+                }
+                
+                // Initialize 3D card tilt effect
+                if (typeof initializeTiltEffect === 'function') {
+                    initializeTiltEffect();
+                }
+            }, 800); // Slight delay to ensure YouTube API has loaded
+        });
+    </script>
 </body>
 </html>

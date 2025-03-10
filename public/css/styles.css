@@ -87,6 +87,16 @@ VARIABLES
     --z-dropdown: 50;
     --z-fixed: 100;
     --z-modal: 1000;
+    
+    /* Tool card variables for tilt effect */
+    --card-tilt-amount: 10deg;
+    --card-scale-amount: 1.05;
+    --card-translate-amount: -10px;
+    --card-rotate-x: 0deg;
+    --card-rotate-y: 0deg;
+    --card-rotate-z: 0deg;
+    --card-perspective: 1000px;
+    --card-transition-speed: 400ms;
 }
 
 /* 
@@ -228,12 +238,6 @@ PRELOADER
     opacity: 0;
     visibility: hidden;
 }
-
-/* 
-======================
-CUSTOM CURSOR - REMOVED
-======================
-*/
 
 /* 
 ======================
@@ -1134,18 +1138,18 @@ VIDEO CARD STYLING
 ======================
 */
 .video-card {
+    position: relative;
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--shadow-md);
     transition: all 0.5s var(--transition-bounce);
     background-color: white;
     border: 2px solid rgba(251, 251, 215, 0.5);
-    position: relative;
     z-index: 1;
     transform-style: preserve-3d;
-    transform: perspective(1000px);
 }
 
+/* Rainbow bar at the top of the card when hovered */
 .video-card::before {
     content: '';
     position: absolute;
@@ -1157,11 +1161,12 @@ VIDEO CARD STYLING
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.5s ease;
-    z-index: 2;
+    z-index: 5;
 }
 
+/* Slight tilt effect on the entire card */
 .video-card:hover {
-    transform: perspective(1000px) translateY(-15px) rotateX(10deg);
+    transform: perspective(1000px) translateY(-5px) rotateX(5deg);
     box-shadow: 
         var(--shadow-lg),
         0 0 20px rgba(127, 14, 189, 0.3);
@@ -1172,12 +1177,22 @@ VIDEO CARD STYLING
     transform: scaleX(1);
 }
 
+/* 
+======================
+SLIDING THUMBNAIL EFFECT
+======================
+*/
+
+/* Thumbnail wrapper with fixed ratio */
 .video-thumbnail {
     position: relative;
     padding-top: 56.25%; /* 16:9 Aspect Ratio */
     overflow: hidden;
+    background-color: #f0f0f0; /* Light background color */
+    cursor: pointer;
 }
 
+/* Static placeholder image */
 .video-thumbnail img {
     position: absolute;
     top: 0;
@@ -1185,25 +1200,26 @@ VIDEO CARD STYLING
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s ease;
+    z-index: 1;
 }
 
-.video-thumbnail::after {
-    content: '\f144';
-    font-family: 'Font Awesome 5 Free';
+/* Main thumbnail preview that slides in */
+.thumbnail-preview {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0) rotate(-10deg);
-    font-size: 3rem;
-    color: var(--divine-light-white);
-    z-index: 2;
-    opacity: 0;
-    transition: all 0.5s var(--transition-bounce);
-    text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateY(100%); /* Start hidden below */
+    transition: transform 0.4s var(--transition-bounce);
+    z-index: 3;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
 }
 
-.video-thumbnail::before {
+/* Gradient overlay for the sliding thumbnail */
+.thumbnail-preview::after {
     content: '';
     position: absolute;
     top: 0;
@@ -1212,53 +1228,62 @@ VIDEO CARD STYLING
     height: 100%;
     background: linear-gradient(
         135deg, 
-        rgba(11, 42, 169, 0.7),
-        rgba(127, 14, 189, 0.7)
+        rgba(11, 42, 169, 0.3),
+        rgba(127, 14, 189, 0.3)
     );
-    opacity: 0;
     z-index: 1;
-    transition: opacity 0.5s ease;
 }
 
-/* Thumbnail Preview */
-.video-preview-container {
+/* Play icon on the sliding thumbnail */
+.thumbnail-preview-play {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 3rem;
+    z-index: 2;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
     opacity: 0;
-    transform: scale(0.95);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.video-card:hover .video-thumbnail img {
-    transform: scale(1.05);
+/* Loading state indicator */
+.video-thumbnail.loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border-radius: 50%;
+    border: 3px solid rgba(127, 14, 189, 0.2);
+    border-top-color: var(--primary-purple);
+    animation: spin 1s linear infinite;
+    z-index: 4;
 }
 
-.video-card:hover .video-thumbnail::after {
-    transform: translate(-50%, -50%) scale(1) rotate(0);
+/* Show the sliding thumbnail on hover */
+.video-card:hover .thumbnail-preview {
+    transform: translateY(0);
+}
+
+/* Show the play icon on hover */
+.video-card:hover .thumbnail-preview-play {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
-.video-card:hover .video-thumbnail::before {
-    opacity: 0.8;
-}
-
-.video-card:hover .video-preview-container {
-    opacity: 1;
-    transform: scale(1);
-}
-
+/* Information section */
 .video-info {
     padding: var(--spacing-sm);
     position: relative;
     background: white;
+    z-index: 2;
 }
 
+/* Video title */
 .video-info h3 {
     font-size: 1.2rem;
     margin-bottom: var(--spacing-xs);
@@ -1281,8 +1306,378 @@ VIDEO CARD STYLING
     margin-top: var(--spacing-xs);
 }
 
+/* Change title color on hover */
 .video-card:hover .video-info h3 {
     color: var(--primary-purple);
+}
+
+/* Special styles for different sections */
+.crimson-court-preview .video-card .thumbnail-preview::after {
+    background: linear-gradient(
+        135deg, 
+        rgba(195, 10, 61, 0.4),
+        rgba(127, 14, 189, 0.3)
+    );
+}
+
+.dm-advice-preview .video-card .thumbnail-preview::after {
+    background: linear-gradient(
+        135deg, 
+        rgba(127, 14, 189, 0.4),
+        rgba(11, 42, 169, 0.3)
+    );
+}
+
+/*
+======================
+VIDEO PREVIEW CONTAINER
+======================
+*/
+.video-preview-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 10000; /* Ensure it's above everything */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.video-preview-container.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.video-preview-inner {
+    width: 80%;
+    max-width: 900px;
+    aspect-ratio: 16/9;
+    position: relative;
+    background-color: #000;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(127, 14, 189, 0.5);
+}
+
+.video-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg, 
+        rgba(11, 42, 169, 0.6), 
+        rgba(127, 14, 189, 0.6)
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.video-preview-play {
+    font-size: 5rem;
+    color: var(--divine-light-white);
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.video-preview-overlay:hover .video-preview-play {
+    transform: scale(1.2);
+}
+
+.video-preview-title {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    color: var(--divine-light-white);
+    text-align: center;
+    padding: 0 20px;
+    font-family: var(--font-headers);
+    font-size: 1.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.video-preview-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: var(--divine-light-white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    background: rgba(0, 0, 0, 0.3);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-preview-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Loading state */
+.video-preview-container.loading .video-preview-inner::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 -25px;
+    border-radius: 50%;
+    border: 4px solid rgba(127, 14, 189, 0.3);
+    border-top-color: var(--primary-purple);
+    animation: spin 1s linear infinite;
+    z-index: 11;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 
+======================
+DND TOOLS CARD STYLING - ENHANCED 3D TILT EFFECT
+======================
+*/
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.tool-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(11, 42, 169, 0.1);
+    z-index: 1;
+    
+    /* New 3D tilt properties */
+    transform-style: preserve-3d;
+    transform: perspective(var(--card-perspective)) 
+               rotateY(var(--card-rotate-y)) 
+               rotateX(var(--card-rotate-x)) 
+               rotateZ(var(--card-rotate-z));
+    transition: transform var(--card-transition-speed) ease, 
+                box-shadow var(--card-transition-speed) ease, 
+                border-color var(--card-transition-speed) ease;
+}
+
+.tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(11, 42, 169, 0.05), 
+        rgba(127, 14, 189, 0.05), 
+        rgba(195, 10, 61, 0.05));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.card-glint {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 50%;
+    height: 50%;
+    background: linear-gradient(
+        135deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.5) 50%, 
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.tool-card:hover .card-glint {
+    top: 150%;
+    left: 150%;
+}
+
+.tool-card:hover {
+    box-shadow: 
+        0 15px 30px rgba(11, 42, 169, 0.2),
+        0 0 20px rgba(127, 14, 189, 0.2);
+    border-color: var(--primary-blue-light);
+}
+
+.tool-card:hover::before {
+    opacity: 1;
+}
+
+.tool-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+    font-size: 3rem;
+    transition: all 0.5s ease;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: translateZ(20px); /* Push the icon out in 3D space for depth */
+}
+
+.tool-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(11, 42, 169, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.5s ease;
+}
+
+.tool-card:hover .tool-icon {
+    transform: translateZ(30px); /* Increase the push in 3D space on hover */
+    color: var(--primary-blue-dark);
+}
+
+.tool-card:hover .tool-icon::after {
+    transform: scale(1.5);
+    animation: pulse 2s infinite;
+}
+
+.tool-card h3 {
+    position: relative;
+    display: inline-block;
+    margin-bottom: var(--spacing-sm);
+    transition: color 0.3s ease;
+    transform-style: preserve-3d;
+    transform: translateZ(15px); /* Push the heading out in 3D space for depth */
+}
+
+.tool-card:hover h3 {
+    color: var(--primary-blue);
+}
+
+.tool-card p {
+    transform-style: preserve-3d;
+    transform: translateZ(10px); /* Push the text out in 3D space for depth */
+}
+
+.tool-card .btn {
+    margin-top: var(--spacing-sm);
+    position: relative;
+    z-index: 3;
+    transform-style: preserve-3d;
+    transform: translateZ(25px); /* Push the button out in 3D space for depth */
+}
+
+.tool-preview {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    opacity: 0.2;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    transform: translateZ(5px) rotate(-5deg); /* Add some rotation for style */
+}
+
+.tool-card:hover .tool-preview {
+    opacity: 0.5;
+    animation: pulse 2s infinite;
+}
+
+/* 
+======================
+TOOLS SECTION PREVIEWS
+======================
+*/
+.mini-dice {
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%230b2aa9' d='M50 0L100 25v50L50 100L0 75V25L50 0z'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: spin 8s linear infinite;
+}
+
+.quiz-options {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.option {
+    width: 100%;
+    height: 25%;
+    background-color: rgba(11, 42, 169, 0.2);
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+
+.option:nth-child(1) {
+    width: 80%;
+}
+
+.option:nth-child(3) {
+    width: 60%;
+}
+
+.map-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-marker {
+    width: 50%;
+    height: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230b2aa9' d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: pulse 2s infinite;
 }
 
 /* 
@@ -1578,193 +1973,6 @@ TOOLS SECTION
     100% {
         transform: rotate3d(1, 1, 1, 360deg);
     }
-}
-
-.tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-}
-
-.tool-card {
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-md);
-    box-shadow: var(--shadow-md);
-    transition: all 0.5s var(--transition-bounce);
-    position: relative;
-    overflow: hidden;
-    border: 2px solid rgba(11, 42, 169, 0.1);
-    z-index: 1;
-    transform-style: preserve-3d;
-    transform: perspective(1000px);
-}
-
-.tool-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, 
-        rgba(11, 42, 169, 0.05), 
-        rgba(127, 14, 189, 0.05), 
-        rgba(195, 10, 61, 0.05));
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.card-glint {
-    position: absolute;
-    top: -100%;
-    left: -100%;
-    width: 50%;
-    height: 50%;
-    background: linear-gradient(
-        135deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.5) 50%, 
-        transparent
-    );
-    transform: rotate(45deg);
-    transition: all 0.5s ease;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.tool-card:hover .card-glint {
-    top: 150%;
-    left: 150%;
-}
-
-.tool-card:hover {
-    transform: perspective(1000px) translateY(-15px) rotateX(10deg);
-    box-shadow: 
-        0 15px 30px rgba(11, 42, 169, 0.2),
-        0 0 20px rgba(127, 14, 189, 0.2);
-    border-color: var(--primary-blue-light);
-}
-
-.tool-card:hover::before {
-    opacity: 1;
-}
-
-.tool-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto var(--spacing-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary-blue);
-    font-size: 3rem;
-    transition: all 0.5s ease;
-    position: relative;
-}
-
-.tool-icon::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(11, 42, 169, 0.2) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: scale(0);
-    transition: transform 0.5s ease;
-}
-
-.tool-card:hover .tool-icon {
-    transform: translateY(-5px) scale(1.1);
-    color: var(--primary-blue-dark);
-}
-
-.tool-card:hover .tool-icon::after {
-    transform: scale(1.5);
-    animation: pulse 2s infinite;
-}
-
-.tool-card h3 {
-    position: relative;
-    display: inline-block;
-    margin-bottom: var(--spacing-sm);
-    transition: color 0.3s ease;
-}
-
-.tool-card:hover h3 {
-    color: var(--primary-blue);
-}
-
-.tool-card .btn {
-    margin-top: var(--spacing-sm);
-    position: relative;
-    z-index: 3;
-}
-
-.tool-preview {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    opacity: 0.2;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-}
-
-.tool-card:hover .tool-preview {
-    opacity: 0.5;
-    animation: pulse 2s infinite;
-}
-
-.mini-dice {
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%230b2aa9' d='M50 0L100 25v50L50 100L0 75V25L50 0z'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: spin 8s linear infinite;
-}
-
-.quiz-options {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.option {
-    width: 100%;
-    height: 25%;
-    background-color: rgba(11, 42, 169, 0.2);
-    border-radius: 3px;
-    margin-bottom: 5px;
-}
-
-.option:nth-child(1) {
-    width: 80%;
-}
-
-.option:nth-child(3) {
-    width: 60%;
-}
-
-.map-preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.map-marker {
-    width: 50%;
-    height: 50%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230b2aa9' d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: pulse 2s infinite;
 }
 
 /* 
@@ -2234,127 +2442,6 @@ LOADING SPINNER
 
 /* 
 ======================
-VIDEO THUMBNAIL PREVIEW ENHANCEMENT
-======================
-*/
-
-/* Add this to your styles.css file */
-
-.video-preview-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-    width: 60vw;
-    max-width: 800px;
-    height: 60vh;
-    max-height: 450px;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 1000;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(127, 14, 189, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    pointer-events: none;
-}
-
-.video-preview-container.active {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    visibility: visible;
-}
-
-.video-preview-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.video-preview-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.video-preview-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, 
-        rgba(11, 42, 169, 0.6), 
-        rgba(127, 14, 189, 0.6));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.video-preview-play {
-    font-size: 5rem;
-    color: white;
-    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-    transform: scale(1);
-    transition: transform 0.3s ease;
-}
-
-.video-preview-overlay:hover .video-preview-play {
-    transform: scale(1.2);
-}
-
-.video-preview-title {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    color: white;
-    text-align: center;
-    padding: 0 20px;
-    font-family: var(--font-headers);
-    font-size: 1.5rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-.video-preview-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 10;
-    opacity: 0.7;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.video-preview-close:hover {
-    opacity: 1;
-    transform: scale(1.2);
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .video-preview-container {
-        width: 90vw;
-        height: 50vh;
-    }
-    
-    .video-preview-title {
-        font-size: 1.2rem;
-    }
-    
-    .video-preview-play {
-        font-size: 4rem;
-    }
-}
-
-/* 
-======================
 RESPONSIVE STYLES
 ======================
 */
@@ -2430,82 +2517,5 @@ RESPONSIVE STYLES
     
     .mobile-menu-toggle {
         display: flex;
-    }
-    
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
-    }
-    
-    .footer-links {
-        flex-direction: column;
-        gap: var(--spacing-md);
-    }
-    
-    .link-column {
-        text-align: center;
-    }
-    
-    .link-column h4::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    
-    .link-column:hover h4::after {
-        width: 100px;
-    }
-    
-    .hero {
-        height: 80vh;
-    }
-}
-
-@media (max-width: 576px) {
-    .cta-buttons {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-    
-    .newsletter-form {
-        flex-direction: column;
-    }
-    
-    .newsletter-form input,
-    .btn-newsletter {
-        width: 100%;
-        border-radius: 0;
-    }
-    
-    .btn-newsletter {
-        padding: 1rem;
-        justify-content: center;
-    }
-    
-    .tools-grid, 
-    .featured-carousel, 
-    .latest-episodes, 
-    .advice-categories {
-        grid-template-columns: 1fr;
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 6px);
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -6px);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
     }
 }
