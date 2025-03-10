@@ -3,14 +3,27 @@
  * A simple Express server for local development
  */
 
-// Load environment variables
-require('dotenv').config({ path: '.env.local' });
+// Load environment variables - try multiple paths to be safe
+try {
+  require('dotenv').config({ path: '.env.local' });
+  console.log('Loaded environment variables from .env.local');
+} catch (error) {
+  console.warn('Error loading .env.local:', error.message);
+  try {
+    require('dotenv').config();
+    console.log('Loaded environment variables from .env');
+  } catch (secondError) {
+    console.warn('Error loading .env:', secondError.message);
+    console.log('Continuing without loading environment variables from file');
+  }
+}
 
 // Import dependencies
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
+const fs = require('fs');
 
 // Create Express app
 const app = express();
@@ -32,19 +45,67 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
-// Check and log environment variables
-const youtubeApiKey = process.env.YOUTUBE_API_KEY;
-const channelId = process.env.CHANNEL_ID;
-const crimsonCourtPlaylistId = process.env.CRIMSON_COURT_PLAYLIST_ID;
-const dmAdvicePlaylistId = process.env.DM_ADVICE_PLAYLIST_ID;
-const featuredPlaylistId = process.env.FEATURED_PLAYLIST_ID;
+// Check for .env files and log their existence
+function checkEnvFiles() {
+  const envFiles = ['.env', '.env.local'];
+  envFiles.forEach(file => {
+    try {
+      if (fs.existsSync(file)) {
+        console.log(`✓ ${file} file exists`);
+      } else {
+        console.log(`✗ ${file} file not found`);
+      }
+    } catch (err) {
+      console.error(`Error checking for ${file}:`, err);
+    }
+  });
+}
 
-console.log('Environment variables loaded:');
-console.log('- YOUTUBE_API_KEY:', youtubeApiKey ? 'Configured ✓' : 'Not configured ✗');
-console.log('- CHANNEL_ID:', channelId ? 'Configured ✓' : 'Not configured ✗');
-console.log('- CRIMSON_COURT_PLAYLIST_ID:', crimsonCourtPlaylistId ? 'Configured ✓' : 'Not configured ✗');
-console.log('- DM_ADVICE_PLAYLIST_ID:', dmAdvicePlaylistId ? 'Configured ✓' : 'Not configured ✗');
-console.log('- FEATURED_PLAYLIST_ID:', featuredPlaylistId ? 'Configured ✓' : 'Not configured ✗');
+// Check and log environment variables
+function logEnvironmentVariables() {
+  const youtubeApiKey = process.env.YOUTUBE_API_KEY;
+  const channelId = process.env.CHANNEL_ID;
+  const crimsonCourtPlaylistId = process.env.CRIMSON_COURT_PLAYLIST_ID;
+  const dmAdvicePlaylistId = process.env.DM_ADVICE_PLAYLIST_ID;
+  const featuredPlaylistId = process.env.FEATURED_PLAYLIST_ID;
+
+  console.log('\nEnvironment variables status:');
+  console.log('- YOUTUBE_API_KEY:', youtubeApiKey ? `Configured ✓ (${youtubeApiKey.substring(0, 3)}...)` : 'Not configured ✗');
+  console.log('- CHANNEL_ID:', channelId ? `Configured ✓ (${channelId})` : 'Not configured ✗');
+  console.log('- CRIMSON_COURT_PLAYLIST_ID:', crimsonCourtPlaylistId ? `Configured ✓ (${crimsonCourtPlaylistId})` : 'Not configured ✗');
+  console.log('- DM_ADVICE_PLAYLIST_ID:', dmAdvicePlaylistId ? `Configured ✓ (${dmAdvicePlaylistId})` : 'Not configured ✗');
+  console.log('- FEATURED_PLAYLIST_ID:', featuredPlaylistId ? `Configured ✓ (${featuredPlaylistId})` : 'Not configured ✗');
+  console.log('- PORT:', process.env.PORT || '5000 (default)');
+}
+
+// Check ENV file format by reading it directly (for debugging)
+function checkEnvFileFormat() {
+  try {
+    if (fs.existsSync('.env.local')) {
+      const envContent = fs.readFileSync('.env.local', 'utf8');
+      console.log('\n.env.local file content structure:');
+      
+      // Split by lines and count variables properly formatted
+      const lines = envContent.split('\n').filter(line => line.trim() !== '' && !line.startsWith('#'));
+      const properlyFormattedLines = lines.filter(line => line.includes('='));
+      
+      console.log(`- Total non-comment lines: ${lines.length}`);
+      console.log(`- Lines with '=' separator: ${properlyFormattedLines.length}`);
+      
+      if (lines.length !== properlyFormattedLines.length) {
+        console.warn('⚠️ Some environment variables may not be properly formatted!');
+        console.warn('  Make sure each variable is on its own line in format KEY=value with no spaces around =');
+      }
+    }
+  } catch (err) {
+    console.error('Error reading .env.local file:', err);
+  }
+}
+
+// Run the environment checks
+checkEnvFiles();
+logEnvironmentVariables();
+checkEnvFileFormat();
 
 // YouTube proxy endpoint (to protect API key)
 app.get('/api/youtube/playlist/:playlistId', async (req, res) => {
@@ -52,6 +113,8 @@ app.get('/api/youtube/playlist/:playlistId', async (req, res) => {
     const playlistId = req.params.playlistId;
     const maxResults = req.query.maxResults || 6;
     const apiKey = process.env.YOUTUBE_API_KEY;
+    
+    console.log(`YouTube API request received for playlist: ${playlistId}`);
     
     if (!apiKey) {
       console.error('YouTube API key not found in environment variables');
@@ -86,14 +149,18 @@ app.get('/api/youtube/playlist/:playlistId', async (req, res) => {
 // Config endpoint (to securely provide playlist IDs to the frontend)
 app.get('/api/config', (req, res) => {
   // Only send non-sensitive configuration to the frontend
-  res.json({
+  const config = {
     channelId: process.env.CHANNEL_ID,
     playlists: {
       crimsonCourt: process.env.CRIMSON_COURT_PLAYLIST_ID,
       dmAdvice: process.env.DM_ADVICE_PLAYLIST_ID,
       featured: process.env.FEATURED_PLAYLIST_ID
     }
-  });
+  };
+
+  console.log('Sending configuration to client:', config);
+  
+  res.json(config);
 });
 
 // Handle any other routes by serving index.html

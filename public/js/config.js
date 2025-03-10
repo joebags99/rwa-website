@@ -11,7 +11,7 @@ const isDevelopment = !isProduction && !isStaging;
 // Environment-specific configuration
 const environmentConfig = {
   development: {
-    apiBaseUrl: 'http://localhost:5000/api',
+    apiBaseUrl: '/api',
     siteBaseUrl: 'http://localhost:5000',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
@@ -23,7 +23,7 @@ const environmentConfig = {
     debug: true
   },
   staging: {
-    apiBaseUrl: 'https://staging.rollwithadvantage.com/api',
+    apiBaseUrl: '/api',
     siteBaseUrl: 'https://staging.rollwithadvantage.com',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
@@ -35,7 +35,7 @@ const environmentConfig = {
     debug: true
   },
   production: {
-    apiBaseUrl: 'https://rollwithadvantage.com/api',
+    apiBaseUrl: '/api',
     siteBaseUrl: 'https://rollwithadvantage.com',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
@@ -74,11 +74,48 @@ const commonConfig = {
   }
 };
 
-// Export the merged configuration
-export const config = {
+// Create the merged configuration
+const config = {
   ...commonConfig,
   ...activeConfig
 };
 
-// For backwards compatibility with non-module scripts
+// Make it available globally
 window.RWA_CONFIG = config;
+
+// Fetch configuration from the server
+async function fetchServerConfig() {
+  try {
+    console.log('Fetching configuration from server...');
+    const response = await fetch(`${config.apiBaseUrl}/config`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch configuration from server: ${response.status} ${response.statusText}`);
+    }
+    const serverConfig = await response.json();
+    
+    console.log('Received server configuration:', serverConfig);
+    
+    // Update the config
+    if (serverConfig.channelId) {
+      window.RWA_CONFIG.channelId = serverConfig.channelId;
+    }
+    
+    if (serverConfig.playlists) {
+      window.RWA_CONFIG.playlists = serverConfig.playlists;
+    }
+    
+    console.log('Updated configuration with server values:', window.RWA_CONFIG);
+    
+    // Re-initialize YouTube videos if the function exists
+    if (typeof window.initializeYouTubeVideos === 'function') {
+      window.initializeYouTubeVideos();
+    } else {
+      console.warn('initializeYouTubeVideos function not found. Make sure youtube-api.js is loaded properly.');
+    }
+  } catch (error) {
+    console.error('Error fetching server configuration:', error);
+  }
+}
+
+// Call the function to fetch server config after a short delay to ensure other scripts are loaded
+setTimeout(fetchServerConfig, 100);

@@ -164,6 +164,57 @@ function renderVideos(videos, container) {
     });
 }
 
+// Add this to youtube-api.js
+function initializeYouTubeVideos() {
+    console.log('Initializing YouTube videos with updated config');
+    console.log('Playlists:', PLAYLISTS);
+    
+    // Load featured videos on the homepage
+    const featuredVideosContainer = document.getElementById('featured-videos');
+    if (featuredVideosContainer) {
+      console.log('Loading featured videos');
+      fetchPlaylistVideos(PLAYLISTS.FEATURED, featuredVideosContainer, MAX_RESULTS);
+    }
+    
+    // Load Crimson Court videos on the homepage
+    const crimsonCourtContainer = document.getElementById('crimson-court-videos');
+    if (crimsonCourtContainer) {
+      console.log('Loading Crimson Court videos');
+      fetchPlaylistVideos(PLAYLISTS.CRIMSON_COURT, crimsonCourtContainer, MAX_RESULTS);
+    }
+    
+    // Load DM advice videos on the homepage
+    const dmAdviceContainer = document.getElementById('dm-advice-videos');
+    if (dmAdviceContainer) {
+      console.log('Loading DM advice videos');
+      fetchPlaylistVideos(PLAYLISTS.DM_ADVICE, dmAdviceContainer, MAX_RESULTS);
+    }
+    
+    // Load all Crimson Court videos on the dedicated page
+    const allCrimsonCourtContainer = document.getElementById('all-crimson-court-videos');
+    if (allCrimsonCourtContainer) {
+      fetchPlaylistVideos(PLAYLISTS.CRIMSON_COURT, allCrimsonCourtContainer, 50);
+    }
+    
+    // Load all DM advice videos on the dedicated page
+    const allDmAdviceContainer = document.getElementById('all-dm-advice-videos');
+    if (allDmAdviceContainer) {
+      fetchPlaylistVideos(PLAYLISTS.DM_ADVICE, allDmAdviceContainer, 50);
+    }
+  }
+  
+  // Initialize videos once the DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('YouTube API script loaded');
+    console.log('Using API base URL:', API_BASE_URL);
+    
+    // Initialize videos
+    initializeYouTubeVideos();
+  });
+  
+  // Make the function globally available
+  window.initializeYouTubeVideos = initializeYouTubeVideos;
+
 /**
  * Render dummy videos for development and preview purposes
  * @param {HTMLElement} container - The container to render videos into
