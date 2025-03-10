@@ -341,11 +341,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Wait for content to load before applying effects
             setTimeout(function() {
-                // Initialize sliding thumbnails
-                if (typeof initializeSlidingThumbnails === 'function') {
-                    initializeSlidingThumbnails();
-                }
-                
                 // Initialize 3D card tilt effect
                 if (typeof initializeTiltEffect === 'function') {
                     initializeTiltEffect();

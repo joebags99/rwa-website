@@ -1,75 +1,62 @@
 /**
- * Sliding Thumbnail Effect
+ * Sliding Overlay Effect
  * 
- * This script creates a sliding thumbnail effect that reveals the thumbnail
- * image from behind the video card when hovered.
+ * This script creates a sliding overlay effect that reveals a gradient and play button
+ * over the video thumbnail when hovered.
  */
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Wait a bit to ensure thumbnails are loaded
-    setTimeout(initializeSlidingThumbnails, 300);
-});
 
 /**
- * Initialize the sliding thumbnail effect for all video cards
+ * Initialize the sliding overlay effect for all video cards
  */
 function initializeSlidingThumbnails() {
-    console.log('Initializing sliding thumbnails...');
+    console.log('Initializing sliding overlays...');
     
     const videoCards = document.querySelectorAll('.video-card');
     let processedCount = 0;
     
     videoCards.forEach(card => {
         const thumbnail = card.querySelector('.video-thumbnail');
-        if (!thumbnail) return;
+        if (!thumbnail) {
+            console.warn('No .video-thumbnail found in a video card');
+            return;
+        }
         
         const img = thumbnail.querySelector('img');
-        if (!img) return;
+        if (!img) {
+            console.warn('No img found in .video-thumbnail');
+            return;
+        }
         
-        // Get the current image source
-        const imgSrc = img.src;
+        // Remove any existing overlay to avoid duplicates
+        const existingOverlay = thumbnail.querySelector('.thumbnail-preview');
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
         
-        // Create the sliding thumbnail element
-        const slidingThumbnail = document.createElement('div');
-        slidingThumbnail.className = 'thumbnail-preview';
-        slidingThumbnail.style.backgroundImage = `url('${imgSrc}')`;
+        // Create the sliding overlay element
+        const slidingOverlay = document.createElement('div');
+        slidingOverlay.className = 'thumbnail-preview';
         
-        // Create a play icon for the sliding thumbnail
+        // Create a play icon for the overlay
         const playIcon = document.createElement('i');
         playIcon.className = 'fas fa-play-circle thumbnail-preview-play';
-        slidingThumbnail.appendChild(playIcon);
+        slidingOverlay.appendChild(playIcon);
         
-        // Add the sliding thumbnail to the thumbnail container
-        thumbnail.appendChild(slidingThumbnail);
+        // Add the overlay to the thumbnail container
+        thumbnail.appendChild(slidingOverlay);
         
-        // Track the number of successfully processed cards
         processedCount++;
-        
-        // Preload the image to ensure it's ready when needed
-        const preloadImg = new Image();
-        preloadImg.src = imgSrc;
-        preloadImg.onload = function() {
-            // Remove any loading indicator once properly loaded
-            thumbnail.classList.remove('loading');
-            slidingThumbnail.classList.add('loaded');
-        };
-        
-        // Add error handling
-        preloadImg.onerror = function() {
-            console.warn(`Failed to load thumbnail: ${imgSrc}`);
-            slidingThumbnail.style.backgroundImage = "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAC0CAMAAADROZcIAAAAMFBMVEXy8vL6+vr19fX4+Pjt7e3v7+/r6+v29vb8/Pzp6eno6Oj7+/vz8/Px8fHu7u7q6urfXciFAAACFUlEQVR4nO3a61LDIBCA0YY2Ul/3f7Ga6YxttOhaDsGZ5ftlQnYJEJMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAZ5jQJIaQ0jV3H3GrXAVSTPXIdc4vvOoA08sBjq5nHXceHrDyy2Hrby04DKOqRh6pHbtN1AFnLI4stu8suA0hdB1BnPPKr6/dBjxxejWXeZQA+hqHrAGq6G8u86wD2m17/G0t9Ky3xysV39XfyRlz//AZVebzSLO887wcBAAAAAAAAAAAAAID3YuO49K6/1D2t93DXW3T5tW3b9vq75qp52TaWaTR5qbcMdbxnGT+Wsc01QI90a8cRzrK8lNvE+FjmFnmpu92tbeRHo5vj0g8w9pj9GDfywy0R+jLjSJkfJZnxrOG6PuNXfLBr4cdGkZ9mHKh4udv11IvnMbpd6LvOIu/1I75Jkb/OLnHPNznyGd+a3fTF+hSJvf8y7kMvQ4/uUVvJzMa3O6RY5Ne9xUfxrTRN0x+qNnnKbwxLmbMsPXzwVxWnPLk8yfE/bv1+C3PxxdcU+aLrPlPkC6XkPi9ZfrxSfmD8kOUbCwAAAAAAAAAAAAAAb+/8+YXz1ydenF7/euT4sU9+6Lv4AZc/gn3m/MsXJa+Dj19/EjlfvNKYpnl+c+KVqXn98+nnbxM//wWv8O/56S8JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAnfQPuQgV9cnTEJQAAAABJRU5ErkJggg==')";
-            thumbnail.classList.remove('loading');
-        };
+        console.log(`Added overlay ${processedCount}`);
     });
     
-    console.log(`Processed ${processedCount} video thumbnails with sliding effect`);
-
-    // Set up click event for sliding thumbnails
+    console.log(`Processed ${processedCount} video thumbnails with sliding overlay effect`);
+    
+    // Set up click event for sliding overlays
     document.addEventListener('click', function(e) {
-        // Check if the clicked element is a sliding thumbnail or part of it
-        const slidingThumbnail = e.target.closest('.thumbnail-preview');
-        if (slidingThumbnail) {
-            const card = slidingThumbnail.closest('.video-card');
+        // Check if the clicked element is a sliding overlay or part of it
+        const slidingOverlay = e.target.closest('.thumbnail-preview');
+        if (slidingOverlay) {
+            const card = slidingOverlay.closest('.video-card');
             if (!card) return;
             
             const thumbnailLink = card.querySelector('.video-thumbnail');
@@ -88,12 +75,12 @@ function initializeSlidingThumbnails() {
 }
 
 /**
- * Reinitialize thumbnails (useful after dynamic content updates)
+ * Reinitialize overlays (useful after dynamic content updates)
  */
 function refreshSlidingThumbnails() {
-    // Find and remove any existing sliding thumbnails
-    const existingThumbnails = document.querySelectorAll('.thumbnail-preview');
-    existingThumbnails.forEach(thumbnail => thumbnail.remove());
+    // Find and remove any existing sliding overlays
+    const existingOverlays = document.querySelectorAll('.thumbnail-preview');
+    existingOverlays.forEach(overlay => overlay.remove());
     
     // Reinitialize
     initializeSlidingThumbnails();

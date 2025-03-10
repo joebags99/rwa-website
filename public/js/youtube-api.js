@@ -247,11 +247,18 @@ function renderVideos(videos, container) {
   
   // Initialize video preview functionality after a short delay to ensure DOM is updated
   setTimeout(() => {
+    // First enhance with preview functionality
     if (typeof enhanceVideoThumbnails === 'function') {
       console.log('Enhancing video thumbnails...');
       enhanceVideoThumbnails();
     } else {
       console.warn('enhanceVideoThumbnails function not available');
+    }
+    
+    // Then apply sliding effect
+    if (typeof initializeSlidingThumbnails === 'function') {
+      console.log('Initializing sliding thumbnails...');
+      initializeSlidingThumbnails();
     }
   }, 300);
 }

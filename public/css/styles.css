@@ -1179,62 +1179,50 @@ VIDEO CARD STYLING
 
 /* 
 ======================
-SLIDING THUMBNAIL EFFECT
+SLIDING OVERLAY EFFECT - BOTTOM UP
 ======================
 */
 
 /* Thumbnail wrapper with fixed ratio */
 .video-thumbnail {
-    position: relative;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    overflow: hidden;
+    position: relative !important;
+    padding-top: 56.25% !important; /* 16:9 Aspect Ratio */
+    overflow: hidden !important;
     background-color: #f0f0f0; /* Light background color */
     cursor: pointer;
+    display: block !important; /* Ensure it's a block element */
 }
 
-/* Static placeholder image */
+/* Static thumbnail image - always visible */
 .video-thumbnail img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover;
     z-index: 1;
 }
 
-/* Main thumbnail preview that slides in */
+/* Sliding overlay with gradient and play button - FROM BOTTOM */
 .thumbnail-preview {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: translateY(100%); /* Start hidden below */
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: translateY(100%) !important; /* Start hidden below */
     transition: transform 0.4s var(--transition-bounce);
-    z-index: 3;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Gradient overlay for the sliding thumbnail */
-.thumbnail-preview::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    z-index: 2;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3); /* Shadow for bottom-up slide */
     background: linear-gradient(
         135deg, 
         rgba(11, 42, 169, 0.3),
         rgba(127, 14, 189, 0.3)
     );
-    z-index: 1;
 }
 
-/* Play icon on the sliding thumbnail */
+/* Play icon on the sliding overlay */
 .thumbnail-preview-play {
     position: absolute;
     top: 50%;
@@ -1244,8 +1232,8 @@ SLIDING THUMBNAIL EFFECT
     font-size: 3rem;
     z-index: 2;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0.9;
+    transition: transform 0.3s ease;
 }
 
 /* Loading state indicator */
@@ -1264,55 +1252,18 @@ SLIDING THUMBNAIL EFFECT
     z-index: 4;
 }
 
-/* Show the sliding thumbnail on hover */
+/* Show the sliding overlay on hover - SLIDE UP FROM BOTTOM */
 .video-card:hover .thumbnail-preview {
-    transform: translateY(0);
+    transform: translateY(0) !important; /* Slide up from bottom */
 }
 
-/* Show the play icon on hover */
+/* Animate the play icon on hover */
 .video-card:hover .thumbnail-preview-play {
-    opacity: 1;
     transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* Information section */
-.video-info {
-    padding: var(--spacing-sm);
-    position: relative;
-    background: white;
-    z-index: 2;
-}
-
-/* Video title */
-.video-info h3 {
-    font-size: 1.2rem;
-    margin-bottom: var(--spacing-xs);
-    transition: color 0.3s ease;
-}
-
-.video-info p {
-    font-size: 0.9rem;
-    margin-bottom: var(--spacing-xs);
-    color: #666;
-}
-
-.video-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: #888;
-    border-top: 1px solid var(--border-color);
-    padding-top: var(--spacing-xs);
-    margin-top: var(--spacing-xs);
-}
-
-/* Change title color on hover */
-.video-card:hover .video-info h3 {
-    color: var(--primary-purple);
-}
-
 /* Special styles for different sections */
-.crimson-court-preview .video-card .thumbnail-preview::after {
+.crimson-court-preview .video-card .thumbnail-preview {
     background: linear-gradient(
         135deg, 
         rgba(195, 10, 61, 0.4),
@@ -1320,7 +1271,7 @@ SLIDING THUMBNAIL EFFECT
     );
 }
 
-.dm-advice-preview .video-card .thumbnail-preview::after {
+.dm-advice-preview .video-card .thumbnail-preview {
     background: linear-gradient(
         135deg, 
         rgba(127, 14, 189, 0.4),
