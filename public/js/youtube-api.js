@@ -1,17 +1,27 @@
 /**
  * Roll With Advantage - YouTube API Integration
  * This file handles fetching and displaying YouTube videos from the channel
+ * using the server-side proxy to protect API keys
  */
 
-// Import the configuration
-import { config } from './config.js';
+// Configuration from the global config
+const config = window.RWA_CONFIG || {
+    apiBaseUrl: '/api',
+    channelId: 'YOUR_CHANNEL_ID',
+    videoMaxResults: 6,
+    playlists: {
+        crimsonCourt: 'YOUR_CRIMSON_COURT_PLAYLIST_ID',
+        dmAdvice: 'YOUR_DM_ADVICE_PLAYLIST_ID',
+        featured: 'YOUR_FEATURED_PLAYLIST_ID'
+    }
+};
 
-// Configuration from config.js
-const YOUTUBE_API_KEY = config.youtubeApiKey;
+// Constants from config
+const API_BASE_URL = config.apiBaseUrl;
 const CHANNEL_ID = config.channelId;
 const MAX_RESULTS = config.videoMaxResults;
 
-// Playlist IDs from config.js
+// Playlist IDs from config
 const PLAYLISTS = {
     CRIMSON_COURT: config.playlists.crimsonCourt,
     DM_ADVICE: config.playlists.dmAdvice,
@@ -19,21 +29,27 @@ const PLAYLISTS = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('YouTube API script loaded');
+    console.log('Using API base URL:', API_BASE_URL);
+    
     // Load featured videos on the homepage
     const featuredVideosContainer = document.getElementById('featured-videos');
     if (featuredVideosContainer) {
+        console.log('Loading featured videos');
         fetchPlaylistVideos(PLAYLISTS.FEATURED, featuredVideosContainer, MAX_RESULTS);
     }
     
     // Load Crimson Court videos on the homepage
     const crimsonCourtContainer = document.getElementById('crimson-court-videos');
     if (crimsonCourtContainer) {
+        console.log('Loading Crimson Court videos');
         fetchPlaylistVideos(PLAYLISTS.CRIMSON_COURT, crimsonCourtContainer, MAX_RESULTS);
     }
     
     // Load DM advice videos on the homepage
     const dmAdviceContainer = document.getElementById('dm-advice-videos');
     if (dmAdviceContainer) {
+        console.log('Loading DM advice videos');
         fetchPlaylistVideos(PLAYLISTS.DM_ADVICE, dmAdviceContainer, MAX_RESULTS);
     }
     
@@ -51,45 +67,52 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Fetch videos from a YouTube playlist
+ * Fetch videos from a YouTube playlist using the server proxy
  * @param {string} playlistId - The YouTube playlist ID
  * @param {HTMLElement} container - The container to render videos into
  * @param {number} maxResults - Maximum number of videos to fetch
  */
 function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
-    if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'YOUR_YOUTUBE_API_KEY') {
-        // Display message if API key is not set
+    if (!playlistId || playlistId === 'YOUR_CRIMSON_COURT_PLAYLIST_ID' || 
+        playlistId === 'YOUR_DM_ADVICE_PLAYLIST_ID' || playlistId === 'YOUR_FEATURED_PLAYLIST_ID') {
+        // Display message if playlist ID is not set
+        console.log('Playlist ID not configured, showing dummy videos');
         container.innerHTML = `
             <div class="api-key-message">
-                <p>To display YouTube videos, you need to set up your YouTube API key in youtube-api.js</p>
-                <ol>
-                    <li>Get an API key from the <a href="https://console.developers.google.com/" target="_blank">Google Developer Console</a></li>
-                    <li>Enable the YouTube Data API v3</li>
-                    <li>Replace 'YOUR_YOUTUBE_API_KEY' in youtube-api.js with your actual API key</li>
-                </ol>
-                <p>For testing purposes, here's what the content would look like:</p>
+                <p>YouTube playlist ID not configured. Using preview mode with dummy videos.</p>
             </div>
         `;
         renderDummyVideos(container, maxResults);
         return;
     }
 
-    const apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${maxResults}&playlistId=${playlistId}&key=${YOUTUBE_API_KEY}`;
+    // Use the server proxy endpoint
+    const apiUrl = `${API_BASE_URL}/youtube/playlist/${playlistId}?maxResults=${maxResults}`;
+    
+    console.log(`Fetching videos from playlist via proxy: ${playlistId}`);
     
     fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`Server response was not ok: ${response.status} ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
+            if (data.error) {
+                throw new Error(data.message || 'Error from server proxy');
+            }
+            console.log(`Successfully loaded ${data.items ? data.items.length : 0} videos`);
             renderVideos(data.items, container);
         })
         .catch(error => {
             console.error('Error fetching YouTube videos:', error);
-            container.innerHTML = `<p>Error loading videos. Please try again later.</p>`;
-            // Show dummy videos for development purposes
+            container.innerHTML = `
+                <div class="api-key-message">
+                    <p>Error loading videos: ${error.message}</p>
+                    <p>Using preview mode with dummy videos instead.</p>
+                </div>
+            `;
             renderDummyVideos(container, maxResults);
         });
 }
@@ -147,6 +170,8 @@ function renderVideos(videos, container) {
  * @param {number} count - Number of dummy videos to render
  */
 function renderDummyVideos(container, count) {
+    console.log(`Rendering ${count} dummy videos`);
+    
     const titles = [
         'The Crimson Court: Episode 1 - The Gathering Storm',
         'The Crimson Court: Episode 2 - Secrets of the Palace',
@@ -173,7 +198,7 @@ function renderDummyVideos(container, count) {
         
         videoCard.innerHTML = `
             <a href="#" class="video-thumbnail">
-                <img src="assets/images/placeholder-thumbnail-${(i % 3) + 1}.jpg" alt="${titles[i]}">
+                <img src="https://via.placeholder.com/320x180.png?text=Thumbnail+${i+1}" alt="${titles[i]}">
             </a>
             <div class="video-info">
                 <h3><a href="#">${titles[i]}</a></h3>

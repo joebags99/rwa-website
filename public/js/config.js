@@ -1,13 +1,6 @@
 /**
  * Roll With Advantage - Configuration
  * This file contains environment-specific configuration variables
- * 
- * Usage:
- * Import this file in your JavaScript files:
- * import { config } from './config.js';
- * 
- * Then use the variables:
- * const apiUrl = config.apiBaseUrl + '/endpoint';
  */
 
 // Detect environment
@@ -20,7 +13,6 @@ const environmentConfig = {
   development: {
     apiBaseUrl: 'http://localhost:5000/api',
     siteBaseUrl: 'http://localhost:5000',
-    youtubeApiKey: 'YOUR_DEV_YOUTUBE_API_KEY',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
       crimsonCourt: 'YOUR_CRIMSON_COURT_PLAYLIST_ID',
@@ -33,7 +25,6 @@ const environmentConfig = {
   staging: {
     apiBaseUrl: 'https://staging.rollwithadvantage.com/api',
     siteBaseUrl: 'https://staging.rollwithadvantage.com',
-    youtubeApiKey: 'YOUR_STAGING_YOUTUBE_API_KEY',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
       crimsonCourt: 'YOUR_CRIMSON_COURT_PLAYLIST_ID',
@@ -46,7 +37,6 @@ const environmentConfig = {
   production: {
     apiBaseUrl: 'https://rollwithadvantage.com/api',
     siteBaseUrl: 'https://rollwithadvantage.com',
-    youtubeApiKey: 'YOUR_PROD_YOUTUBE_API_KEY',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
       crimsonCourt: 'YOUR_CRIMSON_COURT_PLAYLIST_ID',
