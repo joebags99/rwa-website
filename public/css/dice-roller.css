@@ -1,1025 +1,117 @@
-/*
-======================
-DICE ROLLER STYLES - FIXED VERSION
-======================
-*/
-
-/* 
-======================
-HERO SECTION
-======================
-*/
-.dice-roller-hero {
-    height: 50vh;
-    min-height: 300px;
-}
-
-.dice-roller-hero .hero-background {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../assets/images/dice-bg.jpg');
-    background-size: cover;
-    background-position: center;
-}
-
-/* 
-======================
-DICE ROLLER INTERFACE
-======================
-*/
-.dice-roller-main {
-    background-color: var(--divine-light-white);
-    position: relative;
-    padding-bottom: var(--spacing-xl);
-}
-
-.dice-roller-interface {
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    margin-bottom: var(--spacing-md);
-    border: 2px solid rgba(11, 42, 169, 0.1);
-    position: relative;
-}
-
-.dice-roller-interface::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 5px;
-    background: var(--gradient-blue);
-    z-index: 1;
-}
-
-/* Selected Dice Area */
-.selected-dice-area {
-    min-height: 100px;
-    height: auto;
-    max-height: 300px;
-    overflow-y: auto;
-    padding: var(--spacing-sm);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    align-items: flex-start;
-    border-bottom: 1px solid rgba(11, 42, 169, 0.1);
-    position: relative;
-    background: rgba(11, 42, 169, 0.03);
-}
-
-.dice-animation-area {
-    min-height: 120px;
-    height: auto;
-    max-height: 300px;
-    overflow-y: auto;
-    padding: var(--spacing-sm);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    align-items: flex-start;
-    border-bottom: 1px solid rgba(11, 42, 169, 0.1);
-    background: rgba(11, 42, 169, 0.05);
-    position: relative;
-}
-
-.no-dice-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #888;
-    text-align: center;
-}
-
-.no-dice-message p {
-    margin-bottom: var(--spacing-sm);
-}
-
-.animated-arrow {
-    font-size: 1.5rem;
-    color: var(--primary-blue-light);
-    animation: bounceArrow 2s infinite;
-}
-
-@keyframes bounceArrow {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(10px);
-    }
-}
-
-/* FIXED SELECTED DICE STYLING */
+/* Direct fix for the selected dice area display */
 .selected-die {
+    /* Reset styles to basic display */
+    all: initial;
+    
+    /* Core sizing and positioning */
+    display: inline-block;
     position: relative;
     width: 60px;
     height: 60px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
     margin: 8px;
-    flex: 0 0 auto;
-    z-index: 1;
-    border-radius: 8px;
-    background-color: rgba(11, 42, 169, 0.1);
-    transition: transform 0.2s ease, filter 0.2s ease;
-    /* No animations or transforms by default */
-    transform: none;
-    animation: none;
-}
-
-.selected-die:hover {
-    transform: scale(1.1);
-    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
-}
-
-/* Dice image paths - use consistent naming */
-.selected-die.d4 { background-image: url("../assets/images/dice/d4.png"); }
-.selected-die.d6 { background-image: url("../assets/images/dice/d6.png"); }
-.selected-die.d8 { background-image: url("../assets/images/dice/d8.png"); }
-.selected-die.d10 { background-image: url("../assets/images/dice/d10.png"); }
-.selected-die.d12 { background-image: url("../assets/images/dice/d12.png"); }
-.selected-die.d20 { background-image: url("../assets/images/dice/d20.png"); }
-.selected-die.d100 { background-image: url("../assets/images/dice/d100.png"); }
-
-.die-count {
+    padding: 0;
+    
+    /* Visual appearance */
+    background-color: white;
+    border: 1px solid #3050c7;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    
+    /* Prevent any animation */
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  /* Fix for dice backgrounds - with SVG fallbacks if images don't load */
+  .selected-die.d4 {
+    background: white url("..//assets/images/dice/d4.svg") center/80% no-repeat;
+    /* SVG fallback */
+  }
+  
+  .selected-die.d6 {
+    background: white url("..//assets/images/dice/d6.svg") center/80% no-repeat;
+    /* SVG fallback */
+  }
+  
+  .selected-die.d8 {
+    background: white url("..//assets/images/dice/d8.svg") center/80% no-repeat;
+    /* SVG fallback */
+  }
+  
+  .selected-die.d10 {
+    background: white url("..//assets/images/dice/d10.svg") center/80% no-repeat;
+    /* SVG fallback */
+  }
+  
+  .selected-die.d12 {
+    background: white url("..//assets/images/dice/d12.svg") center/80% no-repeat;
+    /* SVG fallback */
+  }
+  
+  .selected-die.d20 {
+    background: white url("..//assets/images/dice/d20.svg") center/80% no-repeat;
+    /* SVG fallback */
+  }
+  
+  .selected-die.d100 {
+    background: white url("..//assets/images/dice/d10.svg") center/80% no-repeat;
+    /* SVG fallback */
+  }
+  
+  /* Fix for the count display on dice */
+  .die-count {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: var(--primary-blue);
-    color: white;
-    border-radius: 50%;
     width: 20px;
     height: 20px;
+    background-color: #3050c7;
+    color: white;
+    border-radius: 50%;
     font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Rolling Dice Animation - only for the dice animation area */
-.rolling-die {
-    position: relative;
-    width: 70px;
-    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 8px;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-    border-radius: 8px;
-    background-color: rgba(11, 42, 169, 0.1);
-    animation: rollDice 1s ease-in-out; /* Only apply animation to rolling dice */
-}
-
-.rolling-die::after {
-    content: attr(data-value);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-weight: bold;
-    font-size: 1.8rem;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.7), 0 0 3px rgba(0, 0, 0, 0.9);
-    opacity: 1;
-    z-index: 5;
-}
-
-/* Rolling dice images */
-.rolling-die.d4 { background-image: url("../assets/images/dice/d4.png"); }
-.rolling-die.d6 { background-image: url("../assets/images/dice/d6.png"); }
-.rolling-die.d8 { background-image: url("../assets/images/dice/d8.png"); }
-.rolling-die.d10 { background-image: url("../assets/images/dice/d10.png"); }
-.rolling-die.d12 { background-image: url("../assets/images/dice/d12.png"); }
-.rolling-die.d20 { background-image: url("../assets/images/dice/d20.png"); }
-.rolling-die.d100 { background-image: url("../assets/images/dice/d100.png"); }
-
-/* Color coding for different dice types */
-.selected-die.d4, .rolling-die.d4 { background-color: rgba(60, 80, 199, 0.2); }
-.selected-die.d6, .rolling-die.d6 { background-color: rgba(11, 42, 169, 0.2); }
-.selected-die.d8, .rolling-die.d8 { background-color: rgba(127, 14, 189, 0.2); }
-.selected-die.d10, .rolling-die.d10 { background-color: rgba(155, 61, 215, 0.2); }
-.selected-die.d12, .rolling-die.d12 { background-color: rgba(195, 10, 61, 0.2); }
-.selected-die.d20, .rolling-die.d20 { background-color: rgba(214, 51, 92, 0.2); }
-.selected-die.d100, .rolling-die.d100 { background-color: rgba(163, 8, 49, 0.2); }
-
-/* Labels for dice types */
-.selected-die::before,
-.rolling-die::before {
-    content: attr(data-type, '');
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    font-size: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 2px 4px;
-    border-radius: 3px;
-    z-index: 2;
-}
-
-.selected-die.d4::before, .rolling-die.d4::before { content: "D4"; }
-.selected-die.d6::before, .rolling-die.d6::before { content: "D6"; }
-.selected-die.d8::before, .rolling-die.d8::before { content: "D8"; }
-.selected-die.d10::before, .rolling-die.d10::before { content: "D10"; }
-.selected-die.d12::before, .rolling-die.d12::before { content: "D12"; }
-.selected-die.d20::before, .rolling-die.d20::before { content: "D20"; }
-.selected-die.d100::before, .rolling-die.d100::before { content: "D100"; }
-
-/* Add background circle for dice values */
-.rolling-die::after {
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px 8px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-}
-
-/* Animation only for rolling dice */
-@keyframes rollDice {
-    0% {
-        transform: scale(0.5);
-        opacity: 0.3;
-    }
-    25% {
-        transform: scale(1.2);
-        opacity: 0.8;
-    }
-    50% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    75% {
-        transform: scale(1.1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes popIn {
-    0% {
-        transform: scale(0);
-    }
-    70% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* Controls Area */
-.dice-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-md);
-    background-color: rgba(11, 42, 169, 0.05);
-    border-bottom: 1px solid rgba(11, 42, 169, 0.1);
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-}
-
-.modifier-control {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.modifier-control label {
-    font-family: var(--font-headers);
-    font-weight: 600;
-    color: var(--primary-blue);
-}
-
-.modifier-inputs {
-    display: flex;
-    align-items: center;
-    background: white;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(11, 42, 169, 0.2);
-}
-
-.modifier-btn {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--primary-blue);
-    transition: all 0.2s ease;
-}
-
-.modifier-btn:hover {
-    background-color: rgba(11, 42, 169, 0.1);
-}
-
-.modifier-btn:active {
-    transform: scale(0.95);
-}
-
-#modifier {
-    width: 60px;
-    text-align: center;
-    border: none;
-    font-family: var(--font-headers);
-    font-size: 1.2rem;
-    color: var(--primary-blue);
-    padding: 5px;
-}
-
-.roll-controls {
-    display: flex;
-    gap: var(--spacing-sm);
-}
-
-/* Results Area */
-.dice-results {
-    padding: var(--spacing-md);
-    min-height: 120px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, rgba(11, 42, 169, 0.05), rgba(11, 42, 169, 0.01));
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-}
-
-.dice-results.has-results {
-    background: linear-gradient(to bottom, rgba(11, 42, 169, 0.08), rgba(11, 42, 169, 0.02));
-}
-
-.roll-message {
-    text-align: center;
-    color: #888;
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    background: rgba(255, 255, 255, 0.7);
-    box-shadow: var(--shadow-sm);
-    animation: fadeIn 0.5s ease;
-}
-
-.roll-details {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Fix for the overall selected dice area */
+  .selected-dice-area {
+    min-height: 100px;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    gap: 10px;
     justify-content: center;
-    width: 100%;
-    animation: fadeInUp 0.5s ease;
-}
-
-.dice-result {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-sm);
-    box-shadow: var(--shadow-md);
-    border: 1px solid rgba(11, 42, 169, 0.1);
-    min-width: 120px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    flex: 0 0 auto;
-}
-
-.dice-result:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-}
-
-.dice-result h4 {
-    color: var(--primary-blue);
-    margin-bottom: var(--spacing-xs);
-    font-family: var(--font-headers);
-    position: relative;
-    display: inline-block;
-}
-
-.dice-result h4::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gradient-blue);
-    border-radius: 2px;
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform 0.3s ease;
-}
-
-.dice-result:hover h4::after {
-    transform: scaleX(1);
-}
-
-.dice-values {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    justify-content: center;
-    margin-bottom: var(--spacing-xs);
-}
-
-.die {
-    width: 45px;
-    height: 45px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    background: var(--primary-blue-light);
-    color: white;
-    border-radius: var(--border-radius);
-    font-weight: bold;
-    font-size: 1.3rem;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    margin: 4px;
-}
-
-.die.critical-success {
-    background: var(--primary-purple);
-    animation: pulseCritical 2s infinite;
-    transform: scale(1.1);
-}
-
-.die.critical-fail {
-    background: var(--primary-red);
-    animation: shakeDie 0.5s ease;
-}
-
-@keyframes pulseCritical {
-    0% {
-        box-shadow: 0 0 0 0 rgba(127, 14, 189, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(127, 14, 189, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(127, 14, 189, 0);
-    }
-}
-
-@keyframes shakeDie {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    20%, 60% {
-        transform: translateX(-5px);
-    }
-    40%, 80% {
-        transform: translateX(5px);
-    }
-}
-
-.dice-result p {
-    margin: 0;
-    font-weight: 600;
-    color: var(--primary-blue-dark);
-}
-
-.roll-total {
-    width: 100%;
-    text-align: center;
-    padding: var(--spacing-md);
-    margin-top: var(--spacing-sm);
-    border-top: 2px solid rgba(11, 42, 169, 0.1);
-    background: rgba(251, 251, 215, 0.3);
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-    position: relative;
-    animation: glowTotal 3s ease infinite;
-}
-
-@keyframes glowTotal {
-    0%, 100% {
-        box-shadow: 0 0 5px rgba(11, 42, 169, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 15px rgba(11, 42, 169, 0.4);
-    }
-}
-
-.roll-total h3 {
-    color: var(--primary-blue-dark);
-    font-size: 2rem;
-    margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative;
-    display: inline-block;
-}
-
-.roll-total h3::before,
-.roll-total h3::after {
-    content: '';
-    position: absolute;
-    height: 3px;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--gradient-blue);
-    border-radius: 3px;
-}
-
-.roll-total h3::before {
-    width: 100%;
-    opacity: 0.3;
-}
-
-.roll-total h3::after {
-    width: 60%;
-    opacity: 0.8;
-}
-
-.roll-in {
-    animation: rollIn 0.5s ease-out;
-}
-
-@keyframes rollIn {
-    0% {
-        transform: scale(0) rotate(-180deg);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
-    }
-}
-
-.fade-out {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.fade-in {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-/* 
-======================
-DICE SELECTION AREA
-======================
-*/
-.dice-selection-area {
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-    box-shadow: var(--shadow-md);
-    border: 2px solid rgba(11, 42, 169, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.dice-selection-area::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 5px;
-    background: var(--gradient-blue);
-    z-index: 1;
-}
-
-.selection-title {
-    text-align: center;
-    color: var(--primary-blue);
-    margin-bottom: var(--spacing-md);
-    font-family: var(--font-headers);
-    position: relative;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.selection-title::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gradient-blue);
-    border-radius: 2px;
-}
-
-/* Dice options grid layout */
-.dice-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: var(--spacing-sm);
-    justify-content: center;
-    padding: var(--spacing-sm);
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-/* Individual dice option */
-.dice-option {
-    position: relative;
-    width: 110px;
-    height: 140px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 5px;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
-    border-radius: var(--border-radius);
-    padding: var(--spacing-xs);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-    cursor: pointer;
-    border: 2px solid transparent;
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-}
-
-/* Hover effect without rotation */
-.dice-option:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    background: linear-gradient(145deg, rgba(11, 42, 169, 0.1), rgba(11, 42, 169, 0.05));
-    border-color: rgba(11, 42, 169, 0.2);
-    z-index: 2;
-}
-
-/* Selected state */
-.dice-option.selected {
-    background: linear-gradient(145deg, rgba(11, 42, 169, 0.1), rgba(11, 42, 169, 0.05));
-    border-color: rgba(11, 42, 169, 0.3);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-3px);
-}
-
-/* Dice images in selection area - NO ROTATION */
-.dice-image {
-    width: 60px;
-    height: 60px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: transform 0.3s ease, filter 0.3s ease;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-    position: relative;
-    transform: none; /* Ensure no transform by default */
-}
-
-/* Hover effect - scale only, no rotation */
-.dice-option:hover .dice-image {
-    transform: scale(1.1); /* Only scale, no rotation */
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
-}
-
-/* Selected state */
-.dice-option.selected .dice-image {
-    transform: scale(1.1);
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
-}
-
-/* Dice image paths in selection area */
-.dice-image.d4 { background-image: url("../assets/images/dice/d4.png"); }
-.dice-image.d6 { background-image: url("../assets/images/dice/d6.png"); }
-.dice-image.d8 { background-image: url("../assets/images/dice/d8.png"); }
-.dice-image.d10 { background-image: url("../assets/images/dice/d10.png"); }
-.dice-image.d12 { background-image: url("../assets/images/dice/d12.png"); }
-.dice-image.d20 { background-image: url("../assets/images/dice/d20.png"); }
-.dice-image.d100 { background-image: url("../assets/images/dice/d100.png"); }
-
-/* Dice labels */
-.dice-label {
-    font-family: var(--font-headers);
-    font-weight: 600;
-    color: var(--primary-blue);
-    font-size: 1.2rem;
-}
-
-/* Counter section */
-.dice-counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.counter-value {
-    font-family: var(--font-headers);
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: var(--primary-blue-dark);
-}
-
-.counter-controls {
-    display: flex;
-    gap: 5px;
-}
-
-/* Counter buttons */
-.counter-btn {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(11, 42, 169, 0.1);
-    border: none;
-    border-radius: 50%;
-    color: var(--primary-blue);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.counter-btn:hover {
-    background: rgba(11, 42, 169, 0.2);
-    transform: scale(1.1);
-}
-
-.counter-btn:active {
-    transform: scale(0.95);
-}
-
-/* Rolling button animation */
-.rolling {
-    animation: rollAnimation 1s linear infinite;
-}
-
-@keyframes rollAnimation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* 
-======================
-COMMON ROLLS SECTION
-======================
-*/
-.common-rolls {
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-    box-shadow: var(--shadow-md);
-    border: 2px solid rgba(127, 14, 189, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.common-rolls::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 5px;
-    background: var(--gradient-purple);
-    z-index: 1;
-}
-
-.preset-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    justify-content: center;
-}
-
-.preset-roll {
-    background: rgba(127, 14, 189, 0.1);
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 0.5rem 1rem;
-    font-family: var(--font-headers);
-    font-weight: 600;
-    color: var(--primary-purple);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.preset-roll:hover {
-    background: rgba(127, 14, 189, 0.2);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-sm);
-}
-
-.preset-roll:active {
-    transform: translateY(-1px);
-}
-
-.preset-roll i {
-    margin-right: 0.5rem;
-}
-
-/* 
-======================
-DICE HISTORY SECTION
-======================
-*/
-.dice-history {
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: var(--spacing-md);
-    box-shadow: var(--shadow-md);
-    border: 2px solid rgba(195, 10, 61, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.dice-history::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 5px;
-    background: var(--gradient-red);
-    z-index: 1;
-}
-
-.history-list {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: var(--spacing-md);
-    border: 1px solid rgba(195, 10, 61, 0.1);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-sm);
-}
-
-.empty-history-message {
-    text-align: center;
-    color: #888;
-    padding: var(--spacing-md);
-}
-
-.history-item {
-    padding: var(--spacing-sm);
-    border-bottom: 1px solid rgba(195, 10, 61, 0.1);
-    animation: fadeIn 0.3s ease;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.history-item:last-child {
-    border-bottom: none;
-}
-
-.history-details {
-    flex: 1;
-}
-
-.history-title {
-    font-family: var(--font-headers);
-    font-weight: 600;
-    color: var(--primary-red);
-    margin-bottom: 5px;
-    font-size: 1rem;
-}
-
-.history-dice {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.history-result {
-    font-family: var(--font-headers);
-    font-weight: bold;
-    color: var(--primary-red-dark);
-    font-size: 1.2rem;
-}
-
-.history-time {
-    font-size: 0.8rem;
-    color: #888;
-    margin-top: 5px;
-}
-
-.history-reroll {
-    background: none;
-    border: none;
-    color: var(--primary-red);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-}
-
-.history-reroll:hover {
-    background: rgba(195, 10, 61, 0.1);
-    transform: rotate(180deg);
-}
-
-#clear-history-btn {
-    margin: 0 auto;
-    display: block;
-}
-
-/* Roll button highlight */
-.highlight {
-    animation: highlightButton 1.5s ease;
-}
-
-@keyframes highlightButton {
-    0%, 100% {
-        box-shadow: var(--shadow-md);
-    }
-    50% {
-        box-shadow: 0 0 20px 10px rgba(11, 42, 169, 0.3);
-    }
-}
-
-/* 
-======================
-RESPONSIVE ADJUSTMENTS
-======================
-*/
-@media (max-width: 768px) {
-    .dice-controls {
-        flex-direction: column;
-        align-items: stretch;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* JavaScript alternative for dice display if needed */
+  /* You can copy this and add it to your JS file if the CSS doesn't work */
+  /*
+  function createVisualDie(diceType, count) {
+    const dieEl = document.createElement('div');
+    dieEl.className = `selected-die ${diceType}`;
+    
+    // Add text label as fallback
+    const label = document.createElement('span');
+    label.textContent = diceType.toUpperCase();
+    label.style.cssText = 'position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-weight:bold;';
+    dieEl.appendChild(label);
+    
+    // Add count if needed
+    if (count > 1) {
+      const countEl = document.createElement('div');
+      countEl.className = 'die-count';
+      countEl.textContent = count;
+      dieEl.appendChild(countEl);
     }
     
-    .roll-controls {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .dice-option {
-        width: 100px;
-        height: 140px;
-    }
-    
-    .dice-image {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .selected-die {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .dice-values .die {
-        width: 35px;
-        height: 35px;
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .dice-options {
-        gap: 8px;
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-    }
-    
-    .dice-option {
-        width: 90px;
-        height: 130px;
-    }
-    
-    .dice-image {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .dice-label {
-        font-size: 1rem;
-    }
-    
-    .counter-value {
-        font-size: 1rem;
-    }
-    
-    .counter-btn {
-        width: 24px;
-        height: 24px;
-    }
-}
+    return dieEl;
+  }
+  */

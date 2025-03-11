@@ -178,22 +178,24 @@ function initializeDiceRoller() {
             return;
         }
         
-        // Clear the area
+        // Clear the area first
         selectedDiceArea.innerHTML = '';
         
-        // Add a div for each type of die
+        // Add a die element for each selected die
         Object.entries(selectedDice).forEach(([diceType, count]) => {
             if (count > 0) {
+                // Create ONE element per die type with a count indicator
                 const dieElement = document.createElement('div');
                 dieElement.className = `selected-die ${diceType}`;
                 dieElement.setAttribute('data-type', diceType);
-                dieElement.setAttribute('data-count', count);
                 
-                // Add count display inside the die
-                const countDisplay = document.createElement('div');
-                countDisplay.className = 'die-count';
-                countDisplay.textContent = count > 1 ? count : '';
-                dieElement.appendChild(countDisplay);
+                // Add count indicator only if count > 1
+                if (count > 1) {
+                    const countDisplay = document.createElement('div');
+                    countDisplay.className = 'die-count';
+                    countDisplay.textContent = count;
+                    dieElement.appendChild(countDisplay);
+                }
                 
                 // Add click handler to remove die
                 dieElement.addEventListener('click', () => removeDie(diceType));
@@ -646,6 +648,28 @@ function initializeDiceRoller() {
     }, 1000);
 }
 
+  /* You can copy this and add it to your JS file if the CSS doesn't work */
+  function createVisualDie(diceType, count) {
+    const dieEl = document.createElement('div');
+    dieEl.className = `selected-die ${diceType}`;
+    
+    // Add text label as fallback
+    const label = document.createElement('span');
+    label.textContent = diceType.toUpperCase();
+    label.style.cssText = 'position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-weight:bold;';
+    dieEl.appendChild(label);
+    
+    // Add count if needed
+    if (count > 1) {
+      const countEl = document.createElement('div');
+      countEl.className = 'die-count';
+      countEl.textContent = count;
+      dieEl.appendChild(countEl);
+    }
+    
+    return dieEl;
+  }
+
 // Enhanced function to add a die to the selected area
 function addDie(diceType) {
     // Play click sound
@@ -662,53 +686,6 @@ function addDie(diceType) {
     
     updateDiceDisplay();
     updateCounters();
-}
-
-// Improved function for dice display
-function updateDiceDisplay() {
-    // Check if there are any dice selected
-    const hasDice = Object.values(selectedDice).some(count => count > 0);
-    
-    if (!hasDice) {
-        selectedDiceArea.innerHTML = `
-            <div class="no-dice-message">
-                <p>Select dice from below to add them to your roll</p>
-                <i class="fas fa-arrow-down animated-arrow"></i>
-            </div>
-        `;
-        return;
-    }
-    
-    // Log selected dice for debugging
-    console.log("Current dice selection:", selectedDice);
-    
-    // Clear the area
-    selectedDiceArea.innerHTML = '';
-    
-    // Add a div for each type of die - one per die, not one per type
-    Object.entries(selectedDice).forEach(([diceType, count]) => {
-        if (count > 0) {
-            for (let i = 0; i < count; i++) {
-                const dieElement = document.createElement('div');
-                dieElement.className = `selected-die ${diceType}`;
-                dieElement.setAttribute('data-type', diceType);
-                
-                // Add a tooltip showing the dice type
-                dieElement.title = `${diceType.toUpperCase()} die (click to remove)`;
-                
-                // Add click handler to remove die
-                dieElement.addEventListener('click', () => removeDie(diceType));
-                
-                selectedDiceArea.appendChild(dieElement);
-            }
-            
-            // Log each die added
-            console.log(`Added ${count} ${diceType} dice to display`);
-        }
-    });
-    
-    // Log the final HTML for debugging
-    console.log("Updated dice area HTML:", selectedDiceArea.innerHTML);
 }
 
 // Improved function for rolling animation
