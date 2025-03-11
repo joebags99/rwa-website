@@ -230,7 +230,7 @@ function initializeFloatingDice() {
         const dice = document.createElement('div');
         dice.classList.add('floating-dice');
         dice.classList.add('d20');
-        
+
         // Random position, size and animation
         const size = Math.random() * 30 + 30; // 30-60px
         const posX = Math.random() * 100; // 0-100%

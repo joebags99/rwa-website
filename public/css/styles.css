@@ -1878,42 +1878,42 @@ TOOLS SECTION
 .d4 {
     top: 20%;
     left: 10%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%230b2aa9' d='M50 0L0 87L100 87z'/%3E%3C/svg%3E");
+    background-image: url("../assets/images/dice/Dice\ D4\ Blank\ PNG.png");
     animation: rotate3D 12s linear infinite;
 }
 
 .d6 {
     top: 70%;
     left: 15%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%230b2aa9' x='10' y='10' width='80' height='80' rx='5' ry='5'/%3E%3C/svg%3E");
+    background-image: url("../assets/images/dice/Dice\ D6\ Blank\ PNG.png");
     animation: rotate3D 10s linear infinite reverse;
 }
 
 .d8 {
     top: 30%;
     left: 80%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%230b2aa9' d='M50 0L0 50L50 100L100 50z'/%3E%3C/svg%3E");
+    background-image: url("../assets/images/dice/Dice\ D8\ Blank\ PNG.png");
     animation: rotate3D 15s linear infinite;
 }
 
 .d10 {
     top: 60%;
     left: 85%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%230b2aa9' d='M50 0L10 50L50 100L90 50z'/%3E%3C/svg%3E");
+    background-image: url("../assets/images/dice/Dice\ D10\ Blank\ PNG.png");
     animation: rotate3D 13s linear infinite reverse;
 }
 
 .d12 {
     top: 40%;
     left: 50%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%230b2aa9' d='M50 0L20 20L0 50L20 80L50 100L80 80L100 50L80 20z'/%3E%3C/svg%3E");
+    background-image: url("../assets/images/dice/Dice\ D12\ Blank\ PNG.png");
     animation: rotate3D 18s linear infinite;
 }
 
 .d20 {
     top: 20%;
     left: 40%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%230b2aa9' d='M50 0L100 25v50L50 100L0 75V25L50 0z'/%3E%3C/svg%3E");
+    background-image: url("../assets/images/dice/Dice\ D20\ Blank\ PNG.png");
     animation: rotate3D 20s linear infinite reverse;
 }
 

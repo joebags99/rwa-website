@@ -1,0 +1,1125 @@
+/*
+======================
+DICE ROLLER STYLES
+======================
+*/
+
+/* 
+======================
+HERO SECTION
+======================
+*/
+.dice-roller-hero {
+    height: 50vh;
+    min-height: 300px;
+}
+
+.dice-roller-hero .hero-background {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../assets/images/dice-bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* 
+======================
+DICE ROLLER INTERFACE
+======================
+*/
+.dice-roller-main {
+    background-color: var(--divine-light-white);
+    position: relative;
+    padding-bottom: var(--spacing-xl);
+}
+
+.dice-roller-interface {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+    border: 2px solid rgba(11, 42, 169, 0.1);
+    position: relative;
+}
+
+.dice-roller-interface::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-blue);
+    z-index: 1;
+}
+
+/* Selected Dice Area */
+.selected-dice-area {
+    min-height: 200px;
+    padding: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(11, 42, 169, 0.1);
+    position: relative;
+    background: rgba(11, 42, 169, 0.03);
+}
+
+.no-dice-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #888;
+    text-align: center;
+}
+
+.no-dice-message p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.animated-arrow {
+    font-size: 1.5rem;
+    color: var(--primary-blue-light);
+    animation: bounceArrow 2s infinite;
+}
+
+@keyframes bounceArrow {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+.selected-die {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: popIn 0.3s var(--transition-bounce);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    margin: 10px;
+}
+
+.selected-die:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
+}
+
+.selected-die.d4 {
+    background-image: url("../assets/images/dice/Dice\ D4\ Blank\ PNG.png");
+}
+
+.selected-die.d6 {
+    background-image: url("../assets/images/dice/Dice\ D6\ Blank\ PNG.png");
+}
+
+.selected-die.d8 {
+    background-image: url("../assets/images/dice/Dice\ D8\ Blank\ PNG.png");
+}
+
+.selected-die.d10 {
+    background-image: url("../assets/images/dice/Dice\ D10\ Blank\ PNG.png");
+}
+
+.selected-die.d12 {
+    background-image: url("../assets/images/dice/Dice\ D12\ Blank\ PNG.png");
+}
+
+.selected-die.d20 {
+    background-image: url("../assets/images/dice/Dice\ D20\ Blank\ PNG.png");
+}
+
+.selected-die.d100 {
+    background-image: url("../assets/images/dice/Dice\ D100\ Blank\ PNG.png");
+}
+
+.die-number-display {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-headers);
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary-blue-dark);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+    pointer-events: none; /* Make sure the number doesn't interfere with clicks */
+    z-index: 10; /* Ensure it appears on top */
+}
+
+.die-number-display.critical-success {
+    color: var(--primary-purple);
+    text-shadow: 0 0 10px rgba(127, 14, 189, 0.7);
+    animation: pulseCritical 2s infinite;
+    font-size: 2.2rem;
+}
+
+.die-number-display.critical-fail {
+    color: var(--primary-red);
+    text-shadow: 0 0 10px rgba(195, 10, 61, 0.7);
+    animation: shakeDie 0.5s ease;
+}
+
+.die-number-display.critical-success {
+    color: var(--primary-purple);
+    text-shadow: 0 0 10px rgba(127, 14, 189, 0.7);
+    animation: pulseCritical 2s infinite;
+    font-size: 2.2rem;
+}
+
+.die-number-display.critical-fail {
+    color: var(--primary-red);
+    text-shadow: 0 0 10px rgba(195, 10, 61, 0.7);
+    animation: shakeDie 0.5s ease;
+}
+
+.rolling-die {
+    animation: rollDiceAnim 1s ease-in-out infinite;
+    transform-style: preserve-3d;
+}
+
+@keyframes rollDiceAnim {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+    25% {
+        transform: rotateX(90deg) rotateY(45deg) rotateZ(45deg);
+    }
+    50% {
+        transform: rotateX(180deg) rotateY(90deg) rotateZ(90deg);
+    }
+    75% {
+        transform: rotateX(270deg) rotateY(135deg) rotateZ(135deg);
+    }
+    100% {
+        transform: rotateX(360deg) rotateY(180deg) rotateZ(180deg);
+    }
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+    }
+    70% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Controls Area */
+.dice-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background-color: rgba(11, 42, 169, 0.05);
+    border-bottom: 1px solid rgba(11, 42, 169, 0.1);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.modifier-control {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.modifier-control label {
+    font-family: var(--font-headers);
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+.modifier-inputs {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(11, 42, 169, 0.2);
+}
+
+.modifier-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-blue);
+    transition: all 0.2s ease;
+}
+
+.modifier-btn:hover {
+    background-color: rgba(11, 42, 169, 0.1);
+}
+
+.modifier-btn:active {
+    transform: scale(0.95);
+}
+
+#modifier {
+    width: 60px;
+    text-align: center;
+    border: none;
+    font-family: var(--font-headers);
+    font-size: 1.2rem;
+    color: var(--primary-blue);
+    padding: 5px;
+}
+
+.roll-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* Results Area */
+.dice-results {
+    padding: var(--spacing-md);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(11, 42, 169, 0.05), rgba(11, 42, 169, 0.01));
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.dice-results.has-results {
+    background: linear-gradient(to bottom, rgba(11, 42, 169, 0.08), rgba(11, 42, 169, 0.02));
+}
+
+.roll-message {
+    text-align: center;
+    color: #888;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: var(--shadow-sm);
+    animation: fadeIn 0.5s ease;
+}
+
+.roll-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
+    width: 100%;
+    animation: fadeInUp 0.5s ease;
+}
+
+.dice-result {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(11, 42, 169, 0.1);
+    min-width: 150px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dice-result:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.dice-result h4 {
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-xs);
+    font-family: var(--font-headers);
+    position: relative;
+    display: inline-block;
+}
+
+.dice-result h4::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-blue);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.dice-result:hover h4::after {
+    transform: scaleX(1);
+}
+
+.dice-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.die {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-blue-light);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.die::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.die:hover::after {
+    opacity: 1;
+}
+
+.die.critical-success {
+    background: var(--primary-purple);
+    animation: pulseCritical 2s infinite;
+    transform: scale(1.1);
+}
+
+.die.critical-fail {
+    background: var(--primary-red);
+    animation: shakeDie 0.5s ease;
+}
+
+@keyframes pulseCritical {
+    0% {
+        box-shadow: 0 0 0 0 rgba(127, 14, 189, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(127, 14, 189, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(127, 14, 189, 0);
+    }
+}
+
+@keyframes shakeDie {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-5px);
+    }
+    40%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+.dice-result p {
+    margin: 0;
+    font-weight: 600;
+    color: var(--primary-blue-dark);
+}
+
+.roll-total {
+    width: 100%;
+    text-align: center;
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+    border-top: 2px solid rgba(11, 42, 169, 0.1);
+    background: rgba(251, 251, 215, 0.3);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    position: relative;
+    animation: glowTotal 3s ease infinite;
+}
+
+@keyframes glowTotal {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(11, 42, 169, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(11, 42, 169, 0.4);
+    }
+}
+
+.roll-total h3 {
+    color: var(--primary-blue-dark);
+    font-size: 2rem;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: inline-block;
+}
+
+.roll-total h3::before,
+.roll-total h3::after {
+    content: '';
+    position: absolute;
+    height: 3px;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient-blue);
+    border-radius: 3px;
+}
+
+.roll-total h3::before {
+    width: 100%;
+    opacity: 0.3;
+}
+
+.roll-total h3::after {
+    width: 60%;
+    opacity: 0.8;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.roll-in {
+    animation: rollIn 0.5s ease-out;
+}
+
+@keyframes rollIn {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* 
+======================
+DICE SELECTION AREA
+======================
+*/
+.dice-selection-area {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+    border: 2px solid rgba(11, 42, 169, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.dice-selection-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-blue);
+    z-index: 1;
+}
+
+.selection-title {
+    text-align: center;
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-headers);
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.selection-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-blue);
+    border-radius: 2px;
+}
+
+.dice-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+.dice-option {
+    position: relative;
+    width: 120px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.dice-option::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 60px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.dice-option:hover {
+    background: linear-gradient(145deg, rgba(11, 42, 169, 0.1), rgba(11, 42, 169, 0.05));
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(11, 42, 169, 0.2);
+    z-index: 2;
+}
+
+.dice-option:hover::before {
+    left: 120%;
+    top: -50px;
+    opacity: 1;
+}
+
+.dice-option:active {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-md);
+}
+
+.dice-image {
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    position: relative;
+}
+
+.dice-option:hover .dice-image {
+    transform: rotate(360deg) scale(1.2);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+}
+
+.dice-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(11, 42, 169, 0.2) 0%, rgba(11, 42, 169, 0) 70%);
+    opacity: 0;
+    border-radius: 50%;
+    transition: all 0.5s ease;
+}
+
+.dice-option:hover .dice-image::after {
+    opacity: 1;
+    transform: scale(1.5);
+    animation: pulse 2s infinite;
+}
+
+.d4 {
+    background-image: url("../assets/images/dice/Dice\ D4\ Blank\ PNG.png");
+}
+
+.d6 {
+    background-image: url("../assets/images/dice/Dice\ D6\ Blank\ PNG.png");
+}
+
+.d8 {
+    background-image: url("../assets/images/dice/Dice\ D8\ Blank\ PNG.png");
+}
+
+.d10 {
+    background-image: url("../assets/images/dice/Dice\ D10\ Blank\ PNG.png");
+}
+
+.d12 {
+    background-image: url("../assets/images/dice/Dice\ D12\ Blank\ PNG.png");
+}
+
+.d20 {
+    background-image: url("../assets/images/dice/Dice\ D20\ Blank\ PNG.png");
+}
+
+.d100 {
+    background-image: url("../assets/images/dice/Dice\ D100\ Blank\ PNG.png");
+}
+
+.dice-label {
+    font-family: var(--font-headers);
+    font-weight: 600;
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+}
+
+.dice-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.counter-value {
+    font-family: var(--font-headers);
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--primary-blue-dark);
+}
+
+.counter-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.counter-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(11, 42, 169, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--primary-blue);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.counter-btn:hover {
+    background: rgba(11, 42, 169, 0.2);
+    transform: scale(1.1);
+}
+
+.counter-btn:active {
+    transform: scale(0.95);
+}
+
+/* Rolling Dice Animation */
+.rolling {
+    animation: rollAnimation 1s linear infinite;
+}
+
+@keyframes rollAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 
+======================
+COMMON ROLLS SECTION
+======================
+*/
+.common-rolls {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+    border: 2px solid rgba(127, 14, 189, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.common-rolls::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-purple);
+    z-index: 1;
+}
+
+.preset-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.preset-roll {
+    background: rgba(127, 14, 189, 0.1);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-headers);
+    font-weight: 600;
+    color: var(--primary-purple);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.preset-roll:hover {
+    background: rgba(127, 14, 189, 0.2);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+}
+
+.preset-roll:active {
+    transform: translateY(-1px);
+}
+
+.preset-roll i {
+    margin-right: 0.5rem;
+}
+
+/* 
+======================
+DICE HISTORY SECTION
+======================
+*/
+.dice-history {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+    border: 2px solid rgba(195, 10, 61, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.dice-history::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-red);
+    z-index: 1;
+}
+
+.history-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: var(--spacing-md);
+    border: 1px solid rgba(195, 10, 61, 0.1);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+}
+
+.empty-history-message {
+    text-align: center;
+    color: #888;
+    padding: var(--spacing-md);
+}
+
+.history-item {
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid rgba(195, 10, 61, 0.1);
+    animation: fadeIn 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-details {
+    flex: 1;
+}
+
+.history-title {
+    font-family: var(--font-headers);
+    font-weight: 600;
+    color: var(--primary-red);
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.history-dice {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.history-result {
+    font-family: var(--font-headers);
+    font-weight: bold;
+    color: var(--primary-red-dark);
+    font-size: 1.2rem;
+}
+
+.history-time {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+.history-reroll {
+    background: none;
+    border: none;
+    color: var(--primary-red);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.history-reroll:hover {
+    background: rgba(195, 10, 61, 0.1);
+    transform: rotate(180deg);
+}
+
+#clear-history-btn {
+    margin: 0 auto;
+    display: block;
+}
+
+/* 
+======================
+RESPONSIVE ADJUSTMENTS
+======================
+*/
+@media (max-width: 768px) {
+    .dice-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .roll-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .dice-option {
+        width: 100px;
+        height: 140px;
+    }
+    
+    .dice-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .selected-die {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .dice-values .die {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .dice-options {
+        gap: var(--spacing-sm);
+    }
+    
+    .dice-option {
+        width: 90px;
+        height: 130px;
+    }
+    
+    .dice-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .dice-label {
+        font-size: 1rem;
+    }
+    
+    .counter-value {
+        font-size: 1rem;
+    }
+    
+    .counter-btn {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* 
+======================
+ANIMATIONS
+======================
+*/
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Rolling Dice Animation */
+.rolling-die {
+    animation: rollDice 0.8s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(11, 42, 169, 0.5));
+}
+
+@keyframes rollDice {
+    0% {
+        transform: rotate3d(1, 1, 1, 0deg);
+    }
+    25% {
+        transform: rotate3d(1, 2, 0.5, 90deg);
+    }
+    50% {
+        transform: rotate3d(0.5, 1, 2, 180deg);
+    }
+    75% {
+        transform: rotate3d(2, 0.5, 1, 270deg);
+    }
+    100% {
+        transform: rotate3d(1, 1, 1, 360deg);
+    }
+}
+
+/* Enhanced pulse effect for the total */
+.pulse-effect {
+    animation: pulseEffect 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes pulseEffect {
+    0% {
+        box-shadow: 0 0 0 0 rgba(11, 42, 169, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 30px 10px rgba(11, 42, 169, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 15px 5px rgba(11, 42, 169, 0.3);
+    }
+}
+
+/* Dice tooltip for criticals */
+.die[data-tooltip]:not([data-tooltip=""]) {
+    position: relative;
+}
+
+.die[data-tooltip]:not([data-tooltip=""]):hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-purple-dark);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    z-index: 10;
+}
+
+.die[data-tooltip]:not([data-tooltip=""]):hover::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--primary-purple-dark) transparent transparent transparent;
+}
+
+/* Roll button highlight animation */
+.highlight {
+    animation: highlightButton 1.5s ease;
+}
+
+@keyframes highlightButton {
+    0%, 100% {
+        box-shadow: var(--shadow-md);
+    }
+    50% {
+        box-shadow: 0 0 20px 10px rgba(11, 42, 169, 0.3);
+    }
+}
