@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller - Roll With Advantage</title>
+    <meta name="description" content="Roll virtual dice for your D&D games with our interactive dice roller tool.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dice-roller.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="loading tools-page dice-roller-page">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="dice-loader">
+            <svg class="dice" viewBox="0 0 100 100">
+                <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
+                <path class="dice-number" d="M50 55 A5 5 0 1 1 50 45 A5 5 0 1 1 50 55z"/>
+            </svg>
+        </div>
+        <p class="loading-text">Rolling initiative...</p>
+    </div>
+    
+    <!-- Magical Particles Background -->
+    <div class="particles-container"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
+                    <div class="logo-glow"></div>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="dm-advice.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
+                    <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="tools.html" class="active nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                    <li><a href="contact.html" class="nav-item" data-text="Contact"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero parallax-section dice-roller-hero">
+            <div class="hero-background"></div>
+            <div class="magical-overlay"></div>
+            <div class="floating-dice-container">
+                <!-- Dice will be added by JavaScript -->
+            </div>
+            <div class="container">
+                <div class="hero-content reveal-content">
+                    <h1 class="magical-text">Dice Roller</h1>
+                    <p class="animated-text">Roll digital dice for your tabletop adventures with our interactive dice roller.</p>
+                    <div class="magic-line"></div>
+                </div>
+            </div>
+            <div class="hero-divider">
+                <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="divider-fill"></path>
+                    <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="divider-fill"></path>
+                    <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="divider-fill"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Main Dice Roller Section -->
+        <section class="dice-roller-main section-appear">
+            <div class="energy-lines"></div>
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon blue-icon"><i class="fas fa-dice-d20"></i></div>
+                    <h2 class="magical-heading blue-heading">Roll Your Fate</h2>
+                    <div class="magical-underline blue-underline"></div>
+                    <p>Click on dice to add them to your roll, then let destiny decide your fate!</p>
+                </div>
+                
+                <!-- Dice Selection Area -->
+                <div class="dice-selection-area">
+                    <h3 class="selection-title">Select Your Dice</h3>
+                    <div class="dice-options">
+                        <div class="dice-option" data-dice="d4">
+                            <div class="dice-image d4"></div>
+                            <span class="dice-label">D4</span>
+                            <div class="dice-counter">
+                                <span class="counter-value" id="d4-counter">0</span>
+                                <div class="counter-controls">
+                                    <button class="counter-btn counter-increase" data-dice="d4"><i class="fas fa-plus"></i></button>
+                                    <button class="counter-btn counter-decrease" data-dice="d4"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dice-option" data-dice="d6">
+                            <div class="dice-image d6"></div>
+                            <span class="dice-label">D6</span>
+                            <div class="dice-counter">
+                                <span class="counter-value" id="d6-counter">0</span>
+                                <div class="counter-controls">
+                                    <button class="counter-btn counter-increase" data-dice="d6"><i class="fas fa-plus"></i></button>
+                                    <button class="counter-btn counter-decrease" data-dice="d6"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dice-option" data-dice="d8">
+                            <div class="dice-image d8"></div>
+                            <span class="dice-label">D8</span>
+                            <div class="dice-counter">
+                                <span class="counter-value" id="d8-counter">0</span>
+                                <div class="counter-controls">
+                                    <button class="counter-btn counter-increase" data-dice="d8"><i class="fas fa-plus"></i></button>
+                                    <button class="counter-btn counter-decrease" data-dice="d8"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dice-option" data-dice="d10">
+                            <div class="dice-image d10"></div>
+                            <span class="dice-label">D10</span>
+                            <div class="dice-counter">
+                                <span class="counter-value" id="d10-counter">0</span>
+                                <div class="counter-controls">
+                                    <button class="counter-btn counter-increase" data-dice="d10"><i class="fas fa-plus"></i></button>
+                                    <button class="counter-btn counter-decrease" data-dice="d10"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dice-option" data-dice="d12">
+                            <div class="dice-image d12"></div>
+                            <span class="dice-label">D12</span>
+                            <div class="dice-counter">
+                                <span class="counter-value" id="d12-counter">0</span>
+                                <div class="counter-controls">
+                                    <button class="counter-btn counter-increase" data-dice="d12"><i class="fas fa-plus"></i></button>
+                                    <button class="counter-btn counter-decrease" data-dice="d12"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dice-option" data-dice="d20">
+                            <div class="dice-image d20"></div>
+                            <span class="dice-label">D20</span>
+                            <div class="dice-counter">
+                                <span class="counter-value" id="d20-counter">0</span>
+                                <div class="counter-controls">
+                                    <button class="counter-btn counter-increase" data-dice="d20"><i class="fas fa-plus"></i></button>
+                                    <button class="counter-btn counter-decrease" data-dice="d20"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dice-option" data-dice="d100">
+                            <div class="dice-image d100"></div>
+                            <span class="dice-label">D100</span>
+                            <div class="dice-counter">
+                                <span class="counter-value" id="d100-counter">0</span>
+                                <div class="counter-controls">
+                                    <button class="counter-btn counter-increase" data-dice="d100"><i class="fas fa-plus"></i></button>
+                                    <button class="counter-btn counter-decrease" data-dice="d100"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dice Roller Interface -->
+                <div class="dice-roller-interface">
+                    <!-- Selected Dice Area -->
+                    <div class="selected-dice-area" id="selected-dice-area">
+                        <div class="no-dice-message">
+                            <p>Select dice from below to add them to your roll</p>
+                            <i class="fas fa-arrow-down animated-arrow"></i>
+                        </div>
+                        <!-- Selected dice will be added here by JS -->
+                    </div>
+                    
+                    <!-- Dice Animation Area -->
+                    <div class="dice-animation-area" id="dice-animation-area">
+                        <!-- Rolling dice will appear here when rolling -->
+                    </div>
+                    
+                    <!-- Controls Area -->
+                    <div class="dice-controls">
+                        <div class="modifier-control">
+                            <label for="modifier">Modifier</label>
+                            <div class="modifier-inputs">
+                                <button class="modifier-btn decrease-btn" id="decrease-modifier"><i class="fas fa-minus"></i></button>
+                                <input type="number" id="modifier" value="0" min="-20" max="20">
+                                <button class="modifier-btn increase-btn" id="increase-modifier"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="roll-controls">
+                            <button id="roll-btn" class="btn btn-primary magical-btn blue-btn">
+                                <span class="btn-text"><i class="fas fa-dice"></i> Roll Dice</span>
+                            </button>
+                            <button id="clear-btn" class="btn btn-secondary magical-btn">
+                                <span class="btn-text"><i class="fas fa-trash-alt"></i> Clear</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Area -->
+                    <div class="dice-results" id="dice-results">
+                        <!-- Results will be added here by JS -->
+                    </div>
+                </div>
+                
+                <!-- Common Rolls Section -->
+                <div class="common-rolls">
+                    <h3 class="selection-title">Common Rolls</h3>
+                    <div class="preset-buttons">
+                        <button class="preset-roll" data-preset="attack">
+                            <i class="fas fa-sword"></i> Attack Roll (D20)
+                        </button>
+                        <button class="preset-roll" data-preset="damage-s">
+                            <i class="fas fa-fire-alt"></i> Damage (Small) (D6)
+                        </button>
+                        <button class="preset-roll" data-preset="damage-m">
+                            <i class="fas fa-fire"></i> Damage (Medium) (D8)
+                        </button>
+                        <button class="preset-roll" data-preset="damage-l">
+                            <i class="fas fa-flame"></i> Damage (Large) (D10)
+                        </button>
+                        <button class="preset-roll" data-preset="sneak">
+                            <i class="fas fa-user-ninja"></i> Sneak Attack (4D6)
+                        </button>
+                        <button class="preset-roll" data-preset="healing">
+                            <i class="fas fa-heart"></i> Healing (2D4+2)
+                        </button>
+                        <button class="preset-roll" data-preset="fireball">
+                            <i class="fas fa-fire-alt"></i> Fireball (8D6)
+                        </button>
+                        <button class="preset-roll" data-preset="check">
+                            <i class="fas fa-search"></i> Ability Check (D20)
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Dice History Section -->
+                <div class="dice-history">
+                    <h3 class="selection-title">Roll History</h3>
+                    <div class="history-list" id="roll-history">
+                        <!-- History items will be added here by JS -->
+                        <div class="empty-history-message">
+                            <p>Your roll history will appear here</p>
+                        </div>
+                    </div>
+                    <button id="clear-history-btn" class="btn btn-tertiary">
+                        <span class="btn-text"><i class="fas fa-trash"></i> Clear History</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="section-divider">
+                <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="divider-fill"></path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="newsletter section-appear">
+            <div class="glowing-particles"></div>
+            <div class="container">
+                <div class="section-header light-header">
+                    <div class="section-icon light-icon"><i class="fas fa-envelope"></i></div>
+                    <h2 class="magical-heading light-heading">Stay Updated</h2>
+                    <div class="magical-underline light-underline"></div>
+                    <p>Subscribe to our newsletter for the latest episodes, DM tips, and Roll With Advantage news.</p>
+                </div>
+                <form id="newsletter-form" class="newsletter-form">
+                    <div class="form-glow"></div>
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn-newsletter"><i class="fas fa-paper-plane"></i> <span>Subscribe</span></button>
+                </form>
+                <div class="scroll-to-top">
+                    <button id="scroll-top-btn" aria-label="Scroll to top">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z" class="footer-fill"></path>
+            </svg>
+        </div>
+        <div class="footer-content">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <p>Roll With Advantage &copy; 2025</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="link-column">
+                            <h4>Content</h4>
+                            <ul>
+                                <li><a href="crimson-court.html">The Crimson Court</a></li>
+                                <li><a href="dm-advice.html">DM Advice</a></li>
+                                <li><a href="meet-the-cast.html">Meet the Cast</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li><a href="tools.html#dice-roller">Dice Roller</a></li>
+                                <li><a href="tools.html#character-quiz">Character Quiz</a></li>
+                                <li><a href="tools.html#interactive-map">Interactive Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
+                                <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
+                                <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
+                        <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
+                        <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
+                        <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
+                <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio Elements -->
+    <audio id="dice-roll-sound" preload="auto">
+        <source src="assets/sounds/dice-roll.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="dice-click-sound" preload="auto">
+        <source src="assets/sounds/dice-click.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="success-sound" preload="auto">
+        <source src="assets/sounds/success.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- JavaScript - Order is important! -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/dice-roller.js"></script>
+</body>
+</html>
