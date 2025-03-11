@@ -1017,7 +1017,7 @@ HERO SECTION
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../assets/images/hero-bg.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../assets/images/hero-bg.png');
     background-size: cover;
     background-position: center;
     z-index: var(--z-background);
@@ -1873,48 +1873,6 @@ TOOLS SECTION
     background-repeat: no-repeat;
     opacity: 0.1;
     filter: drop-shadow(0 0 5px rgba(11, 42, 169, 0.5));
-}
-
-.d4 {
-    top: 20%;
-    left: 10%;
-    background-image: url("../assets/images/dice/Dice\ D4\ Blank\ PNG.png");
-    animation: rotate3D 12s linear infinite;
-}
-
-.d6 {
-    top: 70%;
-    left: 15%;
-    background-image: url("../assets/images/dice/Dice\ D6\ Blank\ PNG.png");
-    animation: rotate3D 10s linear infinite reverse;
-}
-
-.d8 {
-    top: 30%;
-    left: 80%;
-    background-image: url("../assets/images/dice/Dice\ D8\ Blank\ PNG.png");
-    animation: rotate3D 15s linear infinite;
-}
-
-.d10 {
-    top: 60%;
-    left: 85%;
-    background-image: url("../assets/images/dice/Dice\ D10\ Blank\ PNG.png");
-    animation: rotate3D 13s linear infinite reverse;
-}
-
-.d12 {
-    top: 40%;
-    left: 50%;
-    background-image: url("../assets/images/dice/Dice\ D12\ Blank\ PNG.png");
-    animation: rotate3D 18s linear infinite;
-}
-
-.d20 {
-    top: 20%;
-    left: 40%;
-    background-image: url("../assets/images/dice/Dice\ D20\ Blank\ PNG.png");
-    animation: rotate3D 20s linear infinite reverse;
 }
 
 @keyframes rotate3D {

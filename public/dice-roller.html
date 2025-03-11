@@ -98,48 +98,6 @@
                     <p>Click on dice to add them to your roll, then let destiny decide your fate!</p>
                 </div>
                 
-                <!-- Dice Roller Interface -->
-                <div class="dice-roller-interface">
-                    <!-- Selected Dice Area -->
-                    <div class="selected-dice-area" id="selected-dice-area">
-                        <div class="no-dice-message">
-                            <p>Select dice from below to add them to your roll</p>
-                            <i class="fas fa-arrow-down animated-arrow"></i>
-                        </div>
-                        <!-- Selected dice will be added here by JS -->
-                    </div>
-                    
-                    <!-- Dice Animation Area -->
-                    <div class="dice-animation-area" id="dice-animation-area">
-                        <!-- Rolling dice will appear here when rolling -->
-                    </div>
-                    
-                    <!-- Controls Area -->
-                    <div class="dice-controls">
-                        <div class="modifier-control">
-                            <label for="modifier">Modifier</label>
-                            <div class="modifier-inputs">
-                                <button class="modifier-btn decrease-btn" id="decrease-modifier"><i class="fas fa-minus"></i></button>
-                                <input type="number" id="modifier" value="0" min="-20" max="20">
-                                <button class="modifier-btn increase-btn" id="increase-modifier"><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                        <div class="roll-controls">
-                            <button id="roll-btn" class="btn btn-primary magical-btn blue-btn">
-                                <span class="btn-text"><i class="fas fa-dice"></i> Roll Dice</span>
-                            </button>
-                            <button id="clear-btn" class="btn btn-secondary magical-btn">
-                                <span class="btn-text"><i class="fas fa-trash-alt"></i> Clear</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Results Area -->
-                    <div class="dice-results" id="dice-results">
-                        <!-- Results will be added here by JS -->
-                    </div>
-                </div>
-                
                 <!-- Dice Selection Area -->
                 <div class="dice-selection-area">
                     <h3 class="selection-title">Select Your Dice</h3>
@@ -221,6 +179,48 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Dice Roller Interface -->
+                <div class="dice-roller-interface">
+                    <!-- Selected Dice Area -->
+                    <div class="selected-dice-area" id="selected-dice-area">
+                        <div class="no-dice-message">
+                            <p>Select dice from below to add them to your roll</p>
+                            <i class="fas fa-arrow-down animated-arrow"></i>
+                        </div>
+                        <!-- Selected dice will be added here by JS -->
+                    </div>
+                    
+                    <!-- Dice Animation Area -->
+                    <div class="dice-animation-area" id="dice-animation-area">
+                        <!-- Rolling dice will appear here when rolling -->
+                    </div>
+                    
+                    <!-- Controls Area -->
+                    <div class="dice-controls">
+                        <div class="modifier-control">
+                            <label for="modifier">Modifier</label>
+                            <div class="modifier-inputs">
+                                <button class="modifier-btn decrease-btn" id="decrease-modifier"><i class="fas fa-minus"></i></button>
+                                <input type="number" id="modifier" value="0" min="-20" max="20">
+                                <button class="modifier-btn increase-btn" id="increase-modifier"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="roll-controls">
+                            <button id="roll-btn" class="btn btn-primary magical-btn blue-btn">
+                                <span class="btn-text"><i class="fas fa-dice"></i> Roll Dice</span>
+                            </button>
+                            <button id="clear-btn" class="btn btn-secondary magical-btn">
+                                <span class="btn-text"><i class="fas fa-trash-alt"></i> Clear</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Area -->
+                    <div class="dice-results" id="dice-results">
+                        <!-- Results will be added here by JS -->
                     </div>
                 </div>
                 

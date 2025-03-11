@@ -388,7 +388,7 @@ function initializeDiceRoller() {
             html += `<div class="dice-result">
                 <h4>MODIFIER</h4>
                 <div class="dice-values">
-                    <span class="die" style="background-color: var(--primary-purple);">${modifier > 0 ? '+' + modifier : modifier}</span>
+                    <span class="die">${modifier > 0 ? '+' + modifier : modifier}</span>
                 </div>
                 <p>Modifier: ${modifier > 0 ? '+' + modifier : modifier}</p>
             </div>`;
