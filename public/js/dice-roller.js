@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeDiceRoller() {
     // Get DOM elements
     const selectedDiceArea = document.getElementById('selected-dice-area');
+    const diceAnimationArea = document.getElementById('dice-animation-area');
     const diceOptions = document.querySelectorAll('.dice-option');
     const increaseButtons = document.querySelectorAll('.counter-increase');
     const decreaseButtons = document.querySelectorAll('.counter-decrease');
@@ -188,6 +189,12 @@ function initializeDiceRoller() {
                 dieElement.setAttribute('data-type', diceType);
                 dieElement.setAttribute('data-count', count);
                 
+                // Add count display inside the die
+                const countDisplay = document.createElement('div');
+                countDisplay.className = 'die-count';
+                countDisplay.textContent = count > 1 ? count : '';
+                dieElement.appendChild(countDisplay);
+                
                 // Add click handler to remove die
                 dieElement.addEventListener('click', () => removeDie(diceType));
                 
@@ -204,6 +211,16 @@ function initializeDiceRoller() {
             const counter = document.getElementById(`${diceType}-counter`);
             if (counter) {
                 counter.textContent = count;
+            }
+        });
+        
+        // Update the dice options to show selection state
+        diceOptions.forEach(option => {
+            const diceType = option.getAttribute('data-dice');
+            if (selectedDice[diceType] > 0) {
+                option.classList.add('selected');
+            } else {
+                option.classList.remove('selected');
             }
         });
     }
@@ -233,15 +250,29 @@ function initializeDiceRoller() {
             diceRollSound.play().catch(e => console.log('Error playing sound:', e));
         }
         
+        // Clear the animation area first
+        diceAnimationArea.innerHTML = '';
+        
         // Prepare results
         let results = [];
         let total = 0;
         
-        // Roll each type of die
+        // Roll each type of die and show animation
         Object.entries(selectedDice).forEach(([diceType, count]) => {
             if (count > 0) {
                 const sides = parseInt(diceType.substring(1));
                 const rolls = rollDiceType(count, sides);
+                
+                // Create animated dice for each roll
+                rolls.forEach(rollValue => {
+                    const animatedDie = document.createElement('div');
+                    animatedDie.className = `rolling-die ${diceType}`;
+                    animatedDie.setAttribute('data-value', rollValue);
+                    animatedDie.setAttribute('data-sides', sides);
+                    
+                    diceAnimationArea.appendChild(animatedDie);
+                });
+                
                 results.push({
                     type: diceType,
                     rolls: rolls,
@@ -276,6 +307,16 @@ function initializeDiceRoller() {
         // Update history display
         renderHistory();
         
+        // Store current dice selection before clearing
+        const previousDice = { ...selectedDice };
+        
+        // Clear selected dice after rolling (but keep the results displayed)
+        Object.keys(selectedDice).forEach(key => {
+            selectedDice[key] = 0;
+        });
+        updateCounters();
+        updateDiceDisplay();
+        
         // Delay display for animation
         setTimeout(() => {
             displayRollResults(results, total, modifier);
@@ -290,7 +331,7 @@ function initializeDiceRoller() {
                 successSound.currentTime = 0;
                 successSound.play().catch(e => console.log('Error playing sound:', e));
             }
-        }, 1000);
+        }, 1500);
     }
     
     /**
@@ -319,14 +360,18 @@ function initializeDiceRoller() {
         let html = '<div class="roll-details">';
         
         results.forEach(result => {
+            const diceType = result.type;
+            const sides = parseInt(diceType.substring(1));
+            
             html += `<div class="dice-result">
                 <h4>${result.type.toUpperCase()} (${result.rolls.length})</h4>
                 <div class="dice-values">
                     ${result.rolls.map(roll => {
                         let classes = 'die';
-                        if (result.type === 'd20' && roll === 20) {
+                        // Mark critical successes (max value) and critical fails (1 on d20)
+                        if (roll === sides) {
                             classes += ' critical-success';
-                        } else if (result.type === 'd20' && roll === 1) {
+                        } else if (diceType === 'd20' && roll === 1) {
                             classes += ' critical-fail';
                         }
                         return `<span class="${classes}">${roll}</span>`;
@@ -389,6 +434,9 @@ function initializeDiceRoller() {
         // Update displays
         updateDiceDisplay();
         updateCounters();
+        
+        // Clear animation area
+        diceAnimationArea.innerHTML = '';
         
         // Reset results area
         resultsArea.classList.remove('has-results');
@@ -556,6 +604,11 @@ function initializeDiceRoller() {
         setTimeout(() => {
             rollButton.classList.remove('highlight');
         }, 1500);
+        
+        // Automatically roll after setting up the dice
+        setTimeout(() => {
+            rollDice();
+        }, 500);
     }
     
     /**
@@ -593,12 +646,194 @@ function initializeDiceRoller() {
     }, 1000);
 }
 
+// Enhanced function to add a die to the selected area
+function addDie(diceType) {
+    // Play click sound
+    if (diceClickSound) {
+        diceClickSound.currentTime = 0;
+        diceClickSound.play().catch(e => console.log('Error playing sound:', e));
+    }
+    
+    // Update count
+    selectedDice[diceType]++;
+    
+    // Log the selection for debugging
+    console.log(`Added ${diceType}, current count: ${selectedDice[diceType]}`);
+    
+    updateDiceDisplay();
+    updateCounters();
+}
+
+// Improved function for dice display
+function updateDiceDisplay() {
+    // Check if there are any dice selected
+    const hasDice = Object.values(selectedDice).some(count => count > 0);
+    
+    if (!hasDice) {
+        selectedDiceArea.innerHTML = `
+            <div class="no-dice-message">
+                <p>Select dice from below to add them to your roll</p>
+                <i class="fas fa-arrow-down animated-arrow"></i>
+            </div>
+        `;
+        return;
+    }
+    
+    // Log selected dice for debugging
+    console.log("Current dice selection:", selectedDice);
+    
+    // Clear the area
+    selectedDiceArea.innerHTML = '';
+    
+    // Add a div for each type of die - one per die, not one per type
+    Object.entries(selectedDice).forEach(([diceType, count]) => {
+        if (count > 0) {
+            for (let i = 0; i < count; i++) {
+                const dieElement = document.createElement('div');
+                dieElement.className = `selected-die ${diceType}`;
+                dieElement.setAttribute('data-type', diceType);
+                
+                // Add a tooltip showing the dice type
+                dieElement.title = `${diceType.toUpperCase()} die (click to remove)`;
+                
+                // Add click handler to remove die
+                dieElement.addEventListener('click', () => removeDie(diceType));
+                
+                selectedDiceArea.appendChild(dieElement);
+            }
+            
+            // Log each die added
+            console.log(`Added ${count} ${diceType} dice to display`);
+        }
+    });
+    
+    // Log the final HTML for debugging
+    console.log("Updated dice area HTML:", selectedDiceArea.innerHTML);
+}
+
+// Improved function for rolling animation
+function rollDice() {
+    // Check if there are any dice selected
+    const hasDice = Object.values(selectedDice).some(count => count > 0);
+    
+    if (!hasDice) {
+        resultsArea.innerHTML = `
+            <div class="roll-message">
+                <p>Please select at least one die to roll</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Add rolling animation to button
+    rollButton.classList.add('rolling');
+    
+    // Play rolling sound
+    if (diceRollSound) {
+        diceRollSound.currentTime = 0;
+        diceRollSound.play().catch(e => console.log('Error playing sound:', e));
+    }
+    
+    // Clear the animation area first
+    diceAnimationArea.innerHTML = '';
+    
+    // Log the dice being rolled
+    console.log("Rolling dice:", selectedDice);
+    
+    // Prepare results
+    let results = [];
+    let total = 0;
+    
+    // Roll each type of die and show animation
+    Object.entries(selectedDice).forEach(([diceType, count]) => {
+        if (count > 0) {
+            const sides = parseInt(diceType.substring(1));
+            const rolls = rollDiceType(count, sides);
+            
+            console.log(`Rolling ${count} ${diceType} dice: ${rolls.join(', ')}`);
+            
+            // Create animated dice for each roll - with a small delay between them
+            rolls.forEach((rollValue, index) => {
+                setTimeout(() => {
+                    const animatedDie = document.createElement('div');
+                    animatedDie.className = `rolling-die ${diceType}`;
+                    animatedDie.setAttribute('data-value', rollValue);
+                    animatedDie.setAttribute('data-sides', sides);
+                    
+                    diceAnimationArea.appendChild(animatedDie);
+                    
+                    // Log each die added to animation area
+                    console.log(`Added ${diceType} with value ${rollValue} to animation area`);
+                }, index * 100); // Stagger the appearance slightly
+            });
+            
+            results.push({
+                type: diceType,
+                rolls: rolls,
+                sum: rolls.reduce((a, b) => a + b, 0)
+            });
+            total += rolls.reduce((a, b) => a + b, 0);
+        }
+    });
+    
+    // Add modifier
+    const modifier = parseInt(modifierInput.value) || 0;
+    total += modifier;
+    
+    // Create a roll record for history
+    const rollRecord = {
+        timestamp: new Date(),
+        dice: { ...selectedDice },
+        results: results,
+        modifier: modifier,
+        total: total
+    };
+    
+    // Add to history
+    rollHistory.unshift(rollRecord);
+    if (rollHistory.length > 20) {
+        rollHistory.pop(); // Keep only the last 20 rolls
+    }
+    
+    // Save to localStorage
+    saveHistory();
+    
+    // Update history display
+    renderHistory();
+    
+    // Store current dice selection before clearing
+    const previousDice = { ...selectedDice };
+    
+    // Clear selected dice after rolling (but keep the results displayed)
+    Object.keys(selectedDice).forEach(key => {
+        selectedDice[key] = 0;
+    });
+    updateCounters();
+    updateDiceDisplay();
+    
+    // Delay display for animation
+    setTimeout(() => {
+        displayRollResults(results, total, modifier);
+        rollButton.classList.remove('rolling');
+        
+        // Play success sound for high rolls (natural 20)
+        const hasNatural20 = results.some(result => 
+            result.type === 'd20' && result.rolls.includes(20)
+        );
+        
+        if (hasNatural20 && successSound) {
+            successSound.currentTime = 0;
+            successSound.play().catch(e => console.log('Error playing sound:', e));
+        }
+    }, 1500);
+}
+
 /**
  * Adds a 3D effect to dice on hover
  * This is automatically called by the main.js file
  */
 function enhanceDiceHoverEffects() {
-    const diceImages = document.querySelectorAll('.dice-image, .selected-die');
+    const diceImages = document.querySelectorAll('.dice-image, .selected-die, .rolling-die');
     
     diceImages.forEach(die => {
         die.addEventListener('mousemove', function(e) {
