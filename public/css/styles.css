@@ -521,6 +521,60 @@ MAGICAL TEXT EFFECTS
 
 /* 
 ======================
+SECTION DIVIDER STYLES
+======================
+*/
+
+/* Base divider fill style */
+.divider-fill {
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+}
+
+/* Color variations for dividers */
+.blue-divider {
+    fill: url(#blueGradient);
+    filter: drop-shadow(0 0 5px rgba(11, 42, 169, 0.3));
+}
+
+.purple-divider {
+    fill: url(#purpleGradient);
+    filter: drop-shadow(0 0 5px rgba(127, 14, 189, 0.3));
+}
+
+.red-divider {
+    fill: url(#redGradient);
+    filter: drop-shadow(0 0 5px rgba(195, 10, 61, 0.3));
+}
+
+.rainbow-divider {
+    fill: url(#rainbowGradient);
+    filter: drop-shadow(0 0 5px rgba(127, 14, 189, 0.3));
+}
+
+.light-divider {
+    fill: url(#lightGradient);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+/* Footer divider with dark background */
+.footer-fill {
+    fill: var(--background-dark);
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .section-divider svg, .hero-divider svg {
+        height: 40px;
+    }
+    
+    .footer-top svg {
+        height: 80px;
+    }
+}
+
+/* 
+======================
 SECTION STYLES
 ======================
 */
@@ -664,10 +718,6 @@ section {
     display: block;
     width: calc(100% + 1.3px);
     height: 60px;
-}
-
-.divider-fill {
-    fill: var(--divine-light-white);
 }
 
 .footer-fill {
