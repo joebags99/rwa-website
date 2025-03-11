@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Crimson Court - Roll With Advantage</title>
+    <meta name="description" content="A Game of Thrones-inspired D&D campaign where the five heirs to the throne must unite to save their kingdom.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="loading crimson-court-page">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="crown-loader">
+            <svg class="crown" viewBox="0 0 100 60">
+                <path class="crown-outline" d="M5,45 L20,15 L40,30 L50,5 L60,30 L80,15 L95,45 L5,45 Z"/>
+                <path class="crown-jewel" d="M50,5 L50,28 L40,30 L50,32 L50,5 Z"/>
+            </svg>
+        </div>
+        <p class="loading-text">Summoning the court...</p>
+        <div class="loading-progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Transition Overlay -->
+    <div class="transition-overlay">
+        <div class="burn-effect"></div>
+    </div>
+    
+    <!-- Debug Button (Can be removed in production) -->
+    <button id="debug-toggle" style="position: fixed; bottom: 10px; left: 10px; z-index: 10000; background: #333; color: white; border: none; padding: 5px 10px; display: none;">
+        Toggle Court View
+    </button>
+    
+    <!-- Court Portal (Appears after transition) -->
+    <div class="court-portal">
+        <!-- Royal Header (Crimson Court Style) -->
+        <header class="royal-header">
+            <div class="container">
+                <div class="court-logo">
+                    <a href="#" class="return-home">
+                        <img src="assets/images/cc-logo.png" alt="The Crimson Court" class="cc-logo-image">
+                    </a>
+                </div>
+                <nav class="court-nav">
+                    <ul>
+                        <li><a href="index.html" class="court-nav-item"><i class="fas fa-home"></i> <span>Return to Main Site</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Heraldic Banner -->
+        <div class="heraldic-banner">
+            <div class="banner-emblem">
+                <svg viewBox="0 0 100 120" class="royal-crest">
+                    <path class="crest-outline" d="M50,10 L90,30 L90,80 L50,110 L10,80 L10,30 Z" />
+                    <path class="crest-crown" d="M30,30 L40,20 L50,25 L60,20 L70,30 L30,30 Z" />
+                    <path class="crest-sword" d="M50,40 L50,90 M40,50 L60,50" />
+                </svg>
+            </div>
+            <h1 class="royal-title">The Crimson Court</h1>
+            <p class="royal-subtitle">A Kingdom in Peril, Five Heirs, One Throne</p>
+        </div>
+
+        <!-- Navigation Portals -->
+        <div class="portal-navigation">
+            <div class="portal-container">
+                <!-- The Heirs Portal -->
+                <div class="royal-portal heirs-portal">
+                    <div class="portal-inner">
+                        <div class="portal-icon">
+                            <i class="fas fa-chess-king"></i>
+                        </div>
+                        <h2 class="portal-title">The Heirs</h2>
+                        <p class="portal-description">Meet the five claimants to the Crimson Throne and their loyal retinues</p>
+                        <div class="portal-ornament top-left"></div>
+                        <div class="portal-ornament top-right"></div>
+                        <div class="portal-ornament bottom-left"></div>
+                        <div class="portal-ornament bottom-right"></div>
+                    </div>
+                </div>
+                
+                <!-- The Timeline Portal -->
+                <div class="royal-portal timeline-portal">
+                    <div class="portal-inner">
+                        <div class="portal-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <h2 class="portal-title">The Timeline</h2>
+                        <p class="portal-description">Explore the historical events that shaped the kingdom of Ederia</p>
+                        <div class="portal-ornament top-left"></div>
+                        <div class="portal-ornament top-right"></div>
+                        <div class="portal-ornament bottom-left"></div>
+                        <div class="portal-ornament bottom-right"></div>
+                    </div>
+                </div>
+                
+                <!-- The Story Portal -->
+                <div class="royal-portal story-portal">
+                    <div class="portal-inner">
+                        <div class="portal-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h2 class="portal-title">The Story So Far</h2>
+                        <p class="portal-description">Catch up on the epic tale of intrigue, betrayal, and heroism</p>
+                        <div class="portal-ornament top-left"></div>
+                        <div class="portal-ornament top-right"></div>
+                        <div class="portal-ornament bottom-left"></div>
+                        <div class="portal-ornament bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Court Footer -->
+        <footer class="royal-footer">
+            <div class="container">
+                <div class="royal-decree">
+                    <p>"May the rightful heir claim the throne, for the kingdom's fate hangs in the balance."</p>
+                    <div class="royal-seal"></div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Decorative Elements -->
+        <div class="decorative-elements">
+            <div class="floating-crown crown-1"></div>
+            <div class="floating-crown crown-2"></div>
+            <div class="floating-scroll scroll-1"></div>
+            <div class="floating-scroll scroll-2"></div>
+            <div class="floating-sword sword-1"></div>
+            <div class="floating-sword sword-2"></div>
+            <div class="candle candle-1"></div>
+            <div class="candle candle-2"></div>
+            <div class="candle candle-3"></div>
+            <div class="candle candle-4"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crimson-court.js"></script>
+</body>
+</html>
