@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Heirs - The Crimson Court</title>
+    <meta name="description" content="Meet the five heirs to the Crimson Throne, each with their own strengths, ambitions, and secrets.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    <link rel="stylesheet" href="css/heirs.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="heirs-page">
+    <!-- Magical Particles Background -->
+    <div class="heir-particles-container"></div>
+    
+    <!-- Simple Navigation Buttons -->
+    <div class="heirs-navigation">
+        <a href="crimson-court.html" class="nav-button court-button">
+            <i class="fas fa-crown"></i> Return to The Crimson Court
+        </a>
+        <a href="index.html" class="nav-button home-button">
+            <i class="fas fa-home"></i> Return to Roll With Advantage
+        </a>
+    </div>
+
+    <main class="heirs-content">
+        <!-- Page Title -->
+        <div class="heirs-title">
+            <h1 class="royal-title">The Heirs of Ederia</h1>
+            <div class="royal-subtitle">Five Claimants, One Throne</div>
+        </div>
+        
+        <!-- Interactive Heir Selection Circle -->
+        <div class="heir-selection-container">
+            <div class="selection-prompt">
+                <span><i class="fas fa-info-circle"></i> Hover to reveal, click to learn more</span>
+            </div>
+            
+            <div class="heir-circle">
+                <!-- Circle Border with Crown Decorations -->
+                <div class="circle-border"></div>
+                <div class="crown-decoration top"></div>
+                <div class="crown-decoration right"></div>
+                <div class="crown-decoration bottom"></div>
+                <div class="crown-decoration left"></div>
+                
+                <!-- Heir Sections -->
+                <div class="heir-section" data-heir="edwinn">
+                    <img src="assets/images/heirs/edwinn-silhouette.png" class="heir-silhouette" />
+                    <div class="heir-name">Edwinn</div>
+                    <div class="heir-title">The Prince of the Pauper</div>
+                    <img src="assets/images/heirs/edwinn-portrait.png" class="heir-portrait" />
+                    
+                </div>
+                
+                <div class="heir-section" data-heir="via">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/via-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/via-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/via-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/via-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Via</div>
+                    <div class="heir-title">The Rose of Thorns</div>
+                </div>
+                
+                <div class="heir-section" data-heir="marik">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/marik-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/marik-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/marik-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/marik-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Marik</div>
+                    <div class="heir-title">The Wild Prince</div>
+                </div>
+                
+                <div class="heir-section" data-heir="xanthe">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/xanthe-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/xanthe-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/xanthe-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/xanthe-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Xanthe</div>
+                    <div class="heir-title">The Stoic Strategist</div>
+                </div>
+                
+                <div class="heir-section" data-heir="cailynn">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/cailynn-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/cailynn-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/cailynn-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/cailynn-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Cailynn</div>
+                    <div class="heir-title">The Midnight Scholar</div>
+                </div>
+                
+                <!-- Center Crest -->
+                <div class="center-crest">
+                    <img src="assets/images/cc-icon-nb.png" alt="Royal Crest" width="160" height="160">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed Heir Views (Initially Hidden) -->
+        <div class="detailed-view-container">
+            <!-- Back Button -->
+            <button class="back-to-circle" aria-label="Return to heir selection">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            
+            <!-- Edwinn Falkrest Details -->
+            <div class="heir-detailed-view" id="edwinn-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Edwinn Falkrest</h2>
+                    <h3 class="heir-epithet">The Prince of the Pauper</h3>
+                    
+                    <div class="heir-description">
+                        <p class="intro-paragraph">His armor gleams in the morning sun as he kneels to offer a silent prayer, the faint smell of incense clinging to polished steel. Edwinn's life is a testament to service: a devoted cleric forever torn between his duties at home and his calling abroad. Born the first son of King Talon, yet of lowborn lineage, he wears his faith like a shield—protecting both the meek who adore him and the kingdom that questions him.</p>
+                        
+                        <h4 class="section-title">A Beacon of Hope</h4>
+                        <p>Edwinn's healing touch and gentle smile have earned him the unshakable loyalty of the common folk. Wherever he travels, rumors spread of a humble prince who prays before battle, who feeds the hungry, and who bandages the wounds of friend and stranger alike. Father Aldren Stillwater, his spiritual mentor, hails him as a future luminary of the Church. Even in distant lands, figures like Hrogar Grimhowl admire Edwinn's selflessness, forging bonds that stretch across borders.</p>
+                        
+                        <h4 class="section-title">Shadows of Doubt</h4>
+                        <p>But not everyone celebrates the prodigal son. The nobility whisper that Edwinn dodges his "true" responsibilities—healing peasants instead of securing political alliances at court. His prolonged absences fuel suspicions that he shirks royal duty in favor of personal glory. Some even dismiss him as a dreamer who values sermons over statecraft, quietly hoping his soft heart will fail him when the realm needs a steel spine.</p>
+                        
+                        <h4 class="section-title">Family Ties and Tensions</h4>
+                        <p>Ask his siblings what they think, and the answers range from warm embraces to rueful jabs. Edwinn's compassionate soul touches Via, who looks forward to his returned gifts and travels, while Xanthe's fierce discipline clashes with his gentle ways. Cailynn still carries fond memories of birthdays only he attended, and Marik welcomes each homecoming with a new round of truffle-hunting adventures. Yet all of them feel the gap left by his recurring departures—a closeness tinged by the ache of his absence.</p>
+                        
+                        <p class="conclusion-paragraph">Standing at the crossroads of humble faith and royal expectation, Edwinn Falkrest embodies a devotion that neither crown nor church can wholly command. Loved by many, doubted by some, and bound by duty to wander—his story stirs both hearts and suspicions across Ederia's Crimson Court.</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/edwinn-full.png" alt="Edwinn Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Via Falkrest Details -->
+            <div class="heir-detailed-view" id="via-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Via Falkrest</h2>
+                    <h3 class="heir-epithet">The Rose of Thorns</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Via -->
+                        <p class="intro-paragraph">[Via's introduction paragraph will go here]</p>
+                        
+                        <h4 class="section-title">Court Politics</h4>
+                        <p>[Content about Via's political influence will go here]</p>
+                        
+                        <h4 class="section-title">Noble Connections</h4>
+                        <p>[Content about Via's relationships with nobles will go here]</p>
+                        
+                        <h4 class="section-title">Family Dynamics</h4>
+                        <p>[Content about Via's relationship with her siblings will go here]</p>
+                        
+                        <p class="conclusion-paragraph">[Via's conclusion paragraph will go here]</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/via-full.png" alt="Via Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Marik Falkrest Details -->
+            <div class="heir-detailed-view" id="marik-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Marik Falkrest</h2>
+                    <h3 class="heir-epithet">The Wild Prince</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Marik -->
+                        <p class="intro-paragraph">[Marik's introduction paragraph will go here]</p>
+                        
+                        <h4 class="section-title">Nature's Ally</h4>
+                        <p>[Content about Marik's connection to nature will go here]</p>
+                        
+                        <h4 class="section-title">Wild Talents</h4>
+                        <p>[Content about Marik's druidic abilities will go here]</p>
+                        
+                        <h4 class="section-title">Royal Responsibilities</h4>
+                        <p>[Content about Marik's view on royal duties will go here]</p>
+                        
+                        <p class="conclusion-paragraph">[Marik's conclusion paragraph will go here]</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/marik-full.png" alt="Marik Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Xanthe Falkrest Details -->
+            <div class="heir-detailed-view" id="xanthe-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Xanthe Falkrest</h2>
+                    <h3 class="heir-epithet">The Stoic Strategist</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Xanthe -->
+                        <p class="intro-paragraph">[Xanthe's introduction paragraph will go here]</p>
+                        
+                        <h4 class="section-title">Military Prowess</h4>
+                        <p>[Content about Xanthe's combat abilities will go here]</p>
+                        
+                        <h4 class="section-title">Leadership Style</h4>
+                        <p>[Content about Xanthe's approach to leadership will go here]</p>
+                        
+                        <h4 class="section-title">Sibling Rivalries</h4>
+                        <p>[Content about Xanthe's relationship with siblings will go here]</p>
+                        
+                        <p class="conclusion-paragraph">[Xanthe's conclusion paragraph will go here]</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/xanthe-full.png" alt="Xanthe Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Cailynn Falkrest Details -->
+            <div class="heir-detailed-view" id="cailynn-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Cailynn Falkrest</h2>
+                    <h3 class="heir-epithet">The Midnight Scholar</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Cailynn -->
+                        <p class="intro-paragraph">[Cailynn's introduction paragraph will go here]</p>
+                        
+                        <h4 class="section-title">Arcane Knowledge</h4>
+                        <p>[Content about Cailynn's magical studies will go here]</p>
+                        
+                        <h4 class="section-title">Royal Libraries</h4>
+                        <p>[Content about Cailynn's scholarly pursuits will go here]</p>
+                        
+                        <h4 class="section-title">Court Intrigue</h4>
+                        <p>[Content about Cailynn's involvement in politics will go here]</p>
+                        
+                        <p class="conclusion-paragraph">[Cailynn's conclusion paragraph will go here]</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/cailynn-full.png" alt="Cailynn Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Royal Footer -->
+    <footer class="royal-footer">
+        <div class="container">
+            <div class="royal-decree">
+                <p>The fate of Ederia rests in the hands of these five heirs. May the rightful ruler claim the throne.</p>
+                <div class="royal-seal"></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Decorative Elements -->
+    <div class="decorative-elements">
+        <div class="floating-crown crown-1"></div>
+        <div class="floating-crown crown-2"></div>
+        <div class="floating-scroll scroll-1"></div>
+        <div class="floating-scroll scroll-2"></div>
+        <div class="floating-sword sword-1"></div>
+        <div class="floating-sword sword-2"></div>
+        <div class="candle candle-1"></div>
+        <div class="candle candle-2"></div>
+        <div class="candle candle-3"></div>
+        <div class="candle candle-4"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crimson-court.js"></script>
+    <script src="js/heirs.js"></script>
+</body>
+</html>
