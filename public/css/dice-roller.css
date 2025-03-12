@@ -11,6 +11,7 @@ DICE ROLLER HERO SECTION
 */
 .dice-roller-hero {
     background-position: bottom center;
+    height: 300px;
 }
 
 .dice-roller-hero .hero-background {

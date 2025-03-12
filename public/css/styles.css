@@ -1337,6 +1337,10 @@ SLIDING OVERLAY EFFECT - BOTTOM UP
 VIDEO PREVIEW CONTAINER
 ======================
 */
+.video-card {
+    padding: 10px;
+}
+
 .video-preview-container {
     position: fixed;
     top: 0;
