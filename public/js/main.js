@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.preloader').classList.add('fade-out');
         setTimeout(() => {
             document.querySelector('.preloader').style.display = 'none';
-        }, 500);
+        }, 3000);
         
         // Show hero content after a small delay
         setTimeout(() => {
             document.querySelector('.reveal-content')?.classList.add('show');
             document.querySelector('.magic-line')?.classList.add('animated');
-        }, 300);
+        }, 500);
     });
     
     // Initialize all components

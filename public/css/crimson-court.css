@@ -24,7 +24,7 @@ Royal Color Scheme Variables
     /* Court Gradients */
     --gradient-royal: linear-gradient(135deg, var(--crimson-dark), var(--crimson-blood));
     --gradient-gold: linear-gradient(135deg, var(--royal-gold), var(--royal-gold-light));
-    --gradient-dark: linear-gradient(135deg, var(--royal-black), var(--royal-velvet));
+    --gradient-dark: linear-gradient(135deg, var(--royal-black), var(--crimson-dark));
     
     /* Animation timings */
     --reveal-delay: 1.5s;
@@ -60,12 +60,27 @@ PRELOADER - ROYAL STYLE
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-.crown-loader {
-    width: 100px;
-    height: 60px;
-    position: relative;
-    perspective: 1000px;
-    animation: floatCrown 2s ease-in-out infinite alternate;
+.crown-loader img.crown {
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    animation: floatCrown 2s ease-in-out infinite alternate,
+               rotateCrown 3s ease-in-out infinite alternate;
+}
+
+.crown-loader img.crown.animate-loading {
+    animation: floatCrown 2s ease-in-out infinite alternate,
+               rotateCrown 3s ease-in-out infinite alternate,
+               pulsate 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulsate {
+    0% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
+    }
 }
 
 .crown {
@@ -113,21 +128,21 @@ PRELOADER - ROYAL STYLE
     }
 }
 
-@keyframes rotateCrown {
-    0% {
-        transform: rotateY(0deg);
-    }
-    100% {
-        transform: rotateY(20deg);
-    }
-}
-
 @keyframes floatCrown {
     0% {
         transform: translateY(0px);
     }
     100% {
         transform: translateY(-10px);
+    }
+}
+
+@keyframes rotateCrown {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(20deg);
     }
 }
 
@@ -185,7 +200,7 @@ PRELOADER - ROYAL STYLE
 
 /* 
 ======================
-EPIC TRANSITION EFFECT
+EPIC TRANSITION EFFECT - SPRITE WITH MANUAL FADING
 ======================
 */
 .transition-overlay {
@@ -194,7 +209,7 @@ EPIC TRANSITION EFFECT
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9999;
+    z-index: 9500;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.5s ease;
@@ -202,7 +217,6 @@ EPIC TRANSITION EFFECT
 
 .transition-overlay.active {
     opacity: 1;
-    animation: fadeOverlay var(--reveal-duration) forwards;
 }
 
 .burn-effect {
@@ -211,57 +225,45 @@ EPIC TRANSITION EFFECT
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle at center, transparent 0%, var(--royal-black) 70%);
-    transform: scale(1.5);
+    background-image: url('../assets/images/burn-sprite.png');
+    background-size: 2300% 100%; /* For 23 frames */
+    background-position: 100% 0%; /* Start at the last frame */
     opacity: 0;
-}
-
-.burn-effect::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../assets/images/burn-texture.png') center/cover;
-    mix-blend-mode: overlay;
-    opacity: 0.7;
+    z-index: 1; /* Lower z-index to ensure content shows through */
+    pointer-events: none;
+    /* No transition here - we'll control opacity with JS */
 }
 
 .burn-effect.active {
-    animation: burnReveal var(--reveal-duration) ease-out forwards;
+    opacity: 1; /* Starting opacity - will be changed by JS */
 }
 
-@keyframes fadeOverlay {
-    0% {
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90%, 100% {
-        opacity: 1;
-    }
+/* Static court portal - visible but not yet interactive */
+.court-portal-static .court-portal {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 0; /* Below the burn effect */
+    pointer-events: none; /* Not interactive until fully revealed */
 }
 
-@keyframes burnReveal {
-    0% {
-        opacity: 0;
-        transform: scale(0);
-    }
-    20% {
-        opacity: 1;
-    }
-    70% {
-        transform: scale(1.5);
-    }
-    95% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        transform: scale(2);
-    }
+/* Active court portal */
+.court-portal-active .court-portal {
+    z-index: 2; /* Above the burn effect */
+    pointer-events: auto; /* Now interactive */
+}
+
+/* Make sure the portals display immediately with no animations */
+.royal-portal {
+    transition: none !important;
+    animation: none !important;
+}
+
+.court-portal-static .royal-portal,
+.court-portal-active .royal-portal {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    display: block !important;
 }
 
 /* 
@@ -444,7 +446,7 @@ HERALDIC BANNER
     background-image: url("../assets/images/banner-texture.png");
     background-size: cover;
     background-position: center;
-    opacity: 0.2;
+    opacity: 0.5;
     z-index: -1;
 }
 
@@ -575,7 +577,7 @@ NAVIGATION PORTALS
     padding: 3rem 2rem;
     text-align: center;
     position: relative;
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    transition: none !important;
     cursor: pointer;
     overflow: hidden;
     transform: translateY(50px);

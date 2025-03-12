@@ -1,8 +1,21 @@
 /**
  * The Crimson Court - Interactive Portal Script
  * Handles the epic transition and interactive elements for the Crimson Court page
+ * 
+ * This script creates an immersive portal entrance experience with:
+ * - Loading sequence with animated crown
+ * - Burn effect transition using sprite animation
+ * - Ember particles and sound effects
+ * - Interactive portals for exploring different aspects of the Crimson Court
  */
 
+//==============================================================================
+// INITIALIZATION AND EVENT LISTENERS
+//==============================================================================
+
+/**
+ * Initialize when DOM is loaded
+ */
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the Crimson Court experience
     initCrimsonCourt();
@@ -12,25 +25,41 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
+ * Override default preloader behavior for Crimson Court page
+ */
+window.addEventListener('load', function(e) {
+    // Only for Crimson Court page
+    if (document.body.classList.contains('crimson-court-page')) {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            // Force preloader to stay visible
+            preloader.classList.remove('fade-out');
+            document.body.classList.add('loading');
+            preloader.style.opacity = '1';
+            preloader.style.visibility = 'visible';
+            preloader.style.display = 'flex';
+        }
+    }
+}, true); // Use capture phase to run before other handlers
+
+/**
  * Initialize the Crimson Court portal
  */
 function initCrimsonCourt() {
-    // Show loading screen for a controlled amount of time
+    // Get preloader element
     const preloader = document.querySelector('.preloader');
-    const loadingDuration = 3000; // 3 seconds of loading before burn effect
+    const loadingDuration = 2000; // 2 seconds of loading before burn effect
     
     // Add audio cue for loading
     playLoadingSound();
     
-    // Add loading animation classes immediately
+    // Add loading animation classes
     if (preloader) {
         preloader.classList.add('show-loading');
         
-        // Animate the crown while loading
+        // Animate the crown
         const crown = preloader.querySelector('.crown');
-        if (crown) {
-            crown.classList.add('animate-loading');
-        }
+        if (crown) crown.classList.add('animate-loading');
         
         // Animate progress bar
         const progressBar = preloader.querySelector('.progress-bar');
@@ -39,145 +68,62 @@ function initCrimsonCourt() {
         }
     }
     
-    // After loading duration, start the transition but KEEP the preloader visible
+    // After loading duration, start the transition
     setTimeout(function() {
-        // Start the epic transition but don't hide preloader yet
         startCrimsonTransition(preloader);
     }, loadingDuration);
     
-    // Setup portal navigation
+    // Initialize interactive elements
     setupPortalNavigation();
-    
-    // Setup return button
     setupReturnButton();
-    
-    // Add ambient sound effects if needed
     setupAmbientEffects();
 }
 
-/**
- * Play a subtle loading/summoning sound
- */
-function playLoadingSound() {
-    // Create audio element if not exists
-    if (!document.getElementById('loading-sound')) {
-        const audio = document.createElement('audio');
-        audio.id = 'loading-sound';
-        audio.src = 'assets/sounds/summoning.mp3'; // Make sure this file exists
-        audio.volume = 0.3;
-        document.body.appendChild(audio);
-    }
-    
-    // Play the sound
-    const sound = document.getElementById('loading-sound');
-    if (sound) {
-        sound.currentTime = 0;
-        sound.play().catch(e => console.log('Error playing loading sound:', e));
-    }
-}
+//==============================================================================
+// CORE ANIMATION FUNCTIONS
+//==============================================================================
 
 /**
- * Handle the epic "burn away" transition effect
- * @param {HTMLElement} preloader - The preloader element to hide after transition
+ * Animate the burn effect using sprite sheet animation with gradual fadeout
  */
-function startCrimsonTransition(preloader) {
-    console.log('Starting Crimson Court transition...');
-    
-    // Get transition elements
-    const overlay = document.querySelector('.transition-overlay');
+function animateBurnEffect() {
     const burnEffect = document.querySelector('.burn-effect');
-    const body = document.body;
-    const mainHeader = document.querySelector('.main-header');
+    if (!burnEffect) return;
     
-    // Make sure we can see the portals but they start invisible
-    ensurePortalsVisible();
+    const totalFrames = 23;
+    const animationDuration = 2500; // 2.5 seconds total animation
+    let currentFrame = totalFrames - 1; // START FROM THE LAST FRAME
     
-    // Make loading text change to indicate transition is happening
-    if (preloader) {
-        const loadingText = preloader.querySelector('.loading-text');
-        if (loadingText) {
-            loadingText.textContent = "The court awaits...";
-            loadingText.style.animation = "pulsateText 1s ease-in-out infinite";
-        }
-    }
+    // Make the effect fully visible to start
+    burnEffect.classList.add('active');
+    burnEffect.style.opacity = '1';
     
-    // Start the transition sequence
-    setTimeout(() => {
-        // 1. Show the overlay
-        overlay.classList.add('active');
+    // Initially position at the last frame (completely black)
+    burnEffect.style.backgroundPosition = '100% 0%';
+    
+    // Calculate time between frames
+    const frameInterval = animationDuration / totalFrames;
+    
+    // Create animation interval - going BACKWARDS through frames
+    const burnAnimation = setInterval(() => {
+        // Calculate position percentage based on current frame
+        const positionX = (currentFrame / (totalFrames - 1)) * 100;
+        burnEffect.style.backgroundPosition = `${positionX}% 0%`;
         
-        // 2. Activate the burn effect
-        setTimeout(() => {
-            burnEffect.classList.add('active');
-            
-            // 3. Create burning embers effect
-            createEmbers();
-            
-            // 4. Play dramatic sound effect
-            playTransitionSound();
-            
-            // 5. Forcefully hide any main header if it exists
-            if (mainHeader) {
-                mainHeader.style.opacity = '0';
-                mainHeader.style.visibility = 'hidden';
-                mainHeader.style.zIndex = '-1';
-            }
-            
-            // 6. Activate the Crimson Court portal
-            setTimeout(() => {
-                body.classList.add('court-portal-active');
-                document.documentElement.scrollTop = 0; // Scroll to top
-                
-                // Change loading text again
-                if (preloader) {
-                    const loadingText = preloader.querySelector('.loading-text');
-                    if (loadingText) {
-                        loadingText.textContent = "Entering the court...";
-                    }
-                }
-                
-                // 7. Prepare the portal animations but don't hide preloader yet
-                setTimeout(() => {
-                    // 8. NOW hide the preloader AFTER portals have started animating
-                    if (preloader) {
-                        console.log("Hiding preloader now that portals are animating");
-                        preloader.classList.add('fade-out');
-                        setTimeout(() => {
-                            preloader.style.display = 'none';
-                        }, 800); // Longer fade for smoother transition
-                    }
-                    
-                    // 9. Fade out transition overlay
-                    setTimeout(() => {
-                        overlay.classList.remove('active');
-                        
-                        // 10. Double check that portals are visible
-                        setTimeout(() => {
-                            ensurePortalsVisible();
-                        }, 500);
-                    }, 1500);
-                }, 1000); // Delay to ensure portals are animating before hiding preloader
-            }, 1000);
-        }, 1000); // Longer burn effect
-    }, 100);
-}
-
-/**
- * Ensure the portal elements are visible
- */
-function ensurePortalsVisible() {
-    const portals = document.querySelectorAll('.royal-portal');
-    const portalContainer = document.querySelector('.portal-container');
-    
-    if (portalContainer) {
-        portalContainer.style.display = 'grid';
-    }
-    
-    portals.forEach(portal => {
-        portal.style.display = 'block';
-    });
-    
-    console.log('Portals visibility enforced. Found ' + portals.length + ' portals.');
+        // Calculate the opacity based on frame progress
+        // Start at 1, end at 0 over the course of the animation
+        const opacity = currentFrame / (totalFrames - 1);
+        burnEffect.style.opacity = opacity;
+        
+        currentFrame--;
+        
+        // Stop when all frames have played
+        if (currentFrame < 0) {
+            clearInterval(burnAnimation);
+            console.log("Burn animation complete");
+            burnEffect.style.opacity = '0'; // Ensure it's fully transparent at the end
+        }
+    }, frameInterval);
 }
 
 /**
@@ -185,18 +131,19 @@ function ensurePortalsVisible() {
  */
 function createEmbers() {
     const overlay = document.querySelector('.transition-overlay');
+    if (!overlay) return;
     
-    // Create 50 ember particles
-    for (let i = 0; i < 50; i++) {
+    // Create 15 ember particles (reduced from 30 for less visual obstruction)
+    for (let i = 0; i < 15; i++) {
         const ember = document.createElement('div');
         ember.className = 'ember-particle';
         
-        // Random position, size and animation delay
-        const size = Math.random() * 8 + 2; // 2-10px
+        // Random properties
+        const size = Math.random() * 5 + 2; // 2-7px
         const posX = Math.random() * 100; // 0-100%
         const posY = Math.random() * 100; // 0-100%
-        const delay = Math.random() * 2; // 0-2s
-        const duration = Math.random() * 3 + 2; // 2-5s
+        const delay = Math.random() * 0.5; // 0-0.5s (reduced)
+        const duration = Math.random() * 1.5 + 1; // 1-2.5s (reduced)
         
         // Apply styles
         ember.style.width = `${size}px`;
@@ -205,6 +152,8 @@ function createEmbers() {
         ember.style.top = `${posY}%`;
         ember.style.animationDelay = `${delay}s`;
         ember.style.animationDuration = `${duration}s`;
+        ember.style.opacity = '0.7'; // Reduced opacity
+        ember.style.zIndex = '9000'; // Lower z-index so they don't block everything
         
         // Add to overlay
         overlay.appendChild(ember);
@@ -221,7 +170,7 @@ function createEmbers() {
                 border-radius: 50%;
                 filter: blur(1px);
                 opacity: 0;
-                z-index: 10000;
+                z-index: 9000; /* Lower z-index */
                 pointer-events: none;
                 animation: emberRise cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
             }
@@ -232,7 +181,7 @@ function createEmbers() {
                     opacity: 0;
                 }
                 20% {
-                    opacity: 0.8;
+                    opacity: 0.6; /* Reduced max opacity */
                 }
                 100% {
                     transform: translateY(-100vh) scale(0);
@@ -244,6 +193,143 @@ function createEmbers() {
     }
 }
 
+//==============================================================================
+// TRANSITION AND EFFECT FUNCTIONS
+//==============================================================================
+
+/**
+ * Handle the epic "burn away" transition effect
+ * @param {HTMLElement} preloader - The preloader element to hide after transition
+ */
+function startCrimsonTransition(preloader) {
+    console.log('Starting Crimson Court transition...');
+    
+    // Get transition elements
+    const overlay = document.querySelector('.transition-overlay');
+    const burnEffect = document.querySelector('.burn-effect');
+    const body = document.body;
+    const mainHeader = document.querySelector('.main-header');
+    
+    // Make sure portals start invisible but are in the DOM
+    ensurePortalsVisible();
+    
+    // Update loading text
+    if (preloader) {
+        const loadingText = preloader.querySelector('.loading-text');
+        if (loadingText) {
+            loadingText.textContent = "The court awaits...";
+            loadingText.style.animation = "pulsateText 1s ease-in-out infinite";
+        }
+    }
+    
+    // Start the transition sequence with precise timing
+    setTimeout(() => {
+        // 1. Show the overlay
+        overlay.classList.add('active');
+        
+        // 2. Start burn effect and related animations
+        setTimeout(() => {
+            // Run sprite animation
+            animateBurnEffect();
+            
+            // Add ember particles
+            createEmbers();
+            
+            // Play dramatic sound
+            playTransitionSound();
+            
+            // Hide main header if it exists
+            if (mainHeader) {
+                mainHeader.style.opacity = '0';
+                mainHeader.style.visibility = 'hidden';
+                mainHeader.style.zIndex = '-1';
+            }
+            
+            // 3. Reveal the court portal
+            setTimeout(() => {
+                body.classList.add('court-portal-active');
+                document.documentElement.scrollTop = 0; // Scroll to top
+                
+                // Update loading text again
+                if (preloader) {
+                    const loadingText = preloader.querySelector('.loading-text');
+                    if (loadingText) {
+                        loadingText.textContent = "Entering the court...";
+                    }
+                }
+                
+                // 4. Allow time for portal animations then clean up
+                setTimeout(() => {
+                    // Hide preloader after portals have started animating
+                    if (preloader) {
+                        console.log("Hiding preloader now that portals are animating");
+                        preloader.classList.add('fade-out');
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                        }, 800); // Longer fade for smoother transition
+                    }
+                    
+                    // Fade out transition overlay
+                    setTimeout(() => {
+                        overlay.classList.remove('active');
+                        
+                        // Double check that portals are visible
+                        setTimeout(() => {
+                            ensurePortalsVisible();
+                        }, 500);
+                    }, 1500);
+                }, 3000); // 3 seconds to ensure portals are animating
+            }, 1000);
+        }, 1000);
+    }, 100);
+}
+
+/**
+ * Ensure the portal elements are visible
+ */
+function ensurePortalsVisible() {
+    const portals = document.querySelectorAll('.royal-portal');
+    const portalContainer = document.querySelector('.portal-container');
+    
+    if (portalContainer) {
+        portalContainer.style.display = 'grid';
+    }
+    
+    portals.forEach(portal => {
+        portal.style.display = 'block';
+        // Make sure portals are fully visible with no transition
+        portal.style.opacity = '1';
+        portal.style.transform = 'translateY(0)';
+    });
+    
+    console.log('Portals visibility enforced. Found ' + portals.length + ' portals.');
+}
+
+//==============================================================================
+// AUDIO FUNCTIONS
+//==============================================================================
+
+/**
+ * Play a subtle loading/summoning sound
+ */
+function playLoadingSound() {
+    // Create audio element if not exists
+    if (!document.getElementById('loading-sound')) {
+        const audio = document.createElement('audio');
+        audio.id = 'loading-sound';
+        audio.src = 'assets/sounds/summoning.mp3';
+        audio.volume = 0.3;
+        document.body.appendChild(audio);
+    }
+    
+    // Play the sound
+    const sound = document.getElementById('loading-sound');
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(e => console.log('Error playing loading sound:', e));
+    }
+}
+
 /**
  * Play a dramatic sound effect during the transition
  */
@@ -252,7 +338,7 @@ function playTransitionSound() {
     if (!document.getElementById('transition-sound')) {
         const audio = document.createElement('audio');
         audio.id = 'transition-sound';
-        audio.src = 'assets/sounds/portal-transition.mp3'; // Make sure this file exists
+        audio.src = 'assets/sounds/portal-transition.mp3';
         audio.volume = 0.7;
         audio.preload = 'auto';
         document.body.appendChild(audio);
@@ -260,9 +346,38 @@ function playTransitionSound() {
     
     // Play the sound
     const sound = document.getElementById('transition-sound');
-    sound.currentTime = 0;
-    sound.play().catch(e => console.log('Error playing sound:', e));
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(e => console.log('Error playing sound:', e));
+    }
 }
+
+/**
+ * Initialize ambient background audio
+ */
+function initAmbientAudio() {
+    // Create audio element if not exists
+    if (!document.getElementById('ambient-audio')) {
+        const audio = document.createElement('audio');
+        audio.id = 'ambient-audio';
+        audio.src = 'assets/sounds/court-ambience.mp3';
+        audio.loop = true;
+        audio.volume = 0.2;
+        audio.preload = 'auto';
+        document.body.appendChild(audio);
+        
+        // Play ambient audio after user interacts with the page
+        document.addEventListener('click', function playAmbient() {
+            audio.play().catch(e => console.log('Error playing ambient sound:', e));
+            // Remove the event listener after first interaction
+            document.removeEventListener('click', playAmbient);
+        }, { once: true });
+    }
+}
+
+//==============================================================================
+// PORTAL AND NAVIGATION FUNCTIONS
+//==============================================================================
 
 /**
  * Setup interactive navigation for the three portals
@@ -303,7 +418,7 @@ function portalTransition(destination) {
     
     // Play transition sound
     const sound = document.createElement('audio');
-    sound.src = 'assets/sounds/portal-select.mp3'; // Make sure this file exists
+    sound.src = 'assets/sounds/portal-select.mp3';
     sound.volume = 0.5;
     sound.play().catch(e => console.log('Error playing sound:', e));
     
@@ -328,7 +443,7 @@ function setupReturnButton() {
             
             // Play transition sound
             const sound = document.createElement('audio');
-            sound.src = 'assets/sounds/portal-close.mp3'; // Make sure this file exists
+            sound.src = 'assets/sounds/portal-close.mp3';
             sound.volume = 0.5;
             sound.play().catch(e => console.log('Error playing sound:', e));
             
@@ -339,6 +454,10 @@ function setupReturnButton() {
         });
     }
 }
+
+//==============================================================================
+// AMBIENT EFFECTS AND PARTICLES
+//==============================================================================
 
 /**
  * Setup ambient effects for the court portal
@@ -394,7 +513,7 @@ function addAmbientParticles() {
         courtPortal.appendChild(particlesContainer);
     }
     
-    // Create 30 dust mote particles
+    // Create dust mote particles
     for (let i = 0; i < 30; i++) {
         createDustMote(particlesContainer);
     }
@@ -461,28 +580,9 @@ function createDustMote(container) {
     }
 }
 
-/**
- * Initialize ambient background audio
- */
-function initAmbientAudio() {
-    // Create audio element if not exists
-    if (!document.getElementById('ambient-audio')) {
-        const audio = document.createElement('audio');
-        audio.id = 'ambient-audio';
-        audio.src = 'assets/sounds/court-ambience.mp3'; // Make sure this file exists
-        audio.loop = true;
-        audio.volume = 0.2;
-        audio.preload = 'auto';
-        document.body.appendChild(audio);
-        
-        // Play ambient audio after user interacts with the page
-        document.addEventListener('click', function playAmbient() {
-            audio.play().catch(e => console.log('Error playing ambient sound:', e));
-            // Remove the event listener after first interaction
-            document.removeEventListener('click', playAmbient);
-        }, { once: true });
-    }
-}
+//==============================================================================
+// UTILITY AND HELPER FUNCTIONS
+//==============================================================================
 
 /**
  * Setup debug toggle button for development
