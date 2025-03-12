@@ -41,6 +41,16 @@ body.crimson-court-page {
     overflow-x: hidden;
 }
 
+.cc-icon-image {
+    background-image: url(../assets/images/cc-icon-nb.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 /* 
 ======================
 PRELOADER - ROYAL STYLE
@@ -60,11 +70,17 @@ PRELOADER - ROYAL STYLE
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
+/* Make this rule more specific */
 .crown-loader img.crown {
-    width: 100px; /* Adjust size as needed */
+    width: 100px; 
     height: auto;
     animation: floatCrown 2s ease-in-out infinite alternate,
                rotateCrown 3s ease-in-out infinite alternate;
+    /* Add these to override SVG styles */
+    background: none;
+    display: block;
+    position: relative;
+    z-index: 10;
 }
 
 .crown-loader img.crown.animate-loading {
@@ -81,12 +97,6 @@ PRELOADER - ROYAL STYLE
         opacity: 1;
         filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
     }
-}
-
-.crown {
-    width: 100%;
-    height: 100%;
-    animation: rotateCrown 3s ease-in-out infinite alternate;
 }
 
 .crown-outline {
