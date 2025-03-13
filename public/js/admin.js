@@ -23,6 +23,9 @@ function initAdminDashboard() {
     
     // Initialize modals
     initModals();
+
+    // Initialize recent activities
+    loadRecentActivities();
     
     // Initialize NPC management
     initNPCManagement();
@@ -398,10 +401,10 @@ function initNPCManagement() {
             
             // Add to recent activity
             addRecentActivity({
-                type: 'create',
-                entity: 'npc',
-                name: newNPC.name,
-                id: newNPC.id
+                icon: 'fa-user-plus',
+                title: 'NPC Created',
+                description: `Created new NPC: ${npcData.name}`,
+                timestamp: new Date().toISOString()
             });
         } catch (error) {
             console.error('Error creating NPC:', error);
@@ -416,17 +419,32 @@ function initNPCManagement() {
     // Update existing NPC
     async function updateNPC(id, npcData) {
         try {
-            // Disable save button
             saveNPCBtn.disabled = true;
             saveNPCBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
             
-            const response = await fetch(`/admin/api/npcs/${id}`, {
+            let response = await fetch(`/admin/api/npcs/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include', // Important for sending cookies
                 body: JSON.stringify(npcData)
             });
+            
+            // If unauthorized, try to refresh token and retry the request
+            if (response.status === 401) {
+                await refreshAuthToken();
+                
+                // Retry the request with new token
+                response = await fetch(`/admin/api/npcs/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(npcData)
+                });
+            }
             
             if (!response.ok) {
                 throw new Error('Failed to update NPC');
@@ -451,21 +469,25 @@ function initNPCManagement() {
             
             // Add to recent activity
             addRecentActivity({
-                type: 'update',
-                entity: 'npc',
-                name: updatedNPC.name,
-                id: updatedNPC.id
+                icon: 'fa-user-edit',
+                title: 'NPC Updated',
+                description: `Updated NPC: ${npcData.name}`,
+                timestamp: new Date().toISOString()
             });
-        } catch (error) {
-            console.error('Error updating NPC:', error);
-            alert('Error updating NPC. Please try again.');
-        } finally {
-            // Re-enable save button
-            saveNPCBtn.disabled = false;
-            saveNPCBtn.innerHTML = '<i class="fas fa-save"></i> Save NPC';
+
+            } catch (error) {
+                console.error('Error updating NPC:', error);
+                if (error.message === 'Failed to refresh token') {
+                    window.location.href = '/admin/login';
+                } else {
+                    alert('Error updating NPC. Please try again.');
+                }
+            } finally {
+                saveNPCBtn.disabled = false;
+                saveNPCBtn.innerHTML = '<i class="fas fa-save"></i> Save NPC';
+            }
         }
-    }
-    
+            
     // Delete NPC
     async function deleteNPC(id) {
         try {
@@ -493,10 +515,10 @@ function initNPCManagement() {
             
             // Add to recent activity
             addRecentActivity({
-                type: 'delete',
-                entity: 'npc',
-                name: npcName,
-                id: id
+                icon: 'fa-user-minus',
+                title: 'NPC Deleted',
+                description: `Deleted NPC: ${npcName}`,
+                timestamp: new Date().toISOString()
             });
         } catch (error) {
             console.error('Error deleting NPC:', error);
@@ -692,6 +714,27 @@ function initNPCManagement() {
     fetchNPCs();
 }
 
+// Add this function to handle token refresh
+async function refreshAuthToken() {
+    try {
+        const response = await fetch('/admin/api/refresh-token', {
+            method: 'POST',
+            credentials: 'include' // Important for sending cookies
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to refresh token');
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('Token refresh failed:', error);
+        // Redirect to login if token refresh fails
+        window.location.href = '/admin/login';
+        throw error;
+    }
+}
+
 /**
  * Initialize settings functionality
  */
@@ -827,65 +870,157 @@ function updateDashboardStats() {
     }
 }
 
+// Move these functions together, after the initModals() function:
+
 /**
- * Add a recent activity item
- * @param {Object} activity - Activity details
+ * Activity Management Functions
  */
-function addRecentActivity(activity) {
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
+}
+
+function updateActivityList(activity) {
     const activityList = document.getElementById('recent-activity-list');
     
-    if (!activityList) return;
-    
-    // Remove empty state if present
+    // Remove "no activities" message if present
     const emptyState = activityList.querySelector('.activity-empty');
     if (emptyState) {
         emptyState.remove();
     }
-    
-    // Create activity item
+
+    // Create new activity item
     const activityItem = document.createElement('div');
     activityItem.className = 'activity-item';
-    
-    // Format activity details
-    let iconClass = 'fas fa-info-circle';
-    let activityTitle = 'Unknown activity';
-    
-    switch (activity.type) {
-        case 'create':
-            iconClass = 'fas fa-plus-circle';
-            activityTitle = `Created ${activity.entity}: ${activity.name}`;
-            break;
-        case 'update':
-            iconClass = 'fas fa-edit';
-            activityTitle = `Updated ${activity.entity}: ${activity.name}`;
-            break;
-        case 'delete':
-            iconClass = 'fas fa-trash-alt';
-            activityTitle = `Deleted ${activity.entity}: ${activity.name}`;
-            break;
-        case 'security':
-            iconClass = 'fas fa-lock';
-            activityTitle = `${activity.action.charAt(0).toUpperCase() + activity.action.slice(1)} ${activity.entity}`;
-            break;
+
+    // Handle both activity formats
+    if (activity.icon && activity.title && activity.description) {
+        // New format
+        activityItem.innerHTML = `
+            <div class="activity-icon">
+                <i class="fas ${activity.icon}"></i>
+            </div>
+            <div class="activity-details">
+                <h4 class="activity-title">${activity.title}</h4>
+                <p class="activity-description">${activity.description}</p>
+                <p class="activity-time">${formatTimestamp(activity.timestamp)}</p>
+            </div>
+        `;
+    } else {
+        // Old format
+        const activityMaps = {
+            create: { icon: 'fa-user-plus', title: 'NPC Created' },
+            update: { icon: 'fa-user-edit', title: 'NPC Updated' },
+            delete: { icon: 'fa-user-minus', title: 'NPC Deleted' }
+        };
+
+        const activityInfo = activityMaps[activity.type] || { icon: 'fa-info-circle', title: 'Activity' };
+        
+        activityItem.innerHTML = `
+            <div class="activity-icon">
+                <i class="fas ${activityInfo.icon}"></i>
+            </div>
+            <div class="activity-details">
+                <h4 class="activity-title">${activityInfo.title}</h4>
+                <p class="activity-description">${activity.name}</p>
+                <p class="activity-time">${formatTimestamp(activity.timestamp)}</p>
+            </div>
+        `;
     }
-    
-    activityItem.innerHTML = `
-        <div class="activity-icon">
-            <i class="${iconClass}"></i>
-        </div>
-        <div class="activity-details">
-            <h4 class="activity-title">${activityTitle}</h4>
-            <p class="activity-time">Just now</p>
-        </div>
-    `;
-    
-    // Add to the beginning of the list
+
+    // Add to beginning of list
     activityList.insertBefore(activityItem, activityList.firstChild);
-    
-    // Limit to 10 activities
-    const activities = activityList.querySelectorAll('.activity-item');
-    if (activities.length > 10) {
-        activities[activities.length - 1].remove();
+}
+
+// Update the loadRecentActivities function
+async function loadRecentActivities() {
+    try {
+        const response = await fetch('/admin/api/recent-activity');
+        if (!response.ok) {
+            throw new Error('Failed to fetch activities');
+        }
+
+        const activities = await response.json();
+        const activityList = document.getElementById('recent-activity-list');
+        
+        if (!activityList) return;
+
+        // Clear current list
+        activityList.innerHTML = '';
+
+        if (activities.length === 0) {
+            activityList.innerHTML = `
+                <div class="activity-empty">
+                    <p>No recent activity to display</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Add each activity to the list (they should already be sorted from the backend)
+        activities.forEach(activity => {
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+
+            // Handle both activity formats
+            if (activity.icon && activity.title && activity.description) {
+                activityItem.innerHTML = `
+                    <div class="activity-icon">
+                        <i class="fas ${activity.icon}"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4 class="activity-title">${activity.title}</h4>
+                        <p class="activity-description">${activity.description}</p>
+                        <p class="activity-time">${formatTimestamp(activity.timestamp)}</p>
+                    </div>
+                `;
+            } else {
+                const activityMaps = {
+                    create: { icon: 'fa-user-plus', title: 'NPC Created' },
+                    update: { icon: 'fa-user-edit', title: 'NPC Updated' },
+                    delete: { icon: 'fa-user-minus', title: 'NPC Deleted' }
+                };
+
+                const activityInfo = activityMaps[activity.type] || { icon: 'fa-info-circle', title: 'Activity' };
+                
+                activityItem.innerHTML = `
+                    <div class="activity-icon">
+                        <i class="fas ${activityInfo.icon}"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4 class="activity-title">${activityInfo.title}</h4>
+                        <p class="activity-description">${activity.name}</p>
+                        <p class="activity-time">${formatTimestamp(activity.timestamp)}</p>
+                    </div>
+                `;
+            }
+
+            // Insert at the beginning of the list
+            activityList.insertBefore(activityItem, activityList.firstChild);
+        });
+    } catch (error) {
+        console.error('Error loading activities:', error);
+    }
+}
+
+async function addRecentActivity(activity) {
+    try {
+        const response = await fetch('/admin/api/recent-activity', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(activity)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save activity');
+        }
+
+        const savedActivity = await response.json();
+        updateActivityList(savedActivity);
+    } catch (error) {
+        console.error('Error saving activity:', error);
     }
 }
 

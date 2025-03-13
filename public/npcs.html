@@ -68,6 +68,7 @@
             <div class="container">
                 <!-- Filter Categories -->
                 <div class="filter-controls">
+                    <!-- Keep existing primary filters -->
                     <div class="primary-filters">
                         <button class="filter-btn active" data-filter="all">
                             <i class="fas fa-users"></i> All
@@ -85,33 +86,25 @@
                             <i class="fas fa-pray"></i> Religious
                         </button>
                     </div>
-                    
-                    <!-- Tags Filter -->
-                    <div class="tag-filters">
-                        <div class="tag-filter-header">
-                            <i class="fas fa-tags"></i> Filter by tag:
-                        </div>
-                        <div class="tag-buttons">
-                            <button class="tag-btn" data-tag="ederian">ederian</button>
-                            <button class="tag-btn" data-tag="maldarian">maldarian</button>
-                            <button class="tag-btn" data-tag="house-falkrest">house falkrest</button>
-                            <button class="tag-btn" data-tag="house-astralor">house astralor</button>
-                            <button class="tag-btn" data-tag="nobility">nobility</button>
-                            <button class="tag-btn" data-tag="commoner">commoner</button>
-                            <button class="tag-btn" data-tag="merchant">merchant</button>
-                            <button class="tag-btn" data-tag="clergy">clergy</button>
-                            <!-- Add more tags as needed -->
-                        </div>
-                        <div class="active-filters">
-                            <span class="filter-label">Active Filters:</span>
-                            <div class="active-tags"></div>
-                            <button class="clear-filters">Clear All</button>
+                        <!-- Replace the tag-buttons div with this -->
+                        <div class="tag-filters">
+                            <div class="tag-filter-header">
+                                <i class="fas fa-tags"></i> Filter by tag:
+                            </div>
+                            <div class="tag-buttons" id="tag-buttons">
+                                <!-- Tags will be dynamically inserted here -->
+                            </div>
+                            <div class="active-filters">
+                                <span class="filter-label">Active Filters:</span>
+                                <div class="active-tags"></div>
+                                <button class="clear-filters">Clear All</button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- NPC List Container -->
-                <div class="npc-list">
+                <div class="npc-list container">
                     <!-- Example NPC Card - Alternating layout will be handled with CSS -->
                     <div class="npc-card" data-category="royal" data-tags="ederian,house-falkrest,nobility">
                         <div class="npc-portrait">

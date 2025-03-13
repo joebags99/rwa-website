@@ -69,6 +69,25 @@ module.exports = function(app) {
         }
     }));
 
+    router.post('/api/refresh-token', requireAuth, (req, res) => {
+        try {
+            // Reset the session expiration
+            req.session.cookie.maxAge = 24 * 60 * 60 * 1000; // 24 hours
+            
+            // Touch the session to update its expiration
+            req.session.touch();
+            
+            res.json({ 
+                success: true, 
+                message: 'Session refreshed successfully',
+                expiresIn: req.session.cookie.maxAge
+            });
+        } catch (error) {
+            console.error('Token refresh error:', error);
+            res.status(500).json({ error: 'Failed to refresh session' });
+        }
+    });
+
     // Admin login page
     router.get('/login', (req, res) => {
         res.sendFile(path.join(__dirname, '../public/admin/login.html'));
@@ -132,6 +151,59 @@ router.post('/api/login', express.json(), (req, res) => {
             res.status(500).json({ error: 'Server error' });
         }
     });
+
+// Update the GET route for recent activities
+router.get('/api/recent-activity', requireAuth, (req, res) => {
+    try {
+        const activityFile = path.join(__dirname, '../data/activity.json');
+        let activities = [];
+        
+        if (fs.existsSync(activityFile)) {
+            activities = JSON.parse(fs.readFileSync(activityFile, 'utf8'));
+            
+            // Sort by timestamp descending (newest first)
+            activities = activities
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                .slice(0, 5); // Limit to 5 most recent
+        }
+        
+        res.json(activities);
+    } catch (error) {
+        console.error('Error getting recent activity:', error);
+        res.status(500).json({ error: 'Error getting recent activity' });
+    }
+});
+
+router.post('/api/recent-activity', requireAuth, express.json(), (req, res) => {
+    try {
+        const activityFile = path.join(__dirname, '../data/activity.json');
+        let activities = [];
+        
+        if (fs.existsSync(activityFile)) {
+            activities = JSON.parse(fs.readFileSync(activityFile, 'utf8'));
+        }
+        
+        // Add new activity with timestamp
+        const newActivity = {
+            ...req.body,
+            timestamp: new Date().toISOString()
+        };
+        
+        // Add to beginning of array
+        activities.unshift(newActivity);
+        
+        // Keep only last 5 activities
+        activities = activities.slice(0, 5);
+        
+        // Save to file
+        fs.writeFileSync(activityFile, JSON.stringify(activities, null, 2));
+        
+        res.json(newActivity);
+    } catch (error) {
+        console.error('Error saving recent activity:', error);
+        res.status(500).json({ error: 'Error saving recent activity' });
+    }
+});
 
     // Admin dashboard - protected by requireAuth
     router.get('/', requireAuth, (req, res) => {

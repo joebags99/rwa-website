@@ -73,40 +73,38 @@
                 </div>
                 
                 <div class="top-actions">
-                    <a href="/" target="_blank" class="btn btn-sm">
+                    <a href="/index.html" target="_blank" class="btn btn-sm">
                         <i class="fas fa-external-link-alt"></i> View Site
                     </a>
                 </div>
             </div>
-            
-            <!-- Content Sections -->
-            <div class="content-sections">
-                <!-- Dashboard Section -->
-                <section id="dashboard-section" class="content-section active">
-                    <div class="section-header">
-                        <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+
+            <!----Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card" onclick="window.location.href='#npcs'" style="cursor: pointer;">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>NPCs</h3>
+                            <p class="stat-count" id="npcs-count">0</p>
+                        </div>
                     </div>
-                    
-                    <div class="dashboard-stats">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>NPCs</h3>
-                                <p class="stat-count" id="npcs-count">0</p>
-                            </div>
-                        </div>
                         
-                        <div class="stat-card disabled">
-                            <div class="stat-icon">
-                                <i class="fas fa-hourglass-half"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Timeline Events</h3>
-                                <p class="stat-count">Coming Soon</p>
-                            </div>
+                    <div class="stat-card disabled">
+                        <div class="stat-icon">
+                            <i class="fas fa-hourglass-half"></i>
                         </div>
+                        <div class="stat-info">
+                            <h3>Timeline Events</h3>
+                            <p class="stat-count">Coming Soon</p>
+                        </div>
+                    </div>
                         
                         <div class="stat-card disabled">
                             <div class="stat-icon">
@@ -176,8 +174,15 @@
                     
                     <div class="search-filter">
                         <div class="search-bar">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="npc-search" placeholder="Search NPCs...">
+                            <form autocomplete="off" onsubmit="return false;">
+                                <i class="fas fa-search"></i>
+                                <input type="search" 
+                                    id="npc-search" 
+                                    placeholder="Search NPCs..."
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                            </form>
                         </div>
                         
                         <div class="filter-options">

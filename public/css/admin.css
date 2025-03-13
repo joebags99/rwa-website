@@ -148,7 +148,27 @@ LOGIN PAGE STYLES
     transition: all var(--admin-transition);
 }
 
-.form-control:focus {
+/* Add specific styling for select elements with form-control class */
+select.form-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23b3b3b3' d='M0 2l4 4 4-4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 8px;
+    padding-right: 30px;
+}
+
+/* Style the select options */
+select.form-control option {
+    background-color: var(--admin-sidebar);
+    color: var(--admin-text);
+    padding: 8px;
+}
+
+/* Ensure focus state matches other form controls */
+select.form-control:focus {
     outline: none;
     border-color: var(--admin-primary);
     box-shadow: 0 0 0 2px rgba(11, 42, 169, 0.25);
@@ -254,46 +274,6 @@ LOGIN PAGE STYLES
     background-color: rgba(40, 167, 69, 0.1);
     border-color: rgba(40, 167, 69, 0.2);
     color: var(--admin-success);
-}
-
-/* 
-======================
-AMBIENT PARTICLES
-======================
-*/
-.particles-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-    background-color: rgba(127, 14, 189, 0.2);
-    border-radius: 50%;
-    opacity: 0;
-    animation: floatParticle ease-in-out infinite;
-}
-
-@keyframes floatParticle {
-    0%, 100% {
-        transform: translate(0, 0);
-        opacity: 0;
-    }
-    25% {
-        opacity: 0.3;
-    }
-    50% {
-        transform: translate(var(--tx, 20px), var(--ty, -30px));
-        opacity: 0.5;
-    }
-    75% {
-        opacity: 0.3;
-    }
 }
 
 /* 
@@ -466,6 +446,7 @@ CONTENT SECTIONS
 .content-section.active {
     display: block;
     animation: fadeIn 0.3s;
+    padding: 15px;
 }
 
 @keyframes fadeIn {
@@ -520,8 +501,9 @@ DASHBOARD STATS
     display: flex;
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform var(--admin-transition);
+    transition: all var(--admin-transition);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
 }
 
 .stat-card:not(.disabled):hover {
@@ -661,11 +643,27 @@ NPC LIST & ITEMS
     flex-wrap: wrap;
     gap: var(--admin-spacing-md);
     margin-bottom: var(--admin-spacing-lg);
+    align-items: center;
 }
 
 .search-bar {
     flex-grow: 1;
     position: relative;
+}
+
+.search-bar form {
+    width: 100%;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 1rem 2.5rem;
+    height: 48px; /* Makes the search bar taller */
+    background-color: var(--admin-sidebar);
+    border: 1px solid var(--admin-border);
+    border-radius: 4px;
+    color: var(--admin-text);
+    font-size: 1rem;
 }
 
 .search-bar i {
@@ -674,11 +672,7 @@ NPC LIST & ITEMS
     top: 50%;
     transform: translateY(-50%);
     color: var(--admin-text-muted);
-}
-
-.search-bar input {
-    padding-left: 2.5rem;
-    width: 100%;
+    font-size: 1rem;
 }
 
 .filter-options {
@@ -694,6 +688,40 @@ NPC LIST & ITEMS
     color: var(--admin-text);
     font-family: var(--font-body);
     min-width: 150px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+    padding-right: 30px; /* Space for the arrow */
+
+}
+
+.filter-options::after {
+    content: '\f078'; /* FontAwesome chevron down */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--admin-text-muted);
+    pointer-events: none;
+    font-size: 0.8rem;
+}
+
+/* Style for when dropdown is focused */
+.filter-options select:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 2px rgba(11, 42, 169, 0.25);
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Style for dropdown options */
+.filter-options select option {
+    background-color: var(--admin-sidebar);
+    color: var(--admin-text);
 }
 
 .item-list {
