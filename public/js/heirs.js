@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initMagicalParticles();
 });
 
+window.scrollTo({ top: 200, behavior: "smooth" });
+
 /**
  * Initialize the heirs interactive portrait gallery
  */
@@ -109,6 +111,9 @@ function initHeirs() {
             'viewing-xanthe',
             'viewing-cailynn'
         );
+
+        window.scrollTo({ top: 200, behavior: "smooth" });
+
         
         // Reset particles
         clearHeirSpecificParticles();
