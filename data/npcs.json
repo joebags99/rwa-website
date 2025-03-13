@@ -1,0 +1,19 @@
+{
+  "npcs": [
+    {
+      "id": "1741861107399",
+      "name": "test",
+      "importance": 1,
+      "appearance": "test",
+      "relationship": "ally",
+      "category": "royal",
+      "description": "test",
+      "quote": "test",
+      "tags": [
+        "test"
+      ],
+      "imageSrc": "assets/images/npcs/default.jpg",
+      "createdAt": "2025-03-13T10:18:27.399Z"
+    }
+  ]
+}

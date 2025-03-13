@@ -190,6 +190,24 @@ app.get('/api/config', (req, res) => {
   res.json(config);
 });
 
+// Public API route for NPCs (non-admin)
+app.get('/api/npcs', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const NPC_DATA_FILE = path.join(DATA_DIR, 'npcs.json');
+    
+    if (fs.existsSync(NPC_DATA_FILE)) {
+      const data = JSON.parse(fs.readFileSync(NPC_DATA_FILE, 'utf8'));
+      res.json(data.npcs);
+    } else {
+      res.json([]);
+    }
+  } catch (error) {
+    console.error('Error reading NPC data:', error);
+    res.status(500).json({ error: 'Error reading NPC data' });
+  }
+});
+
 // Handle any other routes by serving index.html
 app.get('*', (req, res) => {
   // Skip for admin routes which are handled by the admin router
