@@ -416,77 +416,80 @@ function initNPCManagement() {
         }
     }
     
-    // Update existing NPC
     async function updateNPC(id, npcData) {
         try {
             saveNPCBtn.disabled = true;
             saveNPCBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
             
+            // First attempt
             let response = await fetch(`/admin/api/npcs/${id}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache'  // Add cache control
                 },
-                credentials: 'include', // Important for sending cookies
+                credentials: 'include',
                 body: JSON.stringify(npcData)
             });
             
-            // If unauthorized, try to refresh token and retry the request
+            // Handle 401 Unauthorized
             if (response.status === 401) {
-                await refreshAuthToken();
+                console.log('Session expired, attempting to refresh...');
                 
-                // Retry the request with new token
-                response = await fetch(`/admin/api/npcs/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify(npcData)
-                });
+                // Try to refresh the auth token
+                const refreshResult = await refreshAuthToken();
+                
+                if (refreshResult.success) {
+                    // Retry the original request after refresh
+                    response = await fetch(`/admin/api/npcs/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Cache-Control': 'no-cache'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(npcData)
+                    });
+                } else {
+                    // If refresh failed, redirect to login
+                    window.location.href = '/admin/login';
+                    return;
+                }
             }
-            
+    
             if (!response.ok) {
                 throw new Error('Failed to update NPC');
             }
-            
+    
             const updatedNPC = await response.json();
             
-            // Update in local cache
+            // Update local cache and UI
             const index = npcs.findIndex(npc => npc.id === id);
             if (index !== -1) {
                 npcs[index] = updatedNPC;
             }
             
-            // Close modal
+            // Close modal and update UI
             closeModal(npcModal);
-            
-            // Update list
             renderNPCList(npcs);
-            
-            // Show success message
             showSuccessToast('NPC updated successfully!');
             
             // Add to recent activity
-            addRecentActivity({
+            await addRecentActivity({
                 icon: 'fa-user-edit',
                 title: 'NPC Updated',
                 description: `Updated NPC: ${npcData.name}`,
                 timestamp: new Date().toISOString()
             });
-
-            } catch (error) {
-                console.error('Error updating NPC:', error);
-                if (error.message === 'Failed to refresh token') {
-                    window.location.href = '/admin/login';
-                } else {
-                    alert('Error updating NPC. Please try again.');
-                }
-            } finally {
-                saveNPCBtn.disabled = false;
-                saveNPCBtn.innerHTML = '<i class="fas fa-save"></i> Save NPC';
-            }
+    
+        } catch (error) {
+            console.error('Error updating NPC:', error);
+            alert('Error updating NPC. Please try again.');
+        } finally {
+            saveNPCBtn.disabled = false;
+            saveNPCBtn.innerHTML = '<i class="fas fa-save"></i> Save NPC';
         }
+    }
             
     // Delete NPC
     async function deleteNPC(id) {
@@ -719,19 +722,21 @@ async function refreshAuthToken() {
     try {
         const response = await fetch('/admin/api/refresh-token', {
             method: 'POST',
-            credentials: 'include' // Important for sending cookies
+            headers: {
+                'Cache-Control': 'no-cache'
+            },
+            credentials: 'include'
         });
         
         if (!response.ok) {
             throw new Error('Failed to refresh token');
         }
         
-        return await response.json();
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.error('Token refresh failed:', error);
-        // Redirect to login if token refresh fails
-        window.location.href = '/admin/login';
-        throw error;
+        return { success: false };
     }
 }
 

@@ -24,7 +24,7 @@
       "importance": 3,
       "appearance": "Act 1, Chapter 1",
       "relationship": "ally",
-      "category": "pastoral",
+      "category": "royal",
       "description": "A bronze dragonborn of 95 years, Raynere serves on the King’s Council as the Sentinel of Ederia—charged with defending the realm against monstrous and extraplanar threats. Adopted into House Falkrest after his valor in The Night of Crimson Tears, he transformed Skyhaven into a fortified bastion of security. Though stern in command, he warms any gathering with good humor once duty allows, endearing him to nobles and commoners alike.",
       "quote": "Strength is not just in battle; it’s in the choices we make to protect what we hold dear.",
       "tags": [
@@ -35,7 +35,7 @@
       ],
       "imageSrc": "https://assets.legendkeeper.com/b4193db1-44b9-4d7e-b72a-73e3213157be.png",
       "createdAt": "2025-03-13T16:53:17.115Z",
-      "updatedAt": "2025-03-13T18:35:37.276Z"
+      "updatedAt": "2025-03-13T18:48:39.995Z"
     }
   ]
 }

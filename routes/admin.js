@@ -72,15 +72,25 @@ module.exports = function(app) {
         rolling: true                // Reset expiration on each request
     }));
 
-    // Session refresh endpoint
-    router.post('/api/refresh-token', requireAuth, (req, res) => {
-        // Session automatically refreshed because of rolling: true
+// Session refresh endpoint
+router.post('/api/refresh-token', requireAuth, (req, res) => {
+    // Explicitly touch the session to update its expiry
+    req.session.touch();
+    
+    // Save the session explicitly
+    req.session.save((err) => {
+        if (err) {
+            console.error('Error saving session:', err);
+            return res.status(500).json({ error: 'Failed to refresh session' });
+        }
+        
         res.json({ 
             success: true, 
             message: 'Session refreshed successfully',
             expiresIn: req.session.cookie.maxAge
         });
     });
+});
 
     // Admin login page
     router.get('/login', (req, res) => {
