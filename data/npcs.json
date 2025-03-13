@@ -1,22 +1,6 @@
 {
   "npcs": [
     {
-      "id": "1741861107399",
-      "name": "test",
-      "importance": 1,
-      "appearance": "test",
-      "relationship": "ally",
-      "category": "royal",
-      "description": "test",
-      "quote": "test",
-      "tags": [
-        "test"
-      ],
-      "imageSrc": "assets/images/npcs/default.jpg",
-      "createdAt": "2025-03-13T10:18:27.399Z",
-      "updatedAt": "2025-03-13T11:10:55.861Z"
-    },
-    {
       "id": "1741862919977",
       "name": "Lady Selara Astralor",
       "importance": 2,
@@ -24,7 +8,7 @@
       "relationship": "ally",
       "category": "royal",
       "description": "An Arkan with luminous deep blue eyes and chitinous silver-white skin. Slender and graceful, Lady Selara’s warmth and empathy stand in place of martial prowess. She is betrothed to Marik Veltaris-Falkrest, offering her heartfelt support from the sidelines rather than on the battlefield. As a devoted follower of Serenya and Seraphis, her healing talents extend beyond traditional magic—she has pioneered a new method of blending Ryanite with living tissue to create bio-enhanced prosthetics.",
-      "quote": "“Peace is not surrender; it is the choice to heal rather than to harm, even when the world tempts you otherwise.”",
+      "quote": "Peace is not surrender; it is the choice to heal rather than to harm, even when the world tempts you otherwise.",
       "tags": [
         "ederian",
         "nobility",
@@ -32,7 +16,7 @@
       ],
       "imageSrc": "https://assets.legendkeeper.com/54e2cefd-58dd-4b5a-9918-169d89f337f2.png",
       "createdAt": "2025-03-13T10:48:39.977Z",
-      "updatedAt": "2025-03-13T15:37:18.935Z"
+      "updatedAt": "2025-03-13T18:13:01.273Z"
     },
     {
       "id": "1741884797115",
@@ -40,9 +24,9 @@
       "importance": 3,
       "appearance": "Act 1, Chapter 1",
       "relationship": "ally",
-      "category": "royal",
+      "category": "pastoral",
       "description": "A bronze dragonborn of 95 years, Raynere serves on the King’s Council as the Sentinel of Ederia—charged with defending the realm against monstrous and extraplanar threats. Adopted into House Falkrest after his valor in The Night of Crimson Tears, he transformed Skyhaven into a fortified bastion of security. Though stern in command, he warms any gathering with good humor once duty allows, endearing him to nobles and commoners alike.",
-      "quote": "“Strength is not just in battle; it’s in the choices we make to protect what we hold dear.”",
+      "quote": "Strength is not just in battle; it’s in the choices we make to protect what we hold dear.",
       "tags": [
         "council",
         "ederian",
@@ -51,7 +35,7 @@
       ],
       "imageSrc": "https://assets.legendkeeper.com/b4193db1-44b9-4d7e-b72a-73e3213157be.png",
       "createdAt": "2025-03-13T16:53:17.115Z",
-      "updatedAt": "2025-03-13T18:04:02.172Z"
+      "updatedAt": "2025-03-13T18:35:37.276Z"
     }
   ]
 }
