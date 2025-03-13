@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Roll With Advantage</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="admin-page dashboard-page">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="/assets/images/logo-small.png" alt="Roll With Advantage" class="sidebar-logo">
+                <h2>Admin Panel</h2>
+            </div>
+            
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="active" data-section="dashboard">
+                        <a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li data-section="npcs">
+                        <a href="#npcs"><i class="fas fa-users"></i> NPCs</a>
+                    </li>
+                    <li data-section="timeline" class="disabled">
+                        <a href="#timeline"><i class="fas fa-hourglass-half"></i> Timeline</a>
+                    </li>
+                    <li data-section="story" class="disabled">
+                        <a href="#story"><i class="fas fa-book-open"></i> Story</a>
+                    </li>
+                    <li data-section="dm-advice" class="disabled">
+                        <a href="#dm-advice"><i class="fas fa-dungeon"></i> DM Advice</a>
+                    </li>
+                    <li data-section="settings">
+                        <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-footer">
+                <a href="/admin/logout" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="page-title">
+                    <h1 id="current-section-title">Dashboard</h1>
+                </div>
+                
+                <div class="top-actions">
+                    <a href="/" target="_blank" class="btn btn-sm">
+                        <i class="fas fa-external-link-alt"></i> View Site
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Content Sections -->
+            <div class="content-sections">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="content-section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                    </div>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>NPCs</h3>
+                                <p class="stat-count" id="npcs-count">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card disabled">
+                            <div class="stat-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Timeline Events</h3>
+                                <p class="stat-count">Coming Soon</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card disabled">
+                            <div class="stat-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Story Entries</h3>
+                                <p class="stat-count">Coming Soon</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card disabled">
+                            <div class="stat-icon">
+                                <i class="fas fa-dungeon"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>DM Advice Posts</h3>
+                                <p class="stat-count">Coming Soon</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-access">
+                        <div class="section-header">
+                            <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <a href="#npcs" class="btn btn-primary" data-target="npcs">
+                                <i class="fas fa-plus"></i> Create New NPC
+                            </a>
+                            <a href="#timeline" class="btn btn-secondary disabled">
+                                <i class="fas fa-plus"></i> Add Timeline Event
+                            </a>
+                            <a href="#story" class="btn btn-secondary disabled">
+                                <i class="fas fa-plus"></i> Add Story Entry
+                            </a>
+                            <a href="#dm-advice" class="btn btn-secondary disabled">
+                                <i class="fas fa-plus"></i> Create DM Advice
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-activity">
+                        <div class="section-header">
+                            <h2><i class="fas fa-history"></i> Recent Activity</h2>
+                        </div>
+                        
+                        <div class="activity-list" id="recent-activity-list">
+                            <div class="activity-empty">
+                                <p>No recent activity to display</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- NPCs Section -->
+                <section id="npcs-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Manage NPCs</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" id="create-npc-btn">
+                                <i class="fas fa-plus"></i> Create NPC
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-filter">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="npc-search" placeholder="Search NPCs...">
+                        </div>
+                        
+                        <div class="filter-options">
+                            <select id="category-filter">
+                                <option value="">All Categories</option>
+                                <option value="royal">Royal</option>
+                                <option value="pastoral">Pastoral</option>
+                                <option value="militant">Militant</option>
+                                <option value="religious">Religious</option>
+                            </select>
+                            
+                            <select id="relationship-filter">
+                                <option value="">All Relationships</option>
+                                <option value="ally">Ally</option>
+                                <option value="friendly">Friendly</option>
+                                <option value="neutral">Neutral</option>
+                                <option value="hostile">Hostile</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="item-list npc-list" id="npc-list">
+                        <div class="loading-indicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading NPCs...</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Timeline Section -->
+                <section id="timeline-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-hourglass-half"></i> Timeline</h2>
+                    </div>
+                    
+                    <div class="coming-soon">
+                        <i class="fas fa-clock"></i>
+                        <h3>Coming Soon</h3>
+                        <p>The Timeline management feature is under development and will be available soon.</p>
+                    </div>
+                </section>
+                
+                <!-- Story Section -->
+                <section id="story-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-book-open"></i> Story</h2>
+                    </div>
+                    
+                    <div class="coming-soon">
+                        <i class="fas fa-book"></i>
+                        <h3>Coming Soon</h3>
+                        <p>The Story management feature is under development and will be available soon.</p>
+                    </div>
+                </section>
+                
+                <!-- DM Advice Section -->
+                <section id="dm-advice-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-dungeon"></i> DM Advice</h2>
+                    </div>
+                    
+                    <div class="coming-soon">
+                        <i class="fas fa-hat-wizard"></i>
+                        <h3>Coming Soon</h3>
+                        <p>The DM Advice management feature is under development and will be available soon.</p>
+                    </div>
+                </section>
+                
+                <!-- Settings Section -->
+                <section id="settings-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-cog"></i> Settings</h2>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-lock"></i> Change Password</h3>
+                        </div>
+                        
+                        <div class="card-body">
+                            <div class="alert alert-success" id="password-success" style="display: none;">
+                                Password updated successfully!
+                            </div>
+                            
+                            <div class="alert alert-danger" id="password-error" style="display: none;"></div>
+                            
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" class="form-control">
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button class="btn btn-primary" id="change-password-btn">
+                                    <i class="fas fa-save"></i> Update Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NPC Modal -->
+    <div class="modal" id="npc-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="npc-modal-title">Create New NPC</h2>
+                    <button class="close-btn" id="close-modal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <form id="npc-form">
+                        <input type="hidden" id="npc-id">
+                        
+                        <div class="form-group">
+                            <label for="npc-name">Name & Title</label>
+                            <input type="text" id="npc-name" class="form-control" required>
+                            <small>Example: "Lady Isolde Astralor, High Priestess of Light"</small>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="npc-importance">Importance</label>
+                                <select id="npc-importance" class="form-control" required>
+                                    <option value="1">1 Star (Minor)</option>
+                                    <option value="2">2 Stars (Supporting)</option>
+                                    <option value="3">3 Stars (Major)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="npc-appearance">First Appearance</label>
+                                <input type="text" id="npc-appearance" class="form-control" required>
+                                <small>Example: "Episode 2" or "Session 5"</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="npc-relationship">Relationship</label>
+                                <select id="npc-relationship" class="form-control" required>
+                                    <option value="ally">Ally</option>
+                                    <option value="friendly">Friendly</option>
+                                    <option value="neutral">Neutral</option>
+                                    <option value="hostile">Hostile</option>
+                                    <option value="unknown">Unknown</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="npc-category">Category</label>
+                                <select id="npc-category" class="form-control" required>
+                                    <option value="royal">Royal</option>
+                                    <option value="pastoral">Pastoral</option>
+                                    <option value="militant">Militant</option>
+                                    <option value="religious">Religious</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-description">Brief Description</label>
+                            <textarea id="npc-description" class="form-control" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-quote">Memorable Quote</label>
+                            <textarea id="npc-quote" class="form-control" rows="2" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-tags">Tags</label>
+                            <input type="text" id="npc-tags" class="form-control" required>
+                            <small>Comma-separated tags (e.g., "ederian, nobility, clergy")</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-image">Image URL</label>
+                            <input type="text" id="npc-image" class="form-control">
+                            <small>URL to character image (leave blank to use default)</small>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancel-npc">Cancel</button>
+                    <button class="btn btn-primary" id="save-npc">
+                        <i class="fas fa-save"></i> Save NPC
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="confirm-title">Confirmation</h2>
+                    <button class="close-btn" id="close-confirm">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <p id="confirm-message">Are you sure you want to perform this action?</p>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+                    <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript for Admin Dashboard -->
+    <script src="/js/admin.js"></script>
+</body>
+</html>

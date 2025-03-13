@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Roll With Advantage</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="admin-page login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <img src="/assets/images/logo.png" alt="Roll With Advantage" class="login-logo">
+                <h1>Admin Login</h1>
+            </div>
+            
+            <div class="login-form">
+                <div class="alert alert-danger" id="login-error" style="display: none;"></div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="button" id="login-btn" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </div>
+                
+                <div class="login-footer">
+                    <p>Return to <a href="/">main site</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="particles-container"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const errorBox = document.getElementById('login-error');
+            
+            // Handle Enter key in password field
+            passwordInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+            
+            // Handle login button click
+            loginBtn.addEventListener('click', async function() {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                
+                if (!username || !password) {
+                    showError('Please enter both username and password');
+                    return;
+                }
+                
+                // Disable the button and show loading state
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                
+                try {
+                    const response = await fetch('/admin/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.success) {
+                        // Redirect to admin dashboard
+                        window.location.href = '/admin';
+                    } else {
+                        showError(data.error || 'Invalid credentials. Please try again.');
+                    }
+                } catch (error) {
+                    showError('Connection error. Please try again.');
+                    console.error('Login error:', error);
+                } finally {
+                    // Re-enable the button
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                }
+            });
+            
+            function showError(message) {
+                errorBox.textContent = message;
+                errorBox.style.display = 'block';
+                
+                // Shake the login box for visual feedback
+                document.querySelector('.login-box').classList.add('shake');
+                
+                // Remove shake class after animation completes
+                setTimeout(() => {
+                    document.querySelector('.login-box').classList.remove('shake');
+                }, 500);
+            }
+            
+            // Add ambient particles
+            createParticles();
+        });
+        
+        function createParticles() {
+            const container = document.querySelector('.particles-container');
+            if (!container) return;
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random properties
+                const size = Math.random() * 5 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 20 + 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+    </script>
+</body>
+</html>

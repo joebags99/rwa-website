@@ -1,6 +1,6 @@
 /**
  * Roll With Advantage - Express Server
- * A simple Express server for local development
+ * A simple Express server for local development with Admin functionality
  */
 
 // Load environment variables - try multiple paths to be safe
@@ -24,6 +24,8 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
+const session = require('express-session');
 
 // Create Express app
 const app = express();
@@ -39,6 +41,30 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bo
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Create data directory if it doesn't exist
+const DATA_DIR = path.join(__dirname, 'data');
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  console.log('Created data directory');
+}
+
+// Create admin directory structure if it doesn't exist
+const ADMIN_DIR = path.join(__dirname, 'public', 'admin');
+if (!fs.existsSync(ADMIN_DIR)) {
+  fs.mkdirSync(ADMIN_DIR, { recursive: true });
+  console.log('Created admin directory');
+}
+
+// Create routes directory if it doesn't exist
+const ROUTES_DIR = path.join(__dirname, 'routes');
+if (!fs.existsSync(ROUTES_DIR)) {
+  fs.mkdirSync(ROUTES_DIR, { recursive: true });
+  console.log('Created routes directory');
+}
+
+// Import and use admin routes
+const adminRoutes = require('./routes/admin')(app);
 
 // API Routes
 app.get('/api/health', (req, res) => {
@@ -76,6 +102,7 @@ function logEnvironmentVariables() {
   console.log('- DM_ADVICE_PLAYLIST_ID:', dmAdvicePlaylistId ? `Configured ✓ (${dmAdvicePlaylistId})` : 'Not configured ✗');
   console.log('- FEATURED_PLAYLIST_ID:', featuredPlaylistId ? `Configured ✓ (${featuredPlaylistId})` : 'Not configured ✗');
   console.log('- PORT:', process.env.PORT || '5000 (default)');
+  console.log('- SESSION_SECRET:', process.env.SESSION_SECRET ? 'Configured ✓' : 'Using default (not recommended for production) ✗');
 }
 
 // Check ENV file format by reading it directly (for debugging)
@@ -165,6 +192,10 @@ app.get('/api/config', (req, res) => {
 
 // Handle any other routes by serving index.html
 app.get('*', (req, res) => {
+  // Skip for admin routes which are handled by the admin router
+  if (req.path.startsWith('/admin')) {
+    return;
+  }
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
@@ -173,6 +204,7 @@ app.listen(PORT, () => {
   console.log(`
   🎲 Roll With Advantage server running!
   📁 Local: http://localhost:${PORT}
+  🔐 Admin: http://localhost:${PORT}/admin
   
   Ready to help you manage your D&D content
   `);
