@@ -386,7 +386,7 @@ function setupPortalNavigation() {
     // Get portal elements
     const heirsPortal = document.querySelector('.heirs-portal');
     const timelinePortal = document.querySelector('.timeline-portal');
-    const npcsPortal = document.querySelector('.story-portal');
+    const npcsPortal = document.querySelector('.npcs-portal');
     const storyPortal = document.querySelector('.story-portal');
     
     // Ensure portals are visible
@@ -404,7 +404,7 @@ function setupPortalNavigation() {
         });
     }
 
-    if (storyPortal) {
+    if (npcsPortal) {
         npcsPortal.addEventListener('click', () => {
             portalTransition('npcs.html');
         });
