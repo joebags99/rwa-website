@@ -1,0 +1,805 @@
+/*
+=======================================
+THE TIMELINE - ROYAL HISTORICAL STYLING
+=======================================
+*/
+
+/* 
+Timeline Color Scheme Variables 
+*/
+:root {
+    /* Timeline Colors */
+    --timeline-line: rgba(212, 175, 55, 0.4);
+    --timeline-line-glow: rgba(212, 175, 55, 0.2);
+    --timeline-dot: var(--royal-gold);
+    --timeline-event-bg: rgba(15, 15, 26, 0.7);
+    --timeline-event-border: rgba(212, 175, 55, 0.3);
+    --timeline-event-hover-border: var(--royal-gold);
+    
+    /* Era Colors */
+    --era-founding: rgba(0, 78, 56, 0.7);      /* Deep Green */
+    --era-golden-age: rgba(212, 175, 55, 0.7); /* Gold */
+    --era-dark-times: rgba(86, 0, 0, 0.7);     /* Dark Red */
+    --era-restoration: rgba(11, 42, 169, 0.7); /* Royal Blue */
+    --era-present: rgba(127, 14, 189, 0.7);    /* Royal Purple */
+    
+    /* Reign Colors */
+    --reign-beginning: linear-gradient(135deg, var(--royal-gold-light), var(--royal-gold));
+    --reign-end: linear-gradient(135deg, var(--crimson-dark), var(--crimson-blood));
+}
+
+/* 
+Timeline Base Styling 
+*/
+.timeline-page {
+    overflow-x: hidden;
+}
+
+/* 
+Handle portal visibility
+*/
+.court-portal {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+    margin-top: -2rem; /* Remove gap between banner and header */
+}
+
+/* Update transition timing for all portal elements */
+.court-portal .royal-title,
+.court-portal .royal-subtitle,
+.court-portal .heraldic-banner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+/* Coordinated appearance when active */
+.court-portal-active .court-portal {
+    visibility: visible;
+    opacity: 1;
+}
+
+.court-portal-active .court-portal .royal-title,
+.court-portal-active .court-portal .royal-subtitle,
+.court-portal-active .court-portal .heraldic-banner {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.2s; /* Slight delay after preloader fades */
+}
+
+/* Update preloader transition */
+.preloader {
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Add or update these styles */
+body.loading {
+    overflow: hidden;
+}
+
+body.loading .court-portal {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body.loading .court-portal .royal-title,
+body.loading .court-portal .royal-subtitle,
+body.loading .court-portal .heraldic-banner {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.court-portal-active .court-portal {
+    opacity: 1;
+    visibility: visible;
+}
+
+.preloader {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+}
+
+/* Update loading states */
+body.loading {
+    overflow: hidden;
+}
+
+.court-portal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+.court-portal .royal-title,
+.court-portal .royal-subtitle,
+.court-portal .heraldic-banner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+/* Active states */
+.court-portal-active .court-portal {
+    opacity: 1;
+    visibility: visible;
+}
+
+.court-portal-active .court-portal .royal-title,
+.court-portal-active .court-portal .royal-subtitle,
+.court-portal-active .court-portal .heraldic-banner {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Preloader transition */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-dark);
+    z-index: 9999;
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* 
+Court Portal and Page Structure
+*/
+.timeline-section {
+    position: relative;
+    padding: 2rem 0 4rem;
+    height: max-content;
+    min-height: max-content; /* Reduced to allow footer space */
+    overflow: visible; /* Allow content to overflow properly */
+    flex: 1; /* Allow it to grow and take up available space */
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-section .container {
+    max-width: 1400px; /* Wider container for timeline */
+}
+
+/* 
+Timeline Controls 
+*/
+.timeline-controls {
+    position: sticky;
+    top: 100px; /* Below the header */
+    background: var(--gradient-dark);
+    padding: 1rem 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--royal-gold);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.timeline-controls .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.era-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.era-button {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--timeline-event-border);
+    color: var(--royal-gold-light);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.era-button:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--royal-gold);
+}
+
+.era-button.active {
+    background: rgba(212, 175, 55, 0.3);
+    border-color: var(--royal-gold);
+    color: white;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.timeline-search {
+    display: flex;
+    position: relative;
+}
+
+.timeline-search input {
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid var(--timeline-event-border);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-family: var(--font-body);
+    width: 220px;
+    transition: all 0.3s ease;
+}
+
+.timeline-search input:focus {
+    border-color: var(--royal-gold);
+    outline: none;
+    width: 260px;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.timeline-search input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.timeline-search button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 40px;
+    background: transparent;
+    border: none;
+    color: var(--royal-gold-light);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.timeline-search button:hover {
+    color: var(--royal-gold);
+}
+
+/*
+Main Timeline Structure
+*/
+.timeline {
+    position: relative;
+    padding: 3rem 0;
+    margin: 0 auto;
+    max-width: 1200px;
+    min-height: 70vh; /* Ensure enough height for content */
+    overflow-y: visible; /* Allow content to be visible */
+    flex: 1; /* Make timeline expand within section */
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-center-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    background: var(--timeline-line);
+    transform: translateX(-50%);
+    box-shadow: 0 0 15px var(--timeline-line-glow);
+    z-index: 1;
+}
+
+.timeline-content {
+    position: relative;
+    z-index: 2;
+}
+
+/*
+Timeline Events
+*/
+.timeline-event {
+    position: relative;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(20px); /* Reduced movement */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Faster transitions */
+    width: 100%;
+    clear: both;
+}
+
+.timeline-event.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Disable fade-out animation to prevent flashing */
+.timeline-event.fade-out {
+    opacity: 0;
+    transform: translateY(0);
+    transition: opacity 0.2s ease;
+}
+
+/* Right side events */
+.timeline-event.right {
+    float: right;
+    padding-left: calc(50% + 30px);
+    padding-right: 20px;
+    text-align: left;
+}
+
+/* Left side events */
+.timeline-event.left {
+    float: left;
+    padding-right: calc(50% + 30px);
+    padding-left: 20px;
+    text-align: right;
+}
+
+/* Event Content Box */
+.timeline-event-content {
+    background: var(--timeline-event-bg);
+    border: 2px solid var(--timeline-event-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: visible;
+    margin-bottom: 2rem;
+    max-width: 90%;
+}
+
+.timeline-event-content::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-image: url("../assets/images/parchment-texture.png");
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.timeline-event-content::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--timeline-dot);
+    border-radius: 50%;
+    top: 30px;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    z-index: 10;
+}
+
+.timeline-event.right .timeline-event-content::after {
+    left: -40px;
+}
+
+.timeline-event.left .timeline-event-content::after {
+    right: -40px;
+}
+
+/* Arrow connector to the timeline */
+.timeline-event-content::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    border: 10px solid transparent;
+    z-index: 2;
+}
+
+.timeline-event.right .timeline-event-content::before {
+    left: -20px;
+    border-right-color: var(--timeline-event-border);
+}
+
+.timeline-event.left .timeline-event-content::before {
+    right: -20px;
+    border-left-color: var(--timeline-event-border);
+}
+
+/* Hover Effects */
+.timeline-event-content:hover {
+    border-color: var(--timeline-event-hover-border);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.3);
+    transform: translateY(-5px);
+}
+
+/* Date Display */
+.timeline-date {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+    border: 1px solid var(--royal-gold);
+}
+
+.timeline-month {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.timeline-year {
+    font-style: italic;
+}
+
+/* Event Title */
+.timeline-title {
+    font-family: var(--font-headers);
+    color: var(--divine-light-white);
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+}
+
+.timeline-title:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-gold);
+    transition: width 0.5s ease;
+}
+
+.timeline-event.right .timeline-title:after {
+    left: 0;
+}
+
+.timeline-event.left .timeline-title:after {
+    right: 0;
+}
+
+.timeline-event-content:hover .timeline-title:after {
+    width: 100%;
+}
+
+/* Location */
+.timeline-location {
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.timeline-event.left .timeline-location i {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+/* Description */
+.timeline-description {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.timeline-description p {
+    margin-bottom: 0.5rem;
+}
+
+/* Image */
+.timeline-image {
+    margin-top: 1.5rem;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    transition: all 0.3s ease;
+}
+
+.timeline-image img {
+    width: 100%;
+    display: block;
+    transition: all 0.5s ease;
+}
+
+.timeline-event-content:hover .timeline-image {
+    border-color: var(--royal-gold);
+}
+
+.timeline-event-content:hover .timeline-image img {
+    transform: scale(1.05);
+}
+
+/* 
+Monarch Break Styling
+*/
+.timeline-break {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    margin: 4rem 0;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 1s ease, transform 1s ease;
+    z-index: 10;
+    clear: both;
+}
+
+.timeline-break.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.timeline-break-content {
+    display: inline-block;
+    padding: 1.5rem 3rem;
+    position: relative;
+    border-radius: 8px;
+    max-width: 80%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+}
+
+.timeline-break.reign-beginning .timeline-break-content {
+    background: var(--reign-beginning);
+    border: 2px solid var(--royal-gold);
+}
+
+.timeline-break.reign-end .timeline-break-content {
+    background: var(--reign-end);
+    border: 2px solid var(--crimson-blood);
+}
+
+.timeline-break .crown-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+.timeline-break.reign-beginning .crown-icon {
+    color: var(--royal-gold);
+}
+
+.timeline-break.reign-end .crown-icon {
+    color: var(--divine-light-white);
+}
+
+.timeline-break h3 {
+    font-family: var(--font-titles);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--divine-light-white);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.timeline-break .timeline-year {
+    font-family: var(--font-headers);
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* 
+Era Color Coding (subtle highlighting)
+*/
+.timeline-event[data-era="founding-era"] .timeline-event-content {
+    border-left: 5px solid var(--era-founding);
+}
+
+.timeline-event[data-era="golden-age"] .timeline-event-content {
+    border-left: 5px solid var(--era-golden-age);
+}
+
+.timeline-event[data-era="dark-times"] .timeline-event-content {
+    border-left: 5px solid var(--era-dark-times);
+}
+
+.timeline-event[data-era="restoration"] .timeline-event-content {
+    border-left: 5px solid var(--era-restoration);
+}
+
+.timeline-event[data-era="present"] .timeline-event-content {
+    border-left: 5px solid var(--era-present);
+}
+
+/* 
+Loading Indicators
+*/
+.loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    color: var(--royal-gold-light);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.loading-indicator.active {
+    opacity: 1;
+}
+
+.spinner-d20 {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 1rem;
+    position: relative;
+}
+
+.spinner-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid rgba(212, 175, 55, 0.2);
+    border-top-color: var(--royal-gold);
+    animation: spin 1.5s ease-in-out infinite;
+}
+
+.top-loader {
+    margin-bottom: 2rem;
+}
+
+.bottom-loader {
+    margin-top: 2rem;
+}
+
+/* 
+No Results Message
+*/
+.no-results-message {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border: 1px solid var(--timeline-event-border);
+    margin: 2rem auto;
+    max-width: 500px;
+}
+
+.no-results-message i {
+    font-size: 3rem;
+    color: var(--royal-gold);
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.no-results-message h3 {
+    color: var(--divine-light-white);
+    margin-bottom: 1rem;
+}
+
+.no-results-message p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+}
+
+.clear-search-btn {
+    background: var(--gradient-blue);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    font-family: var(--font-headers);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clear-search-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 
+Responsive Adjustments
+*/
+@media (max-width: 992px) {
+    .timeline-center-line {
+        left: 50px;
+    }
+    
+    .timeline-event.right,
+    .timeline-event.left {
+        float: none;
+        padding-left: 80px;
+        padding-right: 20px;
+        text-align: left;
+    }
+    
+    .timeline-event.left .timeline-event-content::after,
+    .timeline-event.right .timeline-event-content::after {
+        left: -40px;
+    }
+    
+    .timeline-event.left .timeline-event-content::before,
+    .timeline-event.right .timeline-event-content::before {
+        left: -20px;
+        right: auto;
+        border-right-color: var(--timeline-event-border);
+        border-left-color: transparent;
+    }
+    
+    .timeline-event.left .timeline-title:after {
+        left: 0;
+        right: auto;
+    }
+    
+    .timeline-event.left .timeline-location i {
+        margin-right: 5px;
+        margin-left: 0;
+    }
+    
+    .timeline-controls .container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .era-navigation {
+        justify-content: center;
+    }
+    
+    .timeline-search {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .timeline-search input {
+        width: 100%;
+    }
+    
+    .timeline-search input:focus {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .timeline-center-line {
+        left: 20px;
+    }
+    
+    .timeline-event.right,
+    .timeline-event.left {
+        padding-left: 50px;
+    }
+    
+    .timeline-event.left .timeline-event-content::after,
+    .timeline-event.right .timeline-event-content::after {
+        left: -30px;
+    }
+    
+    .era-button {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.7rem;
+    }
+    
+    .timeline-break-content {
+        padding: 1rem;
+        max-width: 90%;
+    }
+    
+    .timeline-break h3 {
+        font-size: 1.4rem;
+    }
+}
+
+/* Animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Update footer positioning */
+.royal-footer {
+    margin-top: auto; /* Push to bottom */
+    width: 100%;
+    background: var(--gradient-dark);
+    border-top: 1px solid var(--royal-gold);
+}
