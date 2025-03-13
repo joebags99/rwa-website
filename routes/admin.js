@@ -61,29 +61,31 @@ module.exports = function(app) {
     // Add session support
     app.use(session({
         secret: process.env.SESSION_SECRET || 'crimson-court-secret',
-        resave: true,                // Changed back to true to ensure session is saved
+        resave: false,
         saveUninitialized: false,
         cookie: { 
-            secure: false,           // Only use true in production with HTTPS
+            secure: false,            // Set to true in production with HTTPS
             httpOnly: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
             path: '/'
         },
-        rolling: true                // Reset expiration on each request
+        rolling: true               // Reset expiration on each request
     }));
 
 // Session refresh endpoint
 router.post('/api/refresh-token', requireAuth, (req, res) => {
-    // Explicitly touch the session to update its expiry
-    req.session.touch();
+    console.log('Token refresh requested');
     
-    // Save the session explicitly
+    // Update session expiration
+    req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+    
     req.session.save((err) => {
         if (err) {
-            console.error('Error saving session:', err);
+            console.error('Session save error:', err);
             return res.status(500).json({ error: 'Failed to refresh session' });
         }
         
+        console.log('Session refreshed successfully');
         res.json({ 
             success: true, 
             message: 'Session refreshed successfully',
