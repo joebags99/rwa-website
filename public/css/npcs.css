@@ -269,22 +269,6 @@ NPC CARD STYLING
     }
 }
 
-/* Alternate card layout (every even card) */
-.npc-card:nth-child(even) {
-    grid-template-columns: 3fr 2fr;
-    animation-delay: 0.2s;
-}
-
-.npc-card:nth-child(even) .npc-portrait {
-    grid-column: 2;
-    grid-row: 1;
-}
-
-.npc-card:nth-child(even) .npc-details {
-    grid-column: 1;
-    grid-row: 1;
-}
-
 .npc-card::before {
     content: '';
     position: absolute;

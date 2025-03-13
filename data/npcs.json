@@ -14,7 +14,7 @@
       ],
       "imageSrc": "assets/images/npcs/default.jpg",
       "createdAt": "2025-03-13T10:18:27.399Z",
-      "updatedAt": "2025-03-13T10:40:05.215Z"
+      "updatedAt": "2025-03-13T11:10:55.861Z"
     },
     {
       "id": "1741862919977",
@@ -28,11 +28,11 @@
       "tags": [
         "ederian",
         "nobility",
-        "house astralor"
+        "house-astralor"
       ],
       "imageSrc": "https://assets.legendkeeper.com/54e2cefd-58dd-4b5a-9918-169d89f337f2.png",
       "createdAt": "2025-03-13T10:48:39.977Z",
-      "updatedAt": "2025-03-13T10:50:04.172Z"
+      "updatedAt": "2025-03-13T11:00:56.116Z"
     }
   ]
 }

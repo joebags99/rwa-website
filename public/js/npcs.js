@@ -35,11 +35,11 @@ function initNPCPage() {
     setupCategoryFilters();
     setupTagFilters();
     
-    // Add example NPCs to the page
-    /*addExampleNPCs();*/
-    
     // Create animation for each NPC card
     animateNPCCards();
+    
+    // Set initial alternating layout
+    updateAlternatingLayout();
     
     // Load ambient elements
     setupAmbientEffects();
@@ -248,6 +248,9 @@ function applyFilters() {
         } else if (noResultsMessage) {
             noResultsMessage.style.display = 'none';
         }
+        
+        // Update alternating layout after all filtering is done
+        updateAlternatingLayout();
     }, 50);
 }
 
@@ -381,6 +384,9 @@ async function fetchServerNPCs() {
                 }
             });
         });
+
+        // Apply initial alternating layout after NPCs are loaded
+        updateAlternatingLayout();
         
     } catch (error) {
         console.error('Error fetching NPCs from server:', error);
@@ -533,6 +539,54 @@ function animateNPCCards() {
     // Add staggered animation delay to each card
     npcCards.forEach((card, index) => {
         card.style.animationDelay = `${0.1 * index}s`;
+    });
+}
+
+/**
+ * Update alternating card layout after filtering
+ */
+function updateAlternatingLayout() {
+    // Get all visible NPC cards
+    const visibleCards = document.querySelectorAll('.npc-card:not(.filtered)');
+    
+    // Reset all cards to default layout
+    document.querySelectorAll('.npc-card').forEach(card => {
+        card.style.gridTemplateColumns = '2fr 3fr';
+        
+        const portrait = card.querySelector('.npc-portrait');
+        const details = card.querySelector('.npc-details');
+        
+        if (portrait) {
+            portrait.style.gridColumn = '1';
+            portrait.style.gridRow = '1';
+        }
+        
+        if (details) {
+            details.style.gridColumn = '2';
+            details.style.gridRow = '1';
+        }
+    });
+    
+    // Apply alternating layout to visible cards
+    visibleCards.forEach((card, index) => {
+        // Even indices (0, 2, 4, etc.) have default layout
+        // Odd indices (1, 3, 5, etc.) have flipped layout
+        if (index % 2 === 1) {
+            card.style.gridTemplateColumns = '3fr 2fr';
+            
+            const portrait = card.querySelector('.npc-portrait');
+            const details = card.querySelector('.npc-details');
+            
+            if (portrait) {
+                portrait.style.gridColumn = '2';
+                portrait.style.gridRow = '1';
+            }
+            
+            if (details) {
+                details.style.gridColumn = '1';
+                details.style.gridRow = '1';
+            }
+        }
     });
 }
 
