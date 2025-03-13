@@ -75,24 +75,34 @@ module.exports = function(app) {
     });
 
     // Admin login POST
-    router.post('/api/login', express.json(), (req, res) => {
-        const { username, password } = req.body;
+router.post('/api/login', express.json(), (req, res) => {
+    console.log('Login attempt received:', req.body);
+    
+    const { username, password } = req.body;
+    
+    try {
+        console.log('Reading admin config file...');
+        const adminConfig = JSON.parse(fs.readFileSync(ADMIN_CONFIG_FILE, 'utf8'));
+        console.log('Admin config loaded, username:', adminConfig.username);
         
-        try {
-            const adminConfig = JSON.parse(fs.readFileSync(ADMIN_CONFIG_FILE, 'utf8'));
-            
-            if (username === adminConfig.username && bcrypt.compareSync(password, adminConfig.passwordHash)) {
-                req.session.authenticated = true;
-                req.session.username = username;
-                return res.json({ success: true });
-            }
-            
-            res.status(401).json({ error: 'Invalid credentials' });
-        } catch (error) {
-            console.error('Login error:', error);
-            res.status(500).json({ error: 'Server error' });
+        console.log('Comparing credentials...');
+        const passwordMatch = bcrypt.compareSync(password, adminConfig.passwordHash);
+        console.log('Password match result:', passwordMatch);
+        
+        if (username === adminConfig.username && passwordMatch) {
+            console.log('Login successful');
+            req.session.authenticated = true;
+            req.session.username = username;
+            return res.json({ success: true });
         }
-    });
+        
+        console.log('Invalid credentials');
+        res.status(401).json({ error: 'Invalid credentials' });
+    } catch (error) {
+        console.error('Login error details:', error);
+        res.status(500).json({ error: 'Server error: ' + error.message });
+    }
+});
 
     // Admin logout
     router.get('/logout', (req, res) => {
