@@ -13,7 +13,26 @@
         "test"
       ],
       "imageSrc": "assets/images/npcs/default.jpg",
-      "createdAt": "2025-03-13T10:18:27.399Z"
+      "createdAt": "2025-03-13T10:18:27.399Z",
+      "updatedAt": "2025-03-13T10:40:05.215Z"
+    },
+    {
+      "id": "1741862919977",
+      "name": "Lady Selara Astralor",
+      "importance": 2,
+      "appearance": "Prologue",
+      "relationship": "friendly",
+      "category": "royal",
+      "description": "An Arkan with luminous deep blue eyes and chitinous silver-white skin. Slender and graceful, Lady Selara’s warmth and empathy stand in place of martial prowess. She is betrothed to Marik Veltaris-Falkrest, offering her heartfelt support from the sidelines rather than on the battlefield. As a devoted follower of Serenya and Seraphis, her healing talents extend beyond traditional magic—she has pioneered a new method of blending Ryanite with living tissue to create bio-enhanced prosthetics.",
+      "quote": "“Peace is not surrender; it is the choice to heal rather than to harm, even when the world tempts you otherwise.”",
+      "tags": [
+        "ederian",
+        "nobility",
+        "house astralor"
+      ],
+      "imageSrc": "https://assets.legendkeeper.com/54e2cefd-58dd-4b5a-9918-169d89f337f2.png",
+      "createdAt": "2025-03-13T10:48:39.977Z",
+      "updatedAt": "2025-03-13T10:50:04.172Z"
     }
   ]
 }

@@ -28,12 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
 function initNPCPage() {
     console.log('Initializing NPC Page...');
     
+    // First, fetch NPCs from server
+    fetchServerNPCs();
+
     // Initialize filters
     setupCategoryFilters();
     setupTagFilters();
     
     // Add example NPCs to the page
-    addExampleNPCs();
+    /*addExampleNPCs();*/
     
     // Create animation for each NPC card
     animateNPCCards();
@@ -278,93 +281,107 @@ function initNPCPage() {
  */
 async function fetchServerNPCs() {
     try {
+        // Clear any loading indicators
+        const loadingIndicator = document.querySelector('.loading-indicator');
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+        
+        // Fetch NPCs from server
+        console.log('Fetching NPCs from server...');
         const response = await fetch('/api/npcs');
-        if (!response.ok) {
-            throw new Error('Failed to fetch NPCs from server');
-        }
-        
         const npcs = await response.json();
-        console.log('Fetched NPCs from server:', npcs);
         
-        if (npcs && npcs.length > 0) {
-            // Get NPC list container
-            const npcList = document.querySelector('.npc-list');
-            
-            // Get template
-            const template = document.getElementById('npc-card-template');
-            
-            // Skip if template or container doesn't exist
-            if (!template || !npcList) {
-                console.error('Template or NPC list container not found');
-                return;
-            }
-            
-            // Add each NPC
-            npcs.forEach(npc => {
-                // Clone template
-                const npcCard = template.content.cloneNode(true);
-                
-                // Set category and tags
-                npcCard.querySelector('.npc-card').setAttribute('data-category', npc.category);
-                npcCard.querySelector('.npc-card').setAttribute('data-tags', npc.tags.join(','));
-                
-                // Set portrait image
-                const portraitImg = npcCard.querySelector('.portrait-frame img');
-                portraitImg.src = npc.imageSrc || 'assets/images/npcs/default.jpg';
-                portraitImg.alt = npc.name;
-                
-                // Set name and title
-                npcCard.querySelector('.npc-name').textContent = npc.name;
-                
-                // Set importance stars
-                const starsContainer = npcCard.querySelector('.importance-stars');
-                for (let i = 0; i < 3; i++) {
-                    const star = document.createElement('i');
-                    star.className = i < npc.importance ? 'fas fa-star' : 'far fa-star';
-                    starsContainer.appendChild(star);
-                }
-                
-                // Set first appearance
-                npcCard.querySelector('.appearance-value').textContent = npc.appearance;
-                
-                // Set relationship
-                const relationElement = npcCard.querySelector('.relation-value');
-                relationElement.textContent = npc.relationship.charAt(0).toUpperCase() + npc.relationship.slice(1);
-                relationElement.className = `relation-value relation-${npc.relationship}`;
-                
-                // Set description
-                npcCard.querySelector('.npc-description').innerHTML = `<p>${npc.description}</p>`;
-                
-                // Set quote
-                npcCard.querySelector('blockquote').textContent = npc.quote;
-                
-                // Set tags
-                const tagsContainer = npcCard.querySelector('.npc-tags');
-                npc.tags.forEach(tag => {
-                    const tagElement = document.createElement('span');
-                    tagElement.className = 'tag';
-                    tagElement.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
-                    tagsContainer.appendChild(tag);
-                });
-                
-                // Add to NPC list
-                npcList.appendChild(npcCard);
-            });
-            
-            // Add click handlers to all NPC tags
-            document.querySelectorAll('.npc-tags .tag').forEach(tag => {
-                tag.addEventListener('click', function() {
-                    const tagText = this.textContent.toLowerCase();
-                    const tagValue = tagText.replace(/\s+/g, '-');
-                    
-                    // Find and click the corresponding tag button
-                    const tagBtn = document.querySelector(`.tag-btn[data-tag="${tagValue}"]`);
-                    if (tagBtn && !tagBtn.classList.contains('active')) {
-                        tagBtn.click();
-                    }
-                });
-            });
+        console.log('Received NPCs from server:', npcs);
+        
+        // Exit if no NPCs found
+        if (!npcs || npcs.length === 0) {
+            console.log('No NPCs found on server');
+            return;
         }
+        
+        // Get NPC list container
+        const npcList = document.querySelector('.npc-list');
+        if (!npcList) {
+            console.error('NPC list container not found');
+            return;
+        }
+        
+        // Loop through each NPC and create HTML manually
+        npcs.forEach(npc => {
+            // Create a new NPC card element
+            const npcCard = document.createElement('div');
+            npcCard.className = 'npc-card';
+            npcCard.setAttribute('data-category', npc.category || 'unknown');
+            npcCard.setAttribute('data-tags', Array.isArray(npc.tags) ? npc.tags.join(',') : '');
+            
+            // Create HTML for the NPC
+            npcCard.innerHTML = `
+                <div class="npc-portrait">
+                    <div class="portrait-frame">
+                        <img src="${npc.imageSrc || 'assets/images/npcs/default.jpg'}" alt="${npc.name}">
+                        <div class="frame-ornament top-left"></div>
+                        <div class="frame-ornament top-right"></div>
+                        <div class="frame-ornament bottom-left"></div>
+                        <div class="frame-ornament bottom-right"></div>
+                    </div>
+                </div>
+                <div class="npc-details">
+                    <h2 class="npc-name">${npc.name}</h2>
+                    <div class="npc-importance">
+                        <span class="importance-label">Importance:</span>
+                        <span class="importance-stars">
+                            ${Array(3).fill().map((_, i) => 
+                                `<i class="${i < npc.importance ? 'fas' : 'far'} fa-star"></i>`
+                            ).join('')}
+                        </span>
+                    </div>
+                    <div class="npc-meta">
+                        <div class="npc-appearance">
+                            <span class="meta-label">First Appearance:</span>
+                            <span class="appearance-value">${npc.appearance || 'Unknown'}</span>
+                        </div>
+                        <div class="npc-relation">
+                            <span class="meta-label">Relationship:</span>
+                            <span class="relation-value relation-${npc.relationship || 'neutral'}">${
+                                (npc.relationship || 'Neutral').charAt(0).toUpperCase() + 
+                                (npc.relationship || 'neutral').slice(1)
+                            }</span>
+                        </div>
+                    </div>
+                    <div class="npc-description">
+                        <p>${npc.description || 'No description available.'}</p>
+                    </div>
+                    <div class="npc-quote">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <blockquote>${npc.quote || 'No memorable quote recorded.'}</blockquote>
+                        <i class="fas fa-quote-right quote-icon"></i>
+                    </div>
+                    <div class="npc-tags">
+                        ${Array.isArray(npc.tags) ? npc.tags.map(tag => 
+                            `<span class="tag">${tag.charAt(0).toUpperCase() + tag.slice(1)}</span>`
+                        ).join('') : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Add to the beginning of the list (before existing examples)
+            npcList.insertBefore(npcCard, npcList.firstChild);
+            
+            console.log(`Added NPC: ${npc.name}`);
+        });
+        
+        // Add click handlers to all NPC tags
+        document.querySelectorAll('.npc-tags .tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const tagText = this.textContent.toLowerCase();
+                const tagValue = tagText.replace(/\s+/g, '-');
+                
+                const tagBtn = document.querySelector(`.tag-btn[data-tag="${tagValue}"]`);
+                if (tagBtn && !tagBtn.classList.contains('active')) {
+                    tagBtn.click();
+                }
+            });
+        });
+        
     } catch (error) {
         console.error('Error fetching NPCs from server:', error);
     }
