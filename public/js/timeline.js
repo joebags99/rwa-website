@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Start fade out
             preloader.classList.add('fade-out');
             
-            // After preloader starts fading
+            // In timeline.js, increase the timeout to allow smoother transition
             setTimeout(() => {
                 // Hide preloader
                 preloader.style.display = 'none';
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Initialize Timeline
                 Timeline.init();
-            }, 600);
+            }, 800); // Increased from 600ms
         }
     });
 

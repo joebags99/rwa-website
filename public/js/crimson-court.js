@@ -204,6 +204,18 @@ function createEmbers() {
 function startCrimsonTransition(preloader) {
     console.log('Starting Crimson Court transition...');
     
+        // Check for excluded pages
+        const isTimelinePage = document.body.classList.contains('timeline-page');
+        const isHeirsPage = document.body.classList.contains('heirs-page');
+        const isStoryPage = document.body.classList.contains('story-page');
+        
+        // Skip burn effect for excluded pages
+        if (isTimelinePage || isHeirsPage || isStoryPage) {
+            console.log('Using simplified transition for special page...');
+            performSimpleTransition(preloader);
+            return;
+        }
+
     // Get transition elements
     const overlay = document.querySelector('.transition-overlay');
     const burnEffect = document.querySelector('.burn-effect');
@@ -282,6 +294,42 @@ function startCrimsonTransition(preloader) {
             }, 1000);
         }, 1000);
     }, 100);
+}
+
+/**
+ * Perform a simplified transition without burn effect
+ * @param {HTMLElement} preloader - The preloader element to hide
+ */
+function performSimpleTransition(preloader) {
+    const body = document.body;
+    
+    // Make sure portals are prepared
+    ensurePortalsVisible();
+    
+    // Update loading text
+    if (preloader) {
+        const loadingText = preloader.querySelector('.loading-text');
+        if (loadingText) {
+            loadingText.textContent = "The court awaits...";
+        }
+    }
+    
+    // Simple fade-in transition with shorter timings
+    setTimeout(() => {
+        // Add active class to show content
+        body.classList.add('court-portal-active');
+        document.documentElement.scrollTop = 0; // Scroll to top
+        
+        // Fade out preloader after a short delay
+        setTimeout(() => {
+            if (preloader) {
+                preloader.classList.add('fade-out');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 800);
+            }
+        }, 500);
+    }, 300);
 }
 
 /**
