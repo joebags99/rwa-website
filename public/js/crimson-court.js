@@ -13,6 +13,35 @@
 // INITIALIZATION AND EVENT LISTENERS
 //==============================================================================
 
+// Immediately check if we're on a special page that should use its own transition
+if (document.body.classList.contains('timeline-page') || 
+    document.body.classList.contains('heirs-page') || 
+    document.body.classList.contains('story-page')) {
+    console.log('Special page detected, disabling crimson-court.js transitions');
+    
+    // Replace the original event handlers with empty ones
+    const originalAddEventListener = window.addEventListener;
+    window.addEventListener = function(type, listener, options) {
+        // Block load event handlers from crimson-court.js
+        if (type === 'load' && !listener.toString().includes('timeline')) {
+            console.log('Blocked crimson-court.js load handler on special page');
+            return;
+        }
+        return originalAddEventListener.call(window, type, listener, options);
+    };
+    
+    // Also override the initialization function to do nothing
+    window.initCrimsonCourt = function() {
+        console.log('Crimson Court initialization bypassed for special page');
+        return; // Do nothing
+    };
+    
+    window.startCrimsonTransition = function() {
+        console.log('Crimson Court transition bypassed for special page');
+        return; // Do nothing
+    };
+}
+
 /**
  * Initialize when DOM is loaded
  */
@@ -28,6 +57,13 @@ document.addEventListener('DOMContentLoaded', function() {
  * Override default preloader behavior for Crimson Court page
  */
 window.addEventListener('load', function(e) {
+    // Skip for timeline, heirs, and story pages
+    if (document.body.classList.contains('timeline-page') ||
+        document.body.classList.contains('heirs-page') ||
+        document.body.classList.contains('story-page')) {
+        return;
+    }
+    
     // Only for Crimson Court page
     if (document.body.classList.contains('crimson-court-page')) {
         const preloader = document.querySelector('.preloader');
@@ -45,7 +81,18 @@ window.addEventListener('load', function(e) {
 /**
  * Initialize the Crimson Court portal
  */
+/**
+ * Initialize the Crimson Court portal
+ */
 function initCrimsonCourt() {
+    // Skip for timeline, heirs, and story pages as they have their own initialization
+    if (document.body.classList.contains('timeline-page') || 
+        document.body.classList.contains('heirs-page') || 
+        document.body.classList.contains('story-page')) {
+        console.log('Skipping Crimson Court initialization for special page');
+        return;
+    }
+
     // Get preloader element
     const preloader = document.querySelector('.preloader');
     const loadingDuration = 2000; // 2 seconds of loading before burn effect
