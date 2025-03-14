@@ -555,7 +555,9 @@ const Timeline = {
                 breakType: 'reign-beginning',
                 title: 'Beginning of the Reign of King Talon Falkrest',
                 year: 845,
-                era: 'restoration'
+                month: 3,
+                day: 12,
+                era: 'silent-war'  // Changed from 'restoration'
             },
             {
                 id: '1',
@@ -563,20 +565,19 @@ const Timeline = {
                 title: 'The Coronation of King Talon',
                 year: 845,
                 month: 3,
+                day: 12,
                 location: 'Crimson Keep, Ederia',
                 description: '<p>Following the tragic death of King Aldric in the Battle of Blackwater Marsh, his son Talon Falkrest was crowned the new king of Ederia. The young prince, only 25 years of age, took on the mantle of leadership during one of the kingdom\'s darkest hours.</p>',
                 image: 'assets/images/timeline/coronation.jpg',
-                era: 'restoration'
+                era: 'silent-war'  // Changed from 'restoration'
             },
-            // Rest of the sample data would be here
-            // I've removed the additional items for brevity
             {
                 id: 'break-4',
                 type: 'reign-break',
                 breakType: 'reign-beginning',
                 title: 'Beginning of the Reign of Lord Edric Falkrest',
                 year: 780,
-                era: 'founding-era'
+                era: 'age-of-chains'  // Changed from 'founding-era'
             }
         ];
     }

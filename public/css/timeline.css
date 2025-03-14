@@ -16,12 +16,12 @@ Timeline Color Scheme Variables
     --timeline-event-border: rgba(212, 175, 55, 0.3);
     --timeline-event-hover-border: var(--royal-gold);
     
-    /* Era Colors */
-    --era-founding: rgba(0, 78, 56, 0.7);      /* Deep Green */
-    --era-golden-age: rgba(212, 175, 55, 0.7); /* Gold */
-    --era-dark-times: rgba(86, 0, 0, 0.7);     /* Dark Red */
-    --era-restoration: rgba(11, 42, 169, 0.7); /* Royal Blue */
-    --era-present: rgba(127, 14, 189, 0.7);    /* Royal Purple */
+    /* Era Colors - Updated */
+    --era-age-of-chains: rgba(0, 78, 56, 0.7);      /* Deep Green */
+    --era-arcane-reckoning: rgba(212, 175, 55, 0.7); /* Gold */
+    --era-broken-sun: rgba(86, 0, 0, 0.7);     /* Dark Red */
+    --era-silent-war: rgba(11, 42, 169, 0.7); /* Royal Blue */
+    --era-uncertainty: rgba(127, 14, 189, 0.7);    /* Royal Purple */
     
     /* Reign Colors */
     --reign-beginning: linear-gradient(135deg, var(--royal-gold-light), var(--royal-gold));
@@ -327,8 +327,55 @@ Timeline Events
     font-weight: bold;
 }
 
+.timeline-day {
+    font-weight: normal;
+    margin-right: 5px;
+}
+
 .timeline-year {
     font-style: italic;
+}
+
+/* Reign break specific date styling */
+.timeline-break .timeline-date {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(212, 175, 55, 0.5);
+    padding: 0.5rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 1.1rem;
+}
+
+.timeline-break .timeline-month {
+    color: var(--divine-light-white);
+    margin-right: 3px;
+}
+
+.timeline-break .timeline-day {
+    color: var(--divine-light-white);
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.timeline-break .timeline-year {
+    color: var(--royal-gold);
+    font-weight: bold;
+}
+
+/* Event specific date styling */
+.timeline-event .timeline-date {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.timeline-event .timeline-month {
+    color: var(--royal-gold-light);
+}
+
+.timeline-event .timeline-day {
+    color: var(--royal-gold-light);
+}
+
+.timeline-event .timeline-year {
+    color: var(--royal-gold);
 }
 
 /* Event Title */
@@ -481,24 +528,24 @@ Monarch Break Styling
 /* 
 Era Color Coding (subtle highlighting)
 */
-.timeline-event[data-era="founding-era"] .timeline-event-content {
-    border-left: 5px solid var(--era-founding);
+.timeline-event[data-era="age-of-chains"] .timeline-event-content {
+    border-left: 5px solid var(--era-age-of-chains);
 }
 
-.timeline-event[data-era="golden-age"] .timeline-event-content {
-    border-left: 5px solid var(--era-golden-age);
+.timeline-event[data-era="arcane-reckoning"] .timeline-event-content {
+    border-left: 5px solid var(--era-arcane-reckoning);
 }
 
-.timeline-event[data-era="dark-times"] .timeline-event-content {
-    border-left: 5px solid var(--era-dark-times);
+.timeline-event[data-era="broken-sun"] .timeline-event-content {
+    border-left: 5px solid var(--era-broken-sun);
 }
 
-.timeline-event[data-era="restoration"] .timeline-event-content {
-    border-left: 5px solid var(--era-restoration);
+.timeline-event[data-era="silent-war"] .timeline-event-content {
+    border-left: 5px solid var(--era-silent-war);
 }
 
-.timeline-event[data-era="present"] .timeline-event-content {
-    border-left: 5px solid var(--era-present);
+.timeline-event[data-era="uncertainty"] .timeline-event-content {
+    border-left: 5px solid var(--era-uncertainty);
 }
 
 /* 

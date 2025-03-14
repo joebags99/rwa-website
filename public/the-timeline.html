@@ -57,11 +57,11 @@
             <div class="container">
                 <div class="era-navigation">
                     <button class="era-button active" data-era="">All Eras</button>
-                    <button class="era-button" data-era="founding-era">Founding Era</button>
-                    <button class="era-button" data-era="golden-age">Golden Age</button>
-                    <button class="era-button" data-era="dark-times">Dark Times</button>
-                    <button class="era-button" data-era="restoration">Restoration</button>
-                    <button class="era-button" data-era="present">Present Day</button>
+                    <button class="era-button" data-era="age-of-chains">The Age of Chains</button>
+                    <button class="era-button" data-era="arcane-reckoning">The Age of Arcane Reckoning</button>
+                    <button class="era-button" data-era="broken-sun">The Age of the Broken Sun</button>
+                    <button class="era-button" data-era="silent-war">The Age of Silent War</button>
+                    <button class="era-button" data-era="uncertainty">The Age of Uncertainty</button>
                 </div>
                 <div class="timeline-search">
                     <input type="text" id="timeline-search" placeholder="Search historical events...">
@@ -105,7 +105,8 @@
                     <div class="timeline-event" data-year="" data-month="" data-era="">
                         <div class="timeline-event-content">
                             <div class="timeline-date">
-                                <span class="timeline-month"></span>
+                                <span class="timeline-day"></span>
+                                <span class="timeline-month"></span>,
                                 <span class="timeline-year"></span>
                             </div>
                             <h3 class="timeline-title"></h3>
@@ -126,7 +127,11 @@
                         <div class="timeline-break-content">
                             <div class="crown-icon"><i class="fas fa-crown"></i></div>
                             <h3></h3>
-                            <div class="timeline-year"></div>
+                            <div class="timeline-date">
+                                <span class="timeline-month"></span>
+                                <span class="timeline-day"></span>,
+                                <span class="timeline-year"></span>
+                            </div>
                         </div>
                     </div>
                 </template>
