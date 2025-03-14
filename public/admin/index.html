@@ -38,7 +38,7 @@
                     <li data-section="npcs">
                         <a href="#npcs"><i class="fas fa-users"></i> NPCs</a>
                     </li>
-                    <li data-section="timeline" class="disabled">
+                    <li data-section="timeline">
                         <a href="#timeline"><i class="fas fa-hourglass-half"></i> Timeline</a>
                     </li>
                     <li data-section="story" class="disabled">
@@ -96,36 +96,36 @@
                         </div>
                     </div>
                         
-                    <div class="stat-card disabled">
+                    <div class="stat-card" onclick="window.location.href='#timeline'" style="cursor: pointer;">
                         <div class="stat-icon">
                             <i class="fas fa-hourglass-half"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>Timeline Events</h3>
+                            <h3>Timeline Entries</h3>
+                            <p class="stat-count" id="timeline-count">0</p>
+                        </div>
+                    </div>
+                        
+                    <div class="stat-card disabled">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Story Entries</h3>
                             <p class="stat-count">Coming Soon</p>
                         </div>
                     </div>
-                        
-                        <div class="stat-card disabled">
-                            <div class="stat-icon">
-                                <i class="fas fa-book-open"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>Story Entries</h3>
-                                <p class="stat-count">Coming Soon</p>
-                            </div>
+                    
+                    <div class="stat-card disabled">
+                        <div class="stat-icon">
+                            <i class="fas fa-dungeon"></i>
                         </div>
-                        
-                        <div class="stat-card disabled">
-                            <div class="stat-icon">
-                                <i class="fas fa-dungeon"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>DM Advice Posts</h3>
-                                <p class="stat-count">Coming Soon</p>
-                            </div>
+                        <div class="stat-info">
+                            <h3>DM Advice Posts</h3>
+                            <p class="stat-count">Coming Soon</p>
                         </div>
                     </div>
+                </div>
                     
                     <div class="quick-access">
                         <div class="section-header">
@@ -136,7 +136,7 @@
                             <a href="#npcs" class="btn btn-primary" data-target="npcs">
                                 <i class="fas fa-plus"></i> Create New NPC
                             </a>
-                            <a href="#timeline" class="btn btn-secondary disabled">
+                            <a href="#timeline" class="btn btn-primary" data-target="timeline">
                                 <i class="fas fa-plus"></i> Add Timeline Event
                             </a>
                             <a href="#story" class="btn btn-secondary disabled">
@@ -214,17 +214,186 @@
                 </section>
                 
                 <!-- Timeline Section -->
-                <section id="timeline-section" class="content-section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-hourglass-half"></i> Timeline</h2>
+ <!-- Timeline Section (Updated from "Coming Soon") -->
+ <section id="timeline-section" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-hourglass-half"></i> Timeline Management</h2>
+        <div class="section-actions">
+            <div class="action-dropdown">
+                <button class="btn btn-primary" id="create-timeline-btn">
+                    <i class="fas fa-plus"></i> Add Timeline Entry
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#" id="create-event-btn">
+                        <i class="fas fa-calendar-day"></i> Regular Event
+                    </a>
+                    <a href="#" id="create-reign-btn">
+                        <i class="fas fa-crown"></i> Reign Change
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="search-filter">
+        <div class="search-bar">
+            <form autocomplete="off" onsubmit="return false;">
+                <i class="fas fa-search"></i>
+                <input type="search" 
+                    id="timeline-search" 
+                    placeholder="Search timeline entries..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </form>
+        </div>
+        
+        <div class="filter-options">
+            <select id="era-filter">
+                <option value="">All Eras</option>
+                <option value="age-of-chains">The Age of Chains</option>
+                <option value="arcane-reckoning">The Age of Arcane Reckoning</option>
+                <option value="broken-sun">The Age of the Broken Sun</option>
+                <option value="silent-war">The Age of Silent War</option>
+                <option value="uncertainty">The Age of Uncertainty</option>
+            </select>
+            
+            <select id="type-filter">
+                <option value="">All Types</option>
+                <option value="event">Regular Events</option>
+                <option value="reign-break">Reign Changes</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="item-list timeline-list" id="timeline-list">
+        <div class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading timeline entries...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Event Modal -->
+<div class="modal" id="timeline-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="timeline-modal-title">Add Timeline Event</h2>
+                <button class="close-btn" id="close-timeline-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="timeline-form">
+                    <input type="hidden" id="timeline-id">
+                    <input type="hidden" id="timeline-type" value="event">
+                    
+                    <!-- Common Fields -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeline-title">Event Title</label>
+                            <input type="text" id="timeline-title" class="form-control" required>
+                        </div>
                     </div>
                     
-                    <div class="coming-soon">
-                        <i class="fas fa-clock"></i>
-                        <h3>Coming Soon</h3>
-                        <p>The Timeline management feature is under development and will be available soon.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeline-era">Era</label>
+                            <select id="timeline-era" class="form-control" required>
+                                <option value="age-of-chains">The Age of Chains</option>
+                                <option value="arcane-reckoning">The Age of Arcane Reckoning</option>
+                                <option value="broken-sun">The Age of the Broken Sun</option>
+                                <option value="silent-war">The Age of Silent War</option>
+                                <option value="uncertainty">The Age of Uncertainty</option>
+                            </select>
+                        </div>
                     </div>
-                </section>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeline-year">Year (A.E.)</label>
+                            <input type="number" id="timeline-year" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-month">Month</label>
+                            <select id="timeline-month" class="form-control">
+                                <option value="">-- Select Month --</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-day">Day</label>
+                            <input type="number" id="timeline-day" class="form-control" min="1" max="31">
+                        </div>
+                    </div>
+                    
+                    <!-- Event-specific Fields -->
+                    <div id="event-fields">
+                        <div class="form-group">
+                            <label for="timeline-location">Location</label>
+                            <input type="text" id="timeline-location" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-description">Description</label>
+                            <textarea id="timeline-description" class="form-control" rows="5" required></textarea>
+                            <small>HTML is supported. Use &lt;p&gt; tags for paragraphs.</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-image">Image URL</label>
+                            <input type="text" id="timeline-image" class="form-control">
+                            <small>URL to event image (leave blank if none)</small>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="timeline-position">Position</label>
+                                <select id="timeline-position" class="form-control">
+                                    <option value="">Auto (alternating)</option>
+                                    <option value="left">Left</option>
+                                    <option value="right">Right</option>
+                                </select>
+                                <small>Timeline position (default: alternating)</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reign Break-specific Fields -->
+                    <div id="reign-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="timeline-break-type">Reign Change Type</label>
+                            <select id="timeline-break-type" class="form-control" required>
+                                <option value="reign-beginning">Beginning of Reign</option>
+                                <option value="reign-end">End of Reign</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-timeline">Cancel</button>
+                <button class="btn btn-primary" id="save-timeline">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
                 
                 <!-- Story Section -->
                 <section id="story-section" class="content-section">

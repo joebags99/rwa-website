@@ -243,9 +243,55 @@ const Timeline = {
 
     // Filter events based on current state
     filterEvents: function() {
-        // In a real implementation, this would call the server
-        // For now, we'll simulate with our dummy data
-        this.loadInitialEvents();
+        let filteredEvents = this.state.cachedEvents.filter(event => {
+            // Era filter
+            if (this.state.currentEra && event.era !== this.state.currentEra) {
+                return false;
+            }
+            
+            // Search filter
+            if (this.state.searchTerm) {
+                const searchTerm = this.state.searchTerm.toLowerCase();
+                return (
+                    event.title.toLowerCase().includes(searchTerm) ||
+                    (event.description && event.description.toLowerCase().includes(searchTerm)) ||
+                    (event.location && event.location.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            return true;
+        });
+
+        // Sort by year, month, day
+        filteredEvents.sort((a, b) => {
+            // Primary sort by year
+            if (a.year !== b.year) {
+                return a.year - b.year;
+            }
+            
+            // Secondary sort by month
+            const monthA = a.month || 0;
+            const monthB = b.month || 0;
+            if (monthA !== monthB) {
+                return monthA - monthB;
+            }
+            
+            // Tertiary sort by day
+            const dayA = a.day || 0; 
+            const dayB = b.day || 0;
+            if (dayA !== dayB) {
+                return dayA - dayB;
+            }
+            
+            // Reign breaks come first
+            if (a.type !== b.type) {
+                return a.type === 'reign-break' ? -1 : 1;
+            }
+            
+            return 0;
+        });
+
+        return filteredEvents;
     },
 
     // Load initial events
@@ -557,7 +603,7 @@ const Timeline = {
                 year: 845,
                 month: 3,
                 day: 12,
-                era: 'silent-war'  // Changed from 'restoration'
+                era: 'silent-war'  // Updated from 'restoration'
             },
             {
                 id: '1',
@@ -569,7 +615,7 @@ const Timeline = {
                 location: 'Crimson Keep, Ederia',
                 description: '<p>Following the tragic death of King Aldric in the Battle of Blackwater Marsh, his son Talon Falkrest was crowned the new king of Ederia. The young prince, only 25 years of age, took on the mantle of leadership during one of the kingdom\'s darkest hours.</p>',
                 image: 'assets/images/timeline/coronation.jpg',
-                era: 'silent-war'  // Changed from 'restoration'
+                era: 'silent-war'  // Updated from 'restoration'
             },
             {
                 id: 'break-4',
@@ -577,8 +623,17 @@ const Timeline = {
                 breakType: 'reign-beginning',
                 title: 'Beginning of the Reign of Lord Edric Falkrest',
                 year: 780,
-                era: 'age-of-chains'  // Changed from 'founding-era'
+                era: 'age-of-chains'  // Updated from 'founding'
             }
         ];
     }
+};
+
+// 1. Update the era mappings
+const eraMap = {
+    'age-of-chains': 'The Age of Chains',
+    'arcane-reckoning': 'The Arcane Reckoning',
+    'broken-sun': 'The Age of the Broken Sun', 
+    'silent-war': 'The Silent War',
+    'uncertainty': 'The Age of Uncertainty'
 };

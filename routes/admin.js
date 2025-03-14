@@ -319,6 +319,140 @@ router.post('/api/refresh-token', requireAuth, (req, res) => {
         }
     });
 
+    // Timeline API routes
+// Get all timeline entries
+router.get('/api/timeline', requireAuth, (req, res) => {
+    try {
+        const TIMELINE_DATA_FILE = path.join(DATA_DIR, 'timeline.json');
+        
+        if (!fs.existsSync(TIMELINE_DATA_FILE)) {
+            // Create empty timeline data file if it doesn't exist
+            fs.writeFileSync(TIMELINE_DATA_FILE, JSON.stringify({ entries: [] }), 'utf8');
+            console.log('Created empty timeline data file');
+            return res.json([]);
+        }
+        
+        const data = JSON.parse(fs.readFileSync(TIMELINE_DATA_FILE, 'utf8'));
+        res.json(data.entries);
+    } catch (error) {
+        console.error('Error reading timeline data:', error);
+        res.status(500).json({ error: 'Error reading timeline data' });
+    }
+});
+
+// Create timeline entry
+router.post('/api/timeline', requireAuth, express.json(), (req, res) => {
+    try {
+        const TIMELINE_DATA_FILE = path.join(DATA_DIR, 'timeline.json');
+        
+        // Create data structure if file doesn't exist
+        if (!fs.existsSync(TIMELINE_DATA_FILE)) {
+            fs.writeFileSync(TIMELINE_DATA_FILE, JSON.stringify({ entries: [] }), 'utf8');
+        }
+        
+        const data = JSON.parse(fs.readFileSync(TIMELINE_DATA_FILE, 'utf8'));
+        
+        const newEntry = {
+            id: Date.now().toString(), // Simple ID generation
+            ...req.body,
+            createdAt: new Date().toISOString()
+        };
+        
+        data.entries.push(newEntry);
+        
+        fs.writeFileSync(TIMELINE_DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+        
+        res.status(201).json(newEntry);
+    } catch (error) {
+        console.error('Error creating timeline entry:', error);
+        res.status(500).json({ error: 'Error creating timeline entry' });
+    }
+});
+
+// Get single timeline entry
+router.get('/api/timeline/:id', requireAuth, (req, res) => {
+    try {
+        const TIMELINE_DATA_FILE = path.join(DATA_DIR, 'timeline.json');
+        
+        if (!fs.existsSync(TIMELINE_DATA_FILE)) {
+            return res.status(404).json({ error: 'Timeline data not found' });
+        }
+        
+        const data = JSON.parse(fs.readFileSync(TIMELINE_DATA_FILE, 'utf8'));
+        const entry = data.entries.find(e => e.id === req.params.id);
+        
+        if (!entry) {
+            return res.status(404).json({ error: 'Timeline entry not found' });
+        }
+        
+        res.json(entry);
+    } catch (error) {
+        console.error('Error getting timeline entry:', error);
+        res.status(500).json({ error: 'Error getting timeline entry' });
+    }
+});
+
+// Update timeline entry
+router.put('/api/timeline/:id', requireAuth, express.json(), (req, res) => {
+    try {
+        const TIMELINE_DATA_FILE = path.join(DATA_DIR, 'timeline.json');
+        
+        if (!fs.existsSync(TIMELINE_DATA_FILE)) {
+            return res.status(404).json({ error: 'Timeline data not found' });
+        }
+        
+        const data = JSON.parse(fs.readFileSync(TIMELINE_DATA_FILE, 'utf8'));
+        const index = data.entries.findIndex(e => e.id === req.params.id);
+        
+        if (index === -1) {
+            return res.status(404).json({ error: 'Timeline entry not found' });
+        }
+        
+        // Update the entry, preserving id and createdAt
+        data.entries[index] = {
+            ...data.entries[index],
+            ...req.body,
+            id: req.params.id, // Make sure ID doesn't change
+            updatedAt: new Date().toISOString()
+        };
+        
+        fs.writeFileSync(TIMELINE_DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+        
+        res.json(data.entries[index]);
+    } catch (error) {
+        console.error('Error updating timeline entry:', error);
+        res.status(500).json({ error: 'Error updating timeline entry' });
+    }
+});
+
+// Delete timeline entry
+router.delete('/api/timeline/:id', requireAuth, (req, res) => {
+    try {
+        const TIMELINE_DATA_FILE = path.join(DATA_DIR, 'timeline.json');
+        
+        if (!fs.existsSync(TIMELINE_DATA_FILE)) {
+            return res.status(404).json({ error: 'Timeline data not found' });
+        }
+        
+        const data = JSON.parse(fs.readFileSync(TIMELINE_DATA_FILE, 'utf8'));
+        const index = data.entries.findIndex(e => e.id === req.params.id);
+        
+        if (index === -1) {
+            return res.status(404).json({ error: 'Timeline entry not found' });
+        }
+        
+        // Remove the entry
+        data.entries.splice(index, 1);
+        
+        fs.writeFileSync(TIMELINE_DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting timeline entry:', error);
+        res.status(500).json({ error: 'Error deleting timeline entry' });
+    }
+});
+
     // Apply the router
     app.use('/admin', router);
     

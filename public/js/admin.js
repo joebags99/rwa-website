@@ -39,7 +39,8 @@ const AdminDashboard = {
                 modals: document.querySelectorAll('.modal'),
                 closeButtons: document.querySelectorAll('.close-btn, .modal .btn-secondary'),
                 activityList: document.getElementById('recent-activity-list'),
-                npcsCount: document.getElementById('npcs-count')
+                npcsCount: document.getElementById('npcs-count'),
+                timelineCount: document.getElementById('timeline-count')
             };
             
             this.elements = elements;
@@ -110,6 +111,15 @@ const AdminDashboard = {
                                     setTimeout(() => {
                                         const createNPCBtn = document.getElementById('create-npc-btn');
                                         if (createNPCBtn) createNPCBtn.click();
+                                    }, 100);
+                                }
+                                
+                                // If this is the Timeline section and has a "Create" button
+                                if (targetSection === 'timeline' && action.textContent.includes('Add')) {
+                                    // Click the create Timeline button
+                                    setTimeout(() => {
+                                        const createTimelineBtn = document.getElementById('create-timeline-btn');
+                                        if (createTimelineBtn) createTimelineBtn.click();
                                     }, 100);
                                 }
                             }
@@ -402,6 +412,35 @@ const AdminDashboard = {
             
             async delete(id) {
                 return AdminDashboard.API.request(`/admin/api/npcs/${id}`, {
+                    method: 'DELETE'
+                });
+            }
+        },
+        
+        /**
+         * Timeline specific API methods
+         */
+        Timeline: {
+            async getAll() {
+                return AdminDashboard.API.request('/admin/api/timeline');
+            },
+            
+            async create(timelineData) {
+                return AdminDashboard.API.request('/admin/api/timeline', {
+                    method: 'POST',
+                    body: JSON.stringify(timelineData)
+                });
+            },
+            
+            async update(id, timelineData) {
+                return AdminDashboard.API.request(`/admin/api/timeline/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(timelineData)
+                });
+            },
+            
+            async delete(id) {
+                return AdminDashboard.API.request(`/admin/api/timeline/${id}`, {
                     method: 'DELETE'
                 });
             }
@@ -955,6 +994,716 @@ const AdminDashboard = {
     },
     
     /**
+     * Timeline Module - Timeline event management functionality
+     */
+    Timeline: {
+        data: [], // Local cache of timeline data
+        elements: {},
+        
+        init() {
+            // Only initialize if we're on a page with timeline elements
+            if (document.getElementById('timeline-section')) {
+                this.cacheElements();
+                this.bindEvents();
+                this.loadTimelineEntries();
+            }
+        },
+        
+        cacheElements() {
+            this.elements = {
+                timelineList: document.getElementById('timeline-list'),
+                createTimelineBtn: document.getElementById('create-timeline-btn'),
+                createEventBtn: document.getElementById('create-event-btn'),
+                createReignBtn: document.getElementById('create-reign-btn'),
+                timelineModal: document.getElementById('timeline-modal'),
+                timelineForm: document.getElementById('timeline-form'),
+                saveTimelineBtn: document.getElementById('save-timeline'),
+                cancelTimelineBtn: document.getElementById('cancel-timeline'),
+                timelineSearch: document.getElementById('timeline-search'),
+                eraFilter: document.getElementById('era-filter'),
+                typeFilter: document.getElementById('type-filter'),
+                modalTitle: document.getElementById('timeline-modal-title'),
+                
+                // Form fields
+                timelineId: document.getElementById('timeline-id'),
+                timelineType: document.getElementById('timeline-type'),
+                timelineTitle: document.getElementById('timeline-title'),
+                timelineEra: document.getElementById('timeline-era'),
+                timelineYear: document.getElementById('timeline-year'),
+                timelineMonth: document.getElementById('timeline-month'),
+                timelineDay: document.getElementById('timeline-day'),
+                timelineLocation: document.getElementById('timeline-location'),
+                timelineDescription: document.getElementById('timeline-description'),
+                timelineImage: document.getElementById('timeline-image'),
+                timelinePosition: document.getElementById('timeline-position'),
+                timelineBreakType: document.getElementById('timeline-break-type'),
+                
+                // Field containers for toggling visibility
+                eventFields: document.getElementById('event-fields'),
+                reignFields: document.getElementById('reign-fields')
+            };
+            
+            return this.elements;
+        },
+        
+        bindEvents() {
+            // Only bind events if elements exist
+            if (!this.elements.timelineList) return;
+            
+            const { 
+                createTimelineBtn, createEventBtn, createReignBtn, 
+                saveTimelineBtn, cancelTimelineBtn,
+                timelineSearch, eraFilter, typeFilter,
+                timelineType
+            } = this.elements;
+            
+            // Dropdown behavior for create button
+            if (createTimelineBtn) {
+                createTimelineBtn.addEventListener('click', function() {
+                    const dropdown = this.nextElementSibling;
+                    if (!dropdown) return;
+                    
+                    dropdown.classList.toggle('active');
+                    
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function closeDropdown(e) {
+                        if (!dropdown.contains(e.target) && e.target !== createTimelineBtn) {
+                            dropdown.classList.remove('active');
+                            document.removeEventListener('click', closeDropdown);
+                        }
+                    });
+                });
+            }
+            
+            // Create event button
+            if (createEventBtn) {
+                createEventBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showCreateForm('event');
+                });
+            }
+            
+            // Create reign break button
+            if (createReignBtn) {
+                createReignBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showCreateForm('reign-break');
+                });
+            }
+            
+            // Save timeline button
+            if (saveTimelineBtn) {
+                saveTimelineBtn.addEventListener('click', () => this.saveTimelineEntry());
+            }
+            
+            // Cancel button 
+            if (cancelTimelineBtn) {
+                cancelTimelineBtn.addEventListener('click', () => {
+                    AdminDashboard.UI.closeModal('timeline-modal');
+                });
+            }
+            
+            // Search and filters
+            if (timelineSearch) {
+                timelineSearch.addEventListener('input', () => this.applyFilters());
+            }
+            
+            if (eraFilter) {
+                eraFilter.addEventListener('change', () => this.applyFilters());
+            }
+            
+            if (typeFilter) {
+                typeFilter.addEventListener('change', () => this.applyFilters());
+            }
+            
+            // Toggle fields based on entry type
+            if (timelineType) {
+                timelineType.addEventListener('change', () => this.toggleFormFields());
+            }
+        },
+        
+        /**
+         * Load timeline entries from API
+         */
+        async loadTimelineEntries() {
+            // Only continue if the timeline list element exists
+            const { timelineList } = this.elements;
+            if (!timelineList) return;
+            
+            try {
+                // Show loading state
+                timelineList.innerHTML = `
+                    <div class="loading-indicator">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading timeline entries...</p>
+                    </div>
+                `;
+                
+                // Fetch timeline entries
+                this.data = await AdminDashboard.API.Timeline.getAll();
+                
+                // Render timeline list
+                this.renderTimelineList();
+                
+                // Update dashboard stats
+                AdminDashboard.updateDashboardStats();
+                
+            } catch (error) {
+                console.error('Error loading timeline entries:', error);
+                
+                timelineList.innerHTML = `
+                    <div class="error-message">
+                        <p>Error loading timeline entries. Please try again.</p>
+                        <button class="btn btn-primary" onclick="AdminDashboard.Timeline.loadTimelineEntries()">Retry</button>
+                    </div>
+                `;
+                
+                AdminDashboard.UI.showToast('error', 'Failed to load timeline entries. Please try again.');
+            }
+        },
+        
+        /**
+         * Show create form for timeline entry
+         * @param {string} type - Type of entry ('event' or 'reign-break')
+         */
+        showCreateForm(type = 'event') {
+            const { timelineModal, modalTitle, timelineType } = this.elements;
+            if (!timelineModal || !timelineType) return;
+            
+            // Reset form
+            this.resetTimelineForm();
+            
+            // Set type
+            timelineType.value = type;
+            
+            // Toggle appropriate fields
+            this.toggleFormFields();
+            
+            // Change modal title based on type
+            if (modalTitle) {
+                modalTitle.textContent = type === 'event' ? 'Add Timeline Event' : 'Add Reign Change';
+            }
+            
+            // Open modal
+            AdminDashboard.UI.openModal(timelineModal);
+        },
+        
+        /**
+         * Show edit form for timeline entry
+         */
+        showEditForm(entry) {
+            const { timelineModal, modalTitle, timelineType } = this.elements;
+            if (!timelineModal || !timelineType) return;
+            
+            // Change modal title based on type
+            if (modalTitle) {
+                modalTitle.textContent = entry.type === 'event' ? 'Edit Timeline Event' : 'Edit Reign Change';
+            }
+            
+            // Set type
+            timelineType.value = entry.type;
+            
+            // Populate form
+            this.populateTimelineForm(entry);
+            
+            // Toggle appropriate fields
+            this.toggleFormFields();
+            
+            // Open modal
+            AdminDashboard.UI.openModal(timelineModal);
+        },
+        
+        /**
+         * Toggle form fields based on entry type
+         */
+        toggleFormFields() {
+            const { timelineType, eventFields, reignFields } = this.elements;
+            
+            if (!timelineType || !eventFields || !reignFields) return;
+            
+            const type = timelineType.value;
+            
+            if (type === 'event') {
+                eventFields.style.display = 'block';
+                reignFields.style.display = 'none';
+                
+                // Set required fields
+                if (this.elements.timelineLocation) 
+                    this.elements.timelineLocation.required = true;
+                if (this.elements.timelineDescription)
+                    this.elements.timelineDescription.required = true;
+                
+                // Remove required from reign fields
+                if (this.elements.timelineBreakType)
+                    this.elements.timelineBreakType.required = false;
+            } else {
+                eventFields.style.display = 'none';
+                reignFields.style.display = 'block';
+                
+                // Set required fields
+                if (this.elements.timelineBreakType)
+                    this.elements.timelineBreakType.required = true;
+                
+                // Remove required from event fields
+                if (this.elements.timelineLocation)
+                    this.elements.timelineLocation.required = false;
+                if (this.elements.timelineDescription)
+                    this.elements.timelineDescription.required = false;
+            }
+        },
+        
+        /**
+         * Save timeline entry (create or update)
+         */
+        async saveTimelineEntry() {
+            const { timelineForm, saveTimelineBtn } = this.elements;
+            
+            // Basic validation
+            if (!this.validateTimelineForm()) {
+                return;
+            }
+            
+            // Disable save button
+            if (saveTimelineBtn) {
+                saveTimelineBtn.disabled = true;
+                saveTimelineBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            }
+            
+            try {
+                // Gather form data
+                const entryId = this.elements.timelineId.value;
+                const entryType = this.elements.timelineType.value;
+                
+                // Build common data object
+                const entryData = {
+                    type: entryType,
+                    title: this.elements.timelineTitle.value.trim(),
+                    era: this.elements.timelineEra.value,
+                    year: parseInt(this.elements.timelineYear.value)
+                };
+                
+                // Add month and day if provided
+                if (this.elements.timelineMonth.value) {
+                    entryData.month = parseInt(this.elements.timelineMonth.value);
+                }
+                
+                if (this.elements.timelineDay.value) {
+                    entryData.day = parseInt(this.elements.timelineDay.value);
+                }
+                
+                // Add type-specific fields
+                if (entryType === 'event') {
+                    // Event-specific fields
+                    entryData.location = this.elements.timelineLocation.value.trim();
+                    entryData.description = this.elements.timelineDescription.value.trim();
+                    
+                    // Optional fields
+                    if (this.elements.timelineImage.value.trim()) {
+                        entryData.image = this.elements.timelineImage.value.trim();
+                    }
+                    
+                    if (this.elements.timelinePosition.value) {
+                        entryData.position = this.elements.timelinePosition.value;
+                    }
+                } else {
+                    // Reign break-specific fields
+                    entryData.breakType = this.elements.timelineBreakType.value;
+                }
+                
+                let newOrUpdatedEntry;
+                
+                // Save to API
+                if (entryId) {
+                    // Update existing entry
+                    newOrUpdatedEntry = await AdminDashboard.API.Timeline.update(entryId, entryData);
+                    
+                    // Update local cache
+                    const index = this.data.findIndex(entry => entry.id === entryId);
+                    if (index !== -1) {
+                        this.data[index] = newOrUpdatedEntry;
+                    }
+                    
+                    // Show success message
+                    AdminDashboard.UI.showToast('success', 'Timeline entry updated successfully!');
+                    
+                    // Add to recent activity
+                    await AdminDashboard.Activities.addActivity({
+                        icon: 'fa-hourglass-half',
+                        title: 'Timeline Entry Updated',
+                        description: `Updated ${entryType === 'event' ? 'event' : 'reign change'}: ${entryData.title}`,
+                        timestamp: new Date().toISOString()
+                    });
+                } else {
+                    // Create new entry
+                    newOrUpdatedEntry = await AdminDashboard.API.Timeline.create(entryData);
+                    
+                    // Add to local cache
+                    this.data.push(newOrUpdatedEntry);
+                    
+                    // Show success message
+                    AdminDashboard.UI.showToast('success', 'Timeline entry created successfully!');
+                    
+                    // Add to recent activity
+                    await AdminDashboard.Activities.addActivity({
+                        icon: 'fa-hourglass-half',
+                        title: 'Timeline Entry Created',
+                        description: `Created new ${entryType === 'event' ? 'event' : 'reign change'}: ${entryData.title}`,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+                
+                // Close modal
+                AdminDashboard.UI.closeModal('timeline-modal');
+                
+                // Update list
+                this.renderTimelineList();
+                
+                // Update dashboard stats
+                AdminDashboard.updateDashboardStats();
+                
+            } catch (error) {
+                console.error('Error saving timeline entry:', error);
+                AdminDashboard.UI.showToast('error', 'Error saving timeline entry. Please try again.');
+            } finally {
+                // Re-enable save button
+                if (saveTimelineBtn) {
+                    saveTimelineBtn.disabled = false;
+                    saveTimelineBtn.innerHTML = '<i class="fas fa-save"></i> Save';
+                }
+            }
+        },
+        
+        /**
+         * Delete a timeline entry
+         */
+        async deleteTimelineEntry(id) {
+            try {
+                // Find entry name before removing
+                const deletedEntry = this.data.find(entry => entry.id === id);
+                const entryTitle = deletedEntry ? deletedEntry.title : 'Unknown entry';
+                const entryType = deletedEntry ? deletedEntry.type : 'event';
+                
+                // Delete from API
+                await AdminDashboard.API.Timeline.delete(id);
+                
+                // Remove from local cache
+                this.data = this.data.filter(entry => entry.id !== id);
+                
+                // Update list
+                this.renderTimelineList();
+                
+                // Update dashboard stats
+                AdminDashboard.updateDashboardStats();
+                
+                // Show success message
+                AdminDashboard.UI.showToast('success', 'Timeline entry deleted successfully!');
+                
+                // Add to recent activity
+                await AdminDashboard.Activities.addActivity({
+                    icon: 'fa-trash-alt',
+                    title: 'Timeline Entry Deleted',
+                    description: `Deleted ${entryType === 'event' ? 'event' : 'reign change'}: ${entryTitle}`,
+                    timestamp: new Date().toISOString()
+                });
+                
+            } catch (error) {
+                console.error('Error deleting timeline entry:', error);
+                AdminDashboard.UI.showToast('error', 'Error deleting timeline entry. Please try again.');
+            }
+        },
+        
+        /**
+         * Validate timeline form
+         */
+        validateTimelineForm() {
+            const { timelineForm } = this.elements;
+            if (!timelineForm) return false;
+            
+            const requiredFields = timelineForm.querySelectorAll('[required]');
+            let valid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('error');
+                    valid = false;
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+            
+            return valid;
+        },
+        
+        /**
+         * Reset timeline form
+         */
+        resetTimelineForm() {
+            const { timelineForm } = this.elements;
+            if (!timelineForm) return;
+            
+            // Clear the form
+            timelineForm.reset();
+            
+            // Reset hidden ID field
+            const idField = document.getElementById('timeline-id');
+            if (idField) idField.value = '';
+            
+            // Reset any validation errors
+            timelineForm.querySelectorAll('.error').forEach(field => {
+                field.classList.remove('error');
+            });
+        },
+        
+        /**
+         * Populate timeline form for editing
+         */
+        populateTimelineForm(entry) {
+            if (!entry) return;
+            
+            // Set common fields
+            const fields = {
+                'timeline-id': entry.id,
+                'timeline-type': entry.type,
+                'timeline-title': entry.title,
+                'timeline-era': entry.era,
+                'timeline-year': entry.year,
+                'timeline-month': entry.month || '',
+                'timeline-day': entry.day || '',
+            };
+            
+            // Type-specific fields
+            if (entry.type === 'event') {
+                fields['timeline-location'] = entry.location || '';
+                fields['timeline-description'] = entry.description || '';
+                fields['timeline-image'] = entry.image || '';
+                fields['timeline-position'] = entry.position || '';
+            } else {
+                fields['timeline-break-type'] = entry.breakType || 'reign-beginning';
+            }
+            
+            // Update each field
+            Object.entries(fields).forEach(([id, value]) => {
+                const field = document.getElementById(id);
+                if (field) field.value = value;
+            });
+        },
+        
+        /**
+         * Apply filters to timeline list
+         */
+        applyFilters() {
+            const { timelineSearch, eraFilter, typeFilter } = this.elements;
+            
+            const searchTerm = timelineSearch?.value.trim() || '';
+            const era = eraFilter?.value || '';
+            const type = typeFilter?.value || '';
+            
+            this.renderTimelineList(searchTerm, era, type);
+        },
+        
+        /**
+         * Render timeline list with optional filters
+         */
+        renderTimelineList(searchTerm = '', eraFilter = '', typeFilter = '') {
+            const { timelineList } = this.elements;
+            if (!timelineList) return;
+            
+            // Clone the data
+            let filteredEntries = [...this.data];
+            
+            // Apply filters
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filteredEntries = filteredEntries.filter(entry => 
+                    entry.title.toLowerCase().includes(term) || 
+                    (entry.description && entry.description.toLowerCase().includes(term)) ||
+                    (entry.location && entry.location.toLowerCase().includes(term))
+                );
+            }
+            
+            if (eraFilter) {
+                filteredEntries = filteredEntries.filter(entry => entry.era === eraFilter);
+            }
+            
+            if (typeFilter) {
+                filteredEntries = filteredEntries.filter(entry => entry.type === typeFilter);
+            }
+            
+            // Sort by year then month
+            filteredEntries.sort((a, b) => {
+                // Primary sort by year (descending)
+                if (a.year !== b.year) {
+                    return b.year - a.year; // Newer first
+                }
+                
+                // Secondary sort by month (descending)
+                const monthA = a.month || 0;
+                const monthB = b.month || 0;
+                if (monthA !== monthB) {
+                    return monthB - monthA;
+                }
+                
+                // Tertiary sort by day (descending)
+                const dayA = a.day || 0;
+                const dayB = b.day || 0;
+                if (dayA !== dayB) {
+                    return dayB - dayA;
+                }
+                
+                // If all dates are equal, reign-breaks come before events
+                if (a.type !== b.type) {
+                    return a.type === 'reign-break' ? -1 : 1;
+                }
+                
+                return 0;
+            });
+            
+            // No entries found
+            if (filteredEntries.length === 0) {
+                timelineList.innerHTML = `
+                    <div class="empty-message">
+                        <p>No timeline entries found. ${searchTerm || eraFilter || typeFilter ? 'Try adjusting your filters.' : 'Create your first timeline entry!'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Clear list
+            timelineList.innerHTML = '';
+            
+            // Add each entry
+            filteredEntries.forEach(entry => {
+                timelineList.appendChild(this.createTimelineListItem(entry));
+            });
+        },
+        
+        /**
+         * Create timeline list item element
+         */
+        createTimelineListItem(entry) {
+            const entryItem = document.createElement('div');
+            entryItem.className = `timeline-item ${entry.type === 'reign-break' ? 'reign-item' : 'event-item'}`;
+            entryItem.setAttribute('data-id', entry.id);
+            
+            // Format date display
+            let dateDisplay = `Year ${entry.year} A.E.`;
+            if (entry.month) {
+                const monthNames = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ];
+                dateDisplay = `${monthNames[entry.month - 1]}`;
+                
+                if (entry.day) {
+                    dateDisplay += ` ${entry.day}`;
+                }
+                
+                dateDisplay += `, ${entry.year} A.E.`;
+            }
+            
+            // Format era display
+            const eraMap = {
+                'age-of-chains': 'The Age of Chains',
+                'arcane-reckoning': 'The Age of Arcane Reckoning',
+                'broken-sun': 'The Age of the Broken Sun',
+                'silent-war': 'The Age of Silent War',
+                'uncertainty': 'The Age of Uncertainty'
+            };
+            
+            const eraDisplay = eraMap[entry.era] || entry.era;
+            
+            // Different displays for event vs reign break
+            if (entry.type === 'event') {
+                entryItem.innerHTML = `
+                    <div class="timeline-item-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="timeline-item-info">
+                        <h3 class="timeline-item-title">${entry.title}</h3>
+                        <div class="timeline-item-meta">
+                            <span class="timeline-item-date">
+                                <i class="fas fa-calendar"></i> ${dateDisplay}
+                            </span>
+                            <span class="timeline-item-era era-${entry.era}">
+                                <i class="fas fa-history"></i> ${eraDisplay}
+                            </span>
+                            <span class="timeline-item-location">
+                                <i class="fas fa-map-marker-alt"></i> ${entry.location || 'Unknown location'}
+                            </span>
+                        </div>
+                        <p class="timeline-item-description">${entry.description ? entry.description.substring(0, 100) + '...' : 'No description'}</p>
+                    </div>
+                    <div class="timeline-item-actions">
+                        <button class="action-btn edit" title="Edit timeline entry">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete" title="Delete timeline entry">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                // Reign break display
+                const breakTypeIcon = entry.breakType === 'reign-beginning' ? 
+                    '<i class="fas fa-crown" style="color: gold;"></i>' :
+                    '<i class="fas fa-crown-fallen" style="color: #C30A3D;"></i>';
+                
+                const breakTypeText = entry.breakType === 'reign-beginning' ? 
+                    'Beginning of Reign' : 'End of Reign';
+                
+                entryItem.innerHTML = `
+                    <div class="timeline-item-icon reign-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="timeline-item-info">
+                        <h3 class="timeline-item-title">${entry.title}</h3>
+                        <div class="timeline-item-meta">
+                            <span class="timeline-item-date">
+                                <i class="fas fa-calendar"></i> ${dateDisplay}
+                            </span>
+                            <span class="timeline-item-era era-${entry.era}">
+                                <i class="fas fa-history"></i> ${eraDisplay}
+                            </span>
+                            <span class="timeline-item-type ${entry.breakType}">
+                                ${breakTypeIcon} ${breakTypeText}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="timeline-item-actions">
+                        <button class="action-btn edit" title="Edit reign change">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete" title="Delete reign change">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // Add event listeners
+            const editBtn = entryItem.querySelector('.edit');
+            if (editBtn) {
+                editBtn.addEventListener('click', () => this.showEditForm(entry));
+            }
+            
+            const deleteBtn = entryItem.querySelector('.delete');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    AdminDashboard.UI.showConfirmation({
+                        title: `Delete ${entry.type === 'event' ? 'Timeline Event' : 'Reign Change'}`,
+                        message: `Are you sure you want to delete "${entry.title}"? This action cannot be undone.`,
+                        confirmText: 'Delete',
+                        confirmClass: 'btn-danger',
+                        onConfirm: () => this.deleteTimelineEntry(entry.id)
+                    });
+                });
+            }
+            
+            return entryItem;
+        }
+    },
+    
+    /**
      * Activities Module - Activity tracking
      */
     Activities: {
@@ -983,7 +1732,7 @@ const AdminDashboard = {
                 // Add each activity to the list
                 activities.forEach(activity => {
                     const activityItem = this.createActivityItem(activity);
-                    activityList.insertBefore(activityItem, activityList.firstChild);
+                    activityList.appendChild(activityItem);
                 });
                 
             } catch (error) {
@@ -1212,15 +1961,20 @@ const AdminDashboard = {
     async updateDashboardStats() {
         try {
             const npcsCount = document.getElementById('npcs-count');
-            if (!npcsCount) return;
+            if (npcsCount) {
+                // Set count from cached data if available
+                if (this.NPCs.data && this.NPCs.data.length > 0) {
+                    npcsCount.textContent = this.NPCs.data.length;
+                } else {
+                    // Otherwise fetch from API
+                    const npcs = await this.API.NPCs.getAll();
+                    npcsCount.textContent = npcs.length;
+                }
+            }
             
-            // Set count from cached data if available
-            if (this.NPCs.data.length > 0) {
-                npcsCount.textContent = this.NPCs.data.length;
-            } else {
-                // Otherwise fetch from API
-                const npcs = await this.API.NPCs.getAll();
-                npcsCount.textContent = npcs.length;
+            const timelineCount = document.getElementById('timeline-count');
+            if (timelineCount && this.Timeline.data) {
+                timelineCount.textContent = this.Timeline.data.length;
             }
         } catch (error) {
             console.error('Error updating dashboard stats:', error);
@@ -1236,6 +1990,7 @@ const AdminDashboard = {
         
         // Initialize feature modules
         this.NPCs.init();
+        this.Timeline.init();
         this.Settings.init();
         
         // Load activities

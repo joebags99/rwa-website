@@ -1,5 +1,11 @@
 [
   {
+    "icon": "fa-hourglass-half",
+    "title": "Timeline Entry Created",
+    "description": "Created new event: The Fall of the Dragon’s Triarchy",
+    "timestamp": "2025-03-14T03:57:57.921Z"
+  },
+  {
     "icon": "fa-user-edit",
     "title": "NPC Updated",
     "description": "Updated NPC: Raynere Falkrest, Lord of Skyhaven and Lord Paramount of House Falkrest",

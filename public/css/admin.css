@@ -942,6 +942,216 @@ COMING SOON SECTIONS
     max-width: 500px;
     margin: 0 auto;
 }
+/* 
+======================
+TIMELINE SECTION
+======================
+*/
+
+/* Timeline Item Styling */
+.timeline-item {
+    background-color: var(--admin-sidebar);
+    border-radius: var(--border-radius);
+    border-left: 5px solid var(--admin-primary);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.timeline-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Different border colors for different entry types */
+.reign-item {
+    border-left-color: var(--royal-gold);
+}
+
+/* Different era colors */
+.timeline-item-era.era-age-of-chains {
+    color: #004e38; /* Deep Green */
+}
+
+.timeline-item-era.era-arcane-reckoning {
+    color: #d4af37; /* Gold */
+}
+
+.timeline-item-era.era-broken-sun {
+    color: #560000; /* Dark Red */
+}
+
+.timeline-item-era.era-silent-war {
+    color: #0b2aa9; /* Royal Blue */
+}
+
+.timeline-item-era.era-uncertainty {
+    color: #7f0ebd; /* Royal Purple */
+}
+
+/* Reign type styling */
+.timeline-item-type.reign-beginning {
+    color: var(--royal-gold);
+}
+
+.timeline-item-type.reign-end {
+    color: var(--crimson-blood);
+}
+
+.timeline-item-icon {
+    background: var(--admin-sidebar);
+    color: var(--admin-light);
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.reign-icon {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--royal-gold);
+}
+
+.timeline-item-info {
+    flex: 1;
+    padding: 15px;
+    overflow: hidden;
+}
+
+.timeline-item-title {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+    color: var(--admin-text-dark);
+}
+
+.timeline-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--admin-text-muted);
+}
+
+.timeline-item-meta i {
+    margin-right: 5px;
+}
+
+.timeline-item-description {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--admin-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.timeline-item-actions {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: var(--admin-sidebar);
+}
+
+/* Create Button Dropdown */
+.action-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: 10px 0;
+    min-width: 200px;
+    z-index: 100;
+    display: none;
+}
+
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 15px;
+    color: var(--admin-text);
+    transition: all 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+    background: var(--admin-light);
+    color: var(--admin-primary);
+    text-decoration: none;
+}
+
+.dropdown-menu a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Timeline Modal Form Styling */
+#timeline-modal .modal-dialog {
+    max-width: 800px;
+}
+
+#timeline-modal .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+#timeline-modal .form-row .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Date fields need specific widths */
+#timeline-modal .form-row:nth-child(3) .form-group:nth-child(1) {
+    flex: 2;
+}
+
+#timeline-modal .form-row:nth-child(3) .form-group:nth-child(2),
+#timeline-modal .form-row:nth-child(3) .form-group:nth-child(3) {
+    flex: 1;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .timeline-item {
+        flex-direction: column;
+    }
+    
+    .timeline-item-icon {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .timeline-item-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    
+    #timeline-modal .form-row .form-group {
+        width: 100%;
+    }
+}
+
+/* Crown-fallen icon (for end of reign) */
+.fa-crown-fallen::before {
+    content: "\f6a4"; /* using the skull-crossbones unicode as substitute */
+}
 
 /* 
 ======================
