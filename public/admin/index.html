@@ -41,7 +41,7 @@
                     <li data-section="timeline">
                         <a href="#timeline"><i class="fas fa-hourglass-half"></i> Timeline</a>
                     </li>
-                    <li data-section="story" class="disabled">
+                    <li data-section="story">
                         <a href="#story"><i class="fas fa-book-open"></i> Story</a>
                     </li>
                     <li data-section="dm-advice" class="disabled">
@@ -106,13 +106,13 @@
                         </div>
                     </div>
                         
-                    <div class="stat-card disabled">
+                    <div class="stat-card" onclick="window.location.href='#story'" style="cursor: pointer;">
                         <div class="stat-icon">
                             <i class="fas fa-book-open"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Story Entries</h3>
-                            <p class="stat-count">Coming Soon</p>
+                            <p class="stat-count" id="story-count">0</p>
                         </div>
                     </div>
                     
@@ -139,7 +139,7 @@
                             <a href="#timeline" class="btn btn-primary" data-target="timeline">
                                 <i class="fas fa-plus"></i> Add Timeline Event
                             </a>
-                            <a href="#story" class="btn btn-secondary disabled">
+                            <a href="#story" class="btn btn-primary" data-target="story">
                                 <i class="fas fa-plus"></i> Add Story Entry
                             </a>
                             <a href="#dm-advice" class="btn btn-secondary disabled">
@@ -395,18 +395,321 @@
     </div>
 </div>
                 
-                <!-- Story Section -->
-                <section id="story-section" class="content-section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-book-open"></i> Story</h2>
+<!-- Story Section - Enhanced from "Coming Soon" to Full Implementation -->
+<section id="story-section" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-book-open"></i> Story Management</h2>
+        <div class="section-actions">
+            <button class="btn btn-primary" id="create-story-btn">
+                <i class="fas fa-plus"></i> Create Episode
+            </button>
+        </div>
+    </div>
+    
+    <div class="search-filter">
+        <div class="search-bar">
+            <form autocomplete="off" onsubmit="return false;">
+                <i class="fas fa-search"></i>
+                <input type="search" 
+                    id="story-search" 
+                    placeholder="Search episodes..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </form>
+        </div>
+        
+        <div class="filter-options">
+            <select id="act-filter">
+                <option value="">All Acts</option>
+                <option value="act-1">Act I: The Gathering</option>
+                <option value="act-2">Act II: The Conclave</option>
+                <option value="act-3">Act III: The Revelation</option>
+            </select>
+            
+            <select id="chapter-filter">
+                <option value="">All Chapters</option>
+                <option value="chapter-1">Chapter 1: Royal Summons</option>
+                <option value="chapter-2">Chapter 2: Palace Intrigue</option>
+                <option value="chapter-3">Chapter 3: First Council</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="item-list story-list" id="story-list">
+        <div class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading story episodes...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Story Episode Modal -->
+<div class="modal" id="story-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="story-modal-title">Add Story Episode</h2>
+                <button class="close-btn" id="close-story-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="story-form">
+                    <input type="hidden" id="story-id">
+                    
+                    <!-- Episode Basic Info -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="story-title">Episode Title</label>
+                            <input type="text" id="story-title" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="story-episode-number">Episode Number</label>
+                            <input type="number" id="story-episode-number" class="form-control" min="1" required>
+                        </div>
                     </div>
                     
-                    <div class="coming-soon">
-                        <i class="fas fa-book"></i>
-                        <h3>Coming Soon</h3>
-                        <p>The Story management feature is under development and will be available soon.</p>
+                    <!-- Date Fields -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="story-date-start">Date Start</label>
+                            <input type="text" id="story-date-start" class="form-control" required>
+                            <small>Format: "Month DD, YYY A.R." (e.g., "January 15, 850 A.R.")</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="story-date-end">Date End (Optional)</label>
+                            <input type="text" id="story-date-end" class="form-control">
+                            <small>Leave empty if same as start date</small>
+                        </div>
                     </div>
-                </section>
+                    
+                    <!-- Act and Chapter -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="story-act">Act</label>
+                            <div class="input-group">
+                                <select id="story-act" class="form-control" required>
+                                    <!-- Acts will be populated dynamically -->
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" id="manage-acts-btn" class="btn btn-outline-secondary">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="story-chapter">Chapter</label>
+                            <div class="input-group">
+                                <select id="story-chapter" class="form-control" required>
+                                    <!-- Chapters will be populated dynamically -->
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" id="manage-chapters-btn" class="btn btn-outline-secondary">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Locations -->
+                    <div class="form-group">
+                        <label for="story-locations">Locations</label>
+                        <div id="location-chips" class="form-chips">
+                            <!-- Location chips will be added here dynamically -->
+                        </div>
+                        <div class="location-selector">
+                            <div class="form-row">
+                                <div class="form-group flex-grow">
+                                    <div class="location-search-container">
+                                        <input type="text" id="location-search" class="form-control" placeholder="Search for a location...">
+                                        <div id="location-results" class="location-dropdown-results">
+                                            <!-- Search results will appear here -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="flex: 0 0 auto;">
+                                    <button type="button" id="manage-locations-btn" class="btn btn-secondary">
+                                        <i class="fas fa-cog"></i> Manage
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="form-group">
+                        <label for="story-content">Episode Content</label>
+                        <textarea id="story-content" class="form-control rich-editor" rows="10" required></textarea>
+                        <small>Enter episode content. Line breaks will be converted to paragraphs.</small>
+                    </div>
+                    
+                    <!-- Image -->
+                    <div class="form-group">
+                        <label for="story-image">Image URL (Optional)</label>
+                        <input type="text" id="story-image" class="form-control">
+                        <small>Enter image URL or leave blank for no image</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="story-image-caption">Image Caption (Optional)</label>
+                        <input type="text" id="story-image-caption" class="form-control">
+                        <small>Caption to display under the image</small>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-story">Cancel</button>
+                <button class="btn btn-primary" id="save-story">
+                    <i class="fas fa-save"></i> Save Episode
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Locations Management Modal -->
+<div class="modal" id="locations-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="locations-modal-title">Manage Locations</h2>
+                <button class="close-btn" id="close-locations-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-location-id">Location ID</label>
+                        <input type="text" id="new-location-id" class="form-control" placeholder="E.g., crimson-keep">
+                        <small>Use lowercase with hyphens, no spaces</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-location-name">Location Name</label>
+                        <input type="text" id="new-location-name" class="form-control" placeholder="E.g., Crimson Keep">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="add-new-location-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Location
+                    </button>
+                </div>
+                
+                <hr>
+                
+                <div class="locations-list-header">
+                    <h3>Available Locations</h3>
+                    <div class="search-mini">
+                        <i class="fas fa-search"></i>
+                        <input type="search" id="location-list-search" placeholder="Search locations...">
+                    </div>
+                </div>
+                
+                <div class="locations-list" id="locations-list">
+                    <div class="loading-indicator">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading locations...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="close-locations-manager">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Acts Manager Modal -->
+<div class="modal" id="acts-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Manage Acts</h2>
+            <button class="close-btn" id="close-acts-modal"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <h3>Add New Act</h3>
+                <div class="form-group">
+                    <label for="new-act-id">Act ID</label>
+                    <input type="text" id="new-act-id" placeholder="e.g., act-4" class="form-control">
+                    <small>Lowercase with hyphens, no spaces</small>
+                </div>
+                <div class="form-group">
+                    <label for="new-act-name">Act Name</label>
+                    <input type="text" id="new-act-name" placeholder="e.g., Act IV: The Conclusion" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="new-act-subtitle">Act Subtitle (Optional)</label>
+                    <input type="text" id="new-act-subtitle" placeholder="e.g., The final battle approaches" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="button" id="add-act-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Act
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-row mt-4">
+                <h3>Available Acts</h3>
+                <div id="acts-list" class="acts-list">
+                    <!-- Acts will be loaded here -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="close-acts-manager">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Chapters Manager Modal -->
+<div class="modal" id="chapters-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Manage Chapters</h2>
+            <button class="close-btn" id="close-chapters-modal"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <h3>Add New Chapter</h3>
+                <div class="form-group">
+                    <label for="new-chapter-id">Chapter ID</label>
+                    <input type="text" id="new-chapter-id" placeholder="e.g., chapter-4" class="form-control">
+                    <small>Lowercase with hyphens, no spaces</small>
+                </div>
+                <div class="form-group">
+                    <label for="new-chapter-name">Chapter Name</label>
+                    <input type="text" id="new-chapter-name" placeholder="e.g., Chapter 4" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="new-chapter-subtitle">Chapter Subtitle (Optional)</label>
+                    <input type="text" id="new-chapter-subtitle" placeholder="e.g., The Secret Chamber" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="button" id="add-chapter-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Chapter
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-row mt-4">
+                <h3>Available Chapters</h3>
+                <div id="chapters-list" class="chapters-list">
+                    <!-- Chapters will be loaded here -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="close-chapters-manager">Close</button>
+        </div>
+    </div>
+</div>
                 
                 <!-- DM Advice Section -->
                 <section id="dm-advice-section" class="content-section">

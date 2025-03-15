@@ -1,5 +1,23 @@
 [
   {
+    "icon": "fa-book-open",
+    "title": "Story Episode Created",
+    "description": "Created new story episode: The King's Hand",
+    "timestamp": "2025-03-15T23:54:23.200Z"
+  },
+  {
+    "icon": "fa-trash-alt",
+    "title": "Story Episode Deleted",
+    "description": "Deleted story episode: The King's Hand",
+    "timestamp": "2025-03-15T23:38:53.939Z"
+  },
+  {
+    "icon": "fa-book-open",
+    "title": "Story Episode Created",
+    "description": "Created new story episode: The King's Hand",
+    "timestamp": "2025-03-15T23:06:29.952Z"
+  },
+  {
     "icon": "fa-hourglass-half",
     "title": "Timeline Entry Created",
     "description": "Created new event: The Exodus of Chains",

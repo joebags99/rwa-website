@@ -65,6 +65,7 @@ if (!fs.existsSync(ROUTES_DIR)) {
 
 // Import and use admin routes
 const adminRoutes = require('./routes/admin')(app);
+app.use('/admin', adminRoutes);
 
 // API Routes
 app.get('/api/health', (req, res) => {
@@ -223,6 +224,58 @@ app.get('/api/public/timeline', (req, res) => {
   } catch (error) {
     console.error('Error reading timeline data:', error);
     res.status(500).json({ error: 'Error reading timeline data' });
+  }
+});
+
+// Public API route for story episodes (non-admin)
+app.get('/api/public/story-episodes', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const STORY_EPISODES_FILE = path.join(DATA_DIR, 'story-episodes.json');
+    
+    if (!fs.existsSync(STORY_EPISODES_FILE)) {
+      // Return empty array if file doesn't exist
+      console.log('Story episodes file not found, returning empty array');
+      return res.json([]);
+    }
+    
+    const data = JSON.parse(fs.readFileSync(STORY_EPISODES_FILE, 'utf8'));
+    res.json(data.episodes || []);
+  } catch (error) {
+    console.error('Error reading story episodes data:', error);
+    res.status(500).json({ error: 'Error reading story episodes data' });
+  }
+});
+
+// Public API route for locations
+app.get('/api/public/locations', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const LOCATIONS_FILE = path.join(DATA_DIR, 'locations.json');
+    
+    if (!fs.existsSync(LOCATIONS_FILE)) {
+      // Create default locations file if it doesn't exist
+      const defaultLocations = {
+        locations: [
+          { id: "crimson-keep", name: "Crimson Keep" },
+          { id: "ederia-city", name: "Ederia City" },
+          { id: "throne-room", name: "Throne Room" },
+          { id: "royal-library", name: "Royal Library" },
+          { id: "stormwatch", name: "Stormwatch Fortress" }
+        ]
+      };
+      
+      fs.writeFileSync(LOCATIONS_FILE, JSON.stringify(defaultLocations, null, 2), 'utf8');
+      console.log('Created default locations data file');
+      
+      return res.json(defaultLocations.locations);
+    }
+    
+    const data = JSON.parse(fs.readFileSync(LOCATIONS_FILE, 'utf8'));
+    res.json(data.locations);
+  } catch (error) {
+    console.error('Error reading locations data:', error);
+    res.status(500).json({ error: 'Error reading locations data' });
   }
 });
 

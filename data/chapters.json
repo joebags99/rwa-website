@@ -1,0 +1,39 @@
+{
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "name": "Chapter 1",
+      "subtitle": "The King's Hand"
+    },
+    {
+      "id": "chapter-2",
+      "name": "Chapter 2",
+      "subtitle": "Beneath the Bloom"
+    },
+    {
+      "id": "chapter-3",
+      "name": "Chapter 3",
+      "subtitle": "Besieging Bandits"
+    },
+    {
+      "id": "chapter-4",
+      "name": "Chapter 4",
+      "subtitle": "The Weight of Steel and Shadow"
+    },
+    {
+      "id": "chapter-5",
+      "name": "Chapter 5",
+      "subtitle": "What Lives in Whispers?"
+    },
+    {
+      "id": "chapter-6",
+      "name": "Chapter 6",
+      "subtitle": "Secrets & Broken Souls"
+    },
+    {
+      "id": "chapter-7",
+      "name": "Chapter 7",
+      "subtitle": "Petitons & Promises"
+    }
+  ]
+}

@@ -104,24 +104,7 @@ const Story = {
 
         // Load initial data
         console.log('Loading initial episodes...');
-        this.state.cachedEpisodes = this.getSampleStoryData();
-        this.extractMetadata();
-        this.updateDynamicDropdowns();
-
-        // Render initial episodes
-        const filteredEpisodes = this.filterCachedEpisodes();
-        const firstBatch = filteredEpisodes.slice(0, this.config.episodesPerBatch);
-        this.renderEpisodes(firstBatch);
-
-        // Update state
-        this.state.hasMoreEpisodes = filteredEpisodes.length > this.config.episodesPerBatch;
-
-        // Observe new elements
-        document.querySelectorAll('.story-episode, .story-divider').forEach(el => {
-            this.observer.observe(el);
-        });
-
-        console.log('Story initialization complete');
+        this.loadInitialEpisodes(); // Call the async method
     },
 
     // Bind all event listeners
@@ -456,8 +439,8 @@ const Story = {
         }
     },
 
-    // Load initial episodes
-    loadInitialEpisodes: function() {
+    // Replace the loadInitialEpisodes method with this
+    loadInitialEpisodes: async function() {
         if (!this.elements.storyContent) return;
         
         this.state.isLoading = true;
@@ -467,34 +450,57 @@ const Story = {
             this.elements.bottomLoader.classList.add('active');
         }
         
-        // Ensure we have the sample data
-        if (this.state.cachedEpisodes.length === 0) {
-            console.log('Loading sample data...');
-            this.state.cachedEpisodes = this.getSampleStoryData();
+        try {
+            // Fetch real data from API instead of using sample data
+            const response = await fetch('/api/public/story-episodes');
+            
+            if (!response.ok) {
+                throw new Error(`Failed to load story episodes: ${response.status}`);
+            }
+            
+            this.state.cachedEpisodes = await response.json();
+            console.log(`Loaded ${this.state.cachedEpisodes.length} episodes from server`);
+            
+            // If no episodes found, use sample data as fallback
+            if (this.state.cachedEpisodes.length === 0) {
+                console.log('No episodes found, using sample data');
+                this.state.cachedEpisodes = this.getSampleStoryData();
+            }
             
             // Process metadata
             this.extractMetadata();
             this.updateDynamicDropdowns();
-        }
-        
-        // Filter and display episodes
-        const filteredEpisodes = this.filterCachedEpisodes();
-        console.log('Filtered episodes:', filteredEpisodes.length);
-        
-        if (filteredEpisodes.length === 0) {
-            if (this.elements.noResultsMessage) {
-                this.elements.noResultsMessage.style.display = 'block';
+            
+            // Filter and display episodes
+            const filteredEpisodes = this.filterCachedEpisodes();
+            console.log('Filtered episodes:', filteredEpisodes.length);
+            
+            if (filteredEpisodes.length === 0) {
+                if (this.elements.noResultsMessage) {
+                    this.elements.noResultsMessage.style.display = 'block';
+                }
+                this.state.hasMoreEpisodes = false;
+            } else {
+                // Take first batch
+                const firstBatch = filteredEpisodes.slice(0, this.config.episodesPerBatch);
+                
+                // Render episodes
+                this.renderEpisodes(firstBatch);
+                
+                // Update state
+                this.state.hasMoreEpisodes = filteredEpisodes.length > this.config.episodesPerBatch;
             }
-            this.state.hasMoreEpisodes = false;
-        } else {
-            // Take first batch
-            const firstBatch = filteredEpisodes.slice(0, this.config.episodesPerBatch);
+        } catch (error) {
+            console.error('Error loading story episodes:', error);
             
-            // Render episodes
-            this.renderEpisodes(firstBatch);
+            // Use sample data as fallback
+            this.state.cachedEpisodes = this.getSampleStoryData();
+            this.extractMetadata();
+            this.updateDynamicDropdowns();
             
-            // Update state
-            this.state.hasMoreEpisodes = filteredEpisodes.length > this.config.episodesPerBatch;
+            // Filter and display episodes
+            const filteredEpisodes = this.filterCachedEpisodes();
+            this.renderEpisodes(filteredEpisodes.slice(0, this.config.episodesPerBatch));
         }
         
         // Update state and hide loader

@@ -472,6 +472,35 @@ const AdminDashboard = {
                     body: JSON.stringify({ currentPassword, newPassword })
                 });
             }
+        },
+
+        /**
+         * Story Episodes specific API methods
+         */
+        StoryEpisodes: {
+            async getAll() {
+                return AdminDashboard.API.request('/admin/api/story-episodes');
+            },
+            
+            async create(episodeData) {
+                return AdminDashboard.API.request('/admin/api/story-episodes', {
+                    method: 'POST',
+                    body: JSON.stringify(episodeData)
+                });
+            },
+            
+            async update(id, episodeData) {
+                return AdminDashboard.API.request(`/admin/api/story-episodes/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(episodeData)
+                });
+            },
+            
+            async delete(id) {
+                return AdminDashboard.API.request(`/admin/api/story-episodes/${id}`, {
+                    method: 'DELETE'
+                });
+            }
         }
     },
     
@@ -480,25 +509,13 @@ const AdminDashboard = {
      */
     Auth: {
         async refreshToken() {
-            try {
-                const response = await fetch('/admin/api/refresh-token', {
-                    method: 'POST',
-                    headers: { 'Cache-Control': 'no-cache' },
-                    credentials: 'include'
-                });
-                
-                if (!response.ok) return false;
-                
-                const data = await response.json();
-                return data.success;
-            } catch (error) {
-                console.error('Token refresh failed:', error);
-                return false;
-            }
-        },
-        
-        redirectToLogin() {
-            window.location.href = '/admin/login';
+            // Implementation of token refresh logic
+            const response = await fetch('/admin/api/refresh-token', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Cache-Control': 'no-cache' }
+            });
+            return response.ok;
         }
     },
     
@@ -1702,6 +1719,1264 @@ const AdminDashboard = {
             return entryItem;
         }
     },
+
+    /**
+ * Story Episodes Module - Story episode management functionality
+ */
+StoryEpisodes: {
+    data: [], // Local cache of episode data
+    elements: {},
+    locations: [], // Tracks currently added locations for the form
+    availableLocations: [], // List of all available locations from the server
+    availableActs: [], // List of all available acts
+    availableChapters: [], // List of all available chapters
+    
+    init() {
+        // Only initialize if we're on a page with story elements
+        if (document.getElementById('story-section')) {
+            this.cacheElements();
+            this.bindEvents();
+            this.loadStoryEpisodes();
+        }
+    },
+    
+    cacheElements() {
+        // Add these new elements to your existing elements object
+        this.elements = {
+            storyList: document.getElementById('story-list'),
+            createStoryBtn: document.getElementById('create-story-btn'),
+            storyModal: document.getElementById('story-modal'),
+            storyForm: document.getElementById('story-form'),
+            saveStoryBtn: document.getElementById('save-story'),
+            cancelStoryBtn: document.getElementById('cancel-story'),
+            storySearch: document.getElementById('story-search'),
+            actFilter: document.getElementById('act-filter'),
+            chapterFilter: document.getElementById('chapter-filter'),
+            modalTitle: document.getElementById('story-modal-title'),
+            
+            // Form fields
+            storyId: document.getElementById('story-id'),
+            storyTitle: document.getElementById('story-title'),
+            storyEpisodeNumber: document.getElementById('story-episode-number'),
+            storyDateStart: document.getElementById('story-date-start'),
+            storyDateEnd: document.getElementById('story-date-end'),
+            storyAct: document.getElementById('story-act'),
+            storyChapter: document.getElementById('story-chapter'),
+            locationChips: document.getElementById('location-chips'),
+            locationSearch: document.getElementById('location-search'),
+            locationResults: document.getElementById('location-results'),
+            manageLocationsBtn: document.getElementById('manage-locations-btn'),
+            storyContent: document.getElementById('story-content'),
+            storyImage: document.getElementById('story-image'),
+            storyImageCaption: document.getElementById('story-image-caption'),
+            
+            // Locations modal elements
+            locationsModal: document.getElementById('locations-modal'),
+            closeLocationsModal: document.getElementById('close-locations-modal'),
+            closeLocationsManager: document.getElementById('close-locations-manager'),
+            newLocationId: document.getElementById('new-location-id'),
+            newLocationName: document.getElementById('new-location-name'),
+            addNewLocationBtn: document.getElementById('add-new-location-btn'),
+            locationListSearch: document.getElementById('location-list-search'),
+            locationsList: document.getElementById('locations-list'),
+
+            // Act and Chapter manager elements
+            manageActsBtn: document.getElementById('manage-acts-btn'),
+            manageChaptersBtn: document.getElementById('manage-chapters-btn'),
+            actsModal: document.getElementById('acts-modal'),
+            chaptersModal: document.getElementById('chapters-modal'),
+            closeActsModal: document.getElementById('close-acts-modal'),
+            closeChaptersModal: document.getElementById('close-chapters-modal'),
+            
+            newActId: document.getElementById('new-act-id'),
+            newActName: document.getElementById('new-act-name'),
+            newActSubtitle: document.getElementById('new-act-subtitle'),
+            actsList: document.getElementById('acts-list'),
+            addActBtn: document.getElementById('add-act-btn'),
+            
+            newChapterId: document.getElementById('new-chapter-id'),
+            newChapterName: document.getElementById('new-chapter-name'),
+            newChapterSubtitle: document.getElementById('new-chapter-subtitle'),
+            chaptersList: document.getElementById('chapters-list'),
+            addChapterBtn: document.getElementById('add-chapter-btn'),
+        };
+        
+        return this.elements;
+    },
+    
+    bindEvents() {
+        const { 
+            createStoryBtn, saveStoryBtn, cancelStoryBtn,
+            storySearch, actFilter, chapterFilter,
+            locationSearch, locationResults, manageLocationsBtn,
+            locationsModal, closeLocationsModal, closeLocationsManager,
+            newLocationId, newLocationName, addNewLocationBtn,
+            locationListSearch, locationsList,
+            manageActsBtn, manageChaptersBtn, actsModal, chaptersModal,
+            closeActsModal, closeChaptersModal, addActBtn, addChapterBtn
+        } = this.elements;
+        
+        // Create episode button
+        if (createStoryBtn) {
+            createStoryBtn.addEventListener('click', () => this.showCreateForm());
+        }
+        
+        // Save episode button
+        if (saveStoryBtn) {
+            saveStoryBtn.addEventListener('click', () => this.saveStoryEpisode());
+        }
+        
+        // Cancel button 
+        if (cancelStoryBtn) {
+            cancelStoryBtn.addEventListener('click', () => {
+                AdminDashboard.UI.closeModal('story-modal');
+            });
+        }
+        
+        // Location search
+        if (locationSearch) {
+            locationSearch.addEventListener('input', () => this.handleLocationSearch());
+            locationSearch.addEventListener('focus', () => this.showLocationResults());
+            
+            // Hide results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!locationSearch.contains(e.target) && !locationResults.contains(e.target)) {
+                    locationResults.classList.remove('show');
+                }
+            });
+        }
+        
+        // Manage locations button
+        if (manageLocationsBtn) {
+            manageLocationsBtn.addEventListener('click', () => this.openLocationsManager());
+        }
+        
+        // Locations modal close buttons
+        if (closeLocationsModal) {
+            closeLocationsModal.addEventListener('click', () => {
+                AdminDashboard.UI.closeModal('locations-modal');
+            });
+        }
+        
+        if (closeLocationsManager) {
+            closeLocationsManager.addEventListener('click', () => {
+                AdminDashboard.UI.closeModal('locations-modal');
+            });
+        }
+        
+        // Add new location button
+        if (addNewLocationBtn) {
+            addNewLocationBtn.addEventListener('click', () => this.addNewLocation());
+        }
+        
+        // Location list search
+        if (locationListSearch) {
+            locationListSearch.addEventListener('input', () => this.filterLocationsList());
+        }
+        
+        // Search and filters for story list
+        if (storySearch) {
+            storySearch.addEventListener('input', () => this.applyFilters());
+        }
+        
+        if (actFilter) {
+            actFilter.addEventListener('change', () => this.applyFilters());
+        }
+        
+        if (chapterFilter) {
+            chapterFilter.addEventListener('change', () => this.applyFilters());
+        }
+
+        // Manage Acts button
+        if (manageActsBtn) {
+            manageActsBtn.addEventListener('click', () => this.openActsManager());
+        }
+        
+        // Manage Chapters button
+        if (manageChaptersBtn) {
+            manageChaptersBtn.addEventListener('click', () => this.openChaptersManager());
+        }
+        
+        // Close Acts modal button
+        if (closeActsModal) {
+            closeActsModal.addEventListener('click', () => {
+                AdminDashboard.UI.closeModal('acts-modal');
+            });
+        }
+        
+        // Close Chapters modal button
+        if (closeChaptersModal) {
+            closeChaptersModal.addEventListener('click', () => {
+                AdminDashboard.UI.closeModal('chapters-modal');
+            });
+        }
+        
+        // Add Act button
+        if (addActBtn) {
+            addActBtn.addEventListener('click', () => this.addNewAct());
+        }
+        
+        // Add Chapter button
+        if (addChapterBtn) {
+            addChapterBtn.addEventListener('click', () => this.addNewChapter());
+        }
+    },
+    
+    /**
+     * Load story episodes from API
+     */
+    async loadStoryEpisodes() {
+        const { storyList } = this.elements;
+        
+        try {
+            // Show loading state
+            if (storyList) {
+                storyList.innerHTML = `
+                    <div class="loading-indicator">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading story episodes...</p>
+                    </div>
+                `;
+            }
+            
+            // Fetch episodes
+            this.data = await AdminDashboard.API.StoryEpisodes.getAll();
+            
+            // Fetch available locations
+            await this.loadAvailableLocations();
+            
+            // Fetch available acts and chapters
+            await this.loadAvailableActs();
+            await this.loadAvailableChapters();
+            
+            // Render episode list
+            this.renderStoryList();
+            
+            // Update dashboard stats
+            AdminDashboard.updateDashboardStats();
+            
+        } catch (error) {
+            console.error('Error loading story episodes:', error);
+            
+            if (storyList) {
+                storyList.innerHTML = `
+                    <div class="error-message">
+                        <p>Error loading story episodes. Please try again.</p>
+                        <button class="btn btn-primary" onclick="AdminDashboard.StoryEpisodes.loadStoryEpisodes()">Retry</button>
+                    </div>
+                `;
+            }
+            
+            AdminDashboard.UI.showToast('error', 'Failed to load story episodes. Please try again.');
+        }
+    },
+    
+    /**
+     * Load available locations from API
+     */
+    async loadAvailableLocations() {
+        try {
+            this.availableLocations = await AdminDashboard.API.request('/admin/api/locations');
+            console.log(`Loaded ${this.availableLocations.length} locations`);
+        } catch (error) {
+            console.error('Error loading available locations:', error);
+            AdminDashboard.UI.showToast('error', 'Failed to load locations. Please try again.');
+            throw error; // Rethrow the error so it's caught by loadStoryEpisodes
+        }
+    },
+
+    async loadAvailableActs() {
+        try {
+            this.availableActs = await AdminDashboard.API.request('/admin/api/acts');
+            console.log(`Loaded ${this.availableActs.length} acts`);
+            this.updateActsDropdown();
+        } catch (error) {
+            console.error('Error loading available acts:', error);
+            AdminDashboard.UI.showToast('error', 'Failed to load acts. Please try again.');
+        }
+    },
+    
+    async loadAvailableChapters() {
+        try {
+            this.availableChapters = await AdminDashboard.API.request('/admin/api/chapters');
+            console.log(`Loaded ${this.availableChapters.length} chapters`);
+            this.updateChaptersDropdown();
+        } catch (error) {
+            console.error('Error loading available chapters:', error);
+            AdminDashboard.UI.showToast('error', 'Failed to load chapters. Please try again.');
+        }
+    },
+    
+    updateActsDropdown() {
+        const actDropdown = this.elements.storyAct;
+        if (!actDropdown) return;
+        
+        // Save current selection
+        const currentValue = actDropdown.value;
+        
+        // Clear dropdown
+        actDropdown.innerHTML = '';
+        
+        // Add options
+        this.availableActs.forEach(act => {
+            const option = document.createElement('option');
+            option.value = act.id;
+            option.textContent = act.name;
+            actDropdown.appendChild(option);
+        });
+        
+        // Restore selection if possible
+        if (this.availableActs.some(act => act.id === currentValue)) {
+            actDropdown.value = currentValue;
+        }
+    },
+    
+    updateChaptersDropdown() {
+        const chapterDropdown = this.elements.storyChapter;
+        if (!chapterDropdown) return;
+        
+        // Save current selection
+        const currentValue = chapterDropdown.value;
+        
+        // Clear dropdown
+        chapterDropdown.innerHTML = '';
+        
+        // Add options
+        this.availableChapters.forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter.id;
+            option.textContent = chapter.name;
+            chapterDropdown.appendChild(option);
+        });
+        
+        // Restore selection if possible
+        if (this.availableChapters.some(chapter => chapter.id === currentValue)) {
+            chapterDropdown.value = currentValue;
+        }
+    },
+    
+    /**
+     * Show create episode form
+     */
+    showCreateForm() {
+        const { storyModal, modalTitle } = this.elements;
+        
+        // Reset form
+        this.resetStoryForm();
+        
+        // Change modal title to Create
+        if (modalTitle) {
+            modalTitle.textContent = 'Create New Story Episode';
+        }
+        
+        // Open modal
+        AdminDashboard.UI.openModal(storyModal);
+    },
+    
+    /**
+     * Show edit episode form
+     */
+    showEditForm(episode) {
+        const { storyModal, modalTitle } = this.elements;
+        
+        // Change modal title to Edit
+        if (modalTitle) {
+            modalTitle.textContent = 'Edit Story Episode';
+        }
+        
+        // Populate form
+        this.populateStoryForm(episode);
+        
+        // Open modal
+        AdminDashboard.UI.openModal(storyModal);
+    },
+    
+    /**
+     * Save story episode (create or update)
+     */
+    async saveStoryEpisode() {
+        const { storyForm, saveStoryBtn } = this.elements;
+        
+        // Basic validation
+        if (!this.validateStoryForm()) {
+            return;
+        }
+        
+        // Disable save button
+        if (saveStoryBtn) {
+            saveStoryBtn.disabled = true;
+            saveStoryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        }
+        
+        try {
+            // Gather form data
+            const episodeId = this.elements.storyId.value;
+            
+            // Find selected act and chapter
+            const actId = this.elements.storyAct.value;
+            const chapterId = this.elements.storyChapter.value;
+            
+            // Find the full act object
+            const selectedAct = this.availableActs.find(act => act.id === actId) || {
+                id: actId,
+                name: 'Unknown Act',
+                subtitle: ''
+            };
+            
+            // Find the full chapter object
+            const selectedChapter = this.availableChapters.find(chapter => chapter.id === chapterId) || {
+                id: chapterId,
+                name: 'Unknown Chapter',
+                subtitle: ''
+            };
+            
+            // Convert content to HTML paragraphs
+            let contentHtml = '';
+            const contentLines = this.elements.storyContent.value.trim().split('\n');
+            for (const line of contentLines) {
+                if (line.trim() !== '') {
+                    contentHtml += `<p>${line.trim()}</p>`;
+                }
+            }
+            
+            // Use date end if provided, otherwise use date start
+            const dateEnd = this.elements.storyDateEnd.value.trim() || this.elements.storyDateStart.value.trim();
+            
+            const episodeData = {
+                title: this.elements.storyTitle.value.trim(),
+                episodeNumber: parseInt(this.elements.storyEpisodeNumber.value),
+                dateStart: this.elements.storyDateStart.value.trim(),
+                dateEnd: dateEnd,
+                act: {
+                    id: selectedAct.id,
+                    name: selectedAct.name,
+                    subtitle: selectedAct.subtitle
+                },
+                chapter: {
+                    id: selectedChapter.id,
+                    name: selectedChapter.name,
+                    subtitle: selectedChapter.subtitle
+                },
+                locations: this.locations,
+                content: contentHtml,
+                image: this.elements.storyImage.value.trim() || null,
+                imageCaption: this.elements.storyImageCaption.value.trim() || null
+            };
+            
+            let newOrUpdatedEpisode;
+            
+            // Save to API
+            if (episodeId) {
+                // Update existing episode
+                newOrUpdatedEpisode = await AdminDashboard.API.StoryEpisodes.update(episodeId, episodeData);
+                
+                // Update local cache
+                const index = this.data.findIndex(episode => episode.id === episodeId);
+                if (index !== -1) {
+                    this.data[index] = newOrUpdatedEpisode;
+                }
+                
+                // Show success message
+                AdminDashboard.UI.showToast('success', 'Story episode updated successfully!');
+                
+                // Add to recent activity
+                await AdminDashboard.Activities.addActivity({
+                    icon: 'fa-book-open',
+                    title: 'Story Episode Updated',
+                    description: `Updated story episode: ${episodeData.title}`,
+                    timestamp: new Date().toISOString()
+                });
+            } else {
+                // Create new episode
+                newOrUpdatedEpisode = await AdminDashboard.API.StoryEpisodes.create(episodeData);
+                
+                // Add to local cache
+                this.data.push(newOrUpdatedEpisode);
+                
+                // Show success message
+                AdminDashboard.UI.showToast('success', 'Story episode created successfully!');
+                
+                // Add to recent activity
+                await AdminDashboard.Activities.addActivity({
+                    icon: 'fa-book-open',
+                    title: 'Story Episode Created',
+                    description: `Created new story episode: ${episodeData.title}`,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            // Close modal
+            AdminDashboard.UI.closeModal('story-modal');
+            
+            // Update list
+            this.renderStoryList();
+            
+            // Update dashboard stats
+            AdminDashboard.updateDashboardStats();
+            
+        } catch (error) {
+            console.error('Error saving story episode:', error);
+            AdminDashboard.UI.showToast('error', 'Error saving story episode. Please try again.');
+        } finally {
+            // Re-enable save button
+            if (saveStoryBtn) {
+                saveStoryBtn.disabled = false;
+                saveStoryBtn.innerHTML = '<i class="fas fa-save"></i> Save Episode';
+            }
+        }
+    },
+    
+    /**
+     * Delete a story episode
+     */
+    async deleteStoryEpisode(id) {
+        try {
+            // Find episode name before removing
+            const deletedEpisode = this.data.find(episode => episode.id === id);
+            const episodeTitle = deletedEpisode ? deletedEpisode.title : 'Unknown episode';
+            
+            // Delete from API
+            await AdminDashboard.API.request(`/admin/api/story-episodes/${id}`, {
+                method: 'DELETE'
+            });
+            
+            // Remove from local cache
+            this.data = this.data.filter(episode => episode.id !== id);
+            
+            // Update list
+            this.renderStoryList();
+            
+            // Update dashboard stats
+            AdminDashboard.updateDashboardStats();
+            
+            // Show success message
+            AdminDashboard.UI.showToast('success', 'Story episode deleted successfully!');
+            
+            // Add to recent activity
+            await AdminDashboard.Activities.addActivity({
+                icon: 'fa-trash-alt',
+                title: 'Story Episode Deleted',
+                description: `Deleted story episode: ${episodeTitle}`,
+                timestamp: new Date().toISOString()
+            });
+            
+        } catch (error) {
+            console.error('Error deleting story episode:', error);
+            AdminDashboard.UI.showToast('error', 'Error deleting story episode. Please try again.');
+        }
+    },
+    
+    /**
+     * Handle location search within the story modal
+     */
+    handleLocationSearch() {
+        const { locationSearch, locationResults } = this.elements;
+        const searchTerm = locationSearch.value.trim().toLowerCase();
+        
+        // Clear previous results
+        locationResults.innerHTML = '';
+        
+        if (!searchTerm) {
+            locationResults.classList.remove('show');
+            return;
+        }
+        
+        // Filter locations by search term (match by ID or name)
+        const matchingLocations = this.availableLocations.filter(loc => 
+            loc.id.toLowerCase().includes(searchTerm) || 
+            loc.name.toLowerCase().includes(searchTerm)
+        );
+        
+        if (matchingLocations.length === 0) {
+            locationResults.innerHTML = `
+                <div class="location-result-item" style="cursor:default; color:var(--admin-text-muted);">
+                    No matching locations found
+                </div>
+            `;
+        } else {
+            matchingLocations.forEach(loc => {
+                const item = document.createElement('div');
+                item.className = 'location-result-item';
+                item.innerHTML = `
+                    <span class="location-result-name">${loc.name}</span>
+                    <span class="location-result-id">${loc.id}</span>
+                `;
+                item.addEventListener('click', () => this.selectLocation(loc));
+                locationResults.appendChild(item);
+            });
+        }
+        
+        locationResults.classList.add('show');
+    },
+    
+    /**
+     * Show location search results dropdown
+     */
+    showLocationResults() {
+        const { locationSearch, locationResults } = this.elements;
+        const searchTerm = locationSearch.value.trim();
+        
+        // If a search term is already entered, show results
+        if (searchTerm) {
+            this.handleLocationSearch();
+        } else {
+            // Otherwise, show all available locations (limited to first 10)
+            locationResults.innerHTML = '';
+            
+            const locationsToShow = this.availableLocations.slice(0, 10);
+            
+            if (locationsToShow.length === 0) {
+                locationResults.innerHTML = `
+                    <div class="location-result-item" style="cursor:default; color:var(--admin-text-muted);">
+                        No locations available
+                    </div>
+                `;
+            } else {
+                locationsToShow.forEach(loc => {
+                    const item = document.createElement('div');
+                    item.className = 'location-result-item';
+                    item.innerHTML = `
+                        <span class="location-result-name">${loc.name}</span>
+                        <span class="location-result-id">${loc.id}</span>
+                    `;
+                    item.addEventListener('click', () => this.selectLocation(loc));
+                    locationResults.appendChild(item);
+                });
+                
+                if (this.availableLocations.length > 10) {
+                    const moreItem = document.createElement('div');
+                    moreItem.className = 'location-result-item';
+                    moreItem.style.textAlign = 'center';
+                    moreItem.innerHTML = `<span>Type to search more locations...</span>`;
+                    locationResults.appendChild(moreItem);
+                }
+            }
+            
+            locationResults.classList.add('show');
+        }
+    },
+    
+    /**
+     * Select a location from the dropdown
+     */
+    selectLocation(location) {
+        const { locationSearch, locationResults } = this.elements;
+        
+        // Check if location is already added
+        if (this.locations.some(loc => loc.id === location.id)) {
+            AdminDashboard.UI.showToast('warning', `Location "${location.name}" is already added`);
+            return;
+        }
+        
+        // Add to locations array
+        this.locations.push(location);
+        
+        // Add chip to UI
+        this.renderLocationChips();
+        
+        // Clear search field and hide results
+        locationSearch.value = '';
+        locationResults.classList.remove('show');
+    },
+    
+    /**
+     * Open the locations manager modal
+     */
+    openLocationsManager() {
+        const { locationsModal, locationsList } = this.elements;
+        
+        // Show loading state
+        locationsList.innerHTML = `
+            <div class="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading locations...</p>
+            </div>
+        `;
+        
+        // Open modal
+        AdminDashboard.UI.openModal(locationsModal);
+        
+        // Fetch latest locations and render them
+        this.loadAvailableLocations().then(() => {
+            this.renderLocationsList();
+        });
+    },
+    
+    /**
+     * Add a new location to the system
+     */
+    async addNewLocation() {
+        const { newLocationId, newLocationName } = this.elements;
+        
+        const id = newLocationId.value.trim();
+        const name = newLocationName.value.trim();
+        
+        // Validate inputs
+        if (!id || !name) {
+            AdminDashboard.UI.showToast('error', 'Please enter both location ID and name');
+            return;
+        }
+        
+        // Validate ID format (lowercase, hyphens, no spaces)
+        if (!/^[a-z0-9-]+$/.test(id)) {
+            AdminDashboard.UI.showToast('error', 'Location ID must contain only lowercase letters, numbers, and hyphens');
+            return;
+        }
+        
+        try {
+            // Use the centralized API request method instead of direct fetch
+            this.availableLocations = await AdminDashboard.API.request('/admin/api/locations', {
+                method: 'POST',
+                body: JSON.stringify({ id, name })
+            });
+            
+            // Render updated list
+            this.renderLocationsList();
+            
+            // Clear form
+            newLocationId.value = '';
+            newLocationName.value = '';
+            
+            // Show success message
+            AdminDashboard.UI.showToast('success', `Location "${name}" added successfully`);
+            
+        } catch (error) {
+            console.error('Error adding location:', error);
+            AdminDashboard.UI.showToast('error', error.message || 'Failed to add location');
+        }
+    },
+    
+    /**
+     * Render the list of available locations in the manager modal
+     */
+    renderLocationsList() {
+        const { locationsList, locationListSearch } = this.elements;
+        
+        // Get search term if any
+        const searchTerm = locationListSearch ? locationListSearch.value.trim().toLowerCase() : '';
+        
+        // Filter locations if search term is provided
+        let locationsToShow = this.availableLocations;
+        if (searchTerm) {
+            locationsToShow = this.availableLocations.filter(loc => 
+                loc.id.toLowerCase().includes(searchTerm) || 
+                loc.name.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        // Clear list
+        locationsList.innerHTML = '';
+        
+        // Show message if no locations
+        if (locationsToShow.length === 0) {
+            locationsList.innerHTML = `
+                <div style="padding: 20px; text-align: center; color: var(--admin-text-muted);">
+                    ${searchTerm ? 'No matching locations found' : 'No locations available'}
+                </div>
+            `;
+            return;
+        }
+        
+        // Add each location to the list
+        locationsToShow.forEach(loc => {
+            const item = document.createElement('div');
+            item.className = 'location-item';
+            item.innerHTML = `
+                <div class="location-info">
+                    <span class="location-info-name">${loc.name}</span>
+                    <span class="location-info-id">${loc.id}</span>
+                </div>
+                <div class="location-action">
+                    <button class="action-btn add-location" title="Add to episode">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Add event listener to the add button
+            const addBtn = item.querySelector('.add-location');
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    this.selectLocation(loc);
+                    AdminDashboard.UI.showToast('success', `Added "${loc.name}" to episode`);
+                });
+            }
+            
+            locationsList.appendChild(item);
+        });
+    },
+    
+    /**
+     * Filter the locations list in the manager modal
+     */
+    filterLocationsList() {
+        this.renderLocationsList();
+    },
+    
+    /**
+     * Remove a location from the form
+     */
+    removeLocation(id) {
+        this.locations = this.locations.filter(loc => loc.id !== id);
+        this.renderLocationChips();
+    },
+    
+    /**
+     * Render location chips in the form
+     */
+    renderLocationChips() {
+        const { locationChips } = this.elements;
+        if (!locationChips) return;
+        
+        locationChips.innerHTML = '';
+        
+        this.locations.forEach(loc => {
+            const chip = document.createElement('div');
+            chip.className = 'chip';
+            chip.innerHTML = `
+                <span class="chip-text">${loc.name} (${loc.id})</span>
+                <button type="button" class="chip-remove" data-id="${loc.id}">×</button>
+            `;
+            locationChips.appendChild(chip);
+            
+            // Add remove event
+            const removeBtn = chip.querySelector('.chip-remove');
+            removeBtn.addEventListener('click', () => this.removeLocation(loc.id));
+        });
+    },
+    
+    /**
+     * Validate story form
+     */
+    validateStoryForm() {
+        const { storyForm } = this.elements;
+        if (!storyForm) return false;
+        
+        const requiredFields = storyForm.querySelectorAll('[required]');
+        let valid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                valid = false;
+            } else {
+                field.classList.remove('error');
+            }
+        });
+        
+        // Validate that at least one location is added
+        if (this.locations.length === 0) {
+            AdminDashboard.UI.showToast('error', 'Please add at least one location.');
+            this.elements.locationSearch.classList.add('error');
+            valid = false;
+        }
+        
+        return valid;
+    },
+    
+    /**
+     * Reset story form
+     */
+    resetStoryForm() {
+        const { storyForm } = this.elements;
+        if (!storyForm) return;
+        
+        // Clear the form
+        storyForm.reset();
+        
+        // Reset hidden ID field
+        if (this.elements.storyId) {
+            this.elements.storyId.value = '';
+        }
+        
+        // Reset locations
+        this.locations = [];
+        this.renderLocationChips();
+        
+        // Reset any validation errors
+        storyForm.querySelectorAll('.error').forEach(field => {
+            field.classList.remove('error');
+        });
+    },
+    
+    /**
+     * Populate story form for editing
+     */
+    populateStoryForm(episode) {
+        if (!episode) return;
+        
+        // Set basic fields
+        this.elements.storyId.value = episode.id;
+        this.elements.storyTitle.value = episode.title;
+        this.elements.storyEpisodeNumber.value = episode.episodeNumber;
+        this.elements.storyDateStart.value = episode.dateStart;
+        this.elements.storyDateEnd.value = episode.dateEnd === episode.dateStart ? '' : episode.dateEnd;
+        this.elements.storyAct.value = episode.act.id;
+        this.elements.storyChapter.value = episode.chapter.id;
+        
+        // Set locations
+        this.locations = episode.locations ? [...episode.locations] : [];
+        this.renderLocationChips();
+        
+        // Set content - convert from HTML to plain text with line breaks
+        let content = episode.content || '';
+        content = content.replace(/<p>(.*?)<\/p>/g, '$1\n');
+        this.elements.storyContent.value = content.trim();
+        
+        // Set image fields
+        this.elements.storyImage.value = episode.image || '';
+        this.elements.storyImageCaption.value = episode.imageCaption || '';
+    },
+    
+    /**
+     * Apply filters to story list
+     */
+    applyFilters() {
+        const { storySearch, actFilter, chapterFilter } = this.elements;
+        
+        const searchTerm = storySearch?.value.trim().toLowerCase() || '';
+        const act = actFilter?.value || '';
+        const chapter = chapterFilter?.value || '';
+        
+        this.renderStoryList(searchTerm, act, chapter);
+    },
+    
+    /**
+     * Render story list with optional filters
+     */
+    renderStoryList(searchTerm = '', actFilter = '', chapterFilter = '') {
+        const { storyList } = this.elements;
+        if (!storyList) return;
+        
+        // Filter story episodes if needed
+        let filteredEpisodes = [...this.data];
+        
+        // Apply filters
+        if (searchTerm) {
+            filteredEpisodes = filteredEpisodes.filter(episode => 
+                episode.title.toLowerCase().includes(searchTerm) || 
+                episode.content.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        if (actFilter) {
+            filteredEpisodes = filteredEpisodes.filter(episode => 
+                episode.act && episode.act.id === actFilter
+            );
+        }
+        
+        if (chapterFilter) {
+            filteredEpisodes = filteredEpisodes.filter(episode => 
+                episode.chapter && episode.chapter.id === chapterFilter
+            );
+        }
+        
+        // No episodes found
+        if (filteredEpisodes.length === 0) {
+            storyList.innerHTML = `
+                <div class="empty-message">
+                    <p>No story episodes found. ${searchTerm || actFilter || chapterFilter ? 'Try adjusting your filters.' : 'Create your first episode!'}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Clear list
+        storyList.innerHTML = '';
+        
+        // Sort by episode number
+        filteredEpisodes.sort((a, b) => a.episodeNumber - b.episodeNumber);
+        
+        // Add each episode
+        filteredEpisodes.forEach(episode => {
+            storyList.appendChild(this.createStoryListItem(episode));
+        });
+    },
+    
+    /**
+     * Create story list item element
+     */
+    createStoryListItem(episode) {
+        const episodeItem = document.createElement('div');
+        episodeItem.className = 'story-item';
+        episodeItem.setAttribute('data-id', episode.id);
+        
+        // Location display
+        const locationDisplay = episode.locations ? 
+            episode.locations.map(loc => `<span class="location-tag">${loc.name}</span>`).join(' ') : 
+            '';
+        
+        // Image badge
+        const hasImageBadge = episode.image ? 
+            `<span class="badge badge-info"><i class="fas fa-image"></i> Has Image</span>` : 
+            '';
+        
+        // Date display
+        const dateDisplay = episode.dateStart === episode.dateEnd ? 
+            episode.dateStart : 
+            `${episode.dateStart} - ${episode.dateEnd}`;
+        
+        episodeItem.innerHTML = `
+            <div class="item-header">
+                <div class="story-meta">
+                    <span class="story-number">Session ${episode.episodeNumber}</span>
+                    <span class="story-info">
+                        <span class="badge badge-primary">${episode.act.name}</span>
+                        <span class="badge badge-secondary">${episode.chapter.name}</span>
+                        ${hasImageBadge}
+                    </span>
+                </div>
+                <h3 class="story-title">${episode.title}</h3>
+                <div class="story-date-locations">
+                    <span class="story-date"><i class="fas fa-calendar-alt"></i> ${dateDisplay}</span>
+                    <div class="story-locations">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="location-tags">${locationDisplay}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-content">
+                <div class="story-preview">${this.getContentPreview(episode.content)}</div>
+            </div>
+            <div class="item-actions">
+                <button class="action-btn edit" title="Edit episode">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="action-btn delete" title="Delete episode">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        `;
+        
+        // Add event listeners
+        const editBtn = episodeItem.querySelector('.edit');
+        if (editBtn) {
+            editBtn.addEventListener('click', () => this.showEditForm(episode));
+        }
+        
+        const deleteBtn = episodeItem.querySelector('.delete');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                AdminDashboard.UI.showConfirmation({
+                    title: 'Delete Story Episode',
+                    message: `Are you sure you want to delete "${episode.title}" (Session ${episode.episodeNumber})? This action cannot be undone.`,
+                    confirmText: 'Delete',
+                    confirmClass: 'btn-danger',
+                    onConfirm: () => this.deleteStoryEpisode(episode.id)
+                });
+            });
+        }
+        
+        return episodeItem;
+    },
+    
+    /**
+     * Get a preview of the content (strips HTML tags and limits length)
+     */
+    getContentPreview(content) {
+        if (!content) return 'No content';
+        
+        // Strip HTML tags
+        const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, ' ');
+        
+        // Limit to 200 characters
+        if (strippedContent.length > 200) {
+            return strippedContent.substring(0, 200) + '...';
+        }
+        
+        return strippedContent;
+    },
+
+    // Add these new methods for Acts management
+    openActsManager() {
+        const { actsModal, actsList } = this.elements;
+        
+        // Show loading state
+        actsList.innerHTML = `
+            <div class="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading acts...</p>
+            </div>
+        `;
+        
+        // Open modal
+        AdminDashboard.UI.openModal('acts-modal');
+        
+        // Render the acts list
+        this.renderActsList();
+    },
+    
+    renderActsList() {
+        const { actsList } = this.elements;
+        
+        // Clear list
+        actsList.innerHTML = '';
+        
+        // Show message if no acts
+        if (this.availableActs.length === 0) {
+            actsList.innerHTML = `
+                <div class="empty-message">
+                    <p>No acts available. Create your first act!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Add each act to the list
+        this.availableActs.forEach(act => {
+            const item = document.createElement('div');
+            item.className = 'act-item';
+            item.innerHTML = `
+                <div class="act-info">
+                    <h4 class="act-name">${act.name}</h4>
+                    <p class="act-subtitle">${act.subtitle || ''}</p>
+                    <p class="act-id">ID: ${act.id}</p>
+                </div>
+            `;
+            actsList.appendChild(item);
+        });
+    },
+    
+    async addNewAct() {
+        const { newActId, newActName, newActSubtitle } = this.elements;
+        
+        const id = newActId.value.trim();
+        const name = newActName.value.trim();
+        const subtitle = newActSubtitle.value.trim();
+        
+        // Validate inputs
+        if (!id || !name) {
+            AdminDashboard.UI.showToast('error', 'Please enter both act ID and name');
+            return;
+        }
+        
+        // Validate ID format (lowercase, hyphens, no spaces)
+        if (!/^[a-z0-9-]+$/.test(id)) {
+            AdminDashboard.UI.showToast('error', 'Act ID must contain only lowercase letters, numbers, and hyphens');
+            return;
+        }
+        
+        try {
+            this.availableActs = await AdminDashboard.API.request('/admin/api/acts', {
+                method: 'POST',
+                body: JSON.stringify({ id, name, subtitle })
+            });
+            
+            // Update acts dropdown
+            this.updateActsDropdown();
+            
+            // Render updated list
+            this.renderActsList();
+            
+            // Clear form
+            newActId.value = '';
+            newActName.value = '';
+            newActSubtitle.value = '';
+            
+            // Show success message
+            AdminDashboard.UI.showToast('success', `Act "${name}" added successfully`);
+            
+        } catch (error) {
+            console.error('Error adding act:', error);
+            AdminDashboard.UI.showToast('error', error.message || 'Failed to add act');
+        }
+    },
+    
+    // Add these new methods for Chapters management
+    openChaptersManager() {
+        const { chaptersModal, chaptersList } = this.elements;
+        
+        // Show loading state
+        chaptersList.innerHTML = `
+            <div class="loading-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading chapters...</p>
+            </div>
+        `;
+        
+        // Open modal
+        AdminDashboard.UI.openModal('chapters-modal');
+        
+        // Render the chapters list
+        this.renderChaptersList();
+    },
+    
+    renderChaptersList() {
+        const { chaptersList } = this.elements;
+        
+        // Clear list
+        chaptersList.innerHTML = '';
+        
+        // Show message if no chapters
+        if (this.availableChapters.length === 0) {
+            chaptersList.innerHTML = `
+                <div class="empty-message">
+                    <p>No chapters available. Create your first chapter!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Add each chapter to the list
+        this.availableChapters.forEach(chapter => {
+            const item = document.createElement('div');
+            item.className = 'chapter-item';
+            item.innerHTML = `
+                <div class="chapter-info">
+                    <h4 class="chapter-name">${chapter.name}</h4>
+                    <p class="chapter-subtitle">${chapter.subtitle || ''}</p>
+                    <p class="chapter-id">ID: ${chapter.id}</p>
+                </div>
+            `;
+            chaptersList.appendChild(item);
+        });
+    },
+    
+    async addNewChapter() {
+        const { newChapterId, newChapterName, newChapterSubtitle } = this.elements;
+        
+        const id = newChapterId.value.trim();
+        const name = newChapterName.value.trim();
+        const subtitle = newChapterSubtitle.value.trim();
+        
+        // Validate inputs
+        if (!id || !name) {
+            AdminDashboard.UI.showToast('error', 'Please enter both chapter ID and name');
+            return;
+        }
+        
+        // Validate ID format (lowercase, hyphens, no spaces)
+        if (!/^[a-z0-9-]+$/.test(id)) {
+            AdminDashboard.UI.showToast('error', 'Chapter ID must contain only lowercase letters, numbers, and hyphens');
+            return;
+        }
+        
+        try {
+            this.availableChapters = await AdminDashboard.API.request('/admin/api/chapters', {
+                method: 'POST',
+                body: JSON.stringify({ id, name, subtitle })
+            });
+            
+            // Update chapters dropdown
+            this.updateChaptersDropdown();
+            
+            // Render updated list
+            this.renderChaptersList();
+            
+            // Clear form
+            newChapterId.value = '';
+            newChapterName.value = '';
+            newChapterSubtitle.value = '';
+            
+            // Show success message
+            AdminDashboard.UI.showToast('success', `Chapter "${name}" added successfully`);
+            
+        } catch (error) {
+            console.error('Error adding chapter:', error);
+            AdminDashboard.UI.showToast('error', error.message || 'Failed to add chapter');
+        }
+    }
+},
     
     /**
      * Activities Module - Activity tracking
@@ -1991,6 +3266,7 @@ const AdminDashboard = {
         // Initialize feature modules
         this.NPCs.init();
         this.Timeline.init();
+        this.StoryEpisodes.init(); // Add this line to initialize the StoryEpisodes module
         this.Settings.init();
         
         // Load activities

@@ -1,0 +1,28 @@
+{
+"locations": [
+    {
+      "id": "crowns-rest",
+      "name": "Crown's Rest"
+    },
+    {
+      "id": "dragons-end",
+      "name": "Dragon's End"
+    },
+    {
+      "id": "manor-kings-hand",
+      "name": "The Manor of the King's Hand"
+    },
+    {
+      "id": "rosemont",
+      "name": "Rosemont"
+    },
+    {
+      "id": "cerwyn-keep",
+      "name": "Cerwyn Keep"
+    },
+    {
+      "id": "ederia",
+      "name": "Ederia"
+    }
+  ]
+}

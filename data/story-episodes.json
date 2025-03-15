@@ -1,0 +1,39 @@
+{
+  "episodes": [
+    {
+      "id": "1742082863193",
+      "title": "The King's Hand",
+      "episodeNumber": 1,
+      "dateStart": "September 1, 1103 A.R.",
+      "dateEnd": "September 1, 1103 A.R.",
+      "act": {
+        "id": "act-1",
+        "name": "Act I: The Gathering Shadows",
+        "subtitle": "The heirs answer their king's call"
+      },
+      "chapter": {
+        "id": "chapter-1",
+        "name": "Chapter 1",
+        "subtitle": "The King's Hand"
+      },
+      "locations": [
+        {
+          "id": "crowns-rest",
+          "name": "Crown's Rest"
+        },
+        {
+          "id": "dragons-end",
+          "name": "Dragon's End"
+        },
+        {
+          "id": "ederia",
+          "name": "Ederia"
+        }
+      ],
+      "content": "<p>The heirs are all called to the council chambers. Edwinn arrives last and offers out gifts to all his siblings, doing his best to cut through the tension of the family’s first meeting in some time.</p><p>Eventually, King Talon and Lord Gareth arrive, ready to start the meeting. Talon greets all of his children warmly, though acknowledges that he can sense the tension between everyone.</p><p>He opens by asking about the “King’s Hand”, explaining that the Hand allows the King to be in two places at once, to strike threats but also to heal wounds. They are an extension of the king’s power and presence. Talon informs the children that the five of them will now be serving as the Hand. This seems to be in place so Talon can see how his children lead and rule.</p><p>The first task given to the heirs is to learn who is the true owner of Rosemont, as there are great disagreements amongst the residents, resulting in violence.</p><p>The group is given money for provisions to supply up before leaving the same day. Edwinn speaks with Talon about his relationship with the throne. The heirs all leave after this, heading to the market in order to buy supplies for the journey. While basic supplies are purchased, Xanthe and Cailynn gain information on the area.</p><p>The heirs meet at the gate and rendezvous with their uncle Raynere, who is excited to see them. Xanthe speaks to Raynere, opening up about wanting to know what flaws or weaknesses she has to prevent her from being named heir. Raynere is sworn to secrecy though, but on further insistence he does tell Xanthe that he also had concerns about her. Xanthe immediately left after.</p><p>Upon a night of hunting, the heirs and Raynere come across a building that was not on the map. Raynere goes to investigate, but while he does that the heirs are attacked in an ambush.</p>",
+      "image": null,
+      "imageCaption": null,
+      "createdAt": "2025-03-15T23:54:23.193Z"
+    }
+  ]
+}
