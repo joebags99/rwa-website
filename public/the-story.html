@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story So Far - The Crimson Court</title>
+    <meta name="description" content="Follow the epic journey of the five heirs to the throne in this Game of Thrones-inspired D&D campaign.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    <link rel="stylesheet" href="css/story.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="crimson-court-page story-page">
+    
+    <!-- Court Portal (Main Content) -->
+    <div class="court-portal court-portal-active">
+        <!-- Royal Header (Crimson Court Style) -->
+        <header class="royal-header">
+            <div class="container">
+                <div class="court-logo">
+                    <a href="crimson-court.html" class="return-court">
+                        <img src="assets/images/cc-logo.png" alt="The Crimson Court" class="cc-logo-image">
+                    </a>
+                </div>
+                <nav class="court-nav">
+                    <ul>
+                        <li><a href="index.html" class="court-nav-item"><i class="fas fa-home"></i> <span>Main Site</span></a></li>
+                        <li><a href="crimson-court.html" class="court-nav-item"><i class="fas fa-crown"></i> <span>Court Portal</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Heraldic Banner -->
+        <div class="heraldic-banner">
+            <div class="banner-emblem">
+                <div class="royal-crest cc-icon-image"></div>
+            </div>
+            <h1 class="royal-title">The Story So Far</h1>
+            <p class="royal-subtitle">Chronicles of Intrigue, Betrayal, and Destiny</p>
+        </div>
+        
+        <!-- Story Controls -->
+        <div class="story-controls">
+            <div class="container">
+                <!-- Act/Chapter Navigation -->
+                <div class="act-navigation">
+                    <div class="dropdown-container">
+                        <button class="dropdown-button" id="act-dropdown-btn">
+                            <span class="current-selection"><i class="fas fa-book-open"></i> All Acts</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="act-dropdown">
+                            <a href="#" class="dropdown-item active" data-act="all">All Acts</a>
+                            <a href="#" class="dropdown-item" data-act="act-1">Act I: The Gathering</a>
+                            <a href="#" class="dropdown-item" data-act="act-2">Act II: The Conclave</a>
+                            <a href="#" class="dropdown-item" data-act="act-3">Act III: The Revelation</a>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown-container">
+                        <button class="dropdown-button" id="chapter-dropdown-btn">
+                            <span class="current-selection"><i class="fas fa-bookmark"></i> All Chapters</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="chapter-dropdown">
+                            <a href="#" class="dropdown-item active" data-chapter="all">All Chapters</a>
+                            <a href="#" class="dropdown-item" data-chapter="chapter-1">Chapter 1: Royal Summons</a>
+                            <a href="#" class="dropdown-item" data-chapter="chapter-2">Chapter 2: Journey to Court</a>
+                            <a href="#" class="dropdown-item" data-chapter="chapter-3">Chapter 3: First Council</a>
+                            <!-- More chapters will be dynamically added via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Location Filter -->
+                <div class="location-filters"></div>
+                
+                <!-- Search -->
+                <div class="story-search">
+                    <input type="text" id="story-search-input" placeholder="Search the story...">
+                    <button id="search-button"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Story Section -->
+        <section class="story-section">
+            <div class="container">
+                <!-- Act/Chapter Divider Template -->
+                <template id="divider-template">
+                    <div class="story-divider">
+                        <div class="divider-content">
+                            <i class="fas fa-book-open"></i>
+                            <div class="divider-text">
+                                <h2 class="divider-title"></h2>
+                                <p class="divider-subtitle"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                
+                <!-- Story Episode Template -->
+                <template id="episode-template">
+                    <div class="story-episode">
+                        <div class="episode-header">
+                            <div class="episode-meta">
+                                <span class="episode-number"></span>
+                                <span class="episode-date"></span>
+                            </div>
+                            <h3 class="episode-title"></h3>
+                            <div class="episode-locations">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div class="location-tags"></div>
+                            </div>
+                        </div>
+                        <div class="episode-content">
+                            <div class="episode-text"></div>
+                            <div class="episode-image-container" style="display: none;">
+                                <img class="episode-image" src="" alt="">
+                                <p class="image-caption"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                
+                <!-- Story Content - will be populated by JavaScript -->
+                <div class="story-content" id="story-content">
+                    <!-- Loading Indicator -->
+                    <div class="loading-indicator top-loader">
+                        <div class="spinner-d20">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading earlier episodes...</p>
+                    </div>
+                    
+                    <!-- Story entries will be inserted here -->
+                    
+                    <!-- Loading Indicator -->
+                    <div class="loading-indicator bottom-loader">
+                        <div class="spinner-d20">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading more episodes...</p>
+                    </div>
+                    
+                    <!-- No Results Message -->
+                    <div class="no-results-message" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>No Episodes Found</h3>
+                        <p>No story episodes match your current filter criteria. Try adjusting your filters or clearing them to see all episodes.</p>
+                        <button class="clear-search-btn">Clear All Filters</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Court Footer -->
+        <footer class="royal-footer">
+            <div class="container">
+                <div class="royal-decree">
+                    <p>Every tale has many sides, every truth many faces.</p>
+                    <div class="royal-seal"></div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Decorative Elements -->
+        <div class="decorative-elements">
+            <div class="floating-crown crown-1"></div>
+            <div class="floating-crown crown-2"></div>
+            <div class="floating-scroll scroll-1"></div>
+            <div class="floating-scroll scroll-2"></div>
+            <div class="floating-sword sword-1"></div>
+            <div class="floating-sword sword-2"></div>
+            <div class="candle candle-1"></div>
+            <div class="candle candle-2"></div>
+            <div class="candle candle-3"></div>
+            <div class="candle candle-4"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crimson-court.js"></script>
+    <script src="js/story.js"></script>
+</body>
+</html>
