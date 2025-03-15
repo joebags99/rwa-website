@@ -15,9 +15,11 @@ Story Color Scheme Variables
     --story-divider-bg: var(--gradient-royal);
     
     /* Act Colors */
-    --act-1-color: rgba(11, 42, 169, 0.7);    /* Royal Blue */
-    --act-2-color: rgba(127, 14, 189, 0.7);   /* Royal Purple */
-    --act-3-color: rgba(195, 10, 61, 0.7);    /* Crimson */
+    --act-1-color: rgba(28, 29, 78, 0.603);   
+    --act-2-color: rgba(68, 29, 29, 0.7);  
+    --act-3-color: rgba(116, 35, 35, 0.7);    
+    --act-4-color: rgba(187, 0, 0, 0.7);    
+    --act-5-color: rgba(241, 227, 143, 0.7);   
     
     /* Chapter Accent */
     --chapter-accent: var(--royal-gold);
@@ -422,15 +424,23 @@ Story Divider (Act/Chapter)
 
 /* Act-specific colorings */
 .story-divider[data-act="act-1"] .divider-content {
-    background: linear-gradient(135deg, var(--act-1-color), rgba(11, 42, 169, 0.9));
+    background: linear-gradient(135deg, var(--act-1-color), var(--act-2-color));
 }
 
 .story-divider[data-act="act-2"] .divider-content {
-    background: linear-gradient(135deg, var(--act-2-color), rgba(127, 14, 189, 0.9));
+    background: linear-gradient(135deg, var(--act-2-color), var(--act-3-color));
 }
 
 .story-divider[data-act="act-3"] .divider-content {
-    background: linear-gradient(135deg, var(--act-3-color), rgba(195, 10, 61, 0.9));
+    background: linear-gradient(135deg, var(--act-3-color), var(--act-4-color));
+}
+
+.story-divider[data-act="act-4"] .divider-content {
+    background: linear-gradient(135deg, var(--act-4-color), var(--act-5-color));
+}
+
+.story-divider[data-act="act-5"] .divider-content {
+    background: linear-gradient(135deg, var(--act-5-color), var(--act-1-color));
 }
 
 /* Icon variations by divider type */

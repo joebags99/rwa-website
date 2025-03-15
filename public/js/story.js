@@ -666,7 +666,7 @@ const Story = {
 
         // Set episode metadata
         const numberEl = episodeElement.querySelector('.episode-number');
-        if (numberEl) numberEl.textContent = `Episode ${episode.episodeNumber}`;
+        if (numberEl) numberEl.textContent = `Session ${episode.episodeNumber}`;
 
         const dateEl = episodeElement.querySelector('.episode-date');
         if (dateEl) dateEl.textContent = episode.date;
