@@ -669,7 +669,15 @@ const Story = {
         if (numberEl) numberEl.textContent = `Session ${episode.episodeNumber}`;
 
         const dateEl = episodeElement.querySelector('.episode-date');
-        if (dateEl) dateEl.textContent = episode.date;
+        if (dateEl) {
+            if (episode.dateStart === episode.dateEnd) {
+                // Single day session
+                dateEl.textContent = episode.dateStart;
+            } else {
+                // Multi-day session
+                dateEl.textContent = `${episode.dateStart} - ${episode.dateEnd}`;
+            }
+        }
 
         const titleEl = episodeElement.querySelector('.episode-title');
         if (titleEl) titleEl.textContent = episode.title;
@@ -796,7 +804,8 @@ const Story = {
                 id: "1",
                 episodeNumber: 1,
                 title: "Royal Summons",
-                date: "January 15, 850 A.E.",
+                dateStart: "January 15, 850 A.R.",  // Changed from date to dateStart
+                dateEnd: "January 15, 850 A.R.",    // Added dateEnd
                 act: {
                     id: "act-1",
                     name: "Act I: The Gathering",
@@ -819,7 +828,8 @@ const Story = {
                 id: "2",
                 episodeNumber: 2,
                 title: "The First Council",
-                date: "January 20, 850 A.E.",
+                dateStart: "January 20, 850 A.R.",
+                dateEnd: "January 21, 850 A.R.",    // Example of multi-day session
                 act: {
                     id: "act-1",
                     name: "Act I: The Gathering",
@@ -842,7 +852,8 @@ const Story = {
                 id: "3",
                 episodeNumber: 3,
                 title: "Whispers in the Dark",
-                date: "January 25, 850 A.E.",
+                dateStart: "January 25, 850 A.R.",
+                dateEnd: "January 25, 850 A.R.",
                 act: {
                     id: "act-1",
                     name: "Act I: The Gathering",
