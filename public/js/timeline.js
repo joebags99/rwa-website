@@ -25,7 +25,14 @@ const Timeline = {
         monthNames: [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
-        ]
+        ],
+        eras: {
+            'age-of-chains': 'The Age of Chains',
+            'arcane-reckoning': 'The Arcane Reckoning',
+            'broken-sun': 'The Age of the Broken Sun', 
+            'silent-war': 'The Silent War',
+            'uncertainty': 'The Age of Uncertainty'
+        }
     },
 
     // State
@@ -91,6 +98,14 @@ const Timeline = {
                 button.addEventListener('click', () => {
                     this.filterByEra(button.dataset.era);
                 });
+            });
+        }
+
+        // Clear search button
+        const clearSearchBtn = document.querySelector('.clear-search-btn');
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', () => {
+                this.clearSearch();
             });
         }
     },
@@ -184,31 +199,93 @@ const Timeline = {
 
     // Clear search functionality
     clearSearch: function() {
+        // Reset search input
         if (this.elements.searchInput) {
             this.elements.searchInput.value = '';
         }
+        
+        // Reset state
         this.state.searchTerm = '';
+        this.state.currentEra = '';
+        this.state.currentPage = 1;
+        
+        // Reset era buttons
+        this.updateEraButtons('all');
+        
+        // Reset and rerender timeline
         this.resetTimeline();
-        this.filterEvents();
+        
+        // Hide no results message if visible
+        if (this.elements.noResultsMessage) {
+            this.elements.noResultsMessage.style.display = 'none';
+        }
+        
+        // Reload initial events
+        this.loadInitialEvents();
     },
 
     // Filter by era
     filterByEra: function(era) {
-        // Update active button
-        if (this.elements.eraButtons) {
-            this.elements.eraButtons.forEach(button => {
-                if (button.dataset.era === era) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
+        console.log('Filtering by era:', era);
+        
+        // Update active button state
+        this.updateEraButtons(era);
+        
+        // Update state
+        this.state.currentEra = era === 'all' ? '' : era;
+        
+        // Reset and refilter
+        this.resetTimeline();
+        this.renderFilteredEvents();
+    },
+
+    // Separated button update logic
+    updateEraButtons: function(selectedEra) {
+        const eraButtons = document.querySelectorAll('.era-navigation .era-button');
+        eraButtons.forEach(button => {
+            button.classList.toggle('active', button.dataset.era === selectedEra);
+        });
+    },
+
+    // Consolidated filtering logic
+    filterEvents: function() {
+        let filteredEvents = [...this.state.cachedEvents];
+        
+        // Era filter
+        if (this.state.currentEra) {
+            filteredEvents = filteredEvents.filter(event => event.era === this.state.currentEra);
+        }
+        
+        // Search filter
+        if (this.state.searchTerm) {
+            const searchLower = this.state.searchTerm.toLowerCase();
+            filteredEvents = filteredEvents.filter(event => {
+                return event.type === 'reign-break' ? 
+                    event.title.toLowerCase().includes(searchLower) :
+                    this.matchesSearch(event, searchLower);
             });
         }
         
-        // Update state and filter
-        this.state.currentEra = era;
-        this.resetTimeline();
-        this.filterEvents();
+        return this.sortEvents(filteredEvents);
+    },
+
+    // Separated search matching logic
+    matchesSearch: function(event, searchTerm) {
+        return (
+            event.title.toLowerCase().includes(searchTerm) ||
+            (event.description && event.description.toLowerCase().includes(searchTerm)) ||
+            (event.location && event.location.toLowerCase().includes(searchTerm))
+        );
+    },
+
+    // Separated sorting logic
+    sortEvents: function(events) {
+        return events.sort((a, b) => {
+            if (a.year !== b.year) return a.year - b.year;
+            if (a.month !== b.month) return (a.month || 0) - (b.month || 0);
+            if (a.day !== b.day) return (a.day || 0) - (b.day || 0);
+            return a.type === 'reign-break' ? -1 : 1;
+        });
     },
 
     // Reset timeline to load fresh content
@@ -242,56 +319,179 @@ const Timeline = {
     },
 
     // Filter events based on current state
-    filterEvents: function() {
-        let filteredEvents = this.state.cachedEvents.filter(event => {
-            // Era filter
-            if (this.state.currentEra && event.era !== this.state.currentEra) {
-                return false;
-            }
-            
-            // Search filter
-            if (this.state.searchTerm) {
-                const searchTerm = this.state.searchTerm.toLowerCase();
-                return (
-                    event.title.toLowerCase().includes(searchTerm) ||
-                    (event.description && event.description.toLowerCase().includes(searchTerm)) ||
-                    (event.location && event.location.toLowerCase().includes(searchTerm))
-                );
-            }
-            
-            return true;
+   // Filter by era - updated to work with your HTML structure
+filterByEra: function(era) {
+    console.log('Filtering by era:', era);
+    
+    // Find era buttons - use your class structure
+    const eraButtons = document.querySelectorAll('.era-navigation .era-button');
+    
+    // Update active button
+    eraButtons.forEach(button => {
+        if (button.dataset.era === era) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+    
+    // Handle different era values
+    if (era === 'all' || era === '') {
+        this.state.currentEra = ''; // Empty string means no filter
+    } else {
+        this.state.currentEra = era;
+    }
+    
+    console.log('Current era set to:', this.state.currentEra);
+    
+    // Reset timeline and apply filters
+    this.resetTimeline();
+    
+    // Add a slight delay to ensure DOM is updated
+    setTimeout(() => {
+        const filteredEvents = this.filterEvents();
+        console.log('Filtered events:', filteredEvents.length);
+        
+        // Take the first batch
+        const firstBatch = filteredEvents.slice(0, this.config.eventsPerBatch);
+        
+        // Render events
+        firstBatch.forEach(event => {
+            this.renderTimelineItem(event);
         });
-
-        // Sort by year, month, day
+        
+        // Update state
+        this.state.hasMoreEvents = filteredEvents.length > this.config.eventsPerBatch;
+        
+        // Show/hide no results message
+        if (this.elements.noResultsMessage) {
+            if (filteredEvents.length === 0) {
+                this.elements.noResultsMessage.style.display = 'block';
+            } else {
+                this.elements.noResultsMessage.style.display = 'none';
+            }
+        }
+        
+        // Observe new elements
+        document.querySelectorAll('.timeline-event, .timeline-break').forEach(el => {
+            this.observer.observe(el);
+        });
+    }, 50);
+},
+    
+    // Filter events - updated function
+    filterEvents: function() {
+        console.log('Filtering events. Era:', this.state.currentEra, 'Search:', this.state.searchTerm);
+        console.log('Total cached events:', this.state.cachedEvents.length);
+        
+        // Start with all events
+        let filteredEvents = [...this.state.cachedEvents];
+        
+        // Apply era filter
+        if (this.state.currentEra) {
+            console.log('Applying era filter for:', this.state.currentEra);
+            filteredEvents = filteredEvents.filter(event => {
+                const match = event.era === this.state.currentEra;
+                return match;
+            });
+        }
+        
+        // Apply search filter
+        if (this.state.searchTerm) {
+            const searchLower = this.state.searchTerm.toLowerCase();
+            filteredEvents = filteredEvents.filter(event => {
+                // Allow searching in all fields
+                return (
+                    (event.title && event.title.toLowerCase().includes(searchLower)) ||
+                    (event.description && event.description.toLowerCase().includes(searchLower)) ||
+                    (event.location && event.location.toLowerCase().includes(searchLower))
+                );
+            });
+        }
+        
+        console.log('Filtered events count:', filteredEvents.length);
+        
+        // Sort by year and month
         filteredEvents.sort((a, b) => {
             // Primary sort by year
             if (a.year !== b.year) {
                 return a.year - b.year;
             }
-            
-            // Secondary sort by month
-            const monthA = a.month || 0;
-            const monthB = b.month || 0;
-            if (monthA !== monthB) {
-                return monthA - monthB;
+            // Secondary sort by month (if both have months)
+            if (a.month && b.month) {
+                return a.month - b.month;
             }
-            
-            // Tertiary sort by day
-            const dayA = a.day || 0; 
-            const dayB = b.day || 0;
-            if (dayA !== dayB) {
-                return dayA - dayB;
+            // Reign breaks come before events in the same year
+            if (a.type === 'reign-break' && b.type !== 'reign-break') {
+                return -1;
             }
-            
-            // Reign breaks come first
-            if (a.type !== b.type) {
-                return a.type === 'reign-break' ? -1 : 1;
+            if (a.type !== 'reign-break' && b.type === 'reign-break') {
+                return 1;
             }
-            
             return 0;
         });
-
+        
         return filteredEvents;
+    },
+    
+    // Fix event listener binding for era buttons
+    bindEvents: function() {
+        // Scroll event for lazy loading
+        window.addEventListener('scroll', this.handleScroll.bind(this));
+        
+        // Log which era buttons are found
+        console.log('Era buttons found:', this.elements.eraButtons ? this.elements.eraButtons.length : 0);
+        
+        // Search functionality
+        if (this.elements.searchInput && this.elements.searchButton) {
+            this.elements.searchButton.addEventListener('click', this.handleSearch.bind(this));
+            this.elements.searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.handleSearch();
+                }
+            });
+        }
+        
+        // Clear search button
+        if (this.elements.clearSearchBtn) {
+            this.elements.clearSearchBtn.addEventListener('click', this.clearSearch.bind(this));
+        }
+        
+        // Era filter buttons - improved handling
+        if (this.elements.eraButtons && this.elements.eraButtons.length > 0) {
+            console.log('Setting up era button listeners');
+            this.elements.eraButtons.forEach(button => {
+                console.log('Button found:', button.dataset.era);
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Era button clicked:', button.dataset.era);
+                    this.filterByEra(button.dataset.era);
+                });
+            });
+        } else {
+            // Try to find buttons a different way as a fallback
+            console.log('No era buttons found with querySelector. Trying direct method...');
+            const eraButtons = document.querySelectorAll('.era-button');
+            if (eraButtons.length > 0) {
+                console.log('Found', eraButtons.length, 'era buttons directly');
+                this.elements.eraButtons = eraButtons;
+                eraButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        console.log('Era button clicked:', button.dataset.era);
+                        this.filterByEra(button.dataset.era);
+                    });
+                });
+            }
+        }
+
+        // Clear search button
+        const clearSearchBtn = document.querySelector('.clear-search-btn');
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', () => {
+                this.clearSearch();
+            });
+        }
     },
 
     // Load initial events
@@ -303,82 +503,49 @@ const Timeline = {
             this.elements.bottomLoader.classList.add('active');
         }
         
-        // In a real application, you would fetch from your API here
-        // For demonstration, we'll use the static sample data
-        setTimeout(() => {
-            // First fetch or populate a cached copy of all events
-            if (this.state.cachedEvents.length === 0) {
-                this.state.cachedEvents = this.getSampleTimelineData();
-            }
-            
-            // Filter events based on current filters
-            const filteredEvents = this.filterCachedEvents();
-            
-            // Update no results message
-            if (filteredEvents.length === 0) {
-                if (this.elements.noResultsMessage) {
-                    this.elements.noResultsMessage.style.display = 'block';
+        // Fetch data from the server
+        fetch('/api/public/timeline')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch timeline data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Timeline data loaded:', data);
+                
+                // Store the fetched data in our cache
+                this.state.cachedEvents = data || [];
+                
+                // Filter events based on current filters
+                const filteredEvents = this.filterEvents();
+                
+                // Update no results message
+                if (filteredEvents.length === 0) {
+                    if (this.elements.noResultsMessage) {
+                        this.elements.noResultsMessage.style.display = 'block';
+                    }
+                    
+                    // Hide loaders
+                    if (this.elements.bottomLoader) {
+                        this.elements.bottomLoader.classList.remove('active');
+                    }
+                    
+                    this.state.isLoading = false;
+                    this.state.hasMoreEvents = false;
+                    return;
                 }
                 
-                // Hide loaders
-                if (this.elements.bottomLoader) {
-                    this.elements.bottomLoader.classList.remove('active');
-                }
+                // Take the first batch
+                const firstBatch = filteredEvents.slice(0, this.config.eventsPerBatch);
                 
-                this.state.isLoading = false;
-                this.state.hasMoreEvents = false;
-                return;
-            }
-            
-            // Take the first batch
-            const firstBatch = filteredEvents.slice(0, this.config.eventsPerBatch);
-            
-            // Render events
-            firstBatch.forEach(event => {
-                this.renderTimelineItem(event);
-            });
-            
-            // Update state
-            this.state.hasMoreEvents = filteredEvents.length > this.config.eventsPerBatch;
-            this.state.isLoading = false;
-            
-            // Hide loader
-            if (this.elements.bottomLoader) {
-                this.elements.bottomLoader.classList.remove('active');
-            }
-            
-            // Observe new elements
-            document.querySelectorAll('.timeline-event, .timeline-break').forEach(el => {
-                this.observer.observe(el);
-            });
-            
-        }, 1000); // Simulate network delay
-    },
-
-    // Load more events (when scrolling down)
-    loadMoreEvents: function() {
-        this.state.isLoading = true;
-        
-        // Show loader
-        if (this.elements.bottomLoader) {
-            this.elements.bottomLoader.classList.add('active');
-        }
-        
-        // In a real application, you would fetch the next page from your API
-        setTimeout(() => {
-            // Filter events based on current filters
-            const filteredEvents = this.filterCachedEvents();
-            
-            // Calculate which events to load next
-            const startIndex = this.config.eventsPerBatch * this.state.currentPage;
-            const nextBatch = filteredEvents.slice(
-                startIndex, 
-                startIndex + this.config.eventsPerBatch
-            );
-            
-            // No more events to load
-            if (nextBatch.length === 0) {
-                this.state.hasMoreEvents = false;
+                // Render events
+                firstBatch.forEach(event => {
+                    this.renderTimelineItem(event);
+                });
+                
+                // Update state
+                this.state.hasMoreEvents = filteredEvents.length > this.config.eventsPerBatch;
                 this.state.isLoading = false;
                 
                 // Hide loader
@@ -386,9 +553,68 @@ const Timeline = {
                     this.elements.bottomLoader.classList.remove('active');
                 }
                 
-                return;
+                // Observe new elements
+                document.querySelectorAll('.timeline-event, .timeline-break').forEach(el => {
+                    this.observer.observe(el);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching timeline data:', error);
+                
+                // Show error message
+                if (this.elements.timelineContent) {
+                    this.elements.timelineContent.innerHTML = `
+                        <div class="error-message">
+                            <p>Error loading timeline data. Please try again later.</p>
+                        </div>
+                    `;
+                }
+                
+                // Hide loader
+                if (this.elements.bottomLoader) {
+                    this.elements.bottomLoader.classList.remove('active');
+                }
+                
+                this.state.isLoading = false;
+            });
+    },
+
+    // Load more events (when scrolling down)
+    loadMoreEvents: function() {
+        if (this.state.isLoading) return;
+        
+        this.state.isLoading = true;
+        
+        // Show loader
+        if (this.elements.bottomLoader) {
+            this.elements.bottomLoader.classList.add('active');
+        }
+        
+        // We already have all data cached, just need to load the next batch
+        const filteredEvents = this.filterEvents();
+        
+        // Calculate which events to load next
+        const startIndex = this.config.eventsPerBatch * this.state.currentPage;
+        const nextBatch = filteredEvents.slice(
+            startIndex, 
+            startIndex + this.config.eventsPerBatch
+        );
+        
+        // No more events to load
+        if (nextBatch.length === 0) {
+            this.state.hasMoreEvents = false;
+            this.state.isLoading = false;
+            
+            // Hide loader
+            if (this.elements.bottomLoader) {
+                this.elements.bottomLoader.classList.remove('active');
             }
             
+            return;
+        }
+        
+        // Add a small delay to make the loading more natural
+        setTimeout(() => {
             // Render next batch of events
             nextBatch.forEach(event => {
                 this.renderTimelineItem(event);
@@ -410,8 +636,7 @@ const Timeline = {
                     this.observer.observe(el);
                 }
             });
-            
-        }, 1000); // Simulate network delay
+        }, 500);
     },
 
     // Load earlier events (when scrolling up)
@@ -455,12 +680,36 @@ const Timeline = {
 
     // Create a timeline event element
     createTimelineEvent: function(event) {
-        // Skip if no template
-        if (!this.elements.eventTemplate) return null;
+        const template = this.elements.eventTemplate;
+        if (!template) return null;
         
-        // Clone the template
-        const template = this.elements.eventTemplate.content.cloneNode(true);
-        const eventElement = template.querySelector('.timeline-event');
+        const clone = template.content.cloneNode(true);
+        const eventElement = clone.querySelector('.timeline-event');
+        
+        // Set data attributes
+        eventElement.dataset.year = event.year;
+        eventElement.dataset.month = event.month || '';
+        eventElement.dataset.era = event.era;
+        
+        // Set date components
+        const daySpan = eventElement.querySelector('.timeline-day');
+        const monthSpan = eventElement.querySelector('.timeline-month');
+        const yearSpan = eventElement.querySelector('.timeline-year');
+        
+        // Always set the day if it exists
+        if (daySpan && event.day) {
+            daySpan.textContent = event.day;
+        }
+        
+        // Set month if it exists
+        if (monthSpan && event.month) {
+            monthSpan.textContent = this.config.monthNames[event.month - 1];
+        }
+        
+        // Always set year
+        if (yearSpan) {
+            yearSpan.textContent = `${event.year} A.R.`;
+        }
         
         // Set position (alternating left/right)
         if (event.position) {
@@ -478,20 +727,9 @@ const Timeline = {
         // Set unique ID
         eventElement.id = `event-${event.id}`;
         
-        // Set data attributes
-        eventElement.dataset.year = event.year;
-        eventElement.dataset.month = event.month;
-        eventElement.dataset.era = event.era;
-        
         // Set content
         const title = eventElement.querySelector('.timeline-title');
         if (title) title.textContent = event.title;
-        
-        const month = eventElement.querySelector('.timeline-month');
-        if (month) month.textContent = this.config.monthNames[event.month - 1];
-        
-        const year = eventElement.querySelector('.timeline-year');
-        if (year) year.textContent = `${event.year} A.E.`;
         
         const location = eventElement.querySelector('.location-name');
         if (location) location.textContent = event.location;
@@ -534,7 +772,7 @@ const Timeline = {
         if (title) title.textContent = breakData.title;
         
         const year = breakElement.querySelector('.timeline-year');
-        if (year) year.textContent = `${breakData.year} A.E.`;
+        if (year) year.textContent = `${breakData.year} A.R.`;
         
         return breakElement;
     },
@@ -627,13 +865,4 @@ const Timeline = {
             }
         ];
     }
-};
-
-// 1. Update the era mappings
-const eraMap = {
-    'age-of-chains': 'The Age of Chains',
-    'arcane-reckoning': 'The Arcane Reckoning',
-    'broken-sun': 'The Age of the Broken Sun', 
-    'silent-war': 'The Silent War',
-    'uncertainty': 'The Age of Uncertainty'
 };

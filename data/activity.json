@@ -2,6 +2,24 @@
   {
     "icon": "fa-hourglass-half",
     "title": "Timeline Entry Created",
+    "description": "Created new event: The Exodus of Chains",
+    "timestamp": "2025-03-14T11:44:51.707Z"
+  },
+  {
+    "icon": "fa-hourglass-half",
+    "title": "Timeline Entry Created",
+    "description": "Created new reign change: Beginning of the Reign of Queen Sannira Warendell",
+    "timestamp": "2025-03-14T11:43:15.165Z"
+  },
+  {
+    "icon": "fa-hourglass-half",
+    "title": "Timeline Entry Created",
+    "description": "Created new reign change: End of the Reign of the Dragon's Triarchy",
+    "timestamp": "2025-03-14T11:42:27.598Z"
+  },
+  {
+    "icon": "fa-hourglass-half",
+    "title": "Timeline Entry Created",
     "description": "Created new event: The Fall of the Dragon’s Triarchy",
     "timestamp": "2025-03-14T03:57:57.921Z"
   },

@@ -52,23 +52,23 @@
             <p class="royal-subtitle">The Historical Events that Shaped the Kingdom of Ederia</p>
         </div>
         
-        <!-- Timeline Controls -->
-        <div class="timeline-controls">
-            <div class="container">
-                <div class="era-navigation">
-                    <button class="era-button active" data-era="">All Eras</button>
-                    <button class="era-button" data-era="age-of-chains">The Age of Chains</button>
-                    <button class="era-button" data-era="arcane-reckoning">The Age of Arcane Reckoning</button>
-                    <button class="era-button" data-era="broken-sun">The Age of the Broken Sun</button>
-                    <button class="era-button" data-era="silent-war">The Age of Silent War</button>
-                    <button class="era-button" data-era="uncertainty">The Age of Uncertainty</button>
-                </div>
-                <div class="timeline-search">
-                    <input type="text" id="timeline-search" placeholder="Search historical events...">
-                    <button id="search-button"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
+<!-- Timeline Controls -->
+<div class="timeline-controls">
+    <div class="container">
+        <div class="era-navigation">
+            <button class="era-button active" data-era="all">All Eras</button>
+            <button class="era-button" data-era="age-of-chains">The Age of Chains</button>
+            <button class="era-button" data-era="arcane-reckoning">The Age of Arcane Reckoning</button>
+            <button class="era-button" data-era="broken-sun">The Age of the Broken Sun</button>
+            <button class="era-button" data-era="silent-war">The Age of Silent War</button>
+            <button class="era-button" data-era="uncertainty">The Age of Uncertainty</button>
         </div>
+        <div class="timeline-search">
+            <input type="text" id="timeline-search" placeholder="Search historical events...">
+            <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</div>
 
         <!-- Main Timeline Section -->
         <section class="timeline-section">
@@ -79,12 +79,12 @@
                     <div class="timeline-center-line"></div>
                     
                     <!-- Loading spinner at the top -->
-                    <div class="loading-indicator top-loader">
+                    <!-- <div class="loading-indicator top-loader">
                         <div class="spinner-d20">
                             <div class="spinner-inner"></div>
                         </div>
                         <p>Loading earlier events...</p>
-                    </div>
+                    </div> -->
 
                     <!-- Timeline Content - Will be populated by JavaScript -->
                     <div class="timeline-content" id="timeline-content">

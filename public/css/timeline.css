@@ -76,6 +76,7 @@ Timeline Controls
     top: 100px; /* Below the header */
     background: var(--gradient-dark);
     padding: 1rem 0;
+    margin-bottom: 0.5rem; /* Added margin below controls */
     z-index: 50;
     border-bottom: 1px solid var(--royal-gold);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -169,7 +170,7 @@ Main Timeline Structure
 */
 .timeline {
     position: relative;
-    padding: 3rem 0;
+    padding: 1rem 0 3rem; /* Reduced top padding */
     margin: 0 auto;
     max-width: 1200px;
     min-height: 70vh; /* Ensure enough height for content */
@@ -181,7 +182,7 @@ Main Timeline Structure
 
 .timeline-center-line {
     position: absolute;
-    top: 0;
+    top: 10px; /* Adjusted start point */
     bottom: 0;
     left: 50%;
     width: 4px;
@@ -319,21 +320,21 @@ Timeline Events
     margin-bottom: 1rem;
     color: var(--royal-gold);
     font-family: var(--font-headers);
-    border: 1px solid var(--royal-gold);
 }
 
 .timeline-month {
-    margin-right: 5px;
-    font-weight: bold;
+    display: inline;
+    margin-right: 0.3rem;
 }
 
 .timeline-day {
-    font-weight: normal;
-    margin-right: 5px;
+    display: inline;
+    margin-right: 0.3rem;
+    color: var(--royal-gold-light);
 }
 
 .timeline-year {
-    font-style: italic;
+    display: inline;
 }
 
 /* Reign break specific date styling */
@@ -696,6 +697,16 @@ Responsive Adjustments
     }
 }
 
+@media (max-width: 768px) {
+    .timeline {
+        padding-top: 0.5rem;
+    }
+    
+    .timeline-controls {
+        margin-bottom: 0.25rem; /* Even smaller margin on mobile */
+    }
+}
+
 @media (max-width: 576px) {
     .timeline-center-line {
         left: 20px;
@@ -739,4 +750,10 @@ Responsive Adjustments
     width: 100%;
     background: var(--gradient-dark);
     border-top: 1px solid var(--royal-gold);
+}
+
+/* Add first child spacing adjustments */
+.timeline-event:first-child,
+.timeline-break:first-child {
+    margin-top: 0;
 }

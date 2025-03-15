@@ -1067,7 +1067,7 @@ TIMELINE SECTION
     position: absolute;
     top: 100%;
     right: 0;
-    background: white;
+    background: var(--admin-sidebar);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
     padding: 10px 0;

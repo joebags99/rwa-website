@@ -208,6 +208,24 @@ app.get('/api/npcs', (req, res) => {
   }
 });
 
+// Public API route for timeline (non-admin)
+app.get('/api/public/timeline', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const TIMELINE_DATA_FILE = path.join(DATA_DIR, 'timeline.json');
+    
+    if (fs.existsSync(TIMELINE_DATA_FILE)) {
+      const data = JSON.parse(fs.readFileSync(TIMELINE_DATA_FILE, 'utf8'));
+      res.json(data.entries);
+    } else {
+      res.json([]);
+    }
+  } catch (error) {
+    console.error('Error reading timeline data:', error);
+    res.status(500).json({ error: 'Error reading timeline data' });
+  }
+});
+
 // Handle any other routes by serving index.html
 app.get('*', (req, res) => {
   // Skip for admin routes which are handled by the admin router

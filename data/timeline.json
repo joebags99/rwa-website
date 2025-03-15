@@ -12,6 +12,40 @@
       "description": "Queen Sannira Warrendell, the first queen of Ederia, leads the rebellion to overthrow the chromatic dragon overlords—Niderion, Xantarix, and Szarris. Their defeat unites Ederia under one banner, but scars the land with dragon-corrupted swamps, scaled forests, and smoldering volcanic remnants.",
       "image": "https://cdn.midjourney.com/99fcb064-91a5-4298-88eb-db2b03836514/0_0.png",
       "createdAt": "2025-03-14T03:57:57.915Z"
+    },
+    {
+      "id": "1741952547591",
+      "type": "reign-break",
+      "title": "End of the Reign of the Dragon's Triarchy",
+      "era": "age-of-chains",
+      "year": 204,
+      "month": 9,
+      "day": 15,
+      "breakType": "reign-end",
+      "createdAt": "2025-03-14T11:42:27.592Z"
+    },
+    {
+      "id": "1741952595160",
+      "type": "reign-break",
+      "title": "Beginning of the Reign of Queen Sannira Warendell",
+      "era": "arcane-reckoning",
+      "year": 204,
+      "month": 9,
+      "day": 20,
+      "breakType": "reign-beginning",
+      "createdAt": "2025-03-14T11:43:15.160Z"
+    },
+    {
+      "id": "1741952691699",
+      "type": "event",
+      "title": "The Exodus of Chains",
+      "era": "age-of-chains",
+      "year": 33,
+      "month": 6,
+      "day": 15,
+      "location": "The City States of Phoenia",
+      "description": "Octavius Alysídes leads his people in a bloodless rebellion, escaping the tyranny of the City States of Phoenia. After 10 years of exploration, they settle in the Edenic lands of Arcadian Republic of Elysia, where Octavius is crowned ruler and takes the title \"Alysídes\" (Peace Bringer). Under his descendants, the nation thrives, adopting a governance system of five states led by Tribunes who report to the Praetor, ensuring balance and prosperity.",
+      "createdAt": "2025-03-14T11:44:51.699Z"
     }
   ]
 }

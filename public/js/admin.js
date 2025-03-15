@@ -1586,7 +1586,7 @@ const AdminDashboard = {
             entryItem.setAttribute('data-id', entry.id);
             
             // Format date display
-            let dateDisplay = `Year ${entry.year} A.E.`;
+            let dateDisplay = `Year ${entry.year} A.R.`;
             if (entry.month) {
                 const monthNames = [
                     'January', 'February', 'March', 'April', 'May', 'June',
@@ -1598,7 +1598,7 @@ const AdminDashboard = {
                     dateDisplay += ` ${entry.day}`;
                 }
                 
-                dateDisplay += `, ${entry.year} A.E.`;
+                dateDisplay += `, ${entry.year} A.R.`;
             }
             
             // Format era display
