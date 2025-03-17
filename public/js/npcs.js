@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function initNPCPage() {
     console.log('Initializing NPC Page...');
     
+    // Simple fade transition - remove loading class after short delay
+    setTimeout(() => {
+        document.body.classList.remove('loading');
+    }, 500);
+    
     // Fetch NPCs from server, then initialize the rest of the page components
     fetchServerNPCs()
         .then(() => {

@@ -193,7 +193,35 @@ const Timeline = {
         if (searchTerm !== this.state.searchTerm) {
             this.state.searchTerm = searchTerm;
             this.resetTimeline();
-            this.filterEvents();
+            
+            // Get filtered events and render them
+            const filteredEvents = this.filterEvents();
+            
+            // Show no results message if needed
+            if (this.elements.noResultsMessage) {
+                if (filteredEvents.length === 0) {
+                    this.elements.noResultsMessage.style.display = 'block';
+                } else {
+                    this.elements.noResultsMessage.style.display = 'none';
+                }
+            }
+            
+            // Take the first batch
+            const firstBatch = filteredEvents.slice(0, this.config.eventsPerBatch);
+            
+            // Render events
+            firstBatch.forEach(event => {
+                this.renderTimelineItem(event);
+            });
+            
+            // Update state
+            this.state.hasMoreEvents = filteredEvents.length > this.config.eventsPerBatch;
+            this.state.currentPage = 1;
+            
+            // Observe new elements
+            document.querySelectorAll('.timeline-event, .timeline-break').forEach(el => {
+                this.observer.observe(el);
+            });
         }
     },
 
