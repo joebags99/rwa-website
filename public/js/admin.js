@@ -3251,6 +3251,12 @@ StoryEpisodes: {
             if (timelineCount && this.Timeline.data) {
                 timelineCount.textContent = this.Timeline.data.length;
             }
+
+            // Add this code to update story count
+            const storyCount = document.getElementById('story-count');
+            if (storyCount && this.StoryEpisodes.data) {
+                storyCount.textContent = this.StoryEpisodes.data.length;
+            }
         } catch (error) {
             console.error('Error updating dashboard stats:', error);
         }

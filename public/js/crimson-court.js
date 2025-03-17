@@ -475,7 +475,7 @@ function initAmbientAudio() {
 //==============================================================================
 
 /**
- * Setup interactive navigation for the three portals
+ * Setup interactive navigation for the portals
  */
 function setupPortalNavigation() {
     // Get portal elements
@@ -483,8 +483,8 @@ function setupPortalNavigation() {
     const timelinePortal = document.querySelector('.timeline-portal');
     const npcsPortal = document.querySelector('.npcs-portal');
     const storyPortal = document.querySelector('.story-portal');
-    
-    // Ensure portals are visible
+    const housesPortal = document.querySelector('.houses-portal');
+    const artifactsPortal = document.querySelector('.artifacts-portal');
     
     // Add click event listeners to each portal
     if (heirsPortal) {
@@ -508,6 +508,18 @@ function setupPortalNavigation() {
     if (storyPortal) {
         storyPortal.addEventListener('click', () => {
             portalTransition('the-story.html');
+        });
+    }
+    
+    if (housesPortal) {
+        housesPortal.addEventListener('click', () => {
+            portalTransition('houses-of-ederia.html');
+        });
+    }
+    
+    if (artifactsPortal) {
+        artifactsPortal.addEventListener('click', () => {
+            portalTransition('the-artifacts.html');
         });
     }
 }

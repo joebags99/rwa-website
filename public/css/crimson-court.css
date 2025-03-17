@@ -576,9 +576,10 @@ NAVIGATION PORTALS
     z-index: 10; /* Ensure it's visible */
 }
 
+/* Update the portal container grid layout for better responsiveness */
 .portal-container {
     display: grid !important; /* Force grid display */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(1, 1fr); /* Default to 1 column on small screens */
     gap: 2rem;
     max-width: 1600px;
     width: 100%;
@@ -588,19 +589,35 @@ NAVIGATION PORTALS
     z-index: 10; /* Ensure it's visible */
 }
 
+/* Responsive grid adjustments */
+@media (min-width: 768px) {
+    .portal-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+    }
+}
+
+@media (min-width: 1200px) {
+    .portal-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on large screens */
+    }
+}
+
 .royal-portal {
+    /* Make all royal portals the same size */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Keep your existing styling */
     background: var(--gradient-dark);
     border: 2px solid var(--royal-gold);
     border-radius: 8px;
     padding: 3rem 2rem;
     text-align: center;
     position: relative;
-    transition: none !important;
     cursor: pointer;
     overflow: hidden;
-    transform: translateY(50px);
-    opacity: 0;
-    display: block !important; /* Force display */
     min-height: 300px;
 }
 
@@ -619,6 +636,15 @@ NAVIGATION PORTALS
 
 .court-portal-active .story-portal {
     animation-delay: calc(var(--reveal-delay) + 3.1s);
+}
+
+/* Animation timing for additional portals */
+.court-portal-active .houses-portal {
+    animation-delay: calc(var(--reveal-delay) + 3.3s);
+}
+
+.court-portal-active .artifacts-portal {
+    animation-delay: calc(var(--reveal-delay) + 3.5s);
 }
 
 @keyframes fadeInUp {
@@ -686,7 +712,24 @@ NAVIGATION PORTALS
     font-size: 2.5rem;
 }
 
+/* Icon positioning for new portals */
+.houses-portal .portal-icon i,
+.artifacts-portal .portal-icon i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+}
+
 .royal-portal:hover .portal-icon {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(195, 10, 61, 0.6);
+}
+
+/* Hover effects for new portals (ensure consistency) */
+.houses-portal:hover .portal-icon,
+.artifacts-portal:hover .portal-icon {
     transform: scale(1.1);
     box-shadow: 0 0 30px rgba(195, 10, 61, 0.6);
 }
@@ -717,6 +760,12 @@ NAVIGATION PORTALS
     transform: scale(1.05);
 }
 
+/* Hover effects for new portals (ensure consistency) */
+.houses-portal:hover .portal-title,
+.artifacts-portal:hover .portal-title {
+    transform: scale(1.05);
+}
+
 .portal-title::after {
     content: '';
     position: absolute;
@@ -729,6 +778,12 @@ NAVIGATION PORTALS
 }
 
 .royal-portal:hover .portal-title::after {
+    width: 100%;
+}
+
+/* Hover effects for new portals (ensure consistency) */
+.houses-portal:hover .portal-title::after,
+.artifacts-portal:hover .portal-title::after {
     width: 100%;
 }
 
@@ -799,6 +854,15 @@ NAVIGATION PORTALS
 
 .royal-portal:hover .portal-ornament.bottom-right {
     transform: rotate(180deg) translateX(-5px) translateY(-5px);
+}
+
+/* Ensure the portal inner structure is consistent */
+.houses-portal .portal-inner,
+.artifacts-portal .portal-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 /* 
@@ -1124,5 +1188,9 @@ RESPONSIVE ADJUSTMENTS
     
     .portal-title {
         font-size: 1.5rem;
+    }
+    
+    .portal-description {
+        font-size: 0.9rem;
     }
 }
