@@ -1,0 +1,1375 @@
+/*
+=======================================
+HOUSES OF EDERIA - NOBLE HOUSES STYLING
+=======================================
+*/
+
+/* 
+Houses Page Specific Variables 
+*/
+:root {
+    /* House-specific colors */
+    --falkrest-color: #3A7734;
+    --falkrest-secondary: #D4AF37;
+    --falkrest-glow: rgba(58, 119, 52, 0.6);
+    --veltaris-color: #1A4B82;
+    --veltaris-secondary: #C0C0C0;
+    --veltaris-glow: rgba(26, 75, 130, 0.6);
+    --thornefield-color: #B89D58;
+    --thornefield-secondary: #5E753F;
+    --thornefield-glow: rgba(184, 157, 88, 0.6);
+    --astralor-color: #40C0C0;
+    --astralor-secondary: #172A4C;
+    --astralor-glow: rgba(64, 192, 192, 0.6);
+    --eldran-color: #9370DB;
+    --eldran-secondary: #DAA520;
+    --eldran-glow: rgba(147, 112, 219, 0.6);
+    --emberlyn-color: #CD5C5C;
+    --emberlyn-secondary: #FAF0C8;
+    --emberlyn-glow: rgba(205, 92, 92, 0.6);
+    
+    /* Animation timings */
+    --circle-appear-duration: 1.2s;
+    --section-appear-delay: 0.3s;
+    --section-hover-duration: 0.4s;
+    --detailed-view-transition: 0.8s;
+}
+
+/* 
+Page Base Styling - Inherits from crimson-court.css 
+*/
+.houses-page {
+    background-color: var(--royal-black);
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+    background-image: url('../assets/images/stone-wall-texture.png');
+    background-size: 400px;
+    background-repeat: repeat;
+}
+
+/* Simple navigation buttons */
+.houses-navigation {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+}
+
+.nav-button {
+    background-color: rgba(15, 15, 26, 0.85);
+    color: var(--royal-gold);
+    border: 2px solid var(--royal-gold);
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-family: var(--font-headers);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.nav-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6), 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.court-button {
+    border-color: var(--crimson-blood);
+}
+
+.court-button:hover {
+    color: var(--crimson-light);
+}
+
+.home-button:hover {
+    color: var(--royal-gold-light);
+}
+
+/* Main content area */
+.houses-content {
+    padding: 8rem 0 4rem;
+    min-height: calc(100vh - 12rem);
+    position: relative;
+    z-index: 5;
+}
+
+/* Page title styling */
+.houses-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.houses-title .royal-title {
+    margin-bottom: 0.5rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.houses-title .royal-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--royal-silver);
+    margin-top: 0.5rem;
+}
+
+/* 
+======================
+HOUSE SELECTION CIRCLE
+======================
+*/
+.house-selection-container {
+    position: relative;
+    max-width: 900px;
+    height: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--detailed-view-transition) ease;
+}
+
+.house-selection-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Prompt text that appears above the circle */
+.selection-prompt {
+    position: absolute;
+    top: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--royal-gold);
+    border-radius: 20px;
+    color: var(--royal-gold-light);
+    font-family: var(--font-headers);
+    font-style: italic;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 2s;
+    z-index: 10;
+    text-align: center;
+    width: max-content;
+}
+
+.selection-prompt::before, 
+.selection-prompt::after {
+    content: '✧';
+    margin: 0 0.5rem;
+    opacity: 0.8;
+}
+
+/* Main circle container */
+.house-circle {
+    position: relative;
+    width: 900px;
+    height: 900px;
+    border-radius: 50%;
+    background-color: rgba(15, 15, 26, 0.7);
+    box-shadow: 
+        0 0 40px rgba(0, 0, 0, 0.8),
+        0 0 70px rgba(195, 10, 61, 0.3),
+        inset 0 0 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: circleAppear var(--circle-appear-duration) cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
+    margin: 0 auto;
+}
+
+@keyframes circleAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) rotate(-5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Circle border with pulsating glow */
+.circle-border {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid var(--royal-gold);
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: pulseBorder 4s ease-in-out infinite;
+}
+
+@keyframes pulseBorder {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+}
+
+/* Center royal crest */
+.center-crest {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    opacity: 0;
+    animation: crownGlow 2s ease-in-out infinite, fadeIn 1s ease forwards 1s;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center-crest img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
+}
+
+@keyframes crownGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
+    }
+}
+
+/* 
+======================
+HOUSE SECTIONS WITHIN CIRCLE
+======================
+*/
+.house-section {
+    position: absolute;
+    width: 160px;
+    height: 220px; /* Increased height to accommodate text box */
+    cursor: pointer;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Position each house around the circle - pushed to the edges */
+.house-section[data-house="falkrest"] {
+    top: 0%;
+    left: calc(50% - 80px);
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 1);
+}
+
+.house-section[data-house="veltaris"] {
+    top: 20%;
+    right: 5%;
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 2);
+}
+
+.house-section[data-house="thornefield"] {
+    bottom: 9%;
+    right: 10%;
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 3);
+}
+
+.house-section[data-house="astralor"] {
+    bottom: 9%;
+    left: 10%;
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 4);
+}
+
+.house-section[data-house="eldran"] {
+    top: 20%;
+    left: 5%;
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 5);
+}
+
+.house-section[data-house="emberlyn"] {
+    bottom: -5%;
+    left: calc(50% - 80px);
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 6);
+}
+
+@keyframes sectionAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* House shield styling */
+.house-shield {
+    position: relative;
+    width: 150px;
+    height: 180px;
+    transition: all var(--section-hover-duration) ease;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Shield image */
+.house-shield-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: all var(--section-hover-duration) ease;
+    filter: grayscale(80%) brightness(0.7); /* Start grayscale when not hovered */
+}
+
+/* House name and motto */
+.house-details {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all var(--section-hover-duration) ease;
+    background-color: rgba(15, 15, 26, 0.8);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.house-name {
+    font-family: var(--font-headers);
+    color: var(--royal-gold-light) !important;
+    font-size: 1.2rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+    font-weight: 600;
+}
+
+/* Crown marker for the ruling house (Falkrest) */
+.crown-marker {
+    position: absolute;
+    width: 50px;
+    height: 30px;
+    background-image: url('../assets/images/crown.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.7));
+    opacity: 0;
+    animation: fadeIn 1s ease forwards, floatCrown 3s ease-in-out infinite;
+    animation-delay: 3s;
+}
+
+@keyframes floatCrown {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* Hover effects for each house section */
+.house-section:hover .house-shield-img,
+.house-section.active .house-shield-img {
+    transform: scale(1.1);
+    filter: grayscale(0%) brightness(1.2) contrast(1.2); /* Remove grayscale on hover */
+}
+
+.house-section:hover .house-details,
+.house-section.active .house-details {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Individual house hover effects with custom colors */
+.house-section[data-house="falkrest"]:hover .house-shield-img,
+.house-section[data-house="falkrest"].active .house-shield-img {
+    filter: grayscale(0%) drop-shadow(0 0 15px var(--falkrest-glow)) brightness(1.2);
+}
+
+.house-section[data-house="falkrest"]:hover .house-name,
+.house-section[data-house="falkrest"].active .house-name {
+    color: var(--falkrest-secondary);
+}
+
+.house-section[data-house="veltaris"]:hover .house-shield-img,
+.house-section[data-house="veltaris"].active .house-shield-img {
+    filter: grayscale(0%) drop-shadow(0 0 15px var(--veltaris-glow)) brightness(1.2);
+}
+
+.house-section[data-house="veltaris"]:hover .house-name,
+.house-section[data-house="veltaris"].active .house-name {
+    color: var(--veltaris-secondary);
+}
+
+.house-section[data-house="thornefield"]:hover .house-shield-img,
+.house-section[data-house="thornefield"].active .house-shield-img {
+    filter: grayscale(0%) drop-shadow(0 0 15px var(--thornefield-glow)) brightness(1.2);
+}
+
+.house-section[data-house="thornefield"]:hover .house-name,
+.house-section[data-house="thornefield"].active .house-name {
+    color: var(--thornefield-secondary);
+}
+
+.house-section[data-house="astralor"]:hover .house-shield-img,
+.house-section[data-house="astralor"].active .house-shield-img {
+    filter: grayscale(0%) drop-shadow(0 0 15px var(--astralor-glow)) brightness(1.2);
+}
+
+.house-section[data-house="astralor"]:hover .house-name,
+.house-section[data-house="astralor"].active .house-name {
+    color: var(--astralor-secondary);
+}
+
+.house-section[data-house="eldran"]:hover .house-shield-img,
+.house-section[data-house="eldran"].active .house-shield-img {
+    filter: grayscale(0%) drop-shadow(0 0 15px var(--eldran-glow)) brightness(1.2);
+}
+
+.house-section[data-house="eldran"]:hover .house-name,
+.house-section[data-house="eldran"].active .house-name {
+    color: var(--eldran-secondary);
+}
+
+.house-section[data-house="emberlyn"]:hover .house-shield-img,
+.house-section[data-house="emberlyn"].active .house-shield-img {
+    filter: grayscale(0%) drop-shadow(0 0 15px var(--emberlyn-glow)) brightness(1.2);
+}
+
+.house-section[data-house="emberlyn"]:hover .house-name,
+.house-section[data-house="emberlyn"].active .house-name {
+    color: var(--emberlyn-secondary);
+}
+
+/* Reveal All Button */
+.reveal-all-container {
+    text-align: center;
+    margin-top: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease forwards 3s;
+}
+
+.reveal-all-btn {
+    background: rgba(15, 15, 26, 0.7);
+    border: 2px solid var(--royal-gold);
+    border-radius: 30px;
+    padding: 0.6rem 1.5rem;
+    font-family: var(--font-headers);
+    color: var(--royal-gold);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reveal-all-btn:hover {
+    background: rgba(15, 15, 26, 0.9);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    transform: translateY(-3px);
+}
+
+.reveal-all-btn i {
+    margin-right: 0.5rem;
+}
+
+/* 
+======================
+DETAILED HOUSE VIEW
+======================
+*/
+.detailed-view-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 8rem 2rem 4rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--detailed-view-transition) ease;
+}
+
+.detailed-view-container.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Back button */
+.back-to-circle {
+    position: fixed;
+    top: 120px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    background: rgba(15, 15, 26, 0.7);
+    border: 2px solid var(--royal-gold);
+    border-radius: 50%;
+    color: var(--royal-gold);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.detailed-view-container.active .back-to-circle {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.5s;
+}
+
+.back-to-circle:hover {
+    background: rgba(15, 15, 26, 0.9);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    transform: translateX(5px);
+}
+
+.back-to-circle i {
+    transition: transform 0.3s ease;
+}
+
+.back-to-circle:hover i {
+    transform: translateX(-3px);
+}
+
+/* Individual house detailed views */
+.house-detailed-view {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all var(--detailed-view-transition) ease;
+}
+
+.house-detailed-view.active {
+    display: grid;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Left side - House information */
+.house-info {
+    color: var(--divine-light-white);
+    padding: 2rem;
+    background: rgba(15, 15, 26, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.house-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/images/parchment-texture.png');
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.house-full-name {
+    font-family: var(--font-titles);
+    color: var(--royal-gold);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.house-motto {
+    font-family: var(--font-headers);
+    color: var(--royal-silver);
+    font-size: 1.4rem;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+/* House basics section */
+.house-basics {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.basics-item {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.basics-item .label {
+    font-weight: bold;
+    color: var(--royal-gold-light);
+    min-width: 100px;
+}
+
+.basics-item .value {
+    color: var(--royal-silver);
+}
+
+.house-description {
+    font-family: var(--font-body);
+    line-height: 1.7;
+    color: var(--royal-silver);
+}
+
+.section-title {
+    color: var(--royal-gold-light);
+    font-family: var(--font-headers);
+    font-size: 1.3rem;
+    margin: 1.5rem 0 0.8rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-gold);
+    border-radius: 2px;
+}
+
+.house-list {
+    list-style-type: none;
+    padding-left: 1rem;
+}
+
+.house-list li {
+    position: relative;
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.house-list li::before {
+    content: '•';
+    color: var(--royal-gold);
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.members-list {
+    list-style-type: none;
+    padding-left: 1rem;
+}
+
+.members-list li {
+    position: relative;
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.members-list li::before {
+    content: '•';
+    color: var(--royal-gold);
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Right side - House visuals */
+.house-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.house-shield-large {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 2rem;
+}
+
+.house-shield-large img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.7));
+    transition: all 0.5s ease;
+}
+
+.house-shield-large:hover img {
+    transform: scale(1.05);
+}
+
+/* Shield corner decorations */
+.shield-corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-image: url('../assets/images/shield-corner.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+}
+
+.shield-corner.top-left {
+    top: -5px;
+    left: -5px;
+    transform: rotate(0deg);
+}
+
+.shield-corner.top-right {
+    top: -5px;
+    right: -5px;
+    transform: rotate(90deg);
+}
+
+.shield-corner.bottom-left {
+    bottom: -5px;
+    left: -5px;
+    transform: rotate(270deg);
+}
+
+.shield-corner.bottom-right {
+    bottom: -5px;
+    right: -5px;
+    transform: rotate(180deg);
+}
+
+/* Lord/Lady portrait */
+.lord-portrait {
+    position: relative;
+    width: 80%;
+    max-width: 400px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--royal-gold);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+.lord-portrait img {
+    width: 100%;
+    height: fit-content;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.lord-portrait:hover img {
+    transform: scale(1.05);
+}
+
+.portrait-title {
+    text-align: center;
+    margin-top: 1rem;
+    font-family: var(--font-headers);
+    color: var(--royal-gold-light);
+    font-size: 1.2rem;
+}
+
+/* House emblem */
+.house-emblem {
+    width: 80px;
+    height: 80px;
+    margin-top: 1.5rem;
+    background-image: url('../assets/images/royal-seal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+}
+
+/* 
+======================
+HOUSE-SPECIFIC DETAIL STYLING
+======================
+*/
+/* Falkrest */
+#falkrest-view .house-full-name,
+#falkrest-view .section-title {
+    color: var(--falkrest-color);
+}
+
+#falkrest-view .section-title::after {
+    background: linear-gradient(90deg, var(--falkrest-color), var(--royal-gold));
+}
+
+#falkrest-view .house-shield-large img {
+    filter: drop-shadow(0 0 15px var(--falkrest-glow));
+}
+
+#falkrest-view .lord-portrait {
+    border-color: var(--falkrest-color);
+}
+
+/* Veltaris */
+#veltaris-view .house-full-name,
+#veltaris-view .section-title {
+    color: var(--veltaris-color);
+}
+
+#veltaris-view .section-title::after {
+    background: linear-gradient(90deg, var(--veltaris-color), var(--royal-gold));
+}
+
+#veltaris-view .house-shield-large img {
+    filter: drop-shadow(0 0 15px var(--veltaris-glow));
+}
+
+#veltaris-view .lord-portrait {
+    border-color: var(--veltaris-color);
+}
+
+/* Thornefield */
+#thornefield-view .house-full-name,
+#thornefield-view .section-title {
+    color: var(--thornefield-color);
+}
+
+#thornefield-view .section-title::after {
+    background: linear-gradient(90deg, var(--thornefield-color), var(--royal-gold));
+}
+
+#thornefield-view .house-shield-large img {
+    filter: drop-shadow(0 0 15px var(--thornefield-glow));
+}
+
+#thornefield-view .lord-portrait {
+    border-color: var(--thornefield-color);
+}
+
+/* Astralor */
+#astralor-view .house-full-name,
+#astralor-view .section-title {
+    color: var(--astralor-color);
+}
+
+#astralor-view .section-title::after {
+    background: linear-gradient(90deg, var(--astralor-color), var(--royal-gold));
+}
+
+#astralor-view .house-shield-large img {
+    filter: drop-shadow(0 0 15px var(--astralor-glow));
+}
+
+#astralor-view .lord-portrait {
+    border-color: var(--astralor-color);
+}
+
+/* Eldran */
+#eldran-view .house-full-name,
+#eldran-view .section-title {
+    color: var(--eldran-color);
+}
+
+#eldran-view .section-title::after {
+    background: linear-gradient(90deg, var(--eldran-color), var(--royal-gold));
+}
+
+#eldran-view .house-shield-large img {
+    filter: drop-shadow(0 0 15px var(--eldran-glow));
+}
+
+#eldran-view .lord-portrait {
+    border-color: var(--eldran-color);
+}
+
+/* Emberlyn */
+#emberlyn-view .house-full-name,
+#emberlyn-view .section-title {
+    color: var(--emberlyn-color);
+}
+
+#emberlyn-view .section-title::after {
+    background: linear-gradient(90deg, var(--emberlyn-color), var(--royal-gold));
+}
+
+#emberlyn-view .house-shield-large img {
+    filter: drop-shadow(0 0 15px var(--emberlyn-glow));
+}
+
+#emberlyn-view .lord-portrait {
+    border-color: var(--emberlyn-color);
+}
+
+/* 
+======================
+DECORATIVE ELEMENTS
+======================
+*/
+.decorative-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-crown, .floating-scroll, .floating-sword {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.houses-page .floating-crown, 
+.houses-page .floating-scroll, 
+.houses-page .floating-sword {
+    opacity: 0.5;
+    transition-delay: 1.5s;
+}
+
+.floating-crown {
+    width: 50px;
+    height: 30px;
+    background-image: url('../assets/images/crown.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+}
+
+.floating-crown.crown-1 {
+    top: 15%;
+    left: 5%;
+    animation: floatElement 15s ease-in-out infinite;
+}
+
+.floating-crown.crown-2 {
+    top: 60%;
+    right: 10%;
+    animation: floatElement 18s ease-in-out infinite reverse;
+}
+
+.floating-scroll {
+    width: 40px;
+    height: 40px;
+    background-image: url('../assets/images/scroll.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 0 5px rgba(244, 233, 201, 0.3));
+}
+
+.floating-scroll.scroll-1 {
+    top: 25%;
+    right: 8%;
+    animation: floatElement 20s ease-in-out infinite 2s;
+}
+
+.floating-scroll.scroll-2 {
+    bottom: 15%;
+    left: 7%;
+    animation: floatElement 17s ease-in-out infinite reverse 1s;
+}
+
+.floating-sword {
+    width: 60px;
+    height: 60px;
+    background-image: url('../assets/images/sword.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 0 5px rgba(192, 192, 192, 0.3));
+}
+
+.floating-sword.sword-1 {
+    top: 40%;
+    left: 3%;
+    animation: floatElement 25s ease-in-out infinite 0.5s;
+}
+
+.floating-sword.sword-2 {
+    bottom: 30%;
+    right: 5%;
+    animation: floatElement 22s ease-in-out infinite reverse 1.5s;
+}
+
+@keyframes floatElement {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(10px, -15px);
+    }
+    50% {
+        transform: translate(20px, 0);
+    }
+    75% {
+        transform: translate(-5px, 10px);
+    }
+}
+
+/* 
+======================
+PARTICLES & BACKGROUND EFFECTS
+======================
+*/
+.house-particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background: url('../assets/images/stone-wall-texture.png');
+}
+
+.house-particles-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(195, 10, 61, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 40%, rgba(212, 175, 55, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* 
+======================
+RESPONSIVE ADJUSTMENTS
+======================
+*/
+@media (max-width: 1200px) {
+    .house-detailed-view {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .house-visual {
+        grid-row: 1;
+    }
+    
+    .house-info {
+        grid-row: 2;
+        max-height: none;
+    }
+    
+    .house-circle {
+        width: 90vw;
+        max-width: 800px;
+        height: 500px;
+    }
+}
+
+@media (max-width: 900px) {
+    .house-circle {
+        height: 400px;
+    }
+    
+    .house-section {
+        width: 120px;
+        height: 150px;
+    }
+    
+    .house-shield {
+        width: 100px;
+        height: 120px;
+    }
+    
+    .sconce-left, .sconce-right {
+        width: 20px;
+        height: 40px;
+    }
+    
+    .sconce-left {
+        left: -25px;
+    }
+    
+    .sconce-right {
+        right: -25px;
+    }
+    
+    .center-crest {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .houses-navigation {
+        flex-direction: column;
+    }
+    
+    .back-to-circle {
+        top: 80px;
+        left: 20px;
+    }
+    
+    .house-full-name {
+        font-size: 2rem;
+    }
+    
+    .house-motto {
+        font-size: 1.2rem;
+    }
+    
+    .wall-torch {
+        width: 40px;
+        height: 80px;
+    }
+    
+    .floating-banner {
+        width: 100px;
+        height: 200px;
+    }
+    
+    .banner-1 {
+        left: 80px;
+    }
+    
+    .banner-2 {
+        right: 80px;
+    }
+}
+
+@media (max-width: 767px) {
+    .house-section[data-house="falkrest"] {
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .house-section[data-house="veltaris"] {
+        top: 15%;
+        left: 30%;
+    }
+    
+    .house-section[data-house="thornefield"] {
+        top: 85%;
+        left: 30%;
+    }
+    
+    .house-section[data-house="astralor"] {
+        top: 15%;
+        right: 30%;
+    }
+    
+    .house-section[data-house="eldran"] {
+        top: 85%;
+        right: 30%;
+    }
+    
+    .house-section[data-house="emberlyn"] {
+        top: 50%;
+        right: 15%;
+    }
+    
+    .selection-prompt {
+        font-size: 0.9rem;
+        padding: 0.4rem 1rem;
+    }
+    
+    .house-section {
+        width: 100px;
+        height: 130px;
+    }
+    
+    .house-shield {
+        width: 80px;
+        height: 100px;
+    }
+    
+    .house-name {
+        font-size: 1rem;
+    }
+    
+    .house-motto {
+        font-size: 0.7rem;
+    }
+    
+    .wall-torch {
+        display: none;
+    }
+    
+    .floating-banner {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .house-circle {
+        height: 350px;
+    }
+    
+    .house-section {
+        width: 80px;
+        height: 100px;
+    }
+    
+    .house-shield {
+        width: 60px;
+        height: 80px;
+    }
+    
+    .sconce-left, .sconce-right {
+        display: none;
+    }
+    
+    .center-crest {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .crown-marker {
+        width: 30px;
+        height: 18px;
+        top: -20px;
+    }
+    
+    .house-info {
+        padding: 1.5rem;
+    }
+    
+    .house-full-name {
+        font-size: 1.7rem;
+    }
+    
+    .house-motto {
+        font-size: 1.1rem;
+    }
+}
+
+/* 
+======================
+LOCATION BACKGROUND IMAGES
+======================
+*/
+.house-detailed-view {
+  position: relative;
+  z-index: 1;
+}
+
+.house-detailed-view::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center top; /* Changed from center bottom to center top */
+  background-attachment: fixed;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+
+.house-detailed-view::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+    rgba(15, 15, 26, 0.95) 0%, 
+    rgba(15, 15, 26, 0.85) 15%, 
+    rgba(15, 15, 26, 0.7) 30%, 
+    rgba(15, 15, 26, 0.5) 50%, 
+    rgba(15, 15, 26, 0.3) 70%,
+    rgba(15, 15, 26, 0) 100%); /* Completely transparent at bottom */
+  z-index: -1;
+  pointer-events: none;
+}
+
+.house-detailed-view.active::before {
+  opacity: 0.5; /* Slightly increased opacity for more visibility */
+}
+
+/* Add specific background images for each house */
+#falkrest-view::before {
+  background-image: url('../assets/images/houses/locations/skyhaven.png');
+}
+
+#veltaris-view::before {
+  background-image: url('../assets/images/houses/locations/krakens-reach.png');
+}
+
+#thornefield-view::before {
+  background-image: url('../assets/images/houses/locations/highfields.png');
+}
+
+#astralor-view::before {
+  background-image: url('../assets/images/houses/locations/tomehold.png');
+}
+
+#eldran-view::before {
+  background-image: url('../assets/images/houses/locations/stonewatch.png');
+}
+
+#emberlyn-view::before {
+  background-image: url('../assets/images/houses/locations/faithspire.png');
+}
+
+/* 
+======================
+HOUSE LOCATION IMAGES
+======================
+*/
+.house-location-image {
+  position: absolute;
+  bottom: -64%;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.house-detailed-view.active .house-location-image {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.6s;
+}
+
+.house-location-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
