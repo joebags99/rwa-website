@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Heirs - The Crimson Court</title>
+    <meta name="description" content="Meet the five heirs to the Crimson Throne, each with their own strengths, ambitions, and secrets.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    <link rel="stylesheet" href="css/heirs.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="heirs-page">
+    <!-- Magical Particles Background -->
+    <div class="heir-particles-container"></div>
+    
+    <!-- Simple Navigation Buttons -->
+    <div class="heirs-navigation">
+        <a href="crimson-court.html" class="nav-button court-button">
+            <i class="fas fa-crown"></i> Return to The Crimson Court
+        </a>
+        <a href="index.html" class="nav-button home-button">
+            <i class="fas fa-home"></i> Return to Roll With Advantage
+        </a>
+    </div>
+
+    <main class="heirs-content">
+        <!-- Page Title -->
+        <div class="heirs-title">
+            <h1 class="royal-title">The Heirs of Ederia</h1>
+            <div class="royal-subtitle">Five Claimants, One Throne</div>
+        </div>
+        
+        <!-- Interactive Heir Selection Circle -->
+        <div class="heir-selection-container">
+            <div class="selection-prompt">
+                <span><i class="fas fa-info-circle"></i> Hover to reveal, click to learn more</span>
+            </div>
+            
+            <div class="heir-circle">
+                <!-- Circle Border with Crown Decorations -->
+                <div class="circle-border"></div>
+                <div class="crown-decoration top"></div>
+                <div class="crown-decoration right"></div>
+                <div class="crown-decoration bottom"></div>
+                <div class="crown-decoration left"></div>
+                
+                <!-- Heir Sections -->
+                <div class="heir-section" data-heir="edwinn">
+                    <img src="assets/images/heirs/edwinn-silhouette.png" class="heir-silhouette" />
+                    <div class="heir-name">Edwinn</div>
+                    <div class="heir-title">The Prince of the Pauper</div>
+                    <img src="assets/images/heirs/edwinn-portrait.png" class="heir-portrait" />
+                    
+                </div>
+                
+                <div class="heir-section" data-heir="via">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/via-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/via-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/via-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/via-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Via</div>
+                    <div class="heir-title">The Windsight Princess</div>
+                </div>
+                
+                <div class="heir-section" data-heir="marik">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/marik-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/marik-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/marik-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/marik-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Marik</div>
+                    <div class="heir-title">The Thorned Hawk</div>
+                </div>
+                
+                <div class="heir-section" data-heir="xanthe">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/xanthe-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/xanthe-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/xanthe-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/xanthe-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Xanthe</div>
+                    <div class="heir-title">The Iron Heir</div>
+                </div>
+                
+                <div class="heir-section" data-heir="cailynn">
+                    <!-- <div class="heir-silhouette" style="background-image: url('assets/images/heirs/cailynn-silhouette.png')"></div> -->
+                    <!-- <div class="heir-portrait" style="background-image: url('assets/images/heirs/cailynn-portrait.png')"></div> -->
+                    <img src="assets/images/heirs/cailynn-silhouette.png" class="heir-silhouette" />
+                    <img src="assets/images/heirs/cailynn-portrait.png" class="heir-portrait" />
+                    <div class="heir-name">Cailynn</div>
+                    <div class="heir-title">The Wyrdwitch</div>
+                </div>
+                
+                <!-- Center Crest -->
+                <div class="center-crest">
+                    <img src="assets/images/cc-icon-nb.png" alt="Royal Crest" width="160" height="160">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed Heir Views (Initially Hidden) -->
+        <div class="detailed-view-container">
+            <!-- Back Button -->
+            <button class="back-to-circle" aria-label="Return to heir selection">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            
+            <!-- Edwinn Falkrest Details -->
+            <div class="heir-detailed-view" id="edwinn-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Edwinn Falkrest</h2>
+                    <h3 class="heir-epithet">The Prince of the Pauper</h3>
+                    
+                    <div class="heir-description">
+                        <p class="intro-paragraph">His armor gleams in the morning sun as he kneels to offer a silent prayer, the faint smell of incense clinging to polished steel. Edwinn's life is a testament to service: a devoted cleric forever torn between his duties at home and his calling abroad. Born the first son of King Talon, yet of lowborn lineage, he wears his faith like a shield—protecting both the meek who adore him and the kingdom that questions him.</p>
+                        
+                        <h4 class="section-title">A Beacon of Hope</h4>
+                        <p>Edwinn's healing touch and gentle smile have earned him the unshakable loyalty of the common folk. Wherever he travels, rumors spread of a humble prince who prays before battle, who feeds the hungry, and who bandages the wounds of friend and stranger alike. Father Aldren Stillwater, his spiritual mentor, hails him as a future luminary of the Church. Even in distant lands, figures like Hrogar Grimhowl admire Edwinn's selflessness, forging bonds that stretch across borders.</p>
+                        
+                        <h4 class="section-title">Shadows of Doubt</h4>
+                        <p>But not everyone celebrates the prodigal son. The nobility whisper that Edwinn dodges his "true" responsibilities—healing peasants instead of securing political alliances at court. His prolonged absences fuel suspicions that he shirks royal duty in favor of personal glory. Some even dismiss him as a dreamer who values sermons over statecraft, quietly hoping his soft heart will fail him when the realm needs a steel spine.</p>
+                        
+                        <h4 class="section-title">Family Ties and Tensions</h4>
+                        <p>Ask his siblings what they think, and the answers range from warm embraces to rueful jabs. Edwinn's compassionate soul touches Via, who looks forward to his returned gifts and travels, while Xanthe's fierce discipline clashes with his gentle ways. Cailynn still carries fond memories of birthdays only he attended, and Marik welcomes each homecoming with a new round of truffle-hunting adventures. Yet all of them feel the gap left by his recurring departures—a closeness tinged by the ache of his absence.</p>
+                        
+                        <p class="conclusion-paragraph">Standing at the crossroads of humble faith and royal expectation, Edwinn Falkrest embodies a devotion that neither crown nor church can wholly command. Loved by many, doubted by some, and bound by duty to wander—his story stirs both hearts and suspicions across Ederia's Crimson Court.</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/edwinn-full.png" alt="Edwinn Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Via Falkrest Details -->
+            <div class="heir-detailed-view" id="via-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Via Falkrest</h2>
+                    <h3 class="heir-epithet">The Windsight Princess</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Via -->
+                        <p class="intro-paragraph">High in the royal library’s loftiest archives, Octavia pores over ancient scrolls—her hair shifting from dark to shimmering silver in the lamplight. A half-Air Genasi with a knack for divination, Via is the youngest child of King Talon, cherished for her sunny disposition and precocious arcane talent. Yet behind the friendly smiles and gentle encouragement she offers everyone lies a quieter longing: to prove her gifts are more than novelty, that she’s more than just the “little sister” in a house of ambitious royals.</p>
+                        
+                        <h4 class="section-title">A Spark of Wonder</h4>
+                        <p>Few can match her sheer enthusiasm for knowledge. While the Archmage praises her bright mind, older scholars fret her powers might draw unseen forces or worse. Her harmless mischief—like sneaking magical trinkets to local farmers—has won her admirers in distant fields, hailing her as an “Oracle.” Yet skeptics question whether her visions originate from benign magic—or something more ominous waiting beyond the swirling mists.</p>
+                        
+                        <h4 class="section-title">Loved but Overlooked</h4>
+                        <p>As for her siblings, some see a clever if naive princess whose magic could one day shape the course of the realm. Edwinn gamely indulges her endless game of “I Spy,” while Xanthe’s stern prodding keeps Via from sinking too deeply into daydreams. Cailynn humors her ritual experiments with guarded curiosity, and Marik, harboring lingering jealousy of her closeness with their mother, nonetheless teams up to decipher the keep’s hidden doors.</p>
+                        
+                        <p class="conclusion-paragraph">Though often overshadowed by her older siblings, Via's irrepressible hope and budding clairvoyance set her on a path that might one day outshine even the most powerful heirs. In the swirling winds of court intrigue, the youngest Falkrest may yet prove that true sight comes not from eyes that have seen the most battles, but from a heart that still believes in wonders.</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/via-full.png" alt="Via Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Marik Falkrest Details -->
+            <div class="heir-detailed-view" id="marik-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Marik Falkrest</h2>
+                    <h3 class="heir-epithet">The Thorned Hawk</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Marik -->
+                        <p class="intro-paragraph">Marik strides onto the tournament field, Arkan rifle glinting in the sunlight and a blade fixed to its end—an unusual but deadly tribute to his rigorous training. A half-orc prince standing six feet tall, he melds practicality with a flair for spectacle. Whether dressed in muted leathers to vanish into the wild or donning bold reds in the royal arena, he seeks one thing: the roar of an awestruck crowd.</p>
+                        
+                        <h4 class="section-title">Ravenous for Victory</h4>
+                        <p>Driven by the rush of competition, Marik pursues perfection at all costs. Knights and courtiers whisper of his near-obsessive drills each dawn, of how he methodically shreds his own mistakes even when he emerges victorious. They see a fighter who admires fairness—yet also one whose thirst for triumph has led to more than a few controversial finishes. Many in Ederia’s political echelons, impressed by his composure under pressure, champion him as a strong contender for future power. Others, especially fellow tournament warriors, give him wary respect but keep their distance, never quite sure if he’ll bow to honor or seize an opening at any cost.</p>
+                        
+                        <h4 class="section-title">Webs of Allegiance and Rivalry</h4>
+                        <p>Engaged to Lady Selara Astralor, he nurtures a tender side at odds with his battle-honed exterior—she tends his wounds even though she loathes violence. Karn, his fiercest rival, fights him with unrelenting fervor, delivering the single combat he craves. Meanwhile, Elim’s teachings from Marik’s youth resonate whenever he slips into the forest to hunt or simply find quiet among the trees. </br>When it comes to siblings, Marik shares truffle-hunting camaraderie with Edwinn and although she pushed him relentlessly in childhood, Xanthe and him tend to agree on most issues. In Cailynn’s darkest hour of public ridicule, he brazenly stepped in—earning disqualifications but also undying gratitude. And he collaborates with Via in midnight attempts to unlock the keep’s hidden doors, both chasing a curiosity that outlasts childhood rivalries.</p>
+                        
+                        <p class="conclusion-paragraph">Torn between a fierce hunger for acclaim and the familial bonds that soften his heart, Marik Falkrest is a prince whose every shot resonates with ambition—and whose every victory comes tinged with the price he’s willing to pay for glory.</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/marik-full.png" alt="Marik Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Xanthe Falkrest Details -->
+            <div class="heir-detailed-view" id="xanthe-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Xanthe Falkrest</h2>
+                    <h3 class="heir-epithet">The Iron Heir</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Xanthe -->
+                        <p class="intro-paragraph">A stark figure in immaculate armor, Xanthe moves through the corridors of the Crimson Court with an uncompromising grace. Pale horns arch skyward, a silent proclamation of her pride, while her polished blade promises swift enforcement of the kingdom’s laws. As Talon’s second-eldest noble-born daughter, Xanthe bears the kingdom’s future like a burden she intends to master, not merely inherit.</p>
+                        
+                        <h4 class="section-title">A Pillar of Strength</h4>
+                        <p>No one can deny her ironclad resolve—soldiers and military traditionalists quietly favor her ascendancy. In her eyes, compassion has its place, but victory is assured only by unwavering vigilance. Blademaster Aleksey sees in Xanthe a disciple with the skill and discipline to become Ederia’s shield. Even when relegated to coordinating feasts and festivals, she manages each event with the rigor of a battlefield drill, determined to project strength at every turn.</p>
+                        
+                        <h4 class="section-title">Rumors of Darkness</h4>
+                        <p>Yet few can match the unease her presence commands in the common folk. Her cold manner and infernal appearance fuel whispers of pacts and devils. Past judgments have been swift and severe, stoking fears that she values order above mercy. While no open insurrection threatens her name, it’s clear there are those in the city who fear a day when she might rule with an iron fist rather than a forgiving heart.</p>
+                        
+                        <h4 class="section-title">Ties That Bind</h4>
+                        <p>Within her family, Xanthe’s fierce confidence sparks both admiration and conflict. She and Edwinn share a grudging respect, trading terse updates in lieu of emotional closeness. Octavia views her as a stalwart mentor—if occasionally overbearing—while Cailynn has endured Xanthe’s dismissive jibes since her early days in the keep. Only Marik openly supports her claim to the throne, though Xanthe’s methods in the training yard once left him bruised and bloodied. She listens to each sibling, yet her ambitions rise above them all.</p>
+                        
+                        <p class="conclusion-paragraph">Poised, tireless, and unyielding, Xanthe Falkrest stands as the embodiment of discipline in a court ruled by compassion. To some, she is the champion Ederia needs; to others, she is a warning of what happens when ambition outgrows empathy—and all eyes watch to see which side of her wins out.</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/xanthe-full.png" alt="Xanthe Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+            
+            <!-- Cailynn Falkrest Details -->
+            <div class="heir-detailed-view" id="cailynn-view">
+                <div class="heir-info">
+                    <h2 class="heir-full-name">Cailynn Falkrest</h2>
+                    <h3 class="heir-epithet">The Wyrdwitch</h3>
+                    
+                    <div class="heir-description">
+                        <!-- Placeholder content for Cailynn -->
+                        <p class="intro-paragraph">Cailynn moves through the Crimson Court like a phantom in stately robes—dark fabrics embroidered with old magic and Zharakii symbols half the nobility cannot decipher. Her left hand glitters with clawed rings, yet where her right should be, only a shimmering purple phantom remains, forever hinting at eldritch powers and the terror she once survived in the wilds. Samson, a ferret-like familiar with twisted horns, perches on her shoulder—a silent witness to whispered incantations and clandestine meetings.</p>
+                        
+                        <h4 class="section-title">A Diplomat and a Witch</h4>
+                        <p>In the public eye, Cailynn is a measured, well-spoken negotiator. Her skill in forging alliances and crafting talismans has endeared her to older noble families, who marvel at her ability to calm night terrors and soothe the broken. Yet there are just as many who recoil at her eerie command of otherworldly energies. Younger aristocrats snidely dismiss her as a stray from the Serpent Grove—an unworthy claimant with secrets better left unexposed.</p>
+                        
+                        <h4 class="section-title">Half-Embrace, Half-Scorn</h4>
+                        <p>Even within the royal family, Cailynn stands on a fault line between respect and suspicion. Edwinn recalls her kindness at lonely birthday feasts, though his initial mistake—treating her like a servant—still lingers between them. Xanthe, the iron-fisted heir, wrestles with grudging acceptance of her unusual magic; the two share little warmth but share even less tolerance for failure. Marik remains her most loyal defender, not afraid to risk reputation or disqualification to shield his sister’s honor. As for the youngest, Via—Cailynn trades cryptic bedtime tales and reluctant acts of guidance, watching from a distance to see if the budding mage can learn to stand on her own.</p>
+                        
+                        <p class="conclusion-paragraph">At once a trusted envoy and an unnerving witch, Cailynn Falkrest embodies the thin line between faith and fear. She is living proof that the crimson court’s greatest strength—and perhaps its gravest danger—can lie in the hush of whispered spells and the soft scratch of a phantom hand upon the throne’s arm.</p>
+                    </div>
+                </div>
+                
+                <div class="heir-portrait-large">
+                    <div class="portrait-frame">
+                        <img src="assets/images/heirs/cailynn-full.png" alt="Cailynn Falkrest">
+                        <div class="frame-corner top-left"></div>
+                        <div class="frame-corner top-right"></div>
+                        <div class="frame-corner bottom-left"></div>
+                        <div class="frame-corner bottom-right"></div>
+                    </div>
+                    <div class="heir-emblem"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Royal Footer -->
+    <footer class="royal-footer">
+        <div class="container">
+            <div class="royal-decree">
+                <p>The fate of Ederia rests in the hands of these five heirs. May the rightful ruler claim the throne.</p>
+                <div class="royal-seal"></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Decorative Elements -->
+    <div class="decorative-elements">
+        <div class="floating-crown crown-1"></div>
+        <div class="floating-crown crown-2"></div>
+        <div class="floating-scroll scroll-1"></div>
+        <div class="floating-scroll scroll-2"></div>
+        <div class="floating-sword sword-1"></div>
+        <div class="floating-sword sword-2"></div>
+        <div class="candle candle-1"></div>
+        <div class="candle candle-2"></div>
+        <div class="candle candle-3"></div>
+        <div class="candle candle-4"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crimson-court.js"></script>
+    <script src="js/heirs.js"></script>
+</body>
+</html>

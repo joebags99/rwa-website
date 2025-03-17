@@ -1,0 +1,782 @@
+/*
+=======================================
+THOSE WHO PLAY THE GAME - NPC STYLING
+=======================================
+*/
+
+/* 
+======================
+VARIABLES
+======================
+*/
+:root {
+    /* Relationship Colors */
+    --relation-ally: #67d279;
+    --relation-friendly: #4c9ba9;
+    --relation-neutral: #e6d962;
+    --relation-hostile: #c30a3d;
+    --relation-unknown: #7F0EBD;
+    
+    /* Animation timings */
+    --card-appear-duration: 0.8s;
+    --card-transition: 0.4s;
+    --filter-transition: 0.3s;
+}
+
+/* 
+======================
+BASE PAGE STYLING
+======================
+*/
+.npcs-page {
+    background-color: var(--royal-black);
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Override any overflow:hidden from styles.css */
+.npcs-section,
+section.npcs-section,
+.npcs-section .container {
+    overflow: visible !important;
+}
+
+/* Force the court portal to be visible immediately on this page */
+.court-portal {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Adjust banner for NPCs page */
+.npcs-page .heraldic-banner {
+    padding: 8rem 0 3rem;
+}
+
+/* Container styling */
+.npcs-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* 
+======================
+FILTER CONTROLS
+======================
+*/
+.filter-controls {
+    background-color: rgba(15, 15, 26, 0.7);
+    border: 1px solid var(--royal-gold);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.filter-controls::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/images/parchment-texture.png");
+    opacity: 0.05;
+    z-index: -1;
+    border-radius: 8px;
+}
+
+/* Primary Category Filters */
+.primary-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.filter-btn {
+    background-color: rgba(15, 15, 26, 0.8);
+    color: var(--royal-gold-light);
+    border: 1px solid var(--royal-gold);
+    border-radius: 5px;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-headers);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--filter-transition) ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-btn i {
+    font-size: 1.1rem;
+}
+
+.filter-btn:hover, 
+.filter-btn:focus {
+    background-color: rgba(128, 0, 32, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--crimson-dark), rgba(195, 10, 61, 0.7));
+    color: var(--divine-light-white);
+    box-shadow: 0 0 15px rgba(195, 10, 61, 0.4);
+}
+
+/* Tag Filters */
+.tag-filters {
+    background-color: rgba(15, 15, 26, 0.5);
+    border-radius: 5px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.tag-filter-header {
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tag-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tag-btn {
+    background-color: rgba(212, 175, 55, 0.1);
+    color: var(--royal-silver);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 30px;
+    padding: 0.4rem 0.8rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--filter-transition) ease;
+}
+
+.tag-btn:hover {
+    background-color: rgba(212, 175, 55, 0.2);
+    color: var(--royal-gold-light);
+}
+
+.tag-btn.active {
+    background-color: rgba(212, 175, 55, 0.3);
+    color: var(--divine-light-white);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+/* Active Filters Display */
+.active-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.filter-label {
+    color: var(--royal-silver);
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+}
+
+.active-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.active-tag {
+    background-color: rgba(195, 10, 61, 0.2);
+    color: var(--royal-gold-light);
+    border: 1px solid rgba(195, 10, 61, 0.5);
+    border-radius: 30px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.active-tag i {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.active-tag i:hover {
+    opacity: 1;
+}
+
+.clear-filters {
+    background-color: rgba(15, 15, 26, 0.8);
+    color: var(--royal-silver);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all var(--filter-transition) ease;
+}
+
+.clear-filters:hover {
+    background-color: rgba(195, 10, 61, 0.2);
+    color: var(--divine-light-white);
+}
+
+/* 
+======================
+NPC CARD STRUCTURE
+======================
+*/
+.npc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+}
+
+.npc-card {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 2rem;
+    background-color: rgba(15, 15, 26, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: transform var(--card-transition) ease, 
+                opacity var(--card-transition) ease, 
+                box-shadow var(--card-transition) ease;
+    animation: cardAppear var(--card-appear-duration) ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.npc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/images/parchment-texture.png");
+    opacity: 0.04;
+    z-index: -1;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.npc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(195, 10, 61, 0.2);
+    border-color: rgba(212, 175, 55, 0.5);
+}
+
+/* 
+======================
+NPC PORTRAIT STYLING
+======================
+*/
+.npc-portrait {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portrait-frame {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1 / 1.2;
+    border: 3px solid var(--royal-gold);
+    border-radius: 5px;
+    overflow: visible;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 175, 55, 0.3);
+    transition: all var(--card-transition) ease;
+}
+
+.portrait-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    border-radius: 3px;
+    z-index: 1;
+}
+
+.portrait-frame img {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: all 0.5s ease;
+}
+
+.npc-card:hover .portrait-frame {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.npc-card:hover .portrait-frame img {
+    transform: scale(1.03);
+}
+
+/* Frame Ornaments */
+.frame-ornament {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-image: url("../assets/images/corner-ornament.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.frame-ornament.top-left {
+    top: -5px;
+    left: -5px;
+    transform: rotate(0deg);
+}
+
+.frame-ornament.top-right {
+    top: -5px;
+    right: -5px;
+    transform: rotate(90deg);
+}
+
+.frame-ornament.bottom-left {
+    bottom: -5px;
+    left: -5px;
+    transform: rotate(270deg);
+}
+
+.frame-ornament.bottom-right {
+    bottom: -5px;
+    right: -5px;
+    transform: rotate(180deg);
+}
+
+/* 
+======================
+NPC DETAILS STYLING
+======================
+*/
+.npc-details {
+    color: var(--royal-silver);
+    font-family: var(--font-body);
+}
+
+.npc-name {
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Importance Stars */
+.npc-importance {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.importance-label {
+    color: var(--royal-silver);
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.importance-stars {
+    color: var(--royal-gold);
+    display: flex;
+    gap: 0.2rem;
+}
+
+.importance-stars .fa-star {
+    filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.5));
+}
+
+/* NPC Meta Information */
+.npc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-headers);
+}
+
+.npc-appearance, 
+.npc-relation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.meta-label {
+    color: var(--royal-silver);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.appearance-value {
+    color: var(--divine-light-white);
+    font-weight: 500;
+}
+
+/* Relationship Status Styling */
+.relation-value {
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Relationship types - using a common pattern for all */
+.relation-ally,
+.relation-friendly,
+.relation-neutral,
+.relation-hostile,
+.relation-unknown {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.relation-ally {
+    color: var(--relation-ally);
+    background-color: rgba(103, 210, 117, 0.2);
+    border-color: rgba(103, 210, 117, 0.4);
+}
+
+.relation-friendly {
+    color: var(--relation-friendly);
+    background-color: rgba(76, 158, 169, 0.2);
+    border-color: rgba(76, 158, 169, 0.4);
+}
+
+.relation-neutral {
+    color: var(--relation-neutral);
+    background-color: rgba(230, 217, 98, 0.2);
+    border-color: rgba(230, 217, 98, 0.4);
+}
+
+.relation-hostile {
+    color: var(--relation-hostile);
+    background-color: rgba(195, 10, 61, 0.2);
+    border-color: rgba(195, 10, 61, 0.4);
+}
+
+.relation-unknown {
+    color: var(--relation-unknown);
+    background-color: rgba(127, 14, 189, 0.2);
+    border-color: rgba(127, 14, 189, 0.4);
+}
+
+/* NPC Description */
+.npc-description {
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+}
+
+.npc-description p {
+    margin: 0;
+}
+
+/* Quote Styling */
+.npc-quote {
+    background-color: rgba(15, 15, 26, 0.4);
+    border-left: 3px solid rgba(195, 10, 61, 0.5);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.2rem;
+    position: relative;
+    border-radius: 0 5px 5px 0;
+}
+
+.npc-quote blockquote {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--divine-light-white);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.quote-icon {
+    color: rgba(195, 10, 61, 0.5);
+    font-size: 1.2rem;
+    opacity: 0.7;
+    position: absolute;
+}
+
+.fa-quote-left {
+    top: 10px;
+    left: 10px;
+}
+
+.fa-quote-right {
+    bottom: 10px;
+    right: 10px;
+}
+
+/* NPC Tags */
+.npc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background-color: rgba(212, 175, 55, 0.1);
+    color: var(--royal-silver);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 30px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.85rem;
+    transition: all var(--filter-transition) ease;
+}
+
+.tag:hover {
+    background-color: rgba(212, 175, 55, 0.2);
+    color: var(--royal-gold-light);
+    cursor: pointer;
+}
+
+/* 
+======================
+LOADING & EMPTY STATES
+======================
+*/
+.loading-indicator {
+    text-align: center;
+    padding: 3rem;
+    display: none;
+}
+
+.loading-indicator .spinner-inner {
+    border-top-color: var(--crimson-blood);
+}
+
+.loading-indicator p {
+    color: var(--royal-silver);
+    margin-top: 1rem;
+    font-family: var(--font-headers);
+    font-style: italic;
+}
+
+.no-results-message {
+    padding: 4rem 2rem;
+    text-align: center;
+    background-color: rgba(15, 15, 26, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.message-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.no-results-message i {
+    font-size: 3rem;
+    color: var(--royal-gold);
+    opacity: 0.5;
+    margin-bottom: 1rem;
+}
+
+.no-results-message h3 {
+    color: var(--royal-gold-light);
+    font-family: var(--font-headers);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.no-results-message p {
+    color: var(--royal-silver);
+    margin-bottom: 1.5rem;
+}
+
+.clear-filters-btn {
+    background: linear-gradient(135deg, var(--crimson-dark), rgba(195, 10, 61, 0.7));
+    color: var(--divine-light-white);
+    border: none;
+    border-radius: 5px;
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-headers);
+    cursor: pointer;
+    transition: all var(--filter-transition) ease;
+}
+
+.clear-filters-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(195, 10, 61, 0.3);
+}
+
+/* 
+======================
+ANIMATIONS
+======================
+*/
+@keyframes cardAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hidden Elements */
+.npc-card.filtered {
+    display: none;
+}
+
+/* Animation for filtering */
+.npc-card.filtering {
+    animation: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.npc-card.filtering-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Simple fade overlay */
+.fade-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 1.2s ease-out;
+    pointer-events: none;
+}
+
+body:not(.loading) .fade-overlay {
+    opacity: 0;
+}
+
+/* 
+======================
+RESPONSIVE ADJUSTMENTS
+======================
+*/
+@media (max-width: 1200px) {
+    .npcs-section .container {
+        padding: 0 1.5rem;
+    }
+
+    .npc-card, 
+    .npc-card:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .npc-card:nth-child(even) .npc-portrait {
+        grid-column: 1;
+    }
+    
+    .npc-card:nth-child(even) .npc-details {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .npc-portrait {
+        justify-content: center;
+    }
+    
+    .portrait-frame {
+        max-width: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .npcs-section .container {
+        padding: 0 1rem;
+    }
+
+    .primary-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        justify-content: center;
+    }
+    
+    .npc-meta {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+    
+    .npc-name {
+        font-size: 1.5rem;
+    }
+    
+    .npc-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .npcs-section .container {
+        padding: 0 0.8rem;
+    }
+
+    .npc-card {
+        padding: 1rem;
+    }
+    
+    .portrait-frame {
+        max-width: 180px;
+    }
+    
+    .npc-quote {
+        padding: 1rem;
+    }
+    
+    .npc-quote blockquote {
+        font-size: 0.95rem;
+    }
+    
+    .filter-controls {
+        padding: 1rem;
+    }
+    
+    .tag-filters {
+        padding: 0.8rem;
+    }
+}

@@ -1,6 +1,6 @@
 /**
  * Roll With Advantage - Express Server
- * A simple Express server for local development
+ * A simple Express server for local development with Admin functionality
  */
 
 // Load environment variables - try multiple paths to be safe
@@ -24,6 +24,8 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
+const session = require('express-session');
 
 // Create Express app
 const app = express();
@@ -39,6 +41,31 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bo
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Create data directory if it doesn't exist
+const DATA_DIR = path.join(__dirname, 'data');
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  console.log('Created data directory');
+}
+
+// Create admin directory structure if it doesn't exist
+const ADMIN_DIR = path.join(__dirname, 'public', 'admin');
+if (!fs.existsSync(ADMIN_DIR)) {
+  fs.mkdirSync(ADMIN_DIR, { recursive: true });
+  console.log('Created admin directory');
+}
+
+// Create routes directory if it doesn't exist
+const ROUTES_DIR = path.join(__dirname, 'routes');
+if (!fs.existsSync(ROUTES_DIR)) {
+  fs.mkdirSync(ROUTES_DIR, { recursive: true });
+  console.log('Created routes directory');
+}
+
+// Import and use admin routes
+const adminRoutes = require('./routes/admin')(app);
+app.use('/admin', adminRoutes);
 
 // API Routes
 app.get('/api/health', (req, res) => {
@@ -76,6 +103,7 @@ function logEnvironmentVariables() {
   console.log('- DM_ADVICE_PLAYLIST_ID:', dmAdvicePlaylistId ? `Configured ✓ (${dmAdvicePlaylistId})` : 'Not configured ✗');
   console.log('- FEATURED_PLAYLIST_ID:', featuredPlaylistId ? `Configured ✓ (${featuredPlaylistId})` : 'Not configured ✗');
   console.log('- PORT:', process.env.PORT || '5000 (default)');
+  console.log('- SESSION_SECRET:', process.env.SESSION_SECRET ? 'Configured ✓' : 'Using default (not recommended for production) ✗');
 }
 
 // Check ENV file format by reading it directly (for debugging)
@@ -163,8 +191,100 @@ app.get('/api/config', (req, res) => {
   res.json(config);
 });
 
+// Public API route for NPCs (non-admin)
+app.get('/api/npcs', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const NPC_DATA_FILE = path.join(DATA_DIR, 'npcs.json');
+    
+    if (fs.existsSync(NPC_DATA_FILE)) {
+      const data = JSON.parse(fs.readFileSync(NPC_DATA_FILE, 'utf8'));
+      res.json(data.npcs);
+    } else {
+      res.json([]);
+    }
+  } catch (error) {
+    console.error('Error reading NPC data:', error);
+    res.status(500).json({ error: 'Error reading NPC data' });
+  }
+});
+
+// Public API route for timeline (non-admin)
+app.get('/api/public/timeline', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const TIMELINE_DATA_FILE = path.join(DATA_DIR, 'timeline.json');
+    
+    if (fs.existsSync(TIMELINE_DATA_FILE)) {
+      const data = JSON.parse(fs.readFileSync(TIMELINE_DATA_FILE, 'utf8'));
+      res.json(data.entries);
+    } else {
+      res.json([]);
+    }
+  } catch (error) {
+    console.error('Error reading timeline data:', error);
+    res.status(500).json({ error: 'Error reading timeline data' });
+  }
+});
+
+// Public API route for story episodes (non-admin)
+app.get('/api/public/story-episodes', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const STORY_EPISODES_FILE = path.join(DATA_DIR, 'story-episodes.json');
+    
+    if (!fs.existsSync(STORY_EPISODES_FILE)) {
+      // Return empty array if file doesn't exist
+      console.log('Story episodes file not found, returning empty array');
+      return res.json([]);
+    }
+    
+    const data = JSON.parse(fs.readFileSync(STORY_EPISODES_FILE, 'utf8'));
+    res.json(data.episodes || []);
+  } catch (error) {
+    console.error('Error reading story episodes data:', error);
+    res.status(500).json({ error: 'Error reading story episodes data' });
+  }
+});
+
+// Public API route for locations
+app.get('/api/public/locations', (req, res) => {
+  try {
+    const DATA_DIR = path.join(__dirname, 'data');
+    const LOCATIONS_FILE = path.join(DATA_DIR, 'locations.json');
+    
+    if (!fs.existsSync(LOCATIONS_FILE)) {
+      // Create default locations file if it doesn't exist
+      const defaultLocations = {
+        locations: [
+          { id: "crimson-keep", name: "Crimson Keep" },
+          { id: "ederia-city", name: "Ederia City" },
+          { id: "throne-room", name: "Throne Room" },
+          { id: "royal-library", name: "Royal Library" },
+          { id: "stormwatch", name: "Stormwatch Fortress" }
+        ]
+      };
+      
+      fs.writeFileSync(LOCATIONS_FILE, JSON.stringify(defaultLocations, null, 2), 'utf8');
+      console.log('Created default locations data file');
+      
+      return res.json(defaultLocations.locations);
+    }
+    
+    const data = JSON.parse(fs.readFileSync(LOCATIONS_FILE, 'utf8'));
+    res.json(data.locations);
+  } catch (error) {
+    console.error('Error reading locations data:', error);
+    res.status(500).json({ error: 'Error reading locations data' });
+  }
+});
+
 // Handle any other routes by serving index.html
 app.get('*', (req, res) => {
+  // Skip for admin routes which are handled by the admin router
+  if (req.path.startsWith('/admin')) {
+    return;
+  }
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
@@ -173,6 +293,7 @@ app.listen(PORT, () => {
   console.log(`
   🎲 Roll With Advantage server running!
   📁 Local: http://localhost:${PORT}
+  🔐 Admin: http://localhost:${PORT}/admin
   
   Ready to help you manage your D&D content
   `);

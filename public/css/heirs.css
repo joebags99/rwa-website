@@ -1,0 +1,1005 @@
+/*
+=======================================
+THE HEIRS - ROYAL STYLING
+=======================================
+*/
+
+/* 
+Heir Selection Page Specific Variables 
+*/
+:root {
+    /* Heir-specific colors */
+    --edwinn-color: #f3f3e5;
+    --edwinn-glow: rgb(255, 255, 255);
+    --via-color: #e6d962;
+    --via-glow: rgba(230, 217, 98, 0.6);
+    --marik-color: #b84141;
+    --marik-glow: rgba(184, 65, 65, 0.6);
+    --xanthe-color: #4c9ba9;
+    --xanthe-glow: rgba(76, 158, 169, 0.6);
+    --cailynn-color: #67d279;
+    --cailynn-glow: rgba(103, 210, 117, 0.6);
+    
+    /* Animation timings */
+    --circle-appear-duration: 1.2s;
+    --section-appear-delay: 0.3s;
+    --section-hover-duration: 0.4s;
+    --detailed-view-transition: 0.8s;
+}
+
+/* 
+Page Base Styling - Inherits from crimson-court.css 
+*/
+.heirs-page {
+    background-color: var(--royal-black);
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Simple navigation buttons */
+.heirs-navigation {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+}
+
+.nav-button {
+    background-color: rgba(15, 15, 26, 0.85);
+    color: var(--royal-gold);
+    border: 2px solid var(--royal-gold);
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-family: var(--font-headers);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.nav-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6), 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.court-button {
+    border-color: var(--crimson-blood);
+}
+
+.court-button:hover {
+    color: var(--crimson-light);
+}
+
+.home-button:hover {
+    color: var(--royal-gold-light);
+}
+
+/* Main content area */
+.heirs-content {
+    padding: 10rem 0 4rem;
+    min-height: calc(100vh - 12rem);
+    position: relative;
+    z-index: 5;
+}
+
+/* Page title styling */
+.heirs-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.heirs-title .royal-title {
+    margin-bottom: 0.5rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.heirs-title .royal-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--royal-silver);
+    margin-top: 0.5rem;
+}
+
+/* 
+======================
+HEIR SELECTION CIRCLE
+======================
+*/
+.heir-selection-container {
+    position: relative;
+    max-width: 800px;
+    height: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--detailed-view-transition) ease;
+}
+
+.heir-selection-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Prompt text that appears above the circle */
+.selection-prompt {
+    position: absolute;
+    top: -18%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--royal-gold);
+    border-radius: 20px;
+    color: var(--royal-gold-light);
+    font-family: var(--font-headers);
+    font-style: italic;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 2s;
+    z-index: 10;
+    text-align: center;
+    width: max-content;
+}
+
+.selection-prompt::before, 
+.selection-prompt::after {
+    content: '✧';
+    margin: 0 0.5rem;
+    opacity: 0.8;
+}
+
+/* Main circle container */
+.heir-circle {
+    position: relative;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background-color: rgba(15, 15, 26, 0.7);
+    box-shadow: 
+        0 0 40px rgba(0, 0, 0, 0.8),
+        0 0 70px rgba(195, 10, 61, 0.3),
+        inset 0 0 50px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: circleAppear var(--circle-appear-duration) cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
+    margin: 0 auto;
+}
+
+@keyframes circleAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) rotate(-10deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Circle border with pulsating glow */
+.circle-border {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid var(--royal-gold);
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: pulseBorder 4s ease-in-out infinite;
+}
+
+@keyframes pulseBorder {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+}
+
+/* Crown decorations around the circle */
+.crown-decoration {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url('../assets/images/crown.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+}
+
+.crown-decoration.top {
+    top: -20px;
+    left: calc(50% - 20px);
+    animation-delay: 1.5s;
+}
+
+.crown-decoration.right {
+    top: calc(50% - 20px);
+    right: -20px;
+    animation-delay: 1.7s;
+}
+
+.crown-decoration.bottom {
+    bottom: -20px;
+    left: calc(50% - 20px);
+    animation-delay: 1.9s;
+}
+
+.crown-decoration.left {
+    top: calc(50% - 20px);
+    left: -20px;
+    animation-delay: 2.1s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Center royal crest */
+.center-crest {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    opacity: 0;
+    animation: crownGlow 2s ease-in-out infinite, fadeIn 1s ease forwards 1s;
+}
+
+.center-crest img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
+}
+
+@keyframes crownGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
+    }
+}
+
+/* 
+======================
+HEIR SECTIONS WITHIN CIRCLE
+======================
+*/
+.heir-section {
+    position: absolute;
+    width: 260px;
+    height: 120px;
+    cursor: pointer;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Position each heir in a circle around the center */
+.heir-section[data-heir="edwinn"] {
+    top: 40px;
+    left: calc(50% - 130px);
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 1);
+}
+
+.heir-section[data-heir="via"] {
+    top: calc(50% - 130px);
+    right: 40px;
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 2);
+}
+
+.heir-section[data-heir="marik"] {
+    bottom: 40px;
+    right: calc(50% - 300px);
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 3);
+}
+
+.heir-section[data-heir="xanthe"] {
+    bottom: 40px;
+    left: calc(50% - 300px);
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 4);
+}
+
+.heir-section[data-heir="cailynn"] {
+    top: calc(50% - 130px);
+    left: 40px;
+    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 5);
+}
+
+@keyframes sectionAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heir silhouette (grayscale version) */
+img.heir-silhouette {
+    position: absolute;
+    width: auto;
+    height: 150px;
+    opacity: 0.5;
+    filter: grayscale(100%) brightness(0.7);
+    transition: all var(--section-hover-duration) ease;
+    z-index: 1;
+}
+
+/* Heir full-color portrait (initially hidden) */
+img.heir-portrait {
+    position: absolute;
+    width: auto;
+    height: 150px;
+    opacity: 0;
+    transition: all var(--section-hover-duration) ease;
+    z-index: 3;
+    transform: scale(0.95);
+}
+
+/* Heir name and title */
+.heir-name, .heir-title {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-headers);
+    color: var(--royal-gold-light);
+    opacity: 0.7;
+    transition: all var(--section-hover-duration) ease;
+    z-index: 2;
+}
+
+.heir-name {
+    bottom: 50px;
+    font-size: 1.6rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.heir-title {
+    bottom: 20px;
+    font-size: 1.1rem;
+    font-style: italic;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Hover effects for each heir section */
+.heir-section:hover .heir-silhouette {
+    opacity: 0;
+}
+
+.heir-section:hover .heir-portrait {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.heir-section:hover .heir-name,
+.heir-section:hover .heir-title {
+    opacity: 1;
+}
+
+/* Individual heir hover effects with custom colors */
+.heir-section[data-heir="edwinn"]:hover {
+    filter: drop-shadow(0 0 15px var(--edwinn-glow));
+}
+
+.heir-section[data-heir="edwinn"]:hover .heir-name,
+.heir-section[data-heir="edwinn"]:hover .heir-title {
+    color: var(--edwinn-color);
+}
+
+.heir-section[data-heir="via"]:hover {
+    filter: drop-shadow(0 0 15px var(--via-glow));
+}
+
+.heir-section[data-heir="via"]:hover .heir-name,
+.heir-section[data-heir="via"]:hover .heir-title {
+    color: var(--via-color);
+}
+
+.heir-section[data-heir="marik"]:hover {
+    filter: drop-shadow(0 0 15px var(--marik-glow));
+}
+
+.heir-section[data-heir="marik"]:hover .heir-name,
+.heir-section[data-heir="marik"]:hover .heir-title {
+    color: var(--marik-color);
+}
+
+.heir-section[data-heir="xanthe"]:hover {
+    filter: drop-shadow(0 0 15px var(--xanthe-glow));
+}
+
+.heir-section[data-heir="xanthe"]:hover .heir-name,
+.heir-section[data-heir="xanthe"]:hover .heir-title {
+    color: var(--xanthe-color);
+}
+
+.heir-section[data-heir="cailynn"]:hover {
+    filter: drop-shadow(0 0 15px var(--cailynn-glow));
+}
+
+.heir-section[data-heir="cailynn"]:hover .heir-name,
+.heir-section[data-heir="cailynn"]:hover .heir-title {
+    color: var(--cailynn-color);
+}
+
+/* 
+======================
+DETAILED HEIR VIEW
+======================
+*/
+.detailed-view-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 8rem 2rem 4rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--detailed-view-transition) ease;
+}
+
+.detailed-view-container.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Back button */
+.back-to-circle {
+    position: fixed;
+    top: 120px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    background: rgba(15, 15, 26, 0.7);
+    border: 2px solid var(--royal-gold);
+    border-radius: 50%;
+    color: var(--royal-gold);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.detailed-view-container.active .back-to-circle {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.5s;
+}
+
+.back-to-circle:hover {
+    background: rgba(15, 15, 26, 0.9);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    transform: translateX(5px);
+}
+
+.back-to-circle i {
+    transition: transform 0.3s ease;
+}
+
+.back-to-circle:hover i {
+    transform: translateX(-3px);
+}
+
+/* Individual heir detailed views */
+.heir-detailed-view {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all var(--detailed-view-transition) ease;
+}
+
+.heir-detailed-view.active {
+    display: grid;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Left side - Heir information */
+.heir-info {
+    color: var(--divine-light-white);
+    padding: 2rem;
+    background: rgba(15, 15, 26, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.heir-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/images/parchment-texture.png');
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.heir-full-name {
+    font-family: var(--font-titles);
+    color: var(--royal-gold);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.heir-epithet {
+    font-family: var(--font-headers);
+    color: var(--royal-silver);
+    font-size: 1.4rem;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.heir-description {
+    font-family: var(--font-body);
+    line-height: 1.7;
+    color: var(--royal-silver);
+}
+
+.intro-paragraph {
+    font-size: 1.15rem;
+    color: var(--divine-light-white);
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    color: var(--royal-gold-light);
+    font-family: var(--font-headers);
+    font-size: 1.3rem;
+    margin: 1.5rem 0 0.8rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-gold);
+    border-radius: 2px;
+}
+
+.conclusion-paragraph {
+    font-style: italic;
+    color: var(--divine-light-white);
+    margin-top: 1.5rem;
+}
+
+/* Right side - Heir portrait */
+.heir-portrait-large {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.portrait-frame {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 3/4;
+    border: 3px solid var(--royal-gold);
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.7),
+        0 0 15px rgba(212, 175, 55, 0.5);
+    overflow: hidden;
+}
+
+.portrait-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: all 0.5s ease;
+}
+
+.portrait-frame:hover img {
+    transform: scale(1.02);
+}
+
+/* Ornamental corners for the portrait frame */
+.frame-corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-image: url('../assets/images/corner-ornament.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+}
+
+.frame-corner.top-left {
+    top: -5px;
+    left: -5px;
+    transform: rotate(0deg);
+}
+
+.frame-corner.top-right {
+    top: -5px;
+    right: -5px;
+    transform: rotate(90deg);
+}
+
+.frame-corner.bottom-left {
+    bottom: -5px;
+    left: -5px;
+    transform: rotate(270deg);
+}
+
+.frame-corner.bottom-right {
+    bottom: -5px;
+    right: -5px;
+    transform: rotate(180deg);
+}
+
+/* Heir emblem below portrait */
+.heir-emblem {
+    width: 80px;
+    height: 80px;
+    margin-top: 1rem;
+    background-image: url('../assets/images/royal-seal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+}
+
+/* 
+======================
+HEIR-SPECIFIC DETAIL STYLING
+======================
+*/
+/* Edwinn Falkrest */
+#edwinn-view .heir-full-name,
+#edwinn-view .section-title {
+    color: var(--edwinn-color);
+}
+
+#edwinn-view .section-title::after {
+    background: linear-gradient(90deg, var(--edwinn-color), var(--royal-gold));
+}
+
+#edwinn-view .portrait-frame {
+    border-color: var(--edwinn-color);
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.7),
+        0 0 15px var(--edwinn-glow);
+}
+
+/* Via Falkrest */
+#via-view .heir-full-name,
+#via-view .section-title {
+    color: var(--via-color);
+}
+
+#via-view .section-title::after {
+    background: linear-gradient(90deg, var(--via-color), var(--royal-gold));
+}
+
+#via-view .portrait-frame {
+    border-color: var(--via-color);
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.7),
+        0 0 15px var(--via-glow);
+}
+
+/* Marik Falkrest */
+#marik-view .heir-full-name,
+#marik-view .section-title {
+    color: var(--marik-color);
+}
+
+#marik-view .section-title::after {
+    background: linear-gradient(90deg, var(--marik-color), var(--royal-gold));
+}
+
+#marik-view .portrait-frame {
+    border-color: var(--marik-color);
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.7),
+        0 0 15px var(--marik-glow);
+}
+
+/* Xanthe Falkrest */
+#xanthe-view .heir-full-name,
+#xanthe-view .section-title {
+    color: var(--xanthe-color);
+}
+
+#xanthe-view .section-title::after {
+    background: linear-gradient(90deg, var(--xanthe-color), var(--royal-gold));
+}
+
+#xanthe-view .portrait-frame {
+    border-color: var(--xanthe-color);
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.7),
+        0 0 15px var(--xanthe-glow);
+}
+
+/* Cailynn Falkrest */
+#cailynn-view .heir-full-name,
+#cailynn-view .section-title {
+    color: var(--cailynn-color);
+}
+
+#cailynn-view .section-title::after {
+    background: linear-gradient(90deg, var(--cailynn-color), var(--royal-gold));
+}
+
+#cailynn-view .portrait-frame {
+    border-color: var(--cailynn-color);
+    box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.7),
+        0 0 15px var(--cailynn-glow);
+}
+
+/* 
+======================
+PARTICLES & BACKGROUND EFFECTS
+======================
+*/
+.heir-particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background: url('../assets/images/dark-texture.png');
+}
+
+.heir-particles-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(195, 10, 61, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 40%, rgba(212, 175, 55, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* 
+======================
+RESPONSIVE ADJUSTMENTS
+======================
+*/
+@media (max-width: 1200px) {
+    .heir-detailed-view {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .heir-portrait-large {
+        grid-row: 1;
+    }
+    
+    .heir-info {
+        grid-row: 2;
+        max-height: none;
+    }
+}
+
+@media (max-width: 900px) {
+    .heir-circle {
+        width: 90vw;
+        height: 90vw;
+        max-width: 600px;
+        max-height: 600px;
+    }
+    
+    .heir-selection-container {
+        height: auto;
+        padding: 2rem 0;
+    }
+    
+    .heir-section {
+        width: 33vw;
+        height: 33vw;
+        max-width: 180px;
+        max-height: 180px;
+    }
+    
+    .heir-section[data-heir="edwinn"] {
+        top: 20px;
+        left: calc(50% - 16.5vw);
+    }
+    
+    .heir-section[data-heir="via"] {
+        top: calc(50% - 16.5vw);
+        right: 20px;
+    }
+    
+    .heir-section[data-heir="marik"] {
+        bottom: 20px;
+        right: calc(50% - 16.5vw - 50px);
+    }
+    
+    .heir-section[data-heir="xanthe"] {
+        bottom: 20px;
+        left: calc(50% - 16.5vw - 50px);
+    }
+    
+    .heir-section[data-heir="cailynn"] {
+        top: calc(50% - 16.5vw);
+        left: 20px;
+    }
+    
+    .center-crest {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .heirs-navigation {
+        flex-direction: column;
+    }
+    
+    .heirs-title .royal-title {
+        margin-bottom: 0.5rem;
+    }
+    
+    .back-to-circle {
+        top: 80px;
+        left: 20px;
+    }
+    
+    .heir-full-name {
+        font-size: 2rem;
+    }
+    
+    .heir-epithet {
+        font-size: 1.2rem;
+    }
+    
+    .portrait-frame {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .heir-circle {
+        width: 95vw;
+        height: 95vw;
+        max-width: 500px;
+        max-height: 500px;
+    }
+    
+    .heir-section {
+        width: 33vw;
+        height: 33vw;
+        max-width: 150px;
+        max-height: 150px;
+    }
+    
+    .heir-name {
+        bottom: 30px;
+        font-size: 1.2rem;
+    }
+    
+    .heir-title {
+        bottom: 10px;
+        font-size: 0.8rem;
+    }
+    
+    .center-crest {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 576px) {
+    .selection-prompt {
+        font-size: 0.9rem;
+        padding: 0.4rem 1rem;
+    }
+    
+    .heir-section {
+        width: 30vw;
+        height: 30vw;
+    }
+    
+    .center-crest {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .heir-name {
+        font-size: 1rem;
+        bottom: 25px;
+    }
+    
+    .heir-title {
+        font-size: 0.7rem;
+        bottom: 8px;
+    }
+    
+    .crown-decoration {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .back-to-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .heir-info {
+        padding: 1.5rem;
+    }
+    
+    .heir-full-name {
+        font-size: 1.7rem;
+    }
+    
+    .heir-epithet {
+        font-size: 1.1rem;
+    }
+    
+    .intro-paragraph {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+}

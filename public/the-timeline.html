@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Timeline - The Crimson Court</title>
+    <meta name="description" content="Explore the historical events that shaped the kingdom of Ederia in the Crimson Court campaign.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    <link rel="stylesheet" href="css/timeline.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="crimson-court-page timeline-page court-portal-active">
+    <!-- Court Portal (Main Content) -->
+    <div class="court-portal">
+        <!-- Royal Header (Crimson Court Style) -->
+        <header class="royal-header">
+            <div class="container">
+                <div class="court-logo">
+                    <a href="crimson-court.html" class="return-court">
+                        <img src="assets/images/cc-logo.png" alt="The Crimson Court" class="cc-logo-image">
+                    </a>
+                </div>
+                <nav class="court-nav">
+                    <ul>
+                        <li><a href="index.html" class="court-nav-item"><i class="fas fa-home"></i> <span>Main Site</span></a></li>
+                        <li><a href="crimson-court.html" class="court-nav-item"><i class="fas fa-crown"></i> <span>Court Portal</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Heraldic Banner -->
+        <div class="heraldic-banner">
+            <div class="banner-emblem">
+                <div class="royal-crest cc-icon-image"></div>
+            </div>
+            <h1 class="royal-title">The Timeline</h1>
+            <p class="royal-subtitle">The Historical Events that Shaped the Kingdom of Ederia</p>
+        </div>
+        
+<!-- Timeline Controls -->
+<div class="timeline-controls">
+    <div class="container">
+        <div class="era-navigation">
+            <button class="era-button active" data-era="all">All Eras</button>
+            <button class="era-button" data-era="age-of-chains">The Age of Chains</button>
+            <button class="era-button" data-era="arcane-reckoning">The Age of Arcane Reckoning</button>
+            <button class="era-button" data-era="broken-sun">The Age of the Broken Sun</button>
+            <button class="era-button" data-era="silent-war">The Age of Silent War</button>
+            <button class="era-button" data-era="uncertainty">The Age of Uncertainty</button>
+        </div>
+        <div class="timeline-search">
+            <input type="text" id="timeline-search" placeholder="Search historical events...">
+            <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</div>
+
+        <!-- Main Timeline Section -->
+        <section class="timeline-section">
+            <div class="container">
+                <!-- The vertical timeline -->
+                <div class="timeline">
+                    <!-- Timeline Center Line -->
+                    <div class="timeline-center-line"></div>
+                    
+                    <!-- Loading spinner at the top -->
+                    <!-- <div class="loading-indicator top-loader">
+                        <div class="spinner-d20">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading earlier events...</p>
+                    </div> -->
+
+                    <!-- Timeline Content - Will be populated by JavaScript -->
+                    <div class="timeline-content" id="timeline-content">
+                        <!-- Events will be loaded by JavaScript -->
+                    </div>
+                    
+                    <!-- Loading spinner at the bottom -->
+                    <div class="loading-indicator bottom-loader">
+                        <div class="spinner-d20">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading more events...</p>
+                    </div>
+                </div>
+                
+                <!-- Template for new events (Hidden) -->
+                <template id="timeline-event-template">
+                    <div class="timeline-event" data-year="" data-month="" data-era="">
+                        <div class="timeline-event-content">
+                            <div class="timeline-date">
+                                <span class="timeline-day"></span>
+                                <span class="timeline-month"></span>,
+                                <span class="timeline-year"></span>
+                            </div>
+                            <h3 class="timeline-title"></h3>
+                            <div class="timeline-location">
+                                <i class="fas fa-map-marker-alt"></i> <span class="location-name"></span>
+                            </div>
+                            <div class="timeline-description"></div>
+                            <div class="timeline-image">
+                                <img src="" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                
+                <!-- Template for monarch breaks (Hidden) -->
+                <template id="monarch-break-template">
+                    <div class="timeline-break">
+                        <div class="timeline-break-content">
+                            <div class="crown-icon"><i class="fas fa-crown"></i></div>
+                            <h3></h3>
+                            <div class="timeline-date">
+                                <span class="timeline-month"></span>
+                                <span class="timeline-day"></span>,
+                                <span class="timeline-year"></span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                
+                <!-- No Results Message (Hidden) -->
+                <div class="no-results-message" style="display: none;">
+                    <div class="message-content">
+                        <i class="fas fa-scroll"></i>
+                        <h3>No Events Found</h3>
+                        <p>No historical events match your search criteria. Try different keywords or clear the search.</p>
+                        <button class="clear-search-btn">Clear Search</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Court Footer -->
+        <footer class="royal-footer">
+            <div class="container">
+                <div class="royal-decree">
+                    <p>To forget our history is to repeat its darkest chapters. Remember well the wisdom of ages past.</p>
+                    <div class="royal-seal"></div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Decorative Elements -->
+        <div class="decorative-elements">
+            <div class="floating-crown crown-1"></div>
+            <div class="floating-crown crown-2"></div>
+            <div class="floating-scroll scroll-1"></div>
+            <div class="floating-scroll scroll-2"></div>
+            <div class="floating-sword sword-1"></div>
+            <div class="floating-sword sword-2"></div>
+            <div class="candle candle-1"></div>
+            <div class="candle candle-2"></div>
+            <div class="candle candle-3"></div>
+            <div class="candle candle-4"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crimson-court.js"></script>
+    <script src="js/timeline.js"></script>
+</body>
+</html>

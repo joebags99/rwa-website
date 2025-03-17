@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Those Who Play the Game - The Crimson Court</title>
+    <meta name="description" content="Meet the influential NPCs of Ederia who shape the fate of the kingdom in the Crimson Court campaign.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    <link rel="stylesheet" href="css/npcs.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="loading crimson-court-page npcs-page">
+    <!-- Simple fade overlay -->
+    <div class="fade-overlay"></div>
+    
+    <!-- Court Portal (Main Content) -->
+    <div class="court-portal court-portal-active">
+        <!-- Royal Header (Crimson Court Style) -->
+        <header class="royal-header">
+            <div class="container">
+                <div class="court-logo">
+                    <a href="crimson-court.html" class="return-court">
+                        <img src="assets/images/cc-logo.png" alt="The Crimson Court" class="cc-logo-image">
+                    </a>
+                </div>
+                <nav class="court-nav">
+                    <ul>
+                        <li><a href="index.html" class="court-nav-item"><i class="fas fa-home"></i> <span>Main Site</span></a></li>
+                        <li><a href="crimson-court.html" class="court-nav-item"><i class="fas fa-crown"></i> <span>Court Portal</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Heraldic Banner -->
+        <div class="heraldic-banner">
+            <div class="banner-emblem">
+                <div class="royal-crest cc-icon-image"></div>
+            </div>
+            <h1 class="royal-title">Those Who Play the Game</h1>
+            <p class="royal-subtitle">The Figures of Power and Influence in Illica</p>
+        </div>
+        
+        <!-- Main NPC Section -->
+        <section class="npcs-section" style="overflow: visible !important;">
+            <div class="container">
+                <!-- Filter Categories -->
+                <div class="filter-controls">
+                    <!-- Keep existing primary filters -->
+                    <div class="primary-filters">
+                        <button class="filter-btn active" data-filter="all">
+                            <i class="fas fa-users"></i> All
+                        </button>
+                        <button class="filter-btn" data-filter="royal">
+                            <i class="fas fa-crown"></i> Royal
+                        </button>
+                        <button class="filter-btn" data-filter="pastoral">
+                            <i class="fas fa-leaf"></i> Pastoral
+                        </button>
+                        <button class="filter-btn" data-filter="militant">
+                            <i class="fas fa-shield-alt"></i> Militant
+                        </button>
+                        <button class="filter-btn" data-filter="religious">
+                            <i class="fas fa-pray"></i> Religious
+                        </button>
+                    </div>
+                        <!-- Replace the tag-buttons div with this -->
+                        <div class="tag-filters">
+                            <div class="tag-filter-header">
+                                <i class="fas fa-tags"></i> Filter by tag:
+                            </div>
+                            <div class="tag-buttons" id="tag-buttons">
+                                <!-- Tags will be dynamically inserted here -->
+                            </div>
+                            <div class="active-filters">
+                                <span class="filter-label">Active Filters:</span>
+                                <div class="active-tags"></div>
+                                <button class="clear-filters">Clear All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NPC List Container -->
+                <div class="npc-list container">
+                    <!-- Example NPC Card - Alternating layout will be handled with CSS -->
+                    <div class="npc-card" data-category="royal" data-tags="ederian,house-falkrest,nobility">
+                        <div class="npc-portrait">
+                            <div class="portrait-frame">
+                                <img src="assets/images/npcs/king-talon.jpg" alt="King Talon Falkrest">
+                                <div class="frame-ornament top-left"></div>
+                                <div class="frame-ornament top-right"></div>
+                                <div class="frame-ornament bottom-left"></div>
+                                <div class="frame-ornament bottom-right"></div>
+                            </div>
+                        </div>
+                        <div class="npc-details">
+                            <h2 class="npc-name">King Talon Falkrest, "the Kind"</h2>
+                            <div class="npc-importance">
+                                <span class="importance-label">Importance:</span>
+                                <span class="importance-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </span>
+                            </div>
+                            <div class="npc-meta">
+                                <div class="npc-appearance">
+                                    <span class="meta-label">First Appearance:</span>
+                                    <span class="appearance-value">Prologue</span>
+                                </div>
+                                <div class="npc-relation">
+                                    <span class="meta-label">Relationship:</span>
+                                    <span class="relation-value relation-ally">Ally</span>
+                                </div>
+                            </div>
+                            <div class="npc-description">
+                                <p>An older man in his seventies, though appearing decades younger due to a gift of long life. Benevolent yet resolute, King Talon leads with a compassionate heart, striving always for fairness and justice. He is beloved by his subjects for his kindness and admired for his timeless wisdom. His favored weapon is Dragon's Bane.</p>
+                            </div>
+                            <div class="npc-quote">
+                                <i class="fas fa-quote-left quote-icon"></i>
+                                <blockquote>In a world so often marred by cruelty, it takes true strength to be kind. Honor and kindness are not signs of weakness, but the greatest tools to win hearts and maintain peace…</blockquote>
+                                <i class="fas fa-quote-right quote-icon"></i>
+                            </div>
+                            <div class="npc-tags">
+                                <span class="tag">ederian</span>
+                                <span class="tag">house-falkrest</span>
+                                <span class="tag">nobility</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional NPC Cards will be added here, with alternating layouts -->
+                    <!-- You can add more manual entries or use JavaScript to populate dynamically -->
+                    
+                    <!-- NPC Card Template for JavaScript population -->
+                    <template id="npc-card-template">
+                        <div class="npc-card" data-category="" data-tags="">
+                            <div class="npc-portrait">
+                                <div class="portrait-frame">
+                                    <img src="" alt="">
+                                    <div class="frame-ornament top-left"></div>
+                                    <div class="frame-ornament top-right"></div>
+                                    <div class="frame-ornament bottom-left"></div>
+                                    <div class="frame-ornament bottom-right"></div>
+                                </div>
+                            </div>
+                            <div class="npc-details">
+                                <h2 class="npc-name"></h2>
+                                <div class="npc-importance">
+                                    <span class="importance-label">Importance:</span>
+                                    <span class="importance-stars"></span>
+                                </div>
+                                <div class="npc-meta">
+                                    <div class="npc-appearance">
+                                        <span class="meta-label">First Appearance:</span>
+                                        <span class="appearance-value"></span>
+                                    </div>
+                                    <div class="npc-relation">
+                                        <span class="meta-label">Relationship:</span>
+                                        <span class="relation-value"></span>
+                                    </div>
+                                </div>
+                                <div class="npc-description"></div>
+                                <div class="npc-quote">
+                                    <i class="fas fa-quote-left quote-icon"></i>
+                                    <blockquote></blockquote>
+                                    <i class="fas fa-quote-right quote-icon"></i>
+                                </div>
+                                <div class="npc-tags"></div>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <!-- Empty State Message -->
+                    <div class="no-results-message" style="display: none;">
+                        <div class="message-content">
+                            <i class="fas fa-search"></i>
+                            <h3>No NPCs Found</h3>
+                            <p>No NPCs match your current filter criteria. Try adjusting your filters or clearing them to see all NPCs.</p>
+                            <button class="clear-filters-btn">Clear All Filters</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loading Indicator -->
+                <div class="loading-indicator">
+                    <div class="spinner-d20">
+                        <div class="spinner-inner"></div>
+                    </div>
+                    <p>Loading NPCs...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Court Footer -->
+        <footer class="royal-footer">
+            <div class="container">
+                <div class="royal-decree">
+                    <p>Every figure in court plays their part in the grand tapestry of Ederia's fate.</p>
+                    <div class="royal-seal"></div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Decorative Elements -->
+        <div class="decorative-elements">
+            <div class="floating-crown crown-1"></div>
+            <div class="floating-crown crown-2"></div>
+            <div class="floating-scroll scroll-1"></div>
+            <div class="floating-scroll scroll-2"></div>
+            <div class="floating-sword sword-1"></div>
+            <div class="floating-sword sword-2"></div>
+            <div class="candle candle-1"></div>
+            <div class="candle candle-2"></div>
+            <div class="candle candle-3"></div>
+            <div class="candle candle-4"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crimson-court.js"></script>
+    <script src="js/npcs.js"></script>
+</body>
+</html>

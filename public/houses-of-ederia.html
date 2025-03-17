@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Houses of Ederia - The Crimson Court</title>
+    <meta name="description" content="Explore the six great houses of Ederia, their histories, lords, and banner houses in the grand hall.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    <link rel="stylesheet" href="css/houses-of-ederia.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="houses-page">
+    <!-- Magical Particles Background -->
+    <div class="house-particles-container"></div>
+    
+    <!-- Simple Navigation Buttons -->
+    <div class="houses-navigation">
+        <a href="crimson-court.html" class="nav-button court-button">
+            <i class="fas fa-crown"></i> Return to The Crimson Court
+        </a>
+        <a href="index.html" class="nav-button home-button">
+            <i class="fas fa-home"></i> Return to Roll With Advantage
+        </a>
+    </div>
+
+    <main class="houses-content">
+        <!-- Page Title -->
+        <div class="houses-title">
+            <h1 class="royal-title">The Houses of Ederia</h1>
+            <div class="royal-subtitle">Six Houses, One Kingdom</div>
+        </div>
+        
+        <!-- Interactive House Selection Circle -->
+        <div class="house-selection-container">
+            <div class="selection-prompt">
+                <span><i class="fas fa-info-circle"></i> Hover to reveal, click to learn more</span>
+            </div>
+            
+            <div class="house-circle">
+                <!-- Circle Border with Decorations -->
+                <div class="circle-border"></div>
+                
+                <!-- House Shields -->
+                <div class="house-section" data-house="falkrest">
+                    <div class="house-shield">
+                        <img src="assets/images/houses/falkrest-shield.png" class="house-shield-img" alt="House Falkrest Shield" />
+                        <div class="house-details">
+                            <div class="house-name">House Falkrest</div>
+                        </div>
+                    </div>
+                    <div class="crown-marker"></div>
+                </div>
+                
+                <div class="house-section" data-house="veltaris">
+                    <div class="house-shield">
+                        <img src="assets/images/houses/veltaris-shield.png" class="house-shield-img" alt="House Veltaris Shield" />
+                        <div class="house-details">
+                            <div class="house-name">House Veltaris</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="house-section" data-house="thornefield">
+                    <div class="house-shield">
+                        <img src="assets/images/houses/thornefield-shield.png" class="house-shield-img" alt="House Thornefield Shield" />
+                        <div class="house-details">
+                            <div class="house-name">House Thornefield</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="house-section" data-house="astralor">
+                    <div class="house-shield">
+                        <img src="assets/images/houses/astralor-shield.png" class="house-shield-img" alt="House Astralor Shield" />
+                        <div class="house-details">
+                            <div class="house-name">House Astralor</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="house-section" data-house="eldran">
+                    <div class="house-shield">
+                        <img src="assets/images/houses/eldran-shield.png" class="house-shield-img" alt="House Eldran Shield" />
+                        <div class="house-details">
+                            <div class="house-name">House Eldran</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="house-section" data-house="emberlyn">
+                    <div class="house-shield">
+                        <img src="assets/images/houses/emberlyn-shield.png" class="house-shield-img" alt="House Emberlyn Shield" />
+                        <div class="house-details">
+                            <div class="house-name">House Emberlyn</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Center Crest -->
+                <div class="center-crest">
+                    <img src="assets/images/cc-icon-nb.png" alt="Kingdom of Ederia Crest" width="160" height="160">
+                </div>
+            </div>
+            
+            <!-- Reveal All Button -->
+            <div class="reveal-all-container">
+                <button class="reveal-all-btn">
+                    <i class="fas fa-eye"></i> Reveal All Houses
+                </button>
+            </div>
+        </div>
+        
+        <!-- Detailed House Views (Initially Hidden) -->
+        <div class="detailed-view-container">
+            <!-- Back Button -->
+            <button class="back-to-circle" aria-label="Return to house selection">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            
+            <!-- House Falkrest Details -->
+            <div class="house-detailed-view" id="falkrest-view">
+                <div class="house-info">
+                    <h2 class="house-full-name">House Falkrest</h2>
+                    <h3 class="house-motto">"Beyond the Horizon"</h3>
+                    
+                    <div class="house-description">
+                        <div class="house-basics">
+                            <div class="basics-item">
+                                <span class="label">Colors: </span>
+                                <span class="value">Green and Gold</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Sigil: </span>
+                                <span class="value"> A soaring brown falcon over distant grey mountains on a green background</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Seat: </span>
+                                <span class="value"> Skyhaven</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Region: </span>
+                                <span class="value"> The Heartlands</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Current Lord: </span>
+                                <span class="value"> King Talon Falkrest</span>
+                            </div>
+                        </div>
+                        
+                        <h4 class="section-title">King of Ederia</h4>
+                        <p>King Talon Falkrest, current ruler of the kingdom of Ederia, is known for his legacy as a former adventurer and his visionary leadership. Under his rule, the kingdom has expanded its borders and strengthened diplomatic ties with neighboring realms. His adventurous spirit lives on in his children, the heirs to the Crimson Throne.</p>
+                        
+                        <h4 class="section-title">History</h4>
+                        <p>The origins of Skyhaven trace back to a family of adventurers who made their livelihood through monster hunting and defending people. Their valor and service earned them the title of "Sentinel" in service to the realm, legitimized by King Alistar Draven (who nearly brought ruin to the kingdom in 1030 AR) almost 80 years ago. Their official recognition marked the rise of House Falkrest as a noble house.</p>
+                                                
+                        <p>Their seat, Skyhaven, is filled with artifacts and curiosities from their travels. They are respected for their bravery and resourcefulness but are sometimes seen as unpredictable. Currently, they are the ruling house of Ederia.</p>
+                        
+                        <h4 class="section-title">Notable Members</h4>
+                        <ul class="members-list">
+                            <li>Late Queen Elendara "The Usurper" Falkrest - Former Queen, Mother to Talon, and renowned adventurer</li>
+                            <li>King Talon Falkrest - Current King of Ederia and former adventurer</li>
+                            <li>Lord Paramount Raynere Falkrest - Current Sentinel of Ederia, and former adventurer</li>
+                            <li>Prince Edwinn Falkrest - 1st Born Bastard Son of Talon</li>
+                            <li>Princess Xanthe Falkrest - 2nd Born Noble Daughter of Talon</li>
+                            <li>Princess Cailynn Falkrest - 3rd Born Bastard Daughter of Talon</li>
+                            <li>Prince Marik Veltaris-Falkrest - 4th Born Noble Son of Talon</li>
+                            <li>Princess Octavia Falkrest - 5th Born Noble Daughter of Talon</li>
+                        </ul>
+                        
+                        <h4 class="section-title">Banner Houses</h4>
+                        <ul class="house-list">
+                            <li>House Thalor - Mountain exploration experts</li>
+                            <li>House Veyra - Desert exploration specialists</li>
+                            <li>House Caltris - Jungle exploration masters</li>
+                            <li>House Drakemoor - Trainers of wyverns and knights</li>
+                            <li>House Wylder - Guardians of the capital</li>
+                        </ul>
+
+                        <h4 class="section-title">Current Status</h4>
+                        <p></p>
+                    </div>
+                </div>
+                
+                <div class="house-visual">
+                    <div class="house-shield-large">
+                        <img src="assets/images/houses/falkrest-shield-large.png" alt="House Falkrest">
+                        <div class="shield-corner top-left"></div>
+                        <div class="shield-corner top-right"></div>
+                        <div class="shield-corner bottom-left"></div>
+                        <div class="shield-corner bottom-right"></div>
+                    </div>
+                    <div class="lord-portrait">
+                        <img src="assets/images/houses/talon-falkrest.png" alt="King Talon Falkrest">
+                        <div class="portrait-title">King Talon Falkrest</div>
+                    </div>
+                    <div class="house-emblem"></div>
+                </div>
+                <div class="house-location-image">
+                    <img src="assets/images/houses/locations/skyhaven.png" alt="Skyhaven - Seat of House Falkrest">
+                </div>
+            </div>
+            
+            <!-- House Veltaris Details -->
+            <div class="house-detailed-view" id="veltaris-view">
+                <div class="house-info">
+                    <h2 class="house-full-name">House Veltaris</h2>
+                    <h3 class="house-motto">"Through Storms, We Prevail"</h3>
+                    
+                    <div class="house-description">
+                        <div class="house-basics">
+                            <div class="basics-item">
+                                <span class="label">Colors:</span>
+                                <span class="value">Blue and Silver</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Sigil:</span>
+                                <span class="value">A grey Kraken grasping a ship in its tentacles on a dark blue background</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Seat: </span>
+                                <span class="value">Kraken's Reach</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Region: </span>
+                                <span class="value">The Eastern Coast</span>
+                            </div>
+                            <div class="basics-item">
+                                <span class="label">Current Lord: </span>
+                                <span class="value">Lord Paramount Geran Veltaris</span>
+                            </div>
+                        </div>
+                        
+                        <h4 class="section-title">History</h4>
+                        <p>Kraken's Reach was originally a pirate cove, home to some of the most dangerous pirates to ever curse the realms of Illica. The most notorious of these pirates was Edwinn "Strongjaw" Veltaris, who united the pirates under one banner and established the first pirate nation.</p>
+        
+                        <p>House Veltaris ruled the seas for several hundred years, bringing fear and respect to their name. During the reign of Niderion, the Flaming Fury, the need to spread his influence led Edwinn to ally with House Warendell to end the age of the dragon in Ederia.</p>
+                        
+                        <p>Today, House Veltaris rules the coastal lands and controls the vast navy of the kingdom. Their ships are unmatched in speed and strength, and their sailors are renowned for their resilience and navigational skills. They have a history of exploring unknown seas and establishing trade routes. Their wealth comes from trade, fishing, and occasional privateering along the Whispering Sea to the east.</p>
+                        
+                        <h4 class="section-title">Notable Members</h4>
+                        <ul class="house-list">
+                            <li>Lord Paramount Geran Veltaris - Commander of the royal fleet and Lord of Kracken's Reach</li>
+                            <li>Lady Sharn Veltaris - Former Queen of Ederia and 1st Born Daughter of Lord Geran</li>
+                            <li>Prince Marik Veltaris-Falkrest - Son of Sharn Veltaris</li>
+                            <li>The Late Eddwin "Strongjaw" Veltaris - Legendary Air Genasi pirate who unified Kraken’s Reach, co-authored the Pirate Code, and established Veltaris as a noble house</li>
+                        </ul>
+                        
+                        <h4 class="section-title">Banner Houses</h4>
+                        <ul class="house-list">
+                            <li>House Webber - Coastal defense specialists</li>
+                            <li>House Maelis - Fishing and trade experts</li>
+                            <li>House Rathmere - Naval warfare tacticians</li>
+                        </ul>
+
+                        <h4 class="section-title">Current Status</h4>
+                        <p>A powerful naval force with growing political influence through their alliance with House Falkrest.</p>
+                    </div>
+                </div>
+                
+                <div class="house-visual">
+                    <div class="house-shield-large">
+                        <img src="assets/images/houses/veltaris-shield-large.png" alt="House Veltaris">
+                        <div class="shield-corner top-left"></div>
+                        <div class="shield-corner top-right"></div>
+                        <div class="shield-corner bottom-left"></div>
+                        <div class="shield-corner bottom-right"></div>
+                    </div>
+                    <div class="lord-portrait">
+                        <img src="assets/images/houses/geran-veltaris.png" alt="Lord Admiral Veltaris">
+                        <div class="portrait-title">Lord Paramount Geran Veltaris</div>
+                    </div>
+                    <div class="house-emblem"></div>
+                </div>
+                <div class="house-location-image">
+                    <img src="assets/images/houses/locations/krackens-reach.png" alt="Skyhaven - Seat of House Falkrest">
+                </div>
+            </div>
+            
+                        <!-- House Thornefield Details -->
+                <div class="house-detailed-view" id="thornefield-view">
+                    <div class="house-info">
+                        <h2 class="house-full-name">House Thornefield</h2>
+                        <h3 class="house-motto">"From the Land, Prosperity"</h3>
+                        
+                        <div class="house-description">
+                            <div class="house-basics">
+                                <div class="basics-item">
+                                    <span class="label">Colors:</span>
+                                    <span class="value">Tan and Green</span>
+                                </div>
+                                <div class="basics-item">
+                                    <span class="label">Sigil:</span>
+                                    <span class="value">A golden sheaf of wheat over a green field</span>
+                                </div>
+                                <div class="basics-item">
+                                    <span class="label">Seat:</span>
+                                    <span class="value">Highfields</span>
+                                </div>
+                                <div class="basics-item">
+                                    <span class="label">Region:</span>
+                                    <span class="value">The Southern Plains</span>
+                                </div>
+                                <div class="basics-item">
+                                    <span class="label">Current Lord:</span>
+                                    <span class="value">Lord-Regent Gareth Thornefield</span>
+                                </div>
+                            </div>
+                            
+                            <h4 class="section-title">Breadbasket of Ederia</h4>
+                            <p>House Thornefield controls the fertile plains that feed the entire kingdom. Their agricultural expertise is unmatched, producing bountiful harvests even in difficult seasons. While not as militarily powerful as other houses, their control of the food supply gives them significant leverage in court politics.</p>
+                            
+                            <h4 class="section-title">History</h4>
+                            <p>The city of Highfields has always held great sway in these lands, boasting the largest overall population in terms of the entire region. As the main producer of food in the realm, House Thornefield wielded significant influence.</p>
+                            
+                            <p>During the age of the Dragons, House Thornefield was the last to join the cause, wary of their substantial losses. They refrained from joining the battle until the fighting was nearly over. This hesitancy has left a lasting mark on their reputation, with the other houses remaining suspicious of House Thornefield even 800 years later.</p>
+                            
+                            <p>Today, House Thornefield governs the fertile plains and farmlands of the kingdom. They are the primary suppliers of food, not just for the kingdom but also for trade with neighboring lands. Their vast estates are dotted with fields of grain, orchards, and vineyards. The house is wealthy and influential, with a reputation for being shrewd and practical. Their strength lies in their control over the kingdom's food supply, making them indispensable.</p>
+                            
+                            <h4 class="section-title">Notable Members</h4>
+                            <ul class="members-list">
+                                <li>Lord Gareth Thornefield - Steady ruler, expert diplomat, unwavering ally, fearless jouster, agricultural innovator</li>
+                                <li>The Late Lady Gwendolyn Thornefield - Fierce rider, aerial tactician, Triarchy’s bane, battlefield legend, untamed spirit</li>
+                            </ul>
+                            
+                            <h4 class="section-title">Banner Houses</h4>
+                            <ul class="house-list">
+                                <li>House Brackenwood - Forestry and hunting</li>
+                                <li>House Eldros - Livestock and herding</li>
+                                <li>House Faebrook - Herbology and healing</li>
+                                <li>House Greenmire - Grain farming</li>
+                                <li>House Varason - Vineyards and winemaking</li>
+                                <li>House Thornwell - Orchard and fruit farming</li>
+                                <li>House Rivermoor - Riverlands and irrigation</li>
+                            </ul>
+                            
+                            <h4 class="section-title">Current Status</h4>
+                            <p>An essential house that controls the kingdom's food supply, though still viewed with some suspicion due to their historical hesitance during crucial conflicts.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="house-visual">
+                        <div class="house-shield-large">
+                            <img src="assets/images/houses/thornefield-shield-large.png" alt="House Thornefield">
+                            <div class="shield-corner top-left"></div>
+                            <div class="shield-corner top-right"></div>
+                            <div class="shield-corner bottom-left"></div>
+                            <div class="shield-corner bottom-right"></div>
+                        </div>
+                        <div class="lord-portrait">
+                            <img src="assets/images/houses/gareth-thornefield.png" alt="Lord Rowan Thornefield">
+                            <div class="portrait-title">Lord Gareth Thornefield</div>
+                        </div>
+                        <div class="house-emblem"></div>
+                    </div>
+                    <div class="house-location-image">
+                        <img src="assets/images/houses/locations/highfields.png" alt="Highfields - Seat of House Thornefield">
+                    </div>
+                </div>
+
+            
+                                <!-- House Astralor Details -->
+                    <div class="house-detailed-view" id="astralor-view">
+                        <div class="house-info">
+                            <h2 class="house-full-name">House Astralor</h2>
+                            <h3 class="house-motto">"Knowledge is Power"</h3>
+                            
+                            <div class="house-description">
+                                <div class="house-basics">
+                                    <div class="basics-item">
+                                        <span class="label">Colors:</span>
+                                        <span class="value">Silver and Teal</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Sigil:</span>
+                                        <span class="value">A silver star with a blue aura on a white background</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Seat:</span>
+                                        <span class="value">Tomehold</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Region:</span>
+                                        <span class="value">The Northern Highlands</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Current Lord:</span>
+                                        <span class="value">Lady Vaelora Astralor</span>
+                                    </div>
+                                </div>
+                                
+                                <h4 class="section-title">Masters of Magic</h4>
+                                <p>House Astralor stands as the kingdom's foremost authority on magical knowledge. From their towering library of Tomehold, they research, catalog, and control the arcane arts throughout Ederia. Their upcoming marriage alliance with House Falkrest through Lady Selara and Prince Marik will further cement their influence.</p>
+                                
+                                <h4 class="section-title">History</h4>
+                                <p>House Astralor's rise to prominence began in 733 AR with the discovery of Ryanite in the previous capital of House Emberlyn. Initially a vassal of House Emberlyn, House Astralor gained independence and power through their exceptional abilities in magic and combat.</p>
+                                
+                                <p>When House Emberlyn rebelled against the king, House Astralor's elite regiment, the "Blades of Xandoria," known for their expertise in mage hunting and execution, played a crucial role in suppressing the Ryanite-infused forces.</p>
+                                
+                                <p>Today, House Astralor is the center of magical knowledge and power in the kingdom. They control Tomehold, a towering structure filled with ancient tomes, magical artifacts, and a vast library of spells. The house is both respected and feared for its magical prowess. They are the kingdom's primary advisors on all matters arcane and have been instrumental in many historical events through their command of magic.</p>
+                                
+                                <h4 class="section-title">Notable Members</h4>
+                                <ul class="members-list">
+                                    <li>Lady Paramount Vaelora Astralor - Warm matriarch, ruthless hunter, arcane enforcer, master strategist, elegant spellcaster, guardian of magical law, wielder of hidden power.</li>
+                                    <li>Lady Selara Astralor - Renowned artificer, expert on dragons, and betrothed to Prince Marik</li>
+                                    <li>Master Diviner Lysander Astralor - Master of divination magic</li>
+                                    <li>Commander Lyria Astralor - Leader of the Blades of Xandoria</li>
+                                </ul>
+                                
+                                <h4 class="section-title">Banner Houses</h4>
+                                <ul class="house-list">
+                                    <li>House Melanth - Alchemy and potion specialists</li>
+                                    <li>House Umbren - Dark magic practitioners</li>
+                                    <li>House Lumere - Diviners and seers</li>
+                                </ul>
+                                
+                                <h4 class="section-title">Current Status</h4>
+                                <p>A powerful magical house with close ties to the royal family through the upcoming marriage of Lady Selara to Prince Marik Veltaris-Falkrest.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="house-visual">
+                            <div class="house-shield-large">
+                                <img src="assets/images/houses/astralor-shield-large.png" alt="House Astralor">
+                                <div class="shield-corner top-left"></div>
+                                <div class="shield-corner top-right"></div>
+                                <div class="shield-corner bottom-left"></div>
+                                <div class="shield-corner bottom-right"></div>
+                            </div>
+                            <div class="lord-portrait">
+                                <img src="assets/images/houses/vaelora-astralor.png" alt="Lady Selara Astralor">
+                                <div class="portrait-title">Lady Paramount Vaelora Astralor</div>
+                            </div>
+                            <div class="house-emblem"></div>
+                        </div>
+                        <div class="house-location-image">
+                            <img src="assets/images/houses/locations/tomehold.png" alt="Tomehold - Seat of House Astralor">
+                        </div>
+                    </div>
+            
+                                <!-- House Eldran Details -->
+                    <div class="house-detailed-view" id="eldran-view">
+                        <div class="house-info">
+                            <h2 class="house-full-name">House Eldran</h2>
+                            <h3 class="house-motto">"By Right of Blood"</h3>
+                            
+                            <div class="house-description">
+                                <div class="house-basics">
+                                    <div class="basics-item">
+                                        <span class="label">Colors:</span>
+                                        <span class="value">Purple and Gold</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Sigil:</span>
+                                        <span class="value">A Silver Griffon on a purple field</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Seat:</span>
+                                        <span class="value">Stonewatch</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Region:</span>
+                                        <span class="value">The Western Mountains</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Current Lord:</span>
+                                        <span class="value">Lady Brynja Eldran</span>
+                                    </div>
+                                </div>
+                                
+                                <h4 class="section-title">Ancient Nobility</h4>
+                                <p>House Eldran stands as the oldest noble house in Ederia, with bloodlines tracing back to the earliest kings. Their vast wealth and careful political maneuvering have maintained their prominence for centuries, though they now swear fealty to House Falkrest while quietly remembering their ancient claim to the throne.</p>
+                                
+                                <h4 class="section-title">History</h4>
+                                <p>The origins of Stonewatch date back to its foundation within the ruins of an ancient dwarf city. Upon exploring these ruins, House Eldran discovered several magical items and artifacts that remained functional even after the breaking.</p>
+                                
+                                <p>House Eldran, the founders of the city, decided to keep these powerful artifacts secret, waiting for the opportune moment to leverage them. When House Warrendell approached House Eldran with plans to overthrow the Dragon Triarchy, House Eldran was able to offer dragon-slaying weapons and arrows at a high cost.</p>
+                                
+                                <p>Their claim to the throne is by blood right, with some members tracing their lineage back to Sannira and Tyroch. Despite this, they have sworn fealty to House Falkrest, ensuring peace for now.</p>
+                                
+                                <p>Today, House Eldran is the oldest and wealthiest noble house in the kingdom. Their wealth comes from ancient treasures, extensive lands, and wise investments. They have a long history of political maneuvering and have intermarried with other powerful houses to maintain their influence. Stonewatch is a massive fortress filled with luxurious decorations and historical artifacts.</p>
+                                
+                                <h4 class="section-title">Notable Members</h4>
+                                <ul class="members-list">
+                                    <li>Lady Brynja Eldran - Resilient matriarch, unyielding leader, survivor of tragedy, firm yet fair ruler</li>
+                                    <li>Knight-Commander Nadja Eldran - Commander of the Crown Claw Knights. Loyal war veteran, silent strategist, unshaken in duty, bonded to her wyvern</li>
+                                    <li>Lady Alrice Eldran - Shrewd financier, kingdom’s treasurer, pragmatic leader, disciplined and sharp-minded</li>
+                                    <li>Ser Cedric Eldran - Once kind, now cruel; ambitious noble, dismissive of his past love.</li>
+                                </ul>
+                                
+                                <h4 class="section-title">Banner Houses</h4>
+                                <ul class="house-list">
+                                    <li>House Baelor - Banking and finance</li>
+                                    <li>House Arden - Trade and commerce</li>
+                                    <li>House Malgareth - Mining and metallurgy</li>
+                                    <li>House Varlem - Art and culture</li>
+                                    <li>House Thrynn - Education and scholarship</li>
+                                </ul>
+                                
+                                <h4 class="section-title">Current Status</h4>
+                                <p>The oldest and wealthiest house with a historical claim to the throne, currently maintaining peace through fealty to House Falkrest while wielding significant economic and cultural influence.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="house-visual">
+                            <div class="house-shield-large">
+                                <img src="assets/images/houses/eldran-shield-large.png" alt="House Eldran">
+                                <div class="shield-corner top-left"></div>
+                                <div class="shield-corner top-right"></div>
+                                <div class="shield-corner bottom-left"></div>
+                                <div class="shield-corner bottom-right"></div>
+                            </div>
+                            <div class="lord-portrait">
+                                <img src="assets/images/houses/brynja-eldran.png" alt="Lord Tywin Eldran">
+                                <div class="portrait-title">Lady Paramount Brynja Eldran</div>
+                            </div>
+                            <div class="house-emblem"></div>
+                        </div>
+                        <div class="house-location-image">
+                            <img src="assets/images/houses/locations/stonewatch.png" alt="Stonewatch - Seat of House Eldran">
+                        </div>
+                    </div>
+            
+                                <!-- House Emberlyn Details -->
+                    <div class="house-detailed-view" id="emberlyn-view">
+                        <div class="house-info">
+                            <h2 class="house-full-name">House Emberlyn</h2>
+                            <h3 class="house-motto">"Faith Forged in Fire"</h3>
+                            
+                            <div class="house-description">
+                                <div class="house-basics">
+                                    <div class="basics-item">
+                                        <span class="label">Colors:</span>
+                                        <span class="value">Orange and Cream</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Sigil:</span>
+                                        <span class="value">A silver anvil with a radiant halo</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Seat:</span>
+                                        <span class="value">Faithspire</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Region:</span>
+                                        <span class="value">The Eastern Highlands</span>
+                                    </div>
+                                    <div class="basics-item">
+                                        <span class="label">Current Lord:</span>
+                                        <span class="value">Lady Iradessa Emberlyn</span>
+                                    </div>
+                                </div>
+                                
+                                <h4 class="section-title">Spiritual Leaders</h4>
+                                <p>House Emberlyn has transformed from master craftsmen into the kingdom's religious authority. From their grand temple-forge of Faithspire, they guide the spiritual life of Ederia while still crafting some of the finest weapons and armor in the realm. Though once rebellious, they now serve as the moral compass of the kingdom.</p>
+                                
+                                <h4 class="section-title">History</h4>
+                                <p>Faithspire was built atop a mine rich in Ryanite, a magical crystalline rock with potent properties, crucial for powerful magical creations. The discovery of this mineral brought immense wealth to the city and enabled House Emberlyn to rise to power.</p>
+                                
+                                <p>However, this power led to ambition, and House Emberlyn initiated a rebellion to overthrow the king of the house at the time about 400 years ago. The key to House Emberlyn's strength was the Lucidic Spire, a grand tower made from Ryanite and jade, which served as an amplification device for the house's mages.</p>
+                                
+                                <p>In a bid to become a god, Delphanis Emberlyn drew too much power from the spire, causing it to implode. This catastrophic event disrupted the magical weave in Ederia, leaving the land devoid of magic for almost 150 years.</p>
+                                
+                                <p>House Emberlyn originated as a house of master craftsmen and blacksmiths, but over generations, they have transformed into the kingdom's primary religious authority. Faithspire, their seat, is both a grand temple and a forge, symbolizing their dual heritage of craftsmanship and devotion. The house is known for its strict adherence to the faith of the Flame, a religion that worships the divine aspects of fire and creation - a melding of the teachings of Vuldros, Solaris, and Damantris.</p>
+                                
+                                <h4 class="section-title">Notable Members</h4>
+                                <ul class="members-list">
+                                    <li>Lady Iradessa Emberlyn - Pious ruler, master strategist, sacred forgemaster, divine seer, and unwavering matriarch</li>
+                                    <li>The Late Marrik "Dragonkin" Emberlyn - Rebellious forgemaster, dragon slayer, battle-hardened smith, and quiet hero of Ederia</ul>
+                                
+                                <h4 class="section-title">Banner Houses</h4>
+                                <ul class="house-list">
+                                    <li>House Lareth - Monastic orders</li>
+                                    <li>House Merathis - Holy warriors</li>
+                                    <li>House Pyrelan - Sacred rituals</li>
+                                    <li>House Valyra - Divine healing</li>
+                                    <li>House Thalon - Pilgrimages and holy sites</li>
+                                    <li>House Elaris - Religious education</li>
+                                </ul>
+                                
+                                <h4 class="section-title">Current Status</h4>
+                                <p>A house of respected craftsmen and religious leaders recovering from their historical rebellion, now serving as the spiritual backbone of the kingdom.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="house-visual">
+                            <div class="house-shield-large">
+                                <img src="assets/images/houses/emberlyn-shield-large.png" alt="House Emberlyn">
+                                <div class="shield-corner top-left"></div>
+                                <div class="shield-corner top-right"></div>
+                                <div class="shield-corner bottom-left"></div>
+                                <div class="shield-corner bottom-right"></div>
+                            </div>
+                            <div class="lord-portrait">
+                                <img src="assets/images/houses/iradess-emberlyn.png" alt="High Smith Darius Emberlyn">
+                                <div class="portrait-title">Lady Paramount Iradessa Emberlyn</div>
+                            </div>
+                            <div class="house-emblem"></div>
+                        </div>
+                        <div class="house-location-image">
+                            <img src="assets/images/houses/locations/faithspire.png" alt="Faithspire - Seat of House Emberlyn">
+                        </div>
+                    </div>
+    </main>
+
+    <!-- Royal Footer -->
+    <footer class="royal-footer">
+        <div class="container">
+            <div class="royal-decree">
+                <p>The six great houses of Ederia, bound by honor, tradition, and oath to the Crown.</p>
+                <div class="royal-seal"></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Decorative Elements -->
+    <div class="decorative-elements">
+        <div class="floating-crown crown-1"></div>
+        <div class="floating-crown crown-2"></div>
+        <div class="floating-scroll scroll-1"></div>
+        <div class="floating-scroll scroll-2"></div>
+        <div class="floating-sword sword-1"></div>
+        <div class="floating-sword sword-2"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/crimson-court.js"></script>
+    <script src="js/houses-of-ederia.js"></script>
+</body>
+</html>

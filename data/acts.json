@@ -1,0 +1,29 @@
+{
+  "acts": [
+    {
+      "id": "act-1",
+      "name": "Act I: The Gathering Shadows",
+      "subtitle": "The heirs answer their king's call"
+    },
+    {
+      "id": "act-2",
+      "name": "Act II: The Hunt for Dragons",
+      "subtitle": "The council convenes to face threats"
+    },
+    {
+      "id": "act-3",
+      "name": "Act III: The Crimson Reckoning",
+      "subtitle": "Secrets emerge and alliances shift"
+    },
+    {
+      "id": "act-4",
+      "name": "Act IV: The Tides of Crimson",
+      "subtitle": "Secrets emerge and alliances shift"
+    },
+    {
+      "id": "act-5",
+      "name": "Act V: The Crimson Dawn",
+      "subtitle": "Secrets emerge and alliances shift"
+    }
+  ]
+}

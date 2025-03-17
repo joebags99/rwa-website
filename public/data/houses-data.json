@@ -1,0 +1,139 @@
+{
+  "falkrest": {
+    "name": "House Falkrest",
+    "motto": "Beyond the Horizon",
+    "sigil": "A soaring brown falcon over distant grey mountains on a green background",
+    "colors": "Green and Gold",
+    "region": "The Heartlands",
+    "seat": "Skyhaven",
+    "currentLord": "King Talon Falkrest",
+    "history": "The origins of Skyhaven trace back to a family of adventurers who made their livelihood through monster hunting and defending people. Their valor and service earned them the title of \"Sentinel\" in service to the realm, legitimized by King Alistar Draven (who nearly brought ruin to the kingdom in 1030 AR) almost 80 years ago. Their official recognition marked the rise of House Falkrest as a noble house.\n\nHouse Falkrest is known for its adventurous spirit and its members' far-reaching travels. They have mapped out uncharted territories and brought back treasures and knowledge from distant lands. The house has a strong martial tradition, with many of its members serving as mercenaries or explorers.\n\nTheir seat, Skyhaven, is filled with artifacts and curiosities from their travels. They are respected for their bravery and resourcefulness but are sometimes seen as unpredictable. Currently, they are the ruling house of Ederia.",
+    "notableMembers": [
+      "King Talon Falkrest - Current ruler and adventurer",
+      "Prince Marik Veltaris-Falkrest - Member of royal family",
+      "Commander of the Crownclaw Knights - Elite wyvern riders"
+    ],
+    "bannerHouses": [
+      "House Thalor - Mountain exploration experts",
+      "House Veyra - Desert exploration specialists",
+      "House Caltris - Jungle exploration masters",
+      "House Drakemoor - Trainers of wyverns and knights",
+      "House Wylder - Guardians of the capital"
+    ],
+    "currentStatus": "The ruling house of Ederia, currently focused on rebuilding Crown's Rest and strengthening the kingdom's defenses."
+  },
+  "veltaris": {
+    "name": "House Veltaris",
+    "motto": "Through Storms, We Prevail",
+    "sigil": "A grey Kraken grasping a ship in its tentacles on a dark blue background",
+    "colors": "Blue and Silver",
+    "region": "The Eastern Coast",
+    "seat": "Kraken's Reach",
+    "currentLord": "Lord Admiral Veltaris",
+    "history": "Kraken's Reach was originally a pirate cove, home to some of the most dangerous pirates to ever curse the realms of Illica. The most notorious of these pirates was Edwinn \"Strongjaw\" Veltaris, who united the pirates under one banner and established the first pirate nation.\n\nHouse Veltaris ruled the seas for several hundred years, bringing fear and respect to their name. During the reign of Niderion, the Flaming Fury, the need to spread his influence led Edwinn to ally with House Warendell to end the age of the dragon in Ederia.\n\nToday, House Veltaris rules the coastal lands and controls the vast navy of the kingdom. Their ships are unmatched in speed and strength, and their sailors are renowned for their resilience and navigational skills. They have a history of exploring unknown seas and establishing trade routes. Their wealth comes from trade, fishing, and occasional privateering along the Whispering Sea to the east.",
+    "notableMembers": [
+      "Prince Marik Veltaris-Falkrest - Alliance with royal family",
+      "Lord Admiral Veltaris - Commander of the royal fleet",
+      "Captain Serana Veltaris - Famous explorer of distant seas"
+    ],
+    "bannerHouses": [
+      "House Webber - Coastal defense specialists",
+      "House Maelis - Fishing and trade experts",
+      "House Rathmere - Naval warfare tacticians"
+    ],
+    "currentStatus": "A powerful naval force with growing political influence through their alliance with House Falkrest."
+  },
+  "thornefield": {
+    "name": "House Thornefield",
+    "motto": "From the Land, Prosperity",
+    "sigil": "A golden sheaf of wheat over a green field",
+    "colors": "Tan and Green",
+    "region": "The Southern Plains",
+    "seat": "Highfields",
+    "currentLord": "Lord Rowan Thornefield",
+    "history": "The city of Highfields has always held great sway in these lands, boasting the largest overall population in terms of the entire region. As the main producer of food in the realm, House Thornefield wielded significant influence.\n\nDuring the age of the Dragons, House Thornefield was the last to join the cause, wary of their substantial losses. They refrained from joining the battle until the fighting was nearly over. This hesitancy has left a lasting mark on their reputation, with the other houses remaining suspicious of House Thornefield even 800 years later.\n\nToday, House Thornefield governs the fertile plains and farmlands of the kingdom. They are the primary suppliers of food, not just for the kingdom but also for trade with neighboring lands. Their vast estates are dotted with fields of grain, orchards, and vineyards. The house is wealthy and influential, with a reputation for being shrewd and practical. Their strength lies in their control over the kingdom's food supply, making them indispensable.",
+    "notableMembers": [
+      "Lord Rowan Thornefield - Current head of house",
+      "Lady Willow Thornefield - Master of harvests",
+      "Ser Barley Thornefield - Commander of the field guards"
+    ],
+    "bannerHouses": [
+      "House Brackenwood - Forestry and hunting",
+      "House Eldros - Livestock and herding",
+      "House Faebrook - Herbology and healing",
+      "House Greenmire - Grain farming",
+      "House Varason - Vineyards and winemaking",
+      "House Thornwell - Orchard and fruit farming",
+      "House Rivermoor - Riverlands and irrigation"
+    ],
+    "currentStatus": "An essential house that controls the kingdom's food supply, though still viewed with some suspicion due to their historical hesitance during crucial conflicts."
+  },
+  "astralor": {
+    "name": "House Astralor",
+    "motto": "Knowledge is Power",
+    "sigil": "A silver star with a blue aura on a white background",
+    "colors": "Silver and Teal",
+    "region": "The Northern Highlands",
+    "seat": "Tomehold",
+    "currentLord": "Lady Selara Astralor",
+    "history": "House Astralor's rise to prominence began in 733 AR with the discovery of Ryanite in the previous capital of House Emberlyn. Initially a vassal of House Emberlyn, House Astralor gained independence and power through their exceptional abilities in magic and combat.\n\nWhen House Emberlyn rebelled against the king, House Astralor's elite regiment, the \"Blades of Xandoria,\" known for their expertise in mage hunting and execution, played a crucial role in suppressing the Ryanite-infused forces.\n\nToday, House Astralor is the center of magical knowledge and power in the kingdom. They control Tomehold, a towering structure filled with ancient tomes, magical artifacts, and a vast library of spells. The house is both respected and feared for its magical prowess. They are the kingdom's primary advisors on all matters arcane and have been instrumental in many historical events through their command of magic.",
+    "notableMembers": [
+      "Lady Selara Astralor - Lady of Tomehold, betrothed to Prince Marik",
+      "Archmage Thalion Astralor - Master of arcane studies",
+      "Commander Lyria Astralor - Leader of the Blades of Xandoria"
+    ],
+    "bannerHouses": [
+      "House Melanth - Alchemy and potion specialists",
+      "House Umbren - Dark magic practitioners"
+    ],
+    "currentStatus": "A powerful magical house with close ties to the royal family through the upcoming marriage of Lady Selara to Prince Marik Veltaris-Falkrest."
+  },
+  "eldran": {
+    "name": "House Eldran",
+    "motto": "By Right of Blood",
+    "sigil": "A Silver Griffon on a purple field",
+    "colors": "Purple and Gold",
+    "region": "The Western Mountains",
+    "seat": "Stonewatch",
+    "currentLord": "Lord Tywin Eldran",
+    "history": "The origins of Stonewatch date back to its foundation within the ruins of an ancient dwarf city. Upon exploring these ruins, House Eldran discovered several magical items and artifacts that remained functional even after the breaking.\n\nHouse Eldran, the founders of the city, decided to keep these powerful artifacts secret, waiting for the opportune moment to leverage them. When House Warrendell approached House Eldran with plans to overthrow the Dragon Triarchy, House Eldran was able to offer dragon-slaying weapons and arrows at a high cost.\n\nTheir claim to the throne is by blood right, with some members tracing their lineage back to Sannira and Tyroch. Despite this, they have sworn fealty to House Falkrest, ensuring peace for now.\n\nToday, House Eldran is the oldest and wealthiest noble house in the kingdom. Their wealth comes from ancient treasures, extensive lands, and wise investments. They have a long history of political maneuvering and have intermarried with other powerful houses to maintain their influence. Stonewatch is a massive fortress filled with luxurious decorations and historical artifacts.",
+    "notableMembers": [
+      "Lord Tywin Eldran - Head of house and master strategist",
+      "Lady Morgan Eldran - Keeper of ancient artifacts",
+      "Ser Galen Eldran - Champion of tournaments",
+      "Master Veronis Eldran - Chief financial advisor to the crown"
+    ],
+    "bannerHouses": [
+      "House Baelor - Banking and finance",
+      "House Arden - Trade and commerce",
+      "House Malgareth - Mining and metallurgy",
+      "House Varlem - Art and culture",
+      "House Thrynn - Education and scholarship"
+    ],
+    "currentStatus": "The oldest and wealthiest house with a historical claim to the throne, currently maintaining peace through fealty to House Falkrest while wielding significant economic and cultural influence."
+  },
+  "emberlyn": {
+    "name": "House Emberlyn",
+    "motto": "Faith Forged in Fire",
+    "sigil": "A silver anvil with a radiant halo",
+    "colors": "Orange and Cream",
+    "region": "The Eastern Highlands",
+    "seat": "Faithspire",
+    "currentLord": "High Smith Darius Emberlyn",
+    "history": "Faithspire was built atop a mine rich in Ryanite, a magical crystalline rock with potent properties, crucial for powerful magical creations. The discovery of this mineral brought immense wealth to the city and enabled House Emberlyn to rise to power.\n\nHowever, this power led to ambition, and House Emberlyn initiated a rebellion to overthrow the king of the house at the time about 400 years ago. The key to House Emberlyn's strength was the Lucidic Spire, a grand tower made from Ryanite and jade, which served as an amplification device for the house's mages.\n\nIn a bid to become a god, Delphanis Emberlyn drew too much power from the spire, causing it to implode. This catastrophic event disrupted the magical weave in Ederia, leaving the land devoid of magic for almost 150 years.\n\nHouse Emberlyn originated as a house of master craftsmen and blacksmiths, but over generations, they have transformed into the kingdom's primary religious authority. Faithspire, their seat, is both a grand temple and a forge, symbolizing their dual heritage of craftsmanship and devotion. The house is known for its strict adherence to the faith of the Flame, a religion that worships the divine aspects of fire and creation - a melding of the teachings of Vuldros, Solaris, and Damantris.",
+    "notableMembers": [
+      "High Smith Darius Emberlyn - Current leader and master craftsman",
+      "Flame Keeper Elia Emberlyn - Chief religious authority",
+      "Master Forge Callum Emberlyn - Creator of legendary weapons"
+    ],
+    "bannerHouses": [
+      "House Lareth - Monastic orders",
+      "House Merathis - Holy warriors",
+      "House Pyrelan - Sacred rituals",
+      "House Valyra - Divine healing",
+      "House Thalon - Pilgrimages and holy sites",
+      "House Elaris - Religious education"
+    ],
+    "currentStatus": "A house of respected craftsmen and religious leaders recovering from their historical rebellion, now serving as the spiritual backbone of the kingdom."
+  }
+}

@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Roll With Advantage</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="admin-page dashboard-page">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="/assets/images/logo-small.png" alt="Roll With Advantage" class="sidebar-logo">
+                <h2>Admin Panel</h2>
+            </div>
+            
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="active" data-section="dashboard">
+                        <a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li data-section="npcs">
+                        <a href="#npcs"><i class="fas fa-users"></i> NPCs</a>
+                    </li>
+                    <li data-section="timeline">
+                        <a href="#timeline"><i class="fas fa-hourglass-half"></i> Timeline</a>
+                    </li>
+                    <li data-section="story">
+                        <a href="#story"><i class="fas fa-book-open"></i> Story</a>
+                    </li>
+                    <li data-section="dm-advice" class="disabled">
+                        <a href="#dm-advice"><i class="fas fa-dungeon"></i> DM Advice</a>
+                    </li>
+                    <li data-section="settings">
+                        <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-footer">
+                <a href="/admin/logout" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="page-title">
+                    <h1 id="current-section-title">Dashboard</h1>
+                </div>
+                
+                <div class="top-actions">
+                    <a href="/index.html" target="_blank" class="btn btn-sm">
+                        <i class="fas fa-external-link-alt"></i> View Site
+                    </a>
+                </div>
+            </div>
+
+            <!----Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card" onclick="window.location.href='#npcs'" style="cursor: pointer;">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>NPCs</h3>
+                            <p class="stat-count" id="npcs-count">0</p>
+                        </div>
+                    </div>
+                        
+                    <div class="stat-card" onclick="window.location.href='#timeline'" style="cursor: pointer;">
+                        <div class="stat-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Timeline Entries</h3>
+                            <p class="stat-count" id="timeline-count">0</p>
+                        </div>
+                    </div>
+                        
+                    <div class="stat-card" onclick="window.location.href='#story'" style="cursor: pointer;">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Story Entries</h3>
+                            <p class="stat-count" id="story-count">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card disabled">
+                        <div class="stat-icon">
+                            <i class="fas fa-dungeon"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>DM Advice Posts</h3>
+                            <p class="stat-count">Coming Soon</p>
+                        </div>
+                    </div>
+                </div>
+                    
+                    <div class="quick-access">
+                        <div class="section-header">
+                            <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <a href="#npcs" class="btn btn-primary" data-target="npcs">
+                                <i class="fas fa-plus"></i> Create New NPC
+                            </a>
+                            <a href="#timeline" class="btn btn-primary" data-target="timeline">
+                                <i class="fas fa-plus"></i> Add Timeline Event
+                            </a>
+                            <a href="#story" class="btn btn-primary" data-target="story">
+                                <i class="fas fa-plus"></i> Add Story Entry
+                            </a>
+                            <a href="#dm-advice" class="btn btn-secondary disabled">
+                                <i class="fas fa-plus"></i> Create DM Advice
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-activity">
+                        <div class="section-header">
+                            <h2><i class="fas fa-history"></i> Recent Activity</h2>
+                        </div>
+                        
+                        <div class="activity-list" id="recent-activity-list">
+                            <div class="activity-empty">
+                                <p>No recent activity to display</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- NPCs Section -->
+                <section id="npcs-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Manage NPCs</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" id="create-npc-btn">
+                                <i class="fas fa-plus"></i> Create NPC
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-filter">
+                        <div class="search-bar">
+                            <form autocomplete="off" onsubmit="return false;">
+                                <i class="fas fa-search"></i>
+                                <input type="search" 
+                                    id="npc-search" 
+                                    placeholder="Search NPCs..."
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                            </form>
+                        </div>
+                        
+                        <div class="filter-options">
+                            <select id="category-filter">
+                                <option value="">All Categories</option>
+                                <option value="royal">Royal</option>
+                                <option value="pastoral">Pastoral</option>
+                                <option value="militant">Militant</option>
+                                <option value="religious">Religious</option>
+                            </select>
+                            
+                            <select id="relationship-filter">
+                                <option value="">All Relationships</option>
+                                <option value="ally">Ally</option>
+                                <option value="friendly">Friendly</option>
+                                <option value="neutral">Neutral</option>
+                                <option value="hostile">Hostile</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="item-list npc-list" id="npc-list">
+                        <div class="loading-indicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading NPCs...</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Timeline Section -->
+ <!-- Timeline Section (Updated from "Coming Soon") -->
+ <section id="timeline-section" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-hourglass-half"></i> Timeline Management</h2>
+        <div class="section-actions">
+            <div class="action-dropdown">
+                <button class="btn btn-primary" id="create-timeline-btn">
+                    <i class="fas fa-plus"></i> Add Timeline Entry
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#" id="create-event-btn">
+                        <i class="fas fa-calendar-day"></i> Regular Event
+                    </a>
+                    <a href="#" id="create-reign-btn">
+                        <i class="fas fa-crown"></i> Reign Change
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="search-filter">
+        <div class="search-bar">
+            <form autocomplete="off" onsubmit="return false;">
+                <i class="fas fa-search"></i>
+                <input type="search" 
+                    id="timeline-search" 
+                    placeholder="Search timeline entries..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </form>
+        </div>
+        
+        <div class="filter-options">
+            <select id="era-filter">
+                <option value="">All Eras</option>
+                <option value="age-of-chains">The Age of Chains</option>
+                <option value="arcane-reckoning">The Age of Arcane Reckoning</option>
+                <option value="broken-sun">The Age of the Broken Sun</option>
+                <option value="silent-war">The Age of Silent War</option>
+                <option value="uncertainty">The Age of Uncertainty</option>
+            </select>
+            
+            <select id="type-filter">
+                <option value="">All Types</option>
+                <option value="event">Regular Events</option>
+                <option value="reign-break">Reign Changes</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="item-list timeline-list" id="timeline-list">
+        <div class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading timeline entries...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Event Modal -->
+<div class="modal" id="timeline-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="timeline-modal-title">Add Timeline Event</h2>
+                <button class="close-btn" id="close-timeline-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="timeline-form">
+                    <input type="hidden" id="timeline-id">
+                    <input type="hidden" id="timeline-type" value="event">
+                    
+                    <!-- Common Fields -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeline-title">Event Title</label>
+                            <input type="text" id="timeline-title" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeline-era">Era</label>
+                            <select id="timeline-era" class="form-control" required>
+                                <option value="age-of-chains">The Age of Chains</option>
+                                <option value="arcane-reckoning">The Age of Arcane Reckoning</option>
+                                <option value="broken-sun">The Age of the Broken Sun</option>
+                                <option value="silent-war">The Age of Silent War</option>
+                                <option value="uncertainty">The Age of Uncertainty</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeline-year">Year (A.R.)</label>
+                            <input type="number" id="timeline-year" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-month">Month</label>
+                            <select id="timeline-month" class="form-control">
+                                <option value="">-- Select Month --</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-day">Day</label>
+                            <input type="number" id="timeline-day" class="form-control" min="1" max="31">
+                        </div>
+                    </div>
+                    
+                    <!-- Event-specific Fields -->
+                    <div id="event-fields">
+                        <div class="form-group">
+                            <label for="timeline-location">Location</label>
+                            <input type="text" id="timeline-location" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-description">Description</label>
+                            <textarea id="timeline-description" class="form-control" rows="5" required></textarea>
+                            <small>HTML is supported. Use &lt;p&gt; tags for paragraphs.</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline-image">Image URL</label>
+                            <input type="text" id="timeline-image" class="form-control">
+                            <small>URL to event image (leave blank if none)</small>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="timeline-position">Position</label>
+                                <select id="timeline-position" class="form-control">
+                                    <option value="">Auto (alternating)</option>
+                                    <option value="left">Left</option>
+                                    <option value="right">Right</option>
+                                </select>
+                                <small>Timeline position (default: alternating)</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reign Break-specific Fields -->
+                    <div id="reign-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="timeline-break-type">Reign Change Type</label>
+                            <select id="timeline-break-type" class="form-control" required>
+                                <option value="reign-beginning">Beginning of Reign</option>
+                                <option value="reign-end">End of Reign</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-timeline">Cancel</button>
+                <button class="btn btn-primary" id="save-timeline">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+                
+<!-- Story Section - Enhanced from "Coming Soon" to Full Implementation -->
+<section id="story-section" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-book-open"></i> Story Management</h2>
+        <div class="section-actions">
+            <button class="btn btn-primary" id="create-story-btn">
+                <i class="fas fa-plus"></i> Create Episode
+            </button>
+        </div>
+    </div>
+    
+    <div class="search-filter">
+        <div class="search-bar">
+            <form autocomplete="off" onsubmit="return false;">
+                <i class="fas fa-search"></i>
+                <input type="search" 
+                    id="story-search" 
+                    placeholder="Search episodes..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </form>
+        </div>
+        
+        <div class="filter-options">
+            <select id="act-filter">
+                <option value="">All Acts</option>
+                <option value="act-1">Act I: The Gathering</option>
+                <option value="act-2">Act II: The Conclave</option>
+                <option value="act-3">Act III: The Revelation</option>
+            </select>
+            
+            <select id="chapter-filter">
+                <option value="">All Chapters</option>
+                <option value="chapter-1">Chapter 1: Royal Summons</option>
+                <option value="chapter-2">Chapter 2: Palace Intrigue</option>
+                <option value="chapter-3">Chapter 3: First Council</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="item-list story-list" id="story-list">
+        <div class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading story episodes...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Story Episode Modal -->
+<div class="modal" id="story-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="story-modal-title">Add Story Episode</h2>
+                <button class="close-btn" id="close-story-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="story-form">
+                    <input type="hidden" id="story-id">
+                    
+                    <!-- Episode Basic Info -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="story-title">Episode Title</label>
+                            <input type="text" id="story-title" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="story-episode-number">Episode Number</label>
+                            <input type="number" id="story-episode-number" class="form-control" min="1" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Date Fields -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="story-date-start">Date Start</label>
+                            <input type="text" id="story-date-start" class="form-control" required>
+                            <small>Format: "Month DD, YYY A.R." (e.g., "January 15, 850 A.R.")</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="story-date-end">Date End (Optional)</label>
+                            <input type="text" id="story-date-end" class="form-control">
+                            <small>Leave empty if same as start date</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Act and Chapter -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="story-act">Act</label>
+                            <div class="input-group">
+                                <select id="story-act" class="form-control" required>
+                                    <!-- Acts will be populated dynamically -->
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" id="manage-acts-btn" class="btn btn-outline-secondary">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="story-chapter">Chapter</label>
+                            <div class="input-group">
+                                <select id="story-chapter" class="form-control" required>
+                                    <!-- Chapters will be populated dynamically -->
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" id="manage-chapters-btn" class="btn btn-outline-secondary">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Locations -->
+                    <div class="form-group">
+                        <label for="story-locations">Locations</label>
+                        <div id="location-chips" class="form-chips">
+                            <!-- Location chips will be added here dynamically -->
+                        </div>
+                        <div class="location-selector">
+                            <div class="form-row">
+                                <div class="form-group flex-grow">
+                                    <div class="location-search-container">
+                                        <input type="text" id="location-search" class="form-control" placeholder="Search for a location...">
+                                        <div id="location-results" class="location-dropdown-results">
+                                            <!-- Search results will appear here -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="flex: 0 0 auto;">
+                                    <button type="button" id="manage-locations-btn" class="btn btn-secondary">
+                                        <i class="fas fa-cog"></i> Manage
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="form-group">
+                        <label for="story-content">Episode Content</label>
+                        <textarea id="story-content" class="form-control rich-editor" rows="10" required></textarea>
+                        <small>Enter episode content. Line breaks will be converted to paragraphs.</small>
+                    </div>
+                    
+                    <!-- Image -->
+                    <div class="form-group">
+                        <label for="story-image">Image URL (Optional)</label>
+                        <input type="text" id="story-image" class="form-control">
+                        <small>Enter image URL or leave blank for no image</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="story-image-caption">Image Caption (Optional)</label>
+                        <input type="text" id="story-image-caption" class="form-control">
+                        <small>Caption to display under the image</small>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-story">Cancel</button>
+                <button class="btn btn-primary" id="save-story">
+                    <i class="fas fa-save"></i> Save Episode
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Locations Management Modal -->
+<div class="modal" id="locations-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="locations-modal-title">Manage Locations</h2>
+                <button class="close-btn" id="close-locations-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-location-id">Location ID</label>
+                        <input type="text" id="new-location-id" class="form-control" placeholder="E.g., crimson-keep">
+                        <small>Use lowercase with hyphens, no spaces</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-location-name">Location Name</label>
+                        <input type="text" id="new-location-name" class="form-control" placeholder="E.g., Crimson Keep">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="add-new-location-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Location
+                    </button>
+                </div>
+                
+                <hr>
+                
+                <div class="locations-list-header">
+                    <h3>Available Locations</h3>
+                    <div class="search-mini">
+                        <i class="fas fa-search"></i>
+                        <input type="search" id="location-list-search" placeholder="Search locations...">
+                    </div>
+                </div>
+                
+                <div class="locations-list" id="locations-list">
+                    <div class="loading-indicator">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading locations...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="close-locations-manager">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Acts Manager Modal -->
+<div class="modal" id="acts-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Manage Acts</h2>
+            <button class="close-btn" id="close-acts-modal"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <h3>Add New Act</h3>
+                <div class="form-group">
+                    <label for="new-act-id">Act ID</label>
+                    <input type="text" id="new-act-id" placeholder="e.g., act-4" class="form-control">
+                    <small>Lowercase with hyphens, no spaces</small>
+                </div>
+                <div class="form-group">
+                    <label for="new-act-name">Act Name</label>
+                    <input type="text" id="new-act-name" placeholder="e.g., Act IV: The Conclusion" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="new-act-subtitle">Act Subtitle (Optional)</label>
+                    <input type="text" id="new-act-subtitle" placeholder="e.g., The final battle approaches" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="button" id="add-act-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Act
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-row mt-4">
+                <h3>Available Acts</h3>
+                <div id="acts-list" class="acts-list">
+                    <!-- Acts will be loaded here -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="close-acts-manager">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Chapters Manager Modal -->
+<div class="modal" id="chapters-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Manage Chapters</h2>
+            <button class="close-btn" id="close-chapters-modal"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <h3>Add New Chapter</h3>
+                <div class="form-group">
+                    <label for="new-chapter-id">Chapter ID</label>
+                    <input type="text" id="new-chapter-id" placeholder="e.g., chapter-4" class="form-control">
+                    <small>Lowercase with hyphens, no spaces</small>
+                </div>
+                <div class="form-group">
+                    <label for="new-chapter-name">Chapter Name</label>
+                    <input type="text" id="new-chapter-name" placeholder="e.g., Chapter 4" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="new-chapter-subtitle">Chapter Subtitle (Optional)</label>
+                    <input type="text" id="new-chapter-subtitle" placeholder="e.g., The Secret Chamber" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="button" id="add-chapter-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Chapter
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-row mt-4">
+                <h3>Available Chapters</h3>
+                <div id="chapters-list" class="chapters-list">
+                    <!-- Chapters will be loaded here -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="close-chapters-manager">Close</button>
+        </div>
+    </div>
+</div>
+                
+                <!-- DM Advice Section -->
+                <section id="dm-advice-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-dungeon"></i> DM Advice</h2>
+                    </div>
+                    
+                    <div class="coming-soon">
+                        <i class="fas fa-hat-wizard"></i>
+                        <h3>Coming Soon</h3>
+                        <p>The DM Advice management feature is under development and will be available soon.</p>
+                    </div>
+                </section>
+                
+                <!-- Settings Section -->
+                <section id="settings-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-cog"></i> Settings</h2>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-lock"></i> Change Password</h3>
+                        </div>
+                        
+                        <div class="card-body">
+                            <div class="alert alert-success" id="password-success" style="display: none;">
+                                Password updated successfully!
+                            </div>
+                            
+                            <div class="alert alert-danger" id="password-error" style="display: none;"></div>
+                            
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" class="form-control">
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button class="btn btn-primary" id="change-password-btn">
+                                    <i class="fas fa-save"></i> Update Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NPC Modal -->
+    <div class="modal" id="npc-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="npc-modal-title">Create New NPC</h2>
+                    <button class="close-btn" id="close-modal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <form id="npc-form">
+                        <input type="hidden" id="npc-id">
+                        
+                        <div class="form-group">
+                            <label for="npc-name">Name & Title</label>
+                            <input type="text" id="npc-name" class="form-control" required>
+                            <small>Example: "King Talon Falkrest, "the Kind""</small>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="npc-importance">Importance</label>
+                                <select id="npc-importance" class="form-control" required>
+                                    <option value="1">1 Star (Minor)</option>
+                                    <option value="2">2 Stars (Supporting)</option>
+                                    <option value="3">3 Stars (Major)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="npc-appearance">First Appearance</label>
+                                <input type="text" id="npc-appearance" class="form-control" required>
+                                <small>Example: "Episode 2" or "Session 5"</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="npc-relationship">Relationship</label>
+                                <select id="npc-relationship" class="form-control" required>
+                                    <option value="ally">Ally</option>
+                                    <option value="friendly">Friendly</option>
+                                    <option value="neutral">Neutral</option>
+                                    <option value="hostile">Hostile</option>
+                                    <option value="unknown">Unknown</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="npc-category">Category</label>
+                                <select id="npc-category" class="form-control" required>
+                                    <option value="royal">Royal</option>
+                                    <option value="pastoral">Pastoral</option>
+                                    <option value="militant">Militant</option>
+                                    <option value="religious">Religious</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-description">Brief Description</label>
+                            <textarea id="npc-description" class="form-control" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-quote">Memorable Quote</label>
+                            <textarea id="npc-quote" class="form-control" rows="2" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-tags">Tags</label>
+                            <input type="text" id="npc-tags" class="form-control" required>
+                            <small>Comma-separated tags (e.g., "ederian, nobility, clergy")</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="npc-image">Image URL</label>
+                            <input type="text" id="npc-image" class="form-control">
+                            <small>URL to character image (leave blank to use default)</small>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancel-npc">Cancel</button>
+                    <button class="btn btn-primary" id="save-npc">
+                        <i class="fas fa-save"></i> Save NPC
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="confirm-title">Confirmation</h2>
+                    <button class="close-btn" id="close-confirm">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <p id="confirm-message">Are you sure you want to perform this action?</p>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+                    <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript for Admin Dashboard -->
+    <script src="/js/admin.js"></script>
+</body>
+</html>
