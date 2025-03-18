@@ -56,9 +56,9 @@ function requireAuth(req, res, next) {
     res.redirect('/admin/login');
 }
 
-// Set up admin routes
+// Set up admin routes - ** THIS IS THE FIXED MODULE EXPORTS PATTERN **
 module.exports = function(app) {
-    // Add session support
+    // Add session support before defining routes
     app.use(session({
         secret: process.env.SESSION_SECRET || 'crimson-court-secret',
         resave: false,
@@ -72,8 +72,8 @@ module.exports = function(app) {
         rolling: true               // Reset expiration on each request
     }));
 
-    // Define all your routes on the router...
-
+    // Define all routes on the router...
+    
     // Session refresh endpoint
     router.post('/api/refresh-token', requireAuth, (req, res) => {
         console.log('Token refresh requested');
@@ -792,6 +792,166 @@ module.exports = function(app) {
         }
     });
 
+    // Articles routes
+    const ARTICLES_FILE = path.join(DATA_DIR, 'articles.json');
+    
+    // Initialize empty articles data file if it doesn't exist
+    if (!fs.existsSync(ARTICLES_FILE)) {
+        fs.writeFileSync(ARTICLES_FILE, JSON.stringify({ articles: [] }), 'utf8');
+        console.log('Created empty articles data file');
+    }
+    
+    // Get all articles
+    router.get('/api/articles', (req, res) => {
+        try {
+            const data = JSON.parse(fs.readFileSync(ARTICLES_FILE, 'utf8'));
+            res.json(data.articles || []);
+        } catch (error) {
+            console.error('Error reading articles data:', error);
+            res.status(500).json({ error: 'Error reading articles data' });
+        }
+    });
+    
+    // Create article
+    router.post('/api/articles', requireAuth, express.json(), (req, res) => {
+        try {
+            const data = JSON.parse(fs.readFileSync(ARTICLES_FILE, 'utf8'));
+            
+            const newArticle = {
+                id: Date.now().toString(),
+                ...req.body,
+                createdAt: new Date().toISOString()
+            };
+            
+            data.articles.push(newArticle);
+            fs.writeFileSync(ARTICLES_FILE, JSON.stringify(data, null, 2), 'utf8');
+            res.status(201).json(newArticle);
+        } catch (error) {
+            console.error('Error creating article:', error);
+            res.status(500).json({ error: 'Error creating article' });
+        }
+    });
+    
+    // Get single article
+    router.get('/api/articles/:id', (req, res) => {
+        try {
+            const data = JSON.parse(fs.readFileSync(ARTICLES_FILE, 'utf8'));
+            const article = data.articles.find(a => a.id === req.params.id);
+            
+            if (!article) {
+                return res.status(404).json({ error: 'Article not found' });
+            }
+            
+            res.json(article);
+        } catch (error) {
+            console.error('Error getting article:', error);
+            res.status(500).json({ error: 'Error getting article' });
+        }
+    });
+    
+    // Update article
+router.put('/api/articles/:id', requireAuth, express.json(), (req, res) => {
+    try {
+        if (!fs.existsSync(ARTICLES_FILE)) {
+            return res.status(404).json({ error: 'Articles data not found' });
+        }
+        
+        const data = JSON.parse(fs.readFileSync(ARTICLES_FILE, 'utf8'));
+        const index = data.articles.findIndex(article => article.id === req.params.id);
+        
+        if (index === -1) {
+            return res.status(404).json({ error: 'Article not found' });
+        }
+        
+        // Update article fields, preserving ID and creation date
+        const updatedArticle = {
+            ...data.articles[index],
+            ...req.body,
+            id: req.params.id,
+            updatedAt: new Date().toISOString()
+        };
+        
+        data.articles[index] = updatedArticle;
+        
+        fs.writeFileSync(ARTICLES_FILE, JSON.stringify(data, null, 2), 'utf8');
+        console.log(`Article updated successfully: ${updatedArticle.title}`);
+        
+        res.json(updatedArticle);
+    } catch (error) {
+        console.error('Error updating article:', error);
+        res.status(500).json({ error: 'Error updating article' });
+    }
+});
+    
+    // Delete article
+    router.delete('/api/articles/:id', requireAuth, (req, res) => {
+        try {
+            const data = JSON.parse(fs.readFileSync(ARTICLES_FILE, 'utf8'));
+            const index = data.articles.findIndex(a => a.id === req.params.id);
+            
+            if (index === -1) {
+                return res.status(404).json({ error: 'Article not found' });
+            }
+            
+            data.articles.splice(index, 1);
+            fs.writeFileSync(ARTICLES_FILE, JSON.stringify(data, null, 2), 'utf8');
+            res.json({ success: true });
+        } catch (error) {
+            console.error('Error deleting article:', error);
+            res.status(500).json({ error: 'Error deleting article' });
+        }
+    });
+    
+    // Create article
+    router.post('/api/articles', requireAuth, express.json(), (req, res) => {
+        try {
+            // Ensure data directory exists
+            if (!fs.existsSync(DATA_DIR)) {
+                fs.mkdirSync(DATA_DIR, { recursive: true });
+                console.log(`Created data directory: ${DATA_DIR}`);
+            }
+            
+            // Initialize empty articles file if it doesn't exist
+            if (!fs.existsSync(ARTICLES_FILE)) {
+                fs.writeFileSync(ARTICLES_FILE, JSON.stringify({ articles: [] }), 'utf8');
+                console.log(`Created empty articles file: ${ARTICLES_FILE}`);
+            }
+            
+            // Read existing data
+            const data = JSON.parse(fs.readFileSync(ARTICLES_FILE, 'utf8'));
+            
+            // Create new article with timestamp and ID
+            const newArticle = {
+                id: req.body.id || Date.now().toString(),
+                title: req.body.title,
+                subtitle: req.body.subtitle || '',
+                content: req.body.content,
+                excerpt: req.body.excerpt || '',
+                image: req.body.image || '',
+                author: req.body.author || 'Admin',
+                tags: Array.isArray(req.body.tags) ? req.body.tags : [],
+                status: req.body.status || 'draft',
+                readTime: req.body.readTime || 5,
+                relatedVideo: req.body.relatedVideo || '',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            // Add to articles array
+            data.articles.push(newArticle);
+            
+            // Write updated data back to file
+            fs.writeFileSync(ARTICLES_FILE, JSON.stringify(data, null, 2), 'utf8');
+            console.log(`Article saved successfully: ${newArticle.title}`);
+            
+            // Return success response with created article
+            res.status(201).json(newArticle);
+        } catch (error) {
+            console.error('Error creating article:', error);
+            res.status(500).json({ error: 'Error creating article' });
+        }
+    });
+    
     // Return the router at the end
     return router;
 };

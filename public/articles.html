@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - Roll With Advantage</title>
+    <meta name="description" content="Read DM advice articles and game insights from Roll With Advantage" id="meta-description">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/articles.css">
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="loading">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="dice-loader">
+            <svg class="dice" viewBox="0 0 100 100">
+                <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
+                <path class="dice-number" d="M50 55 A5 5 0 1 1 50 45 A5 5 0 1 1 50 55z"/>
+            </svg>
+        </div>
+        <p class="loading-text">Rolling initiative...</p>
+    </div>
+    
+    <!-- Magical Particles Background -->
+    <div class="particles-container"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="/index.html">
+                    <img src="/assets/images/logo.png" alt="Roll With Advantage Logo">
+                    <div class="logo-glow"></div>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/index.html" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="/crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="/articles.html" class="active nav-item" data-text="Articles"><i class="fas fa-scroll"></i> <span>Articles</span></a></li>
+                    <li><a href="/meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="/tools.html" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                    <li><a href="/contact.html" class="nav-item" data-text="Contact"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="articles-section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-scroll"></i></div>
+                    <h1 class="magical-heading">Articles</h1>
+                    <div class="magical-underline"></div>
+                </div>
+                
+                <!-- Filters and controls -->
+                <div class="articles-controls">
+                    <div class="search-container">
+                        <input type="text" id="article-search" placeholder="Search articles...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="tag-cloud" id="tag-cloud">
+                        <!-- Tags will be loaded here -->
+                        <span class="tag active" data-tag="all">All</span>
+                    </div>
+                    <div class="sort-controls">
+                        <div class="sort-select-container">
+                            <label for="sort-select">Sort by:</label>
+                            <select id="sort-select" class="sort-select">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="title-asc">Title (A-Z)</option>
+                                <option value="title-desc">Title (Z-A)</option>
+                            </select>
+                        </div>
+                        <div id="article-count" class="article-count"></div>
+                    </div>
+                </div>
+                
+                <!-- Articles list -->
+                <div id="articles-list" class="articles-grid">
+                    <!-- Articles will be loaded here -->
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading articles...</p>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination" id="pagination"></div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="newsletter">
+            <div class="glowing-particles"></div>
+            <div class="container">
+                <div class="section-header light-header">
+                    <div class="section-icon light-icon"><i class="fas fa-envelope"></i></div>
+                    <h2 class="magical-heading light-heading">Stay Updated</h2>
+                    <div class="magical-underline light-underline"></div>
+                    <p>Subscribe to our newsletter for the latest articles, DM tips, and Roll With Advantage news.</p>
+                </div>
+                <form id="newsletter-form" class="newsletter-form">
+                    <div class="form-glow"></div>
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn-newsletter"><i class="fas fa-paper-plane"></i> <span>Subscribe</span></button>
+                </form>
+                <div class="scroll-to-top">
+                    <button id="scroll-top-btn" aria-label="Scroll to top">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            <!-- Simple footer divider -->
+            <div class="footer-divider"></div>
+        </div>
+        <div class="footer-content">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">
+                        <img src="/assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <p>Roll With Advantage &copy; 2025</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="link-column">
+                            <h4>Content</h4>
+                            <ul>
+                                <li><a href="/crimson-court.html">The Crimson Court</a></li>
+                                <li><a href="/dm-advice.html">DM Advice</a></li>
+                                <li><a href="/articles.html">Articles</a></li>
+                                <li><a href="/meet-the-cast.html">Meet the Cast</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li><a href="/dice-roller.html">Dice Roller</a></li>
+                                <li><a href="/tools.html#character-quiz">Character Quiz</a></li>
+                                <li><a href="/tools.html#interactive-map">Interactive Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
+                                <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
+                                <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
+                                <li><a href="/contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
+                        <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
+                        <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
+                        <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
+                <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/config.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/particles.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/js/articles.js"></script>
+</body>
+</html>

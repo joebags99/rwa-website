@@ -11,7 +11,7 @@ VARIABLES
 */
 :root {
     /* Brand Colors */
-    --divine-light-white: #FBFBD7;
+    --divine-light-white: #efe6f6;
     --primary-blue: #0B2AA9;
     --primary-blue-light: #3C50C7;
     --primary-blue-dark: #091D82;
@@ -901,7 +901,7 @@ HEADER
 ======================
 */
 header {
-    background-color: rgba(251, 251, 215, 0.95);
+    background-color: var(--divine-light-white);
     padding: var(--spacing-sm) 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     position: sticky;
