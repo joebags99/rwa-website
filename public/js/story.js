@@ -593,6 +593,120 @@ const Story = {
     updateDynamicDropdowns: function() {
         // Update location filters when acts/chapters change
         this.createLocationFilters();
+        
+        // Update chapter dropdown with chapters from data
+        this.updateChapterDropdown();
+        
+        // Update act dropdown with acts from data
+        this.updateActDropdown();
+    },
+    
+    // Update chapter dropdown based on loaded episodes
+    updateChapterDropdown: function() {
+        if (!this.elements.chapterDropdown) return;
+        
+        // Keep the "All Chapters" option
+        const allChaptersOption = this.elements.chapterDropdown.querySelector('[data-chapter="all"]');
+        this.elements.chapterDropdown.innerHTML = '';
+        if (allChaptersOption) {
+            this.elements.chapterDropdown.appendChild(allChaptersOption);
+        }
+        
+        // Track chapters already added to avoid duplicates
+        const addedChapters = new Set(['all']);
+        
+        // Extract unique chapters from episodes
+        const chapters = [];
+        this.state.cachedEpisodes.forEach(episode => {
+            if (episode.chapter && episode.chapter.id && !addedChapters.has(episode.chapter.id)) {
+                addedChapters.add(episode.chapter.id);
+                chapters.push(episode.chapter);
+            }
+        });
+        
+        // Sort chapters by their ID (assuming format like "chapter-1", "chapter-2")
+        chapters.sort((a, b) => {
+            const aNum = parseInt(a.id.replace('chapter-', '')) || 0;
+            const bNum = parseInt(b.id.replace('chapter-', '')) || 0;
+            return aNum - bNum;
+        });
+        
+        // Add chapter items to dropdown
+        chapters.forEach(chapter => {
+            const item = document.createElement('a');
+            item.href = '#';
+            item.className = 'dropdown-item';
+            item.dataset.chapter = chapter.id;
+            item.textContent = `${chapter.name}${chapter.subtitle ? ': ' + chapter.subtitle : ''}`;
+            
+            // Mark as active if it's the currently selected chapter
+            if (chapter.id === this.state.currentChapter) {
+                item.classList.add('active');
+            }
+            
+            // Add click event
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.filterByChapter(chapter.id);
+                this.toggleDropdown(this.elements.chapterDropdown);
+            });
+            
+            this.elements.chapterDropdown.appendChild(item);
+        });
+    },
+    
+    // Update act dropdown based on loaded episodes
+    updateActDropdown: function() {
+        if (!this.elements.actDropdown) return;
+        
+        // Keep the "All Acts" option
+        const allActsOption = this.elements.actDropdown.querySelector('[data-act="all"]');
+        this.elements.actDropdown.innerHTML = '';
+        if (allActsOption) {
+            this.elements.actDropdown.appendChild(allActsOption);
+        }
+        
+        // Track acts already added to avoid duplicates
+        const addedActs = new Set(['all']);
+        
+        // Extract unique acts from episodes
+        const acts = [];
+        this.state.cachedEpisodes.forEach(episode => {
+            if (episode.act && episode.act.id && !addedActs.has(episode.act.id)) {
+                addedActs.add(episode.act.id);
+                acts.push(episode.act);
+            }
+        });
+        
+        // Sort acts by their ID (assuming format like "act-1", "act-2")
+        acts.sort((a, b) => {
+            const aNum = parseInt(a.id.replace('act-', '')) || 0;
+            const bNum = parseInt(b.id.replace('act-', '')) || 0;
+            return aNum - bNum;
+        });
+        
+        // Add act items to dropdown
+        acts.forEach(act => {
+            const item = document.createElement('a');
+            item.href = '#';
+            item.className = 'dropdown-item';
+            item.dataset.act = act.id;
+            item.textContent = act.name;
+            
+            // Mark as active if it's the currently selected act
+            if (act.id === this.state.currentAct) {
+                item.classList.add('active');
+            }
+            
+            // Add click event
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.filterByAct(act.id);
+                this.toggleDropdown(this.elements.actDropdown);
+            });
+            
+            this.elements.actDropdown.appendChild(item);
+        });
     },
 
     // Render episodes (with act/chapter dividers)

@@ -91,6 +91,7 @@ Story Controls
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+    max-width: max-content !important;
 }
 
 /* Dropdown Styling */
