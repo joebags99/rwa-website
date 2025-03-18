@@ -1488,6 +1488,399 @@ STORY EPISODES ADMIN STYLES
 
 /* 
 ======================
+ARTICLES ADMIN STYLES
+======================
+*/
+
+/* Form Sections */
+.form-section {
+    margin-bottom: var(--admin-spacing-lg);
+    padding-bottom: var(--admin-spacing-md);
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.form-section-title {
+    font-family: var(--font-headers);
+    font-size: 1.2rem;
+    margin-bottom: var(--admin-spacing-md);
+    color: var(--admin-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--admin-border);
+    color: var(--admin-text);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--admin-text);
+}
+
+/* Tag Input */
+.tag-input-container {
+    position: relative;
+    margin-bottom: var(--admin-spacing-sm);
+}
+
+.tag-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: var(--admin-spacing-sm);
+    min-height: 30px;
+}
+
+.tag-item {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(127, 14, 189, 0.2);
+    color: var(--admin-text);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.tag-remove {
+    margin-left: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--admin-text);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tag-remove:hover {
+    background-color: var(--admin-danger);
+    transform: scale(1.1);
+}
+
+/* Rich Text Editor */
+.CodeMirror {
+    border: 1px solid var(--admin-border);
+    border-radius: 4px;
+    height: 400px !important;
+}
+
+.CodeMirror-focused {
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 0.2rem rgba(11, 42, 169, 0.25);
+}
+
+.editor-toolbar {
+    background-color: var(--admin-sidebar);
+    border: 1px solid var(--admin-border);
+    border-radius: 4px 4px 0 0;
+    opacity: 0.8;
+}
+
+.editor-toolbar a {
+    color: var(--admin-text) !important;
+}
+
+.editor-toolbar a:hover,
+.editor-toolbar a.active {
+    background-color: rgba(127, 14, 189, 0.2) !important;
+    border-color: var(--admin-border) !important;
+}
+
+.editor-toolbar.fullscreen {
+    background-color: var(--admin-sidebar);
+}
+
+.CodeMirror.CodeMirror-fullscreen {
+    background-color: var(--admin-bg);
+}
+
+/* Content Preview */
+.content-preview {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--admin-border);
+    border-radius: 4px;
+    padding: var(--admin-spacing-md);
+    min-height: 400px;
+    overflow-y: auto;
+    color: var(--admin-text);
+    line-height: 1.6;
+}
+
+.content-preview h1,
+.content-preview h2,
+.content-preview h3,
+.content-preview h4 {
+    color: var(--admin-light);
+    margin-top: var(--admin-spacing-md);
+    margin-bottom: var(--admin-spacing-sm);
+    font-family: var(--font-headers);
+}
+
+.content-preview h1 {
+    font-size: 1.8rem;
+    border-bottom: 1px solid var(--admin-border);
+    padding-bottom: var(--admin-spacing-sm);
+}
+
+.content-preview h2 {
+    font-size: 1.5rem;
+}
+
+.content-preview h3 {
+    font-size: 1.3rem;
+}
+
+.content-preview h4 {
+    font-size: 1.1rem;
+}
+
+.content-preview p {
+    margin-bottom: var(--admin-spacing-md);
+}
+
+.content-preview ul,
+.content-preview ol {
+    margin-left: var(--admin-spacing-lg);
+    margin-bottom: var(--admin-spacing-md);
+}
+
+.content-preview li {
+    margin-bottom: var(--admin-spacing-xs);
+}
+
+.content-preview blockquote {
+    border-left: 3px solid var(--admin-primary);
+    padding-left: var(--admin-spacing-md);
+    margin-left: var(--admin-spacing-md);
+    margin-bottom: var(--admin-spacing-md);
+    font-style: italic;
+    color: var(--admin-text-muted);
+}
+
+.content-preview a {
+    color: var(--primary-blue-light);
+    text-decoration: underline;
+}
+
+.content-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: var(--admin-spacing-md) 0;
+}
+
+.content-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--admin-spacing-md) 0;
+}
+
+.content-preview th,
+.content-preview td {
+    border: 1px solid var(--admin-border);
+    padding: var(--admin-spacing-sm);
+}
+
+.content-preview th {
+    background-color: rgba(11, 42, 169, 0.2);
+    font-weight: bold;
+}
+
+/* Checkbox styling */
+.checkbox-wrapper {
+    padding-top: 2rem; /* Align with other form controls */
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--admin-primary);
+}
+
+/* Article List Item */
+.article-item {
+    background-color: var(--admin-sidebar);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--admin-border);
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.article-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-color: var(--admin-primary);
+}
+
+.article-item-header {
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.article-item-title {
+    margin: 0;
+    font-family: var(--font-headers);
+    font-size: 1.2rem;
+    color: var(--admin-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.article-featured {
+    color: var(--royal-gold);
+    font-size: 0.9rem;
+}
+
+.article-item-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-draft {
+    background-color: rgba(127, 14, 189, 0.2);
+    color: var(--admin-secondary);
+}
+
+.status-published {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: var(--admin-success);
+}
+
+.status-archived {
+    background-color: rgba(195, 10, 61, 0.2);
+    color: var(--admin-danger);
+}
+
+.article-item-content {
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+}
+
+.article-item-info {
+    flex: 1;
+}
+
+.article-item-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--admin-text-muted);
+}
+
+.article-item-excerpt {
+    margin-bottom: 10px;
+    color: var(--admin-text);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.article-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.article-tag {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    background-color: rgba(127, 14, 189, 0.1);
+    color: var(--admin-text-muted);
+    border-radius: 15px;
+}
+
+.no-tags {
+    font-size: 0.8rem;
+    color: var(--admin-text-muted);
+    font-style: italic;
+}
+
+.article-item-image {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.article-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.article-item-actions {
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--admin-border);
+    display: flex;
+    gap: 10px;
+}
+
+.article-item-actions .action-btn {
+    width: 36px;
+    height: 36px;
+}
+
+.action-btn.view:hover {
+    background-color: rgba(23, 162, 184, 0.2);
+    border-color: var(--admin-info);
+    color: var(--admin-info);
+}
+
+.action-btn.video:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+    border-color: #FF0000;
+    color: #FF0000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .article-item-content {
+        flex-direction: column;
+    }
+    
+    .article-item-image {
+        width: 100%;
+        height: 150px;
+    }
+}
+
+/* 
+======================
 SETTINGS SECTION
 ======================
 */

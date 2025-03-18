@@ -44,8 +44,8 @@
                     <li data-section="story">
                         <a href="#story"><i class="fas fa-book-open"></i> Story</a>
                     </li>
-                    <li data-section="dm-advice" class="disabled">
-                        <a href="#dm-advice"><i class="fas fa-dungeon"></i> DM Advice</a>
+                    <li data-section="articles">
+                        <a href="#articles"><i class="fas fa-dungeon"></i> DM Advice</a>
                     </li>
                     <li data-section="settings">
                         <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
@@ -116,13 +116,13 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card disabled">
+                    <div class="stat-card" onclick="window.location.href='#articles'" style="cursor: pointer;">
                         <div class="stat-icon">
                             <i class="fas fa-dungeon"></i>
                         </div>
                         <div class="stat-info">
                             <h3>DM Advice Posts</h3>
-                            <p class="stat-count">Coming Soon</p>
+                            <p class="stat-count" id="articles-count">0</p>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                             <a href="#story" class="btn btn-primary" data-target="story">
                                 <i class="fas fa-plus"></i> Add Story Entry
                             </a>
-                            <a href="#dm-advice" class="btn btn-secondary disabled">
+                            <a href="#articles" class="btn btn-primary" data-target="articles">
                                 <i class="fas fa-plus"></i> Create DM Advice
                             </a>
                         </div>
@@ -711,18 +711,223 @@
     </div>
 </div>
                 
-                <!-- DM Advice Section -->
-                <section id="dm-advice-section" class="content-section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-dungeon"></i> DM Advice</h2>
+<!-- Articles Section -->
+<section id="articles-section" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-scroll"></i> Article Management</h2>
+        <div class="section-actions">
+            <button class="btn btn-primary" id="create-article-btn">
+                <i class="fas fa-plus"></i> Create Article
+            </button>
+        </div>
+    </div>
+    
+    <div class="search-filter">
+        <div class="search-bar">
+            <form autocomplete="off" onsubmit="return false;">
+                <i class="fas fa-search"></i>
+                <input type="search" 
+                    id="article-search" 
+                    placeholder="Search articles..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </form>
+        </div>
+        
+        <div class="filter-options">
+            <select id="tag-filter">
+                <option value="">All Tags</option>
+                <option value="combat">Combat</option>
+                <option value="roleplaying">Roleplaying</option>
+                <option value="worldbuilding">Worldbuilding</option>
+                <option value="characters">Characters</option>
+                <option value="rules">Rules</option>
+                <option value="technology">Technology</option>
+                <option value="newdm">New DM</option>
+                <option value="crimson-court">Crimson Court</option>
+            </select>
+            
+            <select id="status-filter">
+                <option value="">All Status</option>
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="item-list" id="articles-list">
+        <div class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading articles...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Article Modal -->
+<div class="modal" id="article-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="article-modal-title">Create New Article</h2>
+                <button class="close-btn" id="close-article-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="article-form">
+                    <input type="hidden" id="article-id">
+                    
+                    <!-- Basic Info -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Basic Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="article-title">Title</label>
+                                <input type="text" id="article-title" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="article-subtitle">Subtitle (Optional)</label>
+                                <input type="text" id="article-subtitle" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="article-excerpt">Excerpt (Optional)</label>
+                                <textarea id="article-excerpt" class="form-control" rows="2"></textarea>
+                                <small>Short summary of the article (250 characters max)</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="article-image">Featured Image URL</label>
+                                <input type="text" id="article-image" class="form-control">
+                                <small>URL to the image to display as the article thumbnail</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="article-date">Publication Date</label>
+                                <input type="date" id="article-date" class="form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="article-author">Author</label>
+                                <input type="text" id="article-author" class="form-control" value="Roll With Advantage">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="article-status">Status</label>
+                                <select id="article-status" class="form-control" required>
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                    <option value="archived">Archived</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="article-read-time">Read Time (minutes)</label>
+                                <input type="number" id="article-read-time" class="form-control" min="1" max="60">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="checkbox-wrapper">
+                                    <label for="article-featured" class="checkbox-label">
+                                        <input type="checkbox" id="article-featured">
+                                        <span>Featured Article</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="article-related-video">Related YouTube Video URL (Optional)</label>
+                                <input type="text" id="article-related-video" class="form-control">
+                                <small>URL to the related YouTube video (if any)</small>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="coming-soon">
-                        <i class="fas fa-hat-wizard"></i>
-                        <h3>Coming Soon</h3>
-                        <p>The DM Advice management feature is under development and will be available soon.</p>
+                    <!-- Tags Section -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Tags</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="article-tags-input">Add Tags</label>
+                                <div class="tag-input-container">
+                                    <input type="text" id="article-tags-input" class="form-control" placeholder="Add tag and press Enter or comma">
+                                </div>
+                                <small>Enter tags separated by commas or press Enter after each tag</small>
+                                <div id="tag-display" class="tag-display"></div>
+                            </div>
+                        </div>
                     </div>
-                </section>
+                    
+                    <!-- Content Section -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            Content
+                            <button type="button" id="preview-toggle" class="btn btn-sm btn-outline">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <textarea id="article-content" class="form-control rich-editor" rows="15" required></textarea>
+                                <div id="content-preview" class="content-preview" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEO Settings -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">SEO Settings</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="seo-title">Meta Title (Optional)</label>
+                                <input type="text" id="seo-title" class="form-control">
+                                <small>Leave blank to use the article title</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="seo-description">Meta Description</label>
+                                <textarea id="seo-description" class="form-control" rows="2"></textarea>
+                                <small>Brief description for search engines (150-160 characters recommended)</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="seo-keywords">Keywords (Optional)</label>
+                                <input type="text" id="seo-keywords" class="form-control">
+                                <small>Comma-separated keywords for search engines</small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-article">Cancel</button>
+                <button class="btn btn-primary" id="save-article">
+                    <i class="fas fa-save"></i> Save Article
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
                 
                 <!-- Settings Section -->
                 <section id="settings-section" class="content-section">

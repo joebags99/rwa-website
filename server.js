@@ -63,6 +63,25 @@ if (!fs.existsSync(ROUTES_DIR)) {
   console.log('Created routes directory');
 }
 
+// Public articles API routes
+app.get('/api/articles', (req, res) => {
+    // Return all published articles
+    const data = require('./data/articles.json');
+    const publishedArticles = data.articles.filter(article => article.status === 'published');
+    res.json(publishedArticles);
+});
+
+app.get('/api/articles/:id', (req, res) => {
+    const data = require('./data/articles.json');
+    const article = data.articles.find(a => a.id === req.params.id);
+    
+    if (!article || article.status !== 'published') {
+        return res.status(404).json({ error: 'Article not found' });
+    }
+    
+    res.json(article);
+});
+
 // Import and use admin routes
 const adminRoutes = require('./routes/admin')(app);
 app.use('/admin', adminRoutes);
@@ -277,6 +296,11 @@ app.get('/api/public/locations', (req, res) => {
     console.error('Error reading locations data:', error);
     res.status(500).json({ error: 'Error reading locations data' });
   }
+});
+
+// Add this route to serve the article.html page
+app.get('/article', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'article.html'));
 });
 
 // Handle any other routes by serving index.html
