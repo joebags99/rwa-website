@@ -877,7 +877,36 @@ function showCharacterDetails(character) {
     
     // Set portrait
     const portraitImg = document.getElementById("character-portrait");
-    portraitImg.src = character.portrait || "assets/images/unknown.png";
+    
+    // Default portrait path matching the one in HTML
+    const defaultPortrait = "assets/images/unknown.png";
+    
+    if (character.portrait) {
+        // Process the portrait path
+        let portraitPath = character.portrait;
+        
+        // Remove leading slash if exists
+        if (portraitPath.startsWith('/')) {
+            portraitPath = portraitPath.substring(1);
+        }
+        
+        // Add assets/ prefix if needed
+        if (!portraitPath.startsWith('assets/')) {
+            portraitPath = `assets/${portraitPath}`;
+        }
+        
+        // Set the image source
+        portraitImg.src = portraitPath;
+        
+        // Add error handler
+        portraitImg.onerror = function() {
+            console.warn(`Failed to load portrait for ${character.name}: ${portraitPath}`);
+            this.src = defaultPortrait;
+        };
+    } else {
+        // No portrait specified, use default
+        portraitImg.src = defaultPortrait;
+    }
     
     // Show the modal
     document.querySelector(".character-modal").classList.add("active");
@@ -885,6 +914,12 @@ function showCharacterDetails(character) {
     // Set up highlight lineage button
     document.querySelector(".highlight-lineage").onclick = () => {
         highlightLineage(character);
+    };
+
+        // Debugging image loading
+    console.log("Setting portrait image:", portraitPath);
+    portraitImg.onload = function() {
+        console.log(`Successfully loaded portrait for ${character.name}`);
     };
 }
 

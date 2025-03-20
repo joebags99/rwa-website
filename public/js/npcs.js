@@ -185,7 +185,7 @@ function createNPCCards(npcs, container) {
         npcCard.innerHTML = `
             <div class="npc-portrait">
                 <div class="portrait-frame">
-                    <img src="${npc.imageSrc || 'assets/images/npcs/default.jpg'}" alt="${npc.name}">
+                    <img src="${npc.imageSrc || 'assets/images/npcs/unknown.png'}" alt="${npc.name}">
                     <div class="frame-ornament top-left"></div>
                     <div class="frame-ornament top-right"></div>
                     <div class="frame-ornament bottom-left"></div>
