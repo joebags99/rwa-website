@@ -177,16 +177,29 @@ function resetView() {
     setTimeout(() => {
         // Get the actual SVG dimensions
         const svgElement = document.getElementById("family-tree-svg");
-        const svgWidth = svgElement.clientWidth;
-        const svgHeight = svgElement.clientHeight;
+        const svgWidth = svgElement.clientWidth || 800; // Add fallback value
+        const svgHeight = svgElement.clientHeight || 600; // Add fallback value
+        
+        // Check if we have valid nodes
+        if (!treeNodes || treeNodes.length === 0) {
+            console.warn("No tree nodes available for reset view");
+            return;
+        }
         
         // Calculate the bounds of all nodes to determine the tree's extent
         let minX = Infinity, maxX = -Infinity;
         let minY = Infinity, maxY = -Infinity;
+        let hasValidCoordinates = false;
         
         // Find the boundaries of all nodes
         treeNodes.forEach(node => {
-            // For rectangular nodes, account for width
+            // Skip nodes with invalid coordinates
+            if (typeof node.x !== 'number' || typeof node.y !== 'number' || 
+                isNaN(node.x) || isNaN(node.y)) {
+                return;
+            }
+            
+            hasValidCoordinates = true;
             const nodeWidth = 180;
             const nodeHeight = 40;
             
@@ -195,6 +208,12 @@ function resetView() {
             minY = Math.min(minY, node.y - nodeHeight/2);
             maxY = Math.max(maxY, node.y + nodeHeight/2);
         });
+        
+        // Exit if no valid coordinates were found
+        if (!hasValidCoordinates) {
+            console.warn("No nodes with valid coordinates found");
+            return;
+        }
         
         // Add padding
         const padding = 50;
@@ -207,6 +226,12 @@ function resetView() {
         const treeWidth = maxX - minX;
         const treeHeight = maxY - minY;
         
+        // Avoid division by zero
+        if (treeWidth <= 0 || treeHeight <= 0) {
+            console.warn("Invalid tree dimensions", { treeWidth, treeHeight });
+            return;
+        }
+        
         // Calculate scale to fit the tree
         const scaleX = svgWidth / treeWidth;
         const scaleY = svgHeight / treeHeight;
@@ -216,7 +241,13 @@ function resetView() {
         const centerX = (svgWidth / scale - treeWidth) / 2 - minX;
         const centerY = (svgHeight / scale - treeHeight) / 2 - minY;
         
-        // Debug output - can be removed in production
+        // Final validation of transform values
+        if (isNaN(centerX) || isNaN(centerY) || isNaN(scale) || scale <= 0) {
+            console.error("Invalid transform values:", { centerX, centerY, scale });
+            return;
+        }
+        
+        // Debug output
         console.log("Tree dimensions:", { minX, maxX, minY, maxY, treeWidth, treeHeight });
         console.log("View parameters:", { svgWidth, svgHeight, scale, centerX, centerY });
         
@@ -235,7 +266,7 @@ function resetView() {
         
         // Hide tooltip
         tooltip.classed("visible", false);
-    }, 100); // Small delay to ensure DOM is updated
+    }, 500); // Increased delay to ensure DOM is updated
 }
 
 /**
@@ -623,22 +654,21 @@ function createVisualization() {
         .attr("dy", "0.35em") // Adjust text vertical alignment
         .text(d => d.name);
     
-    // Initialize zoom behavior BEFORE using it
-    initZoomBehavior();
-    
-    // Don't call resetView immediately - let the timeout handle it
-    setTimeout(() => {
-        // Check if we have valid nodes with positions before attempting to reset view
-        if (treeNodes && treeNodes.length > 0 && 
-            typeof treeNodes[0].x === 'number' && 
-            typeof treeNodes[0].y === 'number') {
-            resetView();
+        // Initialize zoom behavior
+        initZoomBehavior();
+            
+        // Delay the reset view to ensure nodes are properly positioned
+        setTimeout(() => {
+            // Check if we have valid nodes with positions before attempting to reset view
+            if (treeNodes && treeNodes.length > 0 && 
+                treeNodes.some(node => typeof node.x === 'number' && typeof node.y === 'number' && 
+                                !isNaN(node.x) && !isNaN(node.y))) {
+                resetView();
+            } else {
+                console.warn("Cannot reset view - nodes don't have valid coordinates yet");
+            }
+        }, 1000); // Longer delay
         }
-        
-        // Add transition class to show the visualization is loaded
-        document.querySelector('.tree-visualization').classList.add('fully-loaded');
-    }, 500);
-}
 
 /**
  * Generate paths for links with improved routing to avoid crossing
@@ -1154,7 +1184,8 @@ function initSearch() {
  */
 function centerOnCharacter(character) {
     // Ensure character has valid coordinates
-    if (!character || typeof character.x !== 'number' || typeof character.y !== 'number') {
+    if (!character || typeof character.x !== 'number' || typeof character.y !== 'number' || 
+        isNaN(character.x) || isNaN(character.y)) {
         console.error("Cannot center on character with invalid coordinates", character);
         return;
     }
@@ -1172,6 +1203,12 @@ function centerOnCharacter(character) {
     // Center on the character
     const centerX = svgWidth / 2 - character.x * scale;
     const centerY = svgHeight / 2 - character.y * scale;
+    
+    // Validate transform values
+    if (isNaN(centerX) || isNaN(centerY) || isNaN(scale) || scale <= 0) {
+        console.error("Invalid transform values:", { centerX, centerY, scale });
+        return;
+    }
     
     svg.transition()
         .duration(750)
