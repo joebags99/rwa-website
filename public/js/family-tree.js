@@ -1,10 +1,35 @@
 // Add at the top of family-tree.js
 let familyData = [];
+// Add this line to declare zoom at the top level
+let zoom;
 
 // Configuration constants for the family tree layout
 const siblingSpacing = 100;     // Horizontal space between siblings
 const generationSpacing = 120;  // Vertical space between generations
 const marriageWidth = 60;       // Space between marriage partners
+
+// SVG dimensions and margins
+const width = 1000;           // Width of the SVG drawing area
+const height = 800;           // Height of the SVG drawing area
+const margin = {              // Margins around the drawing area
+    top: 50,
+    right: 50,
+    bottom: 50,
+    left: 50
+};
+
+// Track current transform for zoom/pan
+let currentTransform = null;
+
+// Create tooltip
+const tooltip = createTooltip();
+
+// For tracking the currently highlighted character
+let highlightedCharacter = null;
+
+// Arrays for D3 visualization
+let treeNodes = [];
+let treeLinks = [];
 
 /**
  * Format a character's display name
@@ -476,6 +501,9 @@ function createVisualization() {
         .attr("x", d => d.x)
         .attr("y", d => d.y + 35)
         .text(d => d.displayName);
+    
+    // Initialize zoom behavior before using it
+    initZoomBehavior();
     
     // Initial zoom to fit the tree
     resetView();
