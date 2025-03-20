@@ -484,7 +484,7 @@ function setupPortalNavigation() {
     const npcsPortal = document.querySelector('.npcs-portal');
     const storyPortal = document.querySelector('.story-portal');
     const housesPortal = document.querySelector('.houses-portal');
-    const artifactsPortal = document.querySelector('.artifacts-portal');
+    const treePortal = document.querySelector('.tree-portal');
     
     // Add click event listeners to each portal
     if (heirsPortal) {
@@ -517,9 +517,9 @@ function setupPortalNavigation() {
         });
     }
     
-    if (artifactsPortal) {
-        artifactsPortal.addEventListener('click', () => {
-            portalTransition('the-artifacts.html');
+    if (treePortal) {
+        treePortal.addEventListener('click', () => {
+            portalTransition('family-tree.html');
         });
     }
 }

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Lineages of Ederia - The Crimson Court</title>
+    <meta name="description" content="Explore the complex family connections between the noble houses of Ederia and the heirs to the Crimson Throne.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/crimson-court.css">
+    <link rel="stylesheet" href="css/tree.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body class="tree-page">
+    <!-- Magical Particles Background -->
+    <div class="tree-particles-container"></div>
+    
+    <!-- Simple Navigation Buttons -->
+    <div class="tree-navigation">
+        <a href="crimson-court.html" class="nav-button court-button">
+            <i class="fas fa-crown"></i> Return to The Crimson Court
+        </a>
+        <a href="index.html" class="nav-button home-button">
+            <i class="fas fa-home"></i> Return to Roll With Advantage
+        </a>
+    </div>
+
+    <main class="tree-content">
+        <!-- Page Title -->
+        <div class="tree-title">
+            <h1 class="royal-title">The Royal Lineages of Ederia</h1>
+            <div class="royal-subtitle">Bloodlines, Marriages, and the Heirs to the Crimson Throne</div>
+        </div>
+        
+        <!-- Main Content Area with Sidebar and Visualization -->
+        <div class="tree-container">
+            <!-- Sidebar Controls -->
+            <div class="tree-sidebar">
+                <div class="sidebar-scroll">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Controls</h3>
+                        <div class="control-buttons">
+                            <button id="reset-view" class="tree-button">
+                                <i class="fas fa-sync-alt"></i> Reset View
+                            </button>
+                            <button id="zoom-in" class="tree-button">
+                                <i class="fas fa-search-plus"></i> Zoom In
+                            </button>
+                            <button id="zoom-out" class="tree-button">
+                                <i class="fas fa-search-minus"></i> Zoom Out
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Filter by House</h3>
+                        <div class="house-filters">
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-all" class="house-checkbox" checked>
+                                <label for="filter-all" class="house-label all-houses">
+                                    All Houses
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-falkrest" class="house-checkbox" checked>
+                                <label for="filter-falkrest" class="house-label falkrest-house">
+                                    House Falkrest
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-veltaris" class="house-checkbox" checked>
+                                <label for="filter-veltaris" class="house-label veltaris-house">
+                                    House Veltaris
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-astralor" class="house-checkbox" checked>
+                                <label for="filter-astralor" class="house-label astralor-house">
+                                    House Astralor
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-eldran" class="house-checkbox" checked>
+                                <label for="filter-eldran" class="house-label eldran-house">
+                                    House Eldran
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-emberlyn" class="house-checkbox" checked>
+                                <label for="filter-emberlyn" class="house-label emberlyn-house">
+                                    House Emberlyn
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-thornefield" class="house-checkbox" checked>
+                                <label for="filter-thornefield" class="house-label thornefield-house">
+                                    House Thornefield
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-draven" class="house-checkbox" checked>
+                                <label for="filter-draven" class="house-label draven-house">
+                                    House Draven
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-minor" class="house-checkbox" checked>
+                                <label for="filter-minor" class="house-label minor-house">
+                                    Minor Houses
+                                </label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="filter-foreign" class="house-checkbox" checked>
+                                <label for="filter-foreign" class="house-label foreign-house">
+                                    Foreign Houses
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Search</h3>
+                        <div class="search-box">
+                            <input type="text" id="search-input" placeholder="Search by name...">
+                            <button id="search-button" class="tree-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="search-results" class="search-results"></div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Legend</h3>
+                        <div class="legend-container">
+                            <div class="legend-item">
+                                <div class="node-example" id="male-example"></div>
+                                <span>Male</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="node-example" id="female-example"></div>
+                                <span>Female</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="node-example" id="other-example"></div>
+                                <span>Other/Unknown</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="node-example node-deceased"></div>
+                                <span>Deceased</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="line-example marriage-line"></div>
+                                <span>Marriage</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="line-example parent-line"></div>
+                                <span>Parentage</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section help-section">
+                        <h3 class="sidebar-title">Help</h3>
+                        <div class="help-content">
+                            <p><i class="fas fa-mouse-pointer"></i> <strong>Click</strong> a character to see details and highlight their relations</p>
+                            <p><i class="fas fa-hand-paper"></i> <strong>Click and drag</strong> to pan the tree</p>
+                            <p><i class="fas fa-search"></i> <strong>Scroll</strong> to zoom in and out</p>
+                            <p><i class="fas fa-filter"></i> <strong>Use filters</strong> to focus on specific houses</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Tree Visualization -->
+            <div class="tree-visualization">
+                <div class="visualization-overlay">
+                    <div class="loading-spinner">
+                        <div class="crown-loader">
+                            <img class="crown animate-loading" src="assets/images/cc-icon-nb.png" alt="Loading...">
+                        </div>
+                        <p class="loading-text">Tracing the bloodlines of Ederia...</p>
+                    </div>
+                </div>
+                <svg id="family-tree-svg"></svg>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Character Detail Modal -->
+    <div class="character-modal">
+        <div class="modal-content">
+            <button class="close-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <div class="character-portrait">
+                    <img id="character-portrait" src="assets/images/unknown.png" alt="Character Portrait">
+                    <div class="portrait-frame"></div>
+                </div>
+                <div class="character-title">
+                    <h2 id="character-name">Character Name</h2>
+                    <h3 id="character-title">Character Title</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="character-details">
+                    <div class="detail-section">
+                        <h4>House Allegiance</h4>
+                        <p id="character-house">House Name</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Lifespan</h4>
+                        <p id="character-lifespan">Birth - Death</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Parentage</h4>
+                        <p id="character-parents">Parents</p>
+                    </div>
+                    <div class="detail-section" id="aliases-section">
+                        <h4>Known Aliases</h4>
+                        <p id="character-aliases">Aliases</p>
+                    </div>
+                    <div class="detail-section" id="description-section">
+                        <h4>Description</h4>
+                        <p id="character-description">Character description text</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="tree-button highlight-lineage">
+                    <i class="fas fa-project-diagram"></i> Highlight Family
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Royal Footer -->
+    <footer class="royal-footer">
+        <div class="container">
+            <div class="royal-decree">
+                <p>Blood and blood alone determines succession, from parent to child, for time immemorial.</p>
+                <div class="royal-seal"></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Decorative Elements -->
+    <div class="decorative-elements">
+        <div class="floating-crown crown-1"></div>
+        <div class="floating-crown crown-2"></div>
+        <div class="floating-scroll scroll-1"></div>
+        <div class="floating-scroll scroll-2"></div>
+        <div class="floating-sword sword-1"></div>
+        <div class="floating-sword sword-2"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/family-tree.js"></script>
+</body>
+</html>
