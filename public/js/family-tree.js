@@ -317,6 +317,53 @@ function loadFamilyData() {
     }
 }
 
+function applyFixedPositions(characterMap) {
+    // Define explicit positions for important characters
+    const fixedPositions = {
+        // Talon and his family
+        "F013": { x: 1000, y: 350 },                // Talon Falkrest (central)
+        "F011": { x: 800, y: 350 },                 // Zara Callista (partner 1)
+        "A002": { x: 600, y: 350 },                 // Kasya Astralor (partner 2)
+        "F012": { x: 1200, y: 350 },                // Senua Oldblood (partner 3)
+        "V002": { x: 1400, y: 350 },                // Sharn Veltaris (partner 4)
+        "F015": { x: 1600, y: 350 },                // Circe Alysides (partner 5)
+        
+        // Talon's children - positioned under respective parents
+        "F016": { x: 600, y: 450 },                 // Xanthe (child of Kasya)
+        "F017": { x: 800, y: 450 },                 // Edwinn (child of Zara)
+        "F018": { x: 1200, y: 450 },                // Cailynn (child of Senua)
+        "F019": { x: 1400, y: 450 },                // Marik (child of Sharn)
+        "F020": { x: 1600, y: 450 },                // Octavia (child of Circe)
+        
+        // Edemere and his family (separate branch)
+        "F010": { x: 400, y: 350 },                 // Edemere
+        "E001": { x: 200, y: 350 },                 // Gwendolyn Eldran (partner)
+        
+        // Edemere's children
+        "F021": { x: 200, y: 450 },                 // Dorian
+        "F022": { x: 270, y: 450 },                 // Perrin
+        "F023": { x: 340, y: 450 },                 // Alayna
+        "F024": { x: 410, y: 450 },                 // Lysenne
+        
+        // Other important characters
+        "F014": { x: 100, y: 350 },                 // Raynere (separate)
+        "E002": { x: 1800, y: 350 },                // Alarice Eldran (separate)
+    };
+    
+    // Apply fixed positions
+    Object.entries(fixedPositions).forEach(([id, position]) => {
+        const character = characterMap.get(id);
+        if (character) {
+            character.x = position.x;
+            character.y = position.y;
+            character.hasFixedPosition = true; // Mark as having fixed position
+        }
+    });
+    
+    // Let the automatic algorithm position the rest but respect fixed positions
+    return characterMap;
+}
+
 /**
  * Map parent name to ID (handles edge cases in the data)
  */
@@ -342,9 +389,13 @@ function mapParentName(parentName) {
 }
 
 /**
- * Improved position nodes function with better layout
+ * Enhanced positioning algorithm that sorts all nodes more effectively
+ * Replace the existing positionNodesImproved function with this version
  */
 function positionNodesImproved(rootNodes, characterMap) {
+    // First apply fixed positions to important characters
+    applyFixedPositions(characterMap);
+    
     // Track visited nodes to avoid cycles
     const visited = new Set();
     
@@ -359,7 +410,7 @@ function positionNodesImproved(rootNodes, characterMap) {
     // Reset visited set for the next traversal
     visited.clear();
     
-    // Group characters by generation and house
+    // Group characters by generation
     const generationGroups = new Map();
     generations.forEach((gen, id) => {
         if (!generationGroups.has(gen)) {
@@ -373,9 +424,12 @@ function positionNodesImproved(rootNodes, characterMap) {
     generationGroups.forEach((characters, gen) => {
         maxGeneration = Math.max(maxGeneration, gen);
         
+        // Skip characters with fixed positions
+        const flexibleCharacters = characters.filter(c => !c.hasFixedPosition);
+        
         // Group characters by house for better organization
         const houseGroups = {};
-        characters.forEach(character => {
+        flexibleCharacters.forEach(character => {
             const house = character.main_house;
             if (!houseGroups[house]) {
                 houseGroups[house] = [];
@@ -400,23 +454,303 @@ function positionNodesImproved(rootNodes, characterMap) {
         });
     });
     
-    // Calculate the total width needed
-    let totalWidth = 0;
-    generationGroups.forEach(characters => {
-        if (characters.length > 0) {
-            const lastChar = characters[characters.length - 1];
-            totalWidth = Math.max(totalWidth, lastChar.x + 100);
-        }
-    });
-    
-    // Now adjust positions for marriages/partnerships
-    adjustMarriagePositions(characterMap);
+    // Adjust positions for marriages/partnerships that don't have fixed positions
+    adjustFreePartnerships(characterMap);
     
     // Final pass: adjust position of nodes to prevent overlapping
+    // Skip fixed nodes in overlap prevention
     preventNodeOverlap(generationGroups);
     
     // Create nodes and links arrays
     createNodesAndLinks(characterMap);
+}
+
+function adjustFreePartnerships(characterMap) {
+    // Identify all partnerships
+    const partnerships = [];
+    characterMap.forEach(character => {
+        if (character.partners && character.partners.length > 0) {
+            character.partners.forEach(partnerId => {
+                // Skip if either partner has fixed position
+                const partner = characterMap.get(partnerId);
+                if (!partner || character.hasFixedPosition || partner.hasFixedPosition) {
+                    return;
+                }
+                
+                // Avoid duplicates by only processing partnerships where this character has smaller ID
+                if (character.id < partnerId) {
+                    partnerships.push({
+                        person1: character,
+                        person2: partner
+                    });
+                }
+            });
+        }
+    });
+    
+    // Position non-fixed partners next to each other
+    partnerships.forEach(partnership => {
+        const { person1, person2 } = partnership;
+        
+        // Calculate average position of both partners
+        const avgX = (person1.x + person2.x) / 2;
+        
+        // Reposition both partners - with wider spacing for rectangles
+        person1.x = avgX - 120; // Increased spacing for rectangles
+        person2.x = avgX + 120;
+    });
+}
+
+
+/**
+ * Identify family groups within a generation
+ * A family group is a character and all their partners
+ */
+function identifyFamilyGroups(characters) {
+    const familyGroups = [];
+    const assignedToGroup = new Set();
+    
+    // First, identify primary characters (those with the most partners)
+    // This helps put characters with multiple marriages at the center of their groups
+    characters.sort((a, b) => {
+        const aPartners = a.partners ? a.partners.length : 0;
+        const bPartners = b.partners ? b.partners.length : 0;
+        return bPartners - aPartners; // Sort by number of partners descending
+    });
+    
+    // Create family groups around primary characters
+    characters.forEach(character => {
+        if (assignedToGroup.has(character.id)) return;
+        
+        const group = {
+            primary: character,
+            members: [character],
+            housePriority: getHousePriority(character.main_house)
+        };
+        
+        // Add all partners to the group
+        if (character.partners) {
+            character.partners.forEach(partnerId => {
+                const partner = characters.find(c => c.id === partnerId);
+                if (partner && !assignedToGroup.has(partnerId)) {
+                    group.members.push(partner);
+                    assignedToGroup.add(partnerId);
+                }
+            });
+        }
+        
+        assignedToGroup.add(character.id);
+        familyGroups.push(group);
+    });
+    
+    // Sort family groups by house priority (Falkrest first, then others)
+    familyGroups.sort((a, b) => a.housePriority - b.housePriority);
+    
+    return familyGroups;
+}
+
+/**
+ * Get priority for a house (for sorting)
+ * Lower numbers = higher priority
+ */
+function getHousePriority(house) {
+    const housePriorities = {
+        'Falkrest': 1,
+        'Veltaris': 2,
+        'Astralor': 3,
+        'Eldran': 4,
+        'Draven': 5,
+        'Thornefield': 6,
+        'Emberlyn': 7,
+        'Foreign': 8,
+        'Minor House': 9
+    };
+    
+    return housePriorities[house] || 10;
+}
+
+/**
+ * Position family groups horizontally across the generation
+ */
+function positionFamilyGroups(familyGroups, generation) {
+    let currentX = 100; // Starting position
+    
+    familyGroups.forEach(group => {
+        const primaryX = currentX + (group.members.length * 200) / 2;
+        
+        // Position primary character in center of group
+        group.primary.x = primaryX;
+        group.primary.y = 100 + generation * 200; // Vertical position based on generation
+        
+        // Position partners on either side of primary
+        if (group.members.length > 1) {
+            let leftOffset = -200;
+            let rightOffset = 200;
+            
+            // Sort partners by birth year if available
+            const partners = group.members.filter(m => m !== group.primary)
+                .sort((a, b) => (a.birth_year || 0) - (b.birth_year || 0));
+            
+            partners.forEach((partner, index) => {
+                if (index % 2 === 0) {
+                    // Position on right
+                    partner.x = primaryX + rightOffset;
+                    rightOffset += 200;
+                } else {
+                    // Position on left
+                    partner.x = primaryX + leftOffset;
+                    leftOffset -= 200;
+                }
+                
+                partner.y = group.primary.y; // Same vertical position as primary
+            });
+        }
+        
+        // Update currentX for next group
+        const groupWidth = Math.max(group.members.length * 220, 300);
+        currentX += groupWidth;
+    });
+}
+
+/**
+ * Ensure partners are properly aligned side by side
+ */
+function alignPartnerships(characterMap) {
+    // Find all partnerships
+    const partnerships = [];
+    
+    characterMap.forEach(character => {
+        if (character.partners && character.partners.length > 0) {
+            character.partners.forEach(partnerId => {
+                const partner = characterMap.get(partnerId);
+                
+                // Only process each partnership once
+                if (partner && character.id < partnerId) {
+                    partnerships.push({
+                        person1: character,
+                        person2: partner
+                    });
+                }
+            });
+        }
+    });
+    
+    // Process partnerships in order of "importance" (by house priority)
+    partnerships.sort((a, b) => {
+        const aHousePriority = Math.min(
+            getHousePriority(a.person1.main_house),
+            getHousePriority(a.person2.main_house)
+        );
+        const bHousePriority = Math.min(
+            getHousePriority(b.person1.main_house),
+            getHousePriority(b.person2.main_house)
+        );
+        return aHousePriority - bHousePriority;
+    });
+    
+    // Position partners side by side with appropriate spacing
+    partnerships.forEach(partnership => {
+        const { person1, person2 } = partnership;
+        
+        // If either person has multiple partners, use special handling
+        if ((person1.partners && person1.partners.length > 1) || 
+            (person2.partners && person2.partners.length > 1)) {
+            
+            // Special case: Talon Falkrest (who has 5 partners)
+            if (person1.id === "F013" || person2.id === "F013") {
+                const talon = person1.id === "F013" ? person1 : person2;
+                const partner = person1.id === "F013" ? person2 : person1;
+                
+                // Don't adjust Talon's position, just arrange partners around him
+                // Logic for positioning Talon's partners here...
+                // This will depend on birth years or other criteria
+            }
+            
+            // For other cases with multiple partners
+            // Keep existing positions, will be handled in positionChildren
+            
+        } else {
+            // Simple case: just two partners
+            // Position them close to each other
+            const avgX = (person1.x + person2.x) / 2;
+            person1.x = avgX - 120;
+            person2.x = avgX + 120;
+        }
+    });
+    
+    // Special handling for Talon Falkrest's family
+    const talon = characterMap.get("F013");
+    if (talon && talon.partners && talon.partners.length > 0) {
+        // Define ideal partner order and positions
+        const partnerPositions = [
+            { id: "F011", name: "Zara Callista", offset: -400 },
+            { id: "A002", name: "Kasya Astralor", offset: -200 },
+            { id: "F012", name: "Senua Oldblood", offset: 200 },
+            { id: "V002", name: "Sharn Veltaris", offset: 400 },
+            { id: "F015", name: "Circe Alysides", offset: 600 }
+        ];
+        
+        // Apply positions
+        partnerPositions.forEach(partnerInfo => {
+            const partner = characterMap.get(partnerInfo.id);
+            if (partner) {
+                partner.x = talon.x + partnerInfo.offset;
+                partner.y = talon.y;
+            }
+        });
+    }
+}
+
+/**
+ * Position children in relation to their parents
+ */
+function positionChildren(characterMap) {
+    // Get all characters with children
+    const parentsWithChildren = Array.from(characterMap.values())
+        .filter(character => character.children && character.children.length > 0);
+    
+    // Special characters who should be processed first (e.g., Talon)
+    const priorityCharacters = ["F013", "F014"];
+    
+    // Sort parents by priority, then by children count
+    parentsWithChildren.sort((a, b) => {
+        const aPriority = priorityCharacters.indexOf(a.id);
+        const bPriority = priorityCharacters.indexOf(b.id);
+        
+        // Sort by priority first
+        if (aPriority !== -1 && bPriority === -1) return -1;
+        if (aPriority === -1 && bPriority !== -1) return 1;
+        if (aPriority !== -1 && bPriority !== -1) return aPriority - bPriority;
+        
+        // Then by children count
+        return b.children.length - a.children.length;
+    });
+    
+    // Process each parent
+    parentsWithChildren.forEach(parent => {
+        // Skip characters whose children might have already been positioned
+        if (parent.childrenPositioned) return;
+        
+        parent.children.forEach(child => {
+            // Find other parent if available
+            let otherParent = null;
+            if (child.parent_1 && child.parent_2) {
+                const otherParentId = child.parent_1 === parent.id ? child.parent_2 : child.parent_1;
+                otherParent = characterMap.get(otherParentId);
+            }
+            
+            if (otherParent) {
+                // Position child between both parents
+                child.x = (parent.x + otherParent.x) / 2;
+                
+                // Mark otherParent as having positioned children
+                otherParent.childrenPositioned = true;
+            } else {
+                // No other parent or not found, position below this parent
+                child.x = parent.x;
+            }
+        });
+    });
 }
 
 /**
@@ -619,6 +953,73 @@ function createVisualization() {
         .enter().append("stop")
         .attr("offset", d => d.offset)
         .attr("stop-color", d => d.color);
+
+        // Add family identifiers to nodes
+nodesGroup.selectAll(".node-group")
+.classed("talon-family-node", d => isTalonFamily(d))
+.classed("edemere-family-node", d => isEdemereFamily(d));
+
+// Add family identifiers to links
+linksGroup.selectAll(".link-path")
+.classed("talon-family-link", d => isTalonFamily(d.source) && isTalonFamily(d.target))
+.classed("edemere-family-link", d => isEdemereFamily(d.source) && isEdemereFamily(d.target));
+
+        // Optional: Add background regions for family groups
+        const familyGroups = [
+        {
+            id: "talon-family",
+            x: 550, // Left position
+            y: 325, // Top position 
+            width: 1100, // Width to encompass Talon and all partners
+            height: 150, // Height
+            className: "family-group-region talon-family-region"
+        },
+        {
+            id: "edemere-family",
+            x: 150, // Left position
+            y: 325, // Top position
+            width: 350, // Width for Edemere and partner
+            height: 150, // Height
+            className: "family-group-region edemere-family-region"
+        }
+        ];
+
+        // Add the background regions to the SVG before the nodes and links
+        const groupsLayer = g.insert("g", ":first-child")
+        .attr("class", "family-groups-layer");
+
+        groupsLayer.selectAll(".family-group-region")
+        .data(familyGroups)
+        .enter()
+        .append("rect")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y)
+        .attr("width", d => d.width)
+        .attr("height", d => d.height)
+        .attr("class", d => d.className);
+
+        /**
+        * Helper functions to determine family membership
+        */
+        function isTalonFamily(character) {
+        // Talon's ID plus his partners and children
+        const talonFamilyIds = [
+            "F013", // Talon
+            "F011", "A002", "F012", "V002", "F015", // Partners
+            "F016", "F017", "F018", "F019", "F020" // Children
+        ];
+        return talonFamilyIds.includes(character.id);
+        }
+
+        function isEdemereFamily(character) {
+        // Edemere's ID plus his partner and children
+        const edemereFamilyIds = [
+            "F010", // Edemere
+            "E001", // Partner
+            "F021", "F022", "F023", "F024" // Children
+        ];
+        return edemereFamilyIds.includes(character.id);
+        }
     
     // Create links
     const links = linksGroup.selectAll(".link-path")
@@ -675,17 +1076,50 @@ function createVisualization() {
  */
 function linkPathGenerator(d) {
     const nodeHeight = 40;
+
+    // Explicitly check if this is a link between Talon and partners
+    const isTalonPartnership = 
+        (d.source.id === "F013" || d.target.id === "F013") && 
+        d.type === 'marriage';
     
+    // Explicitly check if this is a link between Edemere and partners
+    const isEdemerePartnership = 
+        (d.source.id === "F010" || d.target.id === "F010") && 
+        d.type === 'marriage';
+    
+    // Handle marriage links with different styles
     if (d.type === 'marriage') {
-        // Horizontal marriage line that connects the sides of the rectangles
-        return `M${d.source.x + 90},${d.source.y} L${d.target.x - 90},${d.target.y}`;
-    } else if (d.type === 'betrothal') {
+        if (isTalonPartnership) {
+            // Talon partnerships get a different color in CSS
+            return `M${d.source.x + 90},${d.source.y} L${d.target.x - 90},${d.target.y}`;
+        } 
+        else if (isEdemerePartnership) {
+            // Edemere partnerships get another color in CSS
+            return `M${d.source.x + 90},${d.source.y} L${d.target.x - 90},${d.target.y}`;
+        }
+        else {
+            // Normal marriages
+            return `M${d.source.x + 90},${d.source.y} L${d.target.x - 90},${d.target.y}`;
+        }
+    } 
+    else if (d.type === 'betrothal') {
         // Curved betrothal line
         const midX = (d.source.x + d.target.x) / 2;
         const midY = d.source.y - 30; // Curve upward
         
         return `M${d.source.x},${d.source.y - 20} Q${midX},${midY} ${d.target.x},${d.target.y - 20}`;
-    } else if (d.type === 'parent') {
+    } 
+    else if (d.type === 'parent') {
+        // Check if this is Talon's child
+        const isTalonChild = 
+            d.source.id === "F013" || 
+            (d.target.parent_1 === "F013" || d.target.parent_2 === "F013");
+            
+        // Check if this is Edemere's child
+        const isEdemereChild = 
+            d.source.id === "F010" || 
+            (d.target.parent_1 === "F010" || d.target.parent_2 === "F010");
+        
         // Vertical line from parent to child with improved routing
         const hasDefinedParents = d.target.parent_1 && d.target.parent_2;
         
@@ -699,19 +1133,19 @@ function linkPathGenerator(d) {
                 const parentY = parent1.y;
                 
                 // Create a better-spaced path for parents with a common child
-                return `M${d.source.x},${d.source.y + 20} ` + 
-                       `V${parentY + 40} ` + // Go down from parent bottom
-                       `H${midX} ` + // Move horizontally to midpoint between parents
-                       `V${d.target.y - 25} ` + // Go down to just above child
-                       `H${d.target.x} ` + // Move horizontally to child's x position
+                return `M${d.source.x},${d.source.y + 20}` + 
+                       `V${parentY + 40}` + // Go down from parent bottom
+                       `H${midX}` + // Move horizontally to midpoint between parents
+                       `V${d.target.y - 25}` + // Go down to just above child
+                       `H${d.target.x}` + // Move horizontally to child's x position
                        `V${d.target.y - 20}`; // Connect to top of child
             }
         }
         
         // Simple case with improved spacing - from bottom of parent to top of child
-        return `M${d.source.x},${d.source.y + 20} ` + // Start from bottom of parent
-               `V${d.source.y + 40} ` + // Go down a bit
-               `H${d.target.x} ` + // Move horizontally to child's position
+        return `M${d.source.x},${d.source.y + 20}` + // Start from bottom of parent
+               `V${d.source.y + 40}` + // Go down a bit
+               `H${d.target.x}` + // Move horizontally to child's position
                `V${d.target.y - 20}`; // Connect to top of child
     }
 }

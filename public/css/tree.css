@@ -601,6 +601,7 @@ SIDEBAR STYLING
 
 .parent-line {
     background-color: var(--royal-silver);
+    stroke-width: 2px;
 }
 
 /* Help Section */
@@ -797,9 +798,14 @@ TREE NODES & LINKS STYLING
     filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
 }
 
+.parent-path {
+    stroke-width: 2px;
+}
+
 .marriage-path {
     stroke-dasharray: 8px, 4px;
-}
+    stroke: var(--royal-gold);
+    opacity: 0.8;}
 
 .betrothal-path {
     stroke-dasharray: 4px, 3px;
@@ -834,6 +840,36 @@ TREE NODES & LINKS STYLING
 
 .dimmed-link {
     opacity: 0.1 !important;
+}
+
+/* Family branch visual distinctions */
+.talon-family-node {
+    stroke: #FFD700 !important; /* Gold border */
+    stroke-width: 4px !important;
+}
+
+.edemere-family-node {
+    stroke: #9F80EB !important; /* Purple border */
+    stroke-width: 4px !important;
+}
+
+.talon-family-link {
+    stroke: #FFD700 !important; /* Gold connections */
+    stroke-width: 3px !important;
+}
+
+.edemere-family-link {
+    stroke: #9F80EB !important; /* Purple connections */
+    stroke-width: 3px !important;
+}
+
+/* Optional: Add subtle background color regions */
+.family-group-region {
+    fill: rgba(255, 215, 0, 0.05); /* Very subtle gold background */
+    stroke: rgba(255, 215, 0, 0.2);
+    stroke-width: 1px;
+    rx: 20px; /* Rounded corners */
+    ry: 20px;
 }
 
 /* House-specific rectangle styling - using border colors instead of fills */
