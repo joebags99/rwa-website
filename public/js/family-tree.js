@@ -1,3 +1,11 @@
+// Add at the top of family-tree.js
+let familyData = [];
+
+// Configuration constants for the family tree layout
+const siblingSpacing = 100;     // Horizontal space between siblings
+const generationSpacing = 120;  // Vertical space between generations
+const marriageWidth = 60;       // Space between marriage partners
+
 /**
  * Format a character's display name
  */
@@ -177,7 +185,7 @@ function loadFamilyData() {
     alert("loadFamilyData is running");
     console.log("Starting to load family data");
     try {
-        d3.json("data/family-tree.json")            
+        d3.json("data/family-tree.json")        
         .then(data => {
                 console.log("Data loaded:", data);
                 console.log("Loaded family data:", data.length, "characters");
@@ -1001,3 +1009,8 @@ const svg = d3.select("#family-tree-svg");
 const g = svg.append("g");
 const linksGroup = g.append("g").attr("class", "links");
 const nodesGroup = g.append("g").attr("class", "nodes");
+
+// Call the function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    loadFamilyData();
+});
