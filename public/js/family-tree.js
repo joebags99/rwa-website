@@ -311,7 +311,7 @@ function mapParentName(parentName) {
 }
 
 /**
- * Improved position nodes function with better centering and layout
+ * Improved position nodes function with better layout
  */
 function positionNodesImproved(rootNodes, characterMap) {
     // Track visited nodes to avoid cycles
@@ -352,20 +352,20 @@ function positionNodesImproved(rootNodes, characterMap) {
             houseGroups[house].push(character);
         });
         
-        // Position each house group with appropriate spacing for rectangular nodes
-        let currentX = 200; // Increased starting X position for better visibility
+        // Position each house group with appropriate spacing
+        let currentX = 100; // Starting X position
         Object.entries(houseGroups).forEach(([house, houseMembers]) => {
             // Sort members within house by id for consistency
             houseMembers.sort((a, b) => a.id.localeCompare(b.id));
             
-            // Position each member with wider spacing for rectangular nodes
+            // Position each member
             houseMembers.forEach((character, index) => {
-                character.x = currentX + index * 220; // Wider spacing (was siblingSpacing)
-                character.y = 200 + gen * 250; // Increased vertical spacing for clarity
+                character.x = currentX + index * siblingSpacing;
+                character.y = 100 + gen * generationSpacing;
             });
             
             // Update current X for next house group with padding
-            currentX += houseMembers.length * 220 + 150; // Increased padding between houses
+            currentX += houseMembers.length * siblingSpacing + 100; // Add extra padding between houses
         });
     });
     
@@ -374,133 +374,18 @@ function positionNodesImproved(rootNodes, characterMap) {
     generationGroups.forEach(characters => {
         if (characters.length > 0) {
             const lastChar = characters[characters.length - 1];
-            totalWidth = Math.max(totalWidth, lastChar.x + 200);
+            totalWidth = Math.max(totalWidth, lastChar.x + 100);
         }
     });
     
     // Now adjust positions for marriages/partnerships
-    adjustMarriagePositionsRectangular(characterMap);
+    adjustMarriagePositions(characterMap);
     
     // Final pass: adjust position of nodes to prevent overlapping
-    preventNodeOverlapRectangular(generationGroups);
+    preventNodeOverlap(generationGroups);
     
-    // Find the bounds of the tree to center it properly
-    let minX = Infinity, maxX = -Infinity;
-    let minY = Infinity, maxY = -Infinity;
-    
-    treeNodes = Array.from(characterMap.values());
-    treeNodes.forEach(node => {
-        minX = Math.min(minX, node.x - 90); // Half of rectangle width
-        maxX = Math.max(maxX, node.x + 90);
-        minY = Math.min(minY, node.y - 20); // Half of rectangle height
-        maxY = Math.max(maxY, node.y + 20);
-    });
-    
-    // Calculate the center point of the tree
-    const treeCenterX = (minX + maxX) / 2;
-    const treeCenterY = (minY + maxY) / 2;
-    
-    // Calculate the SVG center - assuming width and height are defined globally
-    // If not defined, use reasonable defaults
-    const svgWidth = width || 1000;
-    const svgHeight = height || 800;
-    const svgCenterX = svgWidth / 2;
-    const svgCenterY = svgHeight / 3; // Position in the top third for better layout
-    
-    // Calculate necessary offset to center the tree
-    const offsetX = svgCenterX - treeCenterX;
-    const offsetY = svgCenterY - treeCenterY;
-    
-    // Apply offset to all nodes
-    treeNodes.forEach(node => {
-        node.x += offsetX;
-        node.y += offsetY;
-    });
-    
-    // Create links array after final positioning
+    // Create nodes and links arrays
     createNodesAndLinks(characterMap);
-    
-    console.log("Tree positioned with bounds:", {minX, maxX, minY, maxY, 
-                                               treeCenterX, treeCenterY, 
-                                               offsetX, offsetY});
-}
-
-/**
- * Adjust positions for marriages with rectangular nodes
- */
-function adjustMarriagePositionsRectangular(characterMap) {
-    // Identify all partnerships
-    const partnerships = [];
-    characterMap.forEach(character => {
-        if (character.partners && character.partners.length > 0) {
-            character.partners.forEach(partnerId => {
-                // Avoid duplicates by only processing partnerships where this character has smaller ID
-                if (character.id < partnerId) {
-                    partnerships.push({
-                        person1: character,
-                        person2: characterMap.get(partnerId)
-                    });
-                }
-            });
-        }
-    });
-    
-    // Position partners next to each other
-    partnerships.forEach(partnership => {
-        const { person1, person2 } = partnership;
-        
-        // Find their common children
-        const commonChildren = person1.children.filter(child => 
-            person2.children.includes(child)
-        );
-        
-        // Calculate average position of both partners
-        const avgX = (person1.x + person2.x) / 2;
-        
-        // Reposition both partners with appropriate spacing for rectangles
-        person1.x = avgX - 120; // Spacing for rectangular nodes
-        person2.x = avgX + 120;
-        
-        // If they have common children, adjust those too
-        if (commonChildren.length > 0) {
-            const childrenWidth = (commonChildren.length - 1) * 220; // Spacing for rectangles
-            const startX = avgX - childrenWidth / 2;
-            
-            commonChildren.forEach((child, index) => {
-                child.x = startX + index * 220;
-            });
-        }
-    });
-}
-
-/**
- * Prevent node overlap for rectangular nodes
- */
-function preventNodeOverlapRectangular(generationGroups) {
-    generationGroups.forEach(characters => {
-        // Sort by X position
-        characters.sort((a, b) => a.x - b.x);
-        
-        // Check for overlaps and adjust
-        for (let i = 1; i < characters.length; i++) {
-            const prevChar = characters[i-1];
-            const currChar = characters[i];
-            
-            // Minimum distance needed for rectangular nodes
-            const minDistance = 220; // Width plus spacing
-            
-            if (currChar.x - prevChar.x < minDistance) {
-                // Shift current character to the right
-                const shift = minDistance - (currChar.x - prevChar.x);
-                currChar.x += shift;
-                
-                // Propagate the shift to all characters to the right
-                for (let j = i + 1; j < characters.length; j++) {
-                    characters[j].x += shift;
-                }
-            }
-        }
-    });
 }
 
 /**
@@ -684,6 +569,26 @@ function createNodesAndLinks(characterMap) {
  * Create the D3 visualization
  */
 function createVisualization() {
+    // Create SVG defs for gradients first
+    const defs = svg.append("defs");
+
+    // Create a diagonal gradient for mixed-house nodes
+    defs.append("linearGradient")
+        .attr("id", "mixed-house-gradient")
+        .attr("gradientUnits", "userSpaceOnUse")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
+        .attr("y2", "100%")
+        .selectAll("stop")
+        .data([
+            {offset: "0%", color: "var(--royal-gold-light, #F8E39C)"},
+            {offset: "100%", color: "var(--royal-gold, #D4AF37)"}
+        ])
+        .enter().append("stop")
+        .attr("offset", d => d.offset)
+        .attr("stop-color", d => d.color);
+    
     // Create links
     const links = linksGroup.selectAll(".link-path")
         .data(treeLinks)
@@ -718,13 +623,17 @@ function createVisualization() {
         .attr("dy", "0.35em") // Adjust text vertical alignment
         .text(d => d.name);
     
-    // Initialize zoom behavior
+    // Initialize zoom behavior BEFORE using it
     initZoomBehavior();
     
-    // Schedule a proper initial view after a brief delay
-    // to ensure all elements are rendered
+    // Don't call resetView immediately - let the timeout handle it
     setTimeout(() => {
-        resetView();
+        // Check if we have valid nodes with positions before attempting to reset view
+        if (treeNodes && treeNodes.length > 0 && 
+            typeof treeNodes[0].x === 'number' && 
+            typeof treeNodes[0].y === 'number') {
+            resetView();
+        }
         
         // Add transition class to show the visualization is loaded
         document.querySelector('.tree-visualization').classList.add('fully-loaded');
@@ -1244,10 +1153,18 @@ function initSearch() {
  * Center the view on a specific character
  */
 function centerOnCharacter(character) {
+    // Ensure character has valid coordinates
+    if (!character || typeof character.x !== 'number' || typeof character.y !== 'number') {
+        console.error("Cannot center on character with invalid coordinates", character);
+        return;
+    }
+    
     // Get the actual SVG dimensions
     const svgElement = document.getElementById("family-tree-svg");
-    const svgWidth = svgElement.clientWidth;
-    const svgHeight = svgElement.clientHeight;
+    if (!svgElement) return;
+    
+    const svgWidth = svgElement.clientWidth || 800;  // Fallback width
+    const svgHeight = svgElement.clientHeight || 600;  // Fallback height
     
     // Calculate scale (keep current or use default)
     const scale = currentTransform ? currentTransform.k : 0.7;
