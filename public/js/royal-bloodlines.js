@@ -390,7 +390,7 @@ function renderTimeline() {
 }
 
 /**
- * Render the bloodlines visualization
+ * Modified renderBloodlines function to avoid duplicates
  * @param {Object} data - Processed bloodlines data
  */
 function renderBloodlines(data) {
@@ -410,6 +410,9 @@ function renderBloodlines(data) {
     connectionContainer.style.zIndex = '0';
     contentElement.appendChild(connectionContainer);
     
+    // Track which people have already been rendered to avoid duplicates
+    const renderedPeople = new Set();
+    
     // Render generations
     data.generations.forEach((generationPeople, genIndex) => {
         if (generationPeople.length === 0) return;
@@ -427,33 +430,48 @@ function renderBloodlines(data) {
         const generationPeopleContainer = document.createElement('div');
         generationPeopleContainer.className = 'generation-people';
         
+        // Filter out people who have already been rendered in previous generations
+        const unrenderedPeople = generationPeople.filter(person => !renderedPeople.has(person.id));
+        
         // Organize people by families where possible
-        const familyGroups = organizeByFamilies(generationPeople, data.personMap);
+        const familyGroups = organizeByFamilies(unrenderedPeople, data.personMap);
+        
+        // Filter out family groups that only contain already rendered people
+        const validFamilyGroups = familyGroups.filter(group => 
+            group.members.some(id => !renderedPeople.has(id))
+        );
         
         // If there are organized family groups, render them
-        if (familyGroups.length > 0) {
+        if (validFamilyGroups.length > 0) {
             // Render each family group
-            familyGroups.forEach(familyGroup => {
-                const famGroup = renderFamilyGroup(familyGroup, data.personMap);
+            validFamilyGroups.forEach(familyGroup => {
+                const famGroup = renderFamilyGroup(familyGroup, data.personMap, renderedPeople);
                 generationPeopleContainer.appendChild(famGroup);
+                
+                // Mark all members of this group as rendered
+                familyGroup.members.forEach(id => renderedPeople.add(id));
             });
             
-            // Render any ungrouped people
-            const ungrouped = generationPeople.filter(person => 
-                !familyGroups.some(group => 
+            // Render any ungrouped people who haven't been rendered yet
+            const ungrouped = unrenderedPeople.filter(person => 
+                !validFamilyGroups.some(group => 
                     group.members.includes(person.id)
-                )
+                ) && !renderedPeople.has(person.id)
             );
             
             ungrouped.forEach(person => {
                 const personCard = createPersonCard(person);
                 generationPeopleContainer.appendChild(personCard);
+                renderedPeople.add(person.id);
             });
         } else {
-            // If no family grouping, just render all people in this generation
-            generationPeople.forEach(person => {
-                const personCard = createPersonCard(person);
-                generationPeopleContainer.appendChild(personCard);
+            // If no family grouping, just render all unrendered people in this generation
+            unrenderedPeople.forEach(person => {
+                if (!renderedPeople.has(person.id)) {
+                    const personCard = createPersonCard(person);
+                    generationPeopleContainer.appendChild(personCard);
+                    renderedPeople.add(person.id);
+                }
             });
         }
         
@@ -468,64 +486,96 @@ function renderBloodlines(data) {
 }
 
 /**
- * Organize people in a generation into family groups
+ * Improved organizeByFamilies function to better handle multiple relationships
  * @param {Array} people - People in a generation
  * @param {Map} personMap - Map of all people by ID
  * @returns {Array} - Array of family groups
  */
 function organizeByFamilies(people, personMap) {
     const familyGroups = [];
-    const assignedPeople = new Set();
     
-    // First group by nuclear families (partners and their children)
+    // First pass - identify partners and group them
     people.forEach(person => {
-        if (assignedPeople.has(person.id)) return;
+        // Skip if already added to a partnership group
+        if (familyGroups.some(group => 
+            group.type === 'partnership' && 
+            group.members.includes(person.id) &&
+            group.primaryPerson !== person.id // Allow a person to be primary in their own group
+        )) {
+            return;
+        }
         
-        // Check if this person has partners in the same generation
+        // Find all partners of this person from the same generation
         const sameGenPartners = person.partners.filter(partnerId => {
             const partner = personMap.get(partnerId);
             return partner && partner.generation === person.generation;
         });
         
         if (sameGenPartners.length > 0) {
-            // Create a family group
-            const members = [person.id, ...sameGenPartners];
-            
-            // Mark all members as assigned
-            members.forEach(id => assignedPeople.add(id));
-            
-            familyGroups.push({
-                primaryPerson: person.id,
-                members: members,
-                type: 'partnership'
+            // Create a family group for each partnership
+            // This avoids one person with multiple partners creating a single huge family
+            sameGenPartners.forEach(partnerId => {
+                // Check if this specific partnership is already represented
+                const partnershipExists = familyGroups.some(group => 
+                    group.type === 'partnership' && 
+                    group.members.includes(person.id) && 
+                    group.members.includes(partnerId)
+                );
+                
+                if (!partnershipExists) {
+                    familyGroups.push({
+                        primaryPerson: person.id,
+                        members: [person.id, partnerId],
+                        type: 'partnership'
+                    });
+                }
             });
         }
     });
     
-    // Then group siblings if they're not already in family groups
+    // Then group siblings if they're not already in partnership groups
     people.forEach(person => {
-        if (assignedPeople.has(person.id)) return;
+        // Skip if already in a partnership group as primary
+        if (familyGroups.some(group => 
+            group.type === 'partnership' && 
+            group.primaryPerson === person.id
+        )) {
+            return;
+        }
         
-        // Find siblings in the same generation
+        // Find siblings in the same generation who aren't in partnership groups
         const sameGenSiblings = person.siblings.filter(siblingId => {
             const sibling = personMap.get(siblingId);
             return sibling && 
                    sibling.generation === person.generation && 
-                   !assignedPeople.has(siblingId);
+                   !familyGroups.some(group => 
+                       group.type === 'partnership' && 
+                       group.primaryPerson === siblingId
+                   );
         });
         
         if (sameGenSiblings.length > 0) {
-            // Create a sibling group
-            const members = [person.id, ...sameGenSiblings];
+            // Check if any of these siblings are already in a sibling group
+            const existingSiblingGroup = familyGroups.find(group => 
+                group.type === 'siblings' && 
+                (group.members.includes(person.id) || 
+                 sameGenSiblings.some(id => group.members.includes(id)))
+            );
             
-            // Mark all members as assigned
-            members.forEach(id => assignedPeople.add(id));
-            
-            familyGroups.push({
-                primaryPerson: person.id,
-                members: members,
-                type: 'siblings'
-            });
+            if (existingSiblingGroup) {
+                // Add this person and their siblings to the existing group
+                const newMembers = [person.id, ...sameGenSiblings].filter(id => 
+                    !existingSiblingGroup.members.includes(id)
+                );
+                existingSiblingGroup.members.push(...newMembers);
+            } else {
+                // Create a new sibling group
+                familyGroups.push({
+                    primaryPerson: person.id,
+                    members: [person.id, ...sameGenSiblings],
+                    type: 'siblings'
+                });
+            }
         }
     });
     
@@ -533,24 +583,29 @@ function organizeByFamilies(people, personMap) {
 }
 
 /**
- * Render a family group
+ * Modified renderFamilyGroup function that accounts for already rendered people
  * @param {Object} familyGroup - The family group to render
  * @param {Map} personMap - Map of all people by ID
+ * @param {Set} renderedPeople - Set of already rendered people IDs
  * @returns {HTMLElement} - The rendered family group element
  */
-function renderFamilyGroup(familyGroup, personMap) {
+function renderFamilyGroup(familyGroup, personMap, renderedPeople) {
     const groupElement = document.createElement('div');
     groupElement.className = 'family-group';
     
     const membersContainer = document.createElement('div');
     membersContainer.className = 'family-members';
     
-    // Render each member of the family
+    // Render each member of the family who hasn't been rendered yet
     familyGroup.members.forEach(memberId => {
-        const person = personMap.get(memberId);
-        if (person) {
-            const personCard = createPersonCard(person);
-            membersContainer.appendChild(personCard);
+        if (!renderedPeople.has(memberId)) {
+            const person = personMap.get(memberId);
+            if (person) {
+                const personCard = createPersonCard(person);
+                membersContainer.appendChild(personCard);
+                // Mark this person as rendered
+                renderedPeople.add(memberId);
+            }
         }
     });
     
@@ -653,7 +708,7 @@ function createPersonCard(person) {
 }
 
 /**
- * Draw connection lines between related people
+ * Draw connection lines between related people, accounting for possible element absence
  * @param {Array} people - All people in the dataset
  * @param {Map} personMap - Map of all people by ID
  * @param {SVGElement} svgContainer - SVG container to draw in
@@ -714,13 +769,15 @@ function drawConnectionLines(people, personMap, svgContainer) {
             
             // Skip if already drawn
             if (drawnConnections.has(connectionId)) return;
-            drawnConnections.add(connectionId);
             
             const partner = personMap.get(partnerId);
             if (!partner) return;
             
             const partnerElement = document.querySelector(`.person-card[data-id="${partnerId}"]`);
-            if (!partnerElement) return;
+            if (!partnerElement) return; // Skip if partner element doesn't exist
+            
+            // Now we can add the connection ID since we've verified both elements exist
+            drawnConnections.add(connectionId);
             
             // Draw the connection
             drawConnection(
