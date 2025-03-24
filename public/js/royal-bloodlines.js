@@ -137,7 +137,7 @@ function loadBloodlinesData() {
 }
 
 /**
- * Process the raw data to create a structured representation of bloodlines
+ * Updated processBloodlinesData function for negative generation support
  * @param {Array} data - The raw data from JSON
  * @returns {Object} - Processed data structure optimized for rendering
  */
@@ -228,18 +228,20 @@ function processBloodlinesData(data) {
         });
     });
     
-    // Calculate generations
+    // Calculate generations - now supporting negative generations
     assignGenerations(Array.from(personMap.values()));
     
     // Find earliest and latest birth years
     const earliestBirthYear = Math.min(...data.map(p => p.birth_year || 9999));
     const latestBirthYear = Math.max(...data.map(p => p.birth_year || 0));
     
-    // Group people by generation
-    const generations = [];
-    const maxGeneration = Math.max(...Array.from(personMap.values()).map(p => p.generation || 0));
+    // Group people by generation including negative numbers
+    const minGeneration = Math.min(...Array.from(personMap.values()).map(p => p.generation));
+    const maxGeneration = Math.max(...Array.from(personMap.values()).map(p => p.generation));
     
-    for (let i = 0; i <= maxGeneration; i++) {
+    // Create a sparse array with indices from minGeneration to maxGeneration
+    const generations = [];
+    for (let i = minGeneration; i <= maxGeneration; i++) {
         generations[i] = Array.from(personMap.values())
             .filter(p => p.generation === i)
             .sort((a, b) => (a.birth_year || 0) - (b.birth_year || 0));
@@ -249,6 +251,7 @@ function processBloodlinesData(data) {
         people: Array.from(personMap.values()),
         personMap: personMap,
         generations: generations,
+        minGeneration: minGeneration,
         maxGeneration: maxGeneration,
         earliestBirthYear: earliestBirthYear,
         latestBirthYear: latestBirthYear
@@ -256,27 +259,33 @@ function processBloodlinesData(data) {
 }
 
 /**
- * Assign generation numbers to all people in the dataset
+ * Updated assignGenerations function that supports negative generation numbers
  * @param {Array} people - Array of person objects
  */
 function assignGenerations(people) {
-    // First check if any people have explicitly defined generations
-    const peopleWithExplicitGen = people.filter(p => p.generation !== undefined);
+    // First, identify root people (those without parents)
+    const rootPeople = people.filter(p => !p.parent_1 && !p.parent_2);
     
-    // If we have explicit generations defined, respect those
+    // Initialize the personMap for lookups
+    const personMap = new Map(people.map(p => [p.id, p]));
+    
+    // Check for explicitly defined generations
+    const peopleWithExplicitGen = people.filter(p => p.generation !== undefined);
     if (peopleWithExplicitGen.length > 0) {
         console.log(`Found ${peopleWithExplicitGen.length} people with explicit generations`);
     }
     
-    // Then identify root people (those without parents) who don't have explicit generations
-    const rootPeople = people.filter(p => 
-        (!p.parent_1 && !p.parent_2) && 
-        p.generation === undefined
-    );
+    // Set any explicitly defined generations first
+    peopleWithExplicitGen.forEach(person => {
+        // Ensure explicit generations are respected
+        console.log(`Setting explicit generation ${person.generation} for ${person.name} (${person.id})`);
+    });
     
     // Assign generation 0 to root people without explicit generation
     rootPeople.forEach(person => {
-        person.generation = 0;
+        if (person.generation === undefined) {
+            person.generation = 0;
+        }
     });
     
     // Helper function to assign generations recursively
@@ -297,9 +306,29 @@ function assignGenerations(people) {
         }
     }
     
-    // Assign generations to all descendants of root people
-    const personMap = new Map(people.map(p => [p.id, p]));
+    // Helper function to assign generations to parents (backwards)
+    function assignParentGenerations(personId, personMap, childGeneration) {
+        const person = personMap.get(personId);
+        if (!person) return;
+        
+        const parents = [person.parent_1, person.parent_2].filter(p => p);
+        
+        parents.forEach(parentId => {
+            const parent = personMap.get(parentId);
+            if (!parent) return;
+            
+            // If parent has no generation yet or its generation is not less than the child's
+            if (parent.generation === undefined || parent.generation >= childGeneration - 1) {
+                // Parent should be one generation less
+                parent.generation = childGeneration - 1;
+                
+                // Recursively assign generations to grandparents
+                assignParentGenerations(parentId, personMap, parent.generation);
+            }
+        });
+    }
     
+    // First pass: Assign child generations starting from root people
     rootPeople.forEach(person => {
         if (person.children && person.children.length > 0) {
             person.children.forEach(childId => {
@@ -308,8 +337,12 @@ function assignGenerations(people) {
         }
     });
     
+    // Second pass: Assign parent generations (backwards) for any with explicit generations
+    peopleWithExplicitGen.forEach(person => {
+        assignParentGenerations(person.id, personMap, person.generation);
+    });
+    
     // Handle any people who still don't have generations assigned
-    // (possibly due to data inconsistencies)
     people.forEach(person => {
         if (person.generation === undefined) {
             // If no generation was assigned, estimate based on birth year
@@ -331,6 +364,11 @@ function assignGenerations(people) {
             }
         }
     });
+
+    // Debugging output
+    const minGeneration = Math.min(...people.map(p => p.generation));
+    const maxGeneration = Math.max(...people.map(p => p.generation));
+    console.log(`Generation range: ${minGeneration} to ${maxGeneration}`);
 }
 
 /**
@@ -390,7 +428,7 @@ function renderTimeline() {
 }
 
 /**
- * Modified renderBloodlines function to avoid duplicates
+ * Update renderBloodlines to support negative generations
  * @param {Object} data - Processed bloodlines data
  */
 function renderBloodlines(data) {
@@ -413,38 +451,50 @@ function renderBloodlines(data) {
     // Track which people have already been rendered to avoid duplicates
     const renderedPeople = new Set();
     
-    // Render generations
-    data.generations.forEach((generationPeople, genIndex) => {
-        if (generationPeople.length === 0) return;
+    // Find the generation range
+    const minGeneration = Math.min(...data.people.map(p => p.generation));
+    const maxGeneration = Math.max(...data.people.map(p => p.generation));
+    
+    // Create an array of all possible generations including negatives
+    const allGenerations = [];
+    for (let i = minGeneration; i <= maxGeneration; i++) {
+        allGenerations.push(i);
+    }
+    
+    // Reorganize generations data to support negative generations
+    const generationsByNumber = new Map();
+    allGenerations.forEach(genNumber => {
+        generationsByNumber.set(genNumber, data.people.filter(p => p.generation === genNumber));
+    });
+    
+    // Render generations in order from earliest to latest
+    allGenerations.forEach(genNumber => {
+        const generationPeople = generationsByNumber.get(genNumber);
+        if (!generationPeople || generationPeople.length === 0) return;
         
         const generationGroup = document.createElement('div');
         generationGroup.className = 'generation-group';
         
-        // Add generation label
+        // Add generation label - negative numbers supported
         const generationLabel = document.createElement('h3');
         generationLabel.className = 'generation-label';
-        generationLabel.textContent = `Generation ${genIndex}`;
+        generationLabel.textContent = `Generation ${genNumber}`;
         generationGroup.appendChild(generationLabel);
         
         // Create container for people in this generation
         const generationPeopleContainer = document.createElement('div');
         generationPeopleContainer.className = 'generation-people';
         
-        // Filter out people who have already been rendered in previous generations
+        // Filter out people who have already been rendered
         const unrenderedPeople = generationPeople.filter(person => !renderedPeople.has(person.id));
         
         // Organize people by families where possible
         const familyGroups = organizeByFamilies(unrenderedPeople, data.personMap);
         
-        // Filter out family groups that only contain already rendered people
-        const validFamilyGroups = familyGroups.filter(group => 
-            group.members.some(id => !renderedPeople.has(id))
-        );
-        
         // If there are organized family groups, render them
-        if (validFamilyGroups.length > 0) {
+        if (familyGroups.length > 0) {
             // Render each family group
-            validFamilyGroups.forEach(familyGroup => {
+            familyGroups.forEach(familyGroup => {
                 const famGroup = renderFamilyGroup(familyGroup, data.personMap, renderedPeople);
                 generationPeopleContainer.appendChild(famGroup);
                 
@@ -454,7 +504,7 @@ function renderBloodlines(data) {
             
             // Render any ungrouped people who haven't been rendered yet
             const ungrouped = unrenderedPeople.filter(person => 
-                !validFamilyGroups.some(group => 
+                !familyGroups.some(group => 
                     group.members.includes(person.id)
                 ) && !renderedPeople.has(person.id)
             );

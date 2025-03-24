@@ -167,7 +167,14 @@ CONTROLS SECTION
 .house-filter[data-house="falkrest"].active {
     border-color: var(--house-falkrest);
     color: var(--house-falkrest);
-    background: rgba(74, 151, 68, 0.1);
+    background: rgba(233, 125, 117, 0.1);
+}
+
+.house-filter[data-house="emberlyn"]:hover,
+.house-filter[data-house="emberlyn"].active {
+    border-color: var(--house-emberlyn);
+    color: var(--house-emberlyn);
+    background: rgba(221, 108, 108, 0.1);
 }
 
 .house-filter[data-house="veltaris"]:hover,
@@ -1069,4 +1076,16 @@ HEADER VISIBILITY FIXES
 /* Fix nav items */
 .royal-bloodlines-page .court-nav ul {
     display: flex !important;
+}
+
+.banner-emblem {
+opacity: 1 !important;
+}
+
+.royal-title {
+opacity: 1 !important;
+}
+
+.royal-subtitle {
+opacity: 1 !important;
 }
