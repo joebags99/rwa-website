@@ -260,10 +260,21 @@ function processBloodlinesData(data) {
  * @param {Array} people - Array of person objects
  */
 function assignGenerations(people) {
-    // First, identify root people (those without parents)
-    const rootPeople = people.filter(p => !p.parent_1 && !p.parent_2);
+    // First check if any people have explicitly defined generations
+    const peopleWithExplicitGen = people.filter(p => p.generation !== undefined);
     
-    // Assign generation 0 to root people
+    // If we have explicit generations defined, respect those
+    if (peopleWithExplicitGen.length > 0) {
+        console.log(`Found ${peopleWithExplicitGen.length} people with explicit generations`);
+    }
+    
+    // Then identify root people (those without parents) who don't have explicit generations
+    const rootPeople = people.filter(p => 
+        (!p.parent_1 && !p.parent_2) && 
+        p.generation === undefined
+    );
+    
+    // Assign generation 0 to root people without explicit generation
     rootPeople.forEach(person => {
         person.generation = 0;
     });
@@ -1197,6 +1208,418 @@ function filterByHouse(house) {
         }
     });
 }
+
+/**
+ * Enhanced Timeline Navigation Functionality
+ * This adds interactive features to the royal bloodlines timeline
+ */
+
+//==============================================================================
+// TIMELINE ENHANCEMENT FUNCTIONS
+//==============================================================================
+
+/**
+ * Initialize the enhanced timeline functionality
+ */
+function initializeEnhancedTimeline() {
+    // Set up timeline navigation
+    setupTimelineNavigation();
+    
+    // Create timeline cursor indicator
+    createTimelineCursor();
+    
+    // Add position indicator
+    createTimelinePositionIndicator();
+    
+    // Set up timeline scroll synchronization
+    setupTimelineScrollSync();
+}
+
+/**
+ * Set up interactive timeline navigation
+ */
+function setupTimelineNavigation() {
+    const decadeMarkers = document.querySelectorAll('.decade-marker');
+    
+    decadeMarkers.forEach(marker => {
+        marker.addEventListener('click', e => {
+            const year = parseInt(marker.getAttribute('data-year'));
+            navigateToYear(year);
+            
+            // Highlight the clicked marker
+            highlightTimelineMarker(marker);
+        });
+        
+        // Add hover effects for better UX
+        marker.addEventListener('mouseenter', () => {
+            marker.style.borderLeftWidth = '3px';
+            marker.style.cursor = 'pointer';
+            
+            // Show year tooltip on hover
+            const tooltip = document.createElement('div');
+            tooltip.className = 'year-tooltip';
+            tooltip.textContent = marker.getAttribute('data-year');
+            tooltip.style.position = 'absolute';
+            tooltip.style.bottom = '45px';
+            tooltip.style.left = '50%';
+            tooltip.style.transform = 'translateX(-50%)';
+            tooltip.style.backgroundColor = 'rgba(212, 175, 55, 0.9)';
+            tooltip.style.color = '#000';
+            tooltip.style.padding = '3px 8px';
+            tooltip.style.borderRadius = '4px';
+            tooltip.style.fontSize = '0.8rem';
+            tooltip.style.fontWeight = 'bold';
+            tooltip.style.zIndex = '10';
+            tooltip.style.whiteSpace = 'nowrap';
+            marker.appendChild(tooltip);
+        });
+        
+        marker.addEventListener('mouseleave', () => {
+            marker.style.borderLeftWidth = marker.classList.contains('century-marker') ? '2px' : '1px';
+            
+            // Remove tooltip on mouse leave
+            const tooltip = marker.querySelector('.year-tooltip');
+            if (tooltip) {
+                marker.removeChild(tooltip);
+            }
+        });
+    });
+}
+
+/**
+ * Navigate to a specific year in the bloodlines visualization
+ * @param {number} year - The year to navigate to
+ */
+function navigateToYear(year) {
+    const { processedData } = bloodlinesData;
+    const people = processedData.people;
+    
+    // Find people born close to this year (within a decade)
+    const yearRange = 10;
+    const relevantPeople = people.filter(person => 
+        person.birth_year >= year - yearRange && 
+        person.birth_year <= year + yearRange
+    );
+    
+    if (relevantPeople.length > 0) {
+        // Sort by closest to the target year
+        relevantPeople.sort((a, b) => 
+            Math.abs(a.birth_year - year) - Math.abs(b.birth_year - year)
+        );
+        
+        // Find the HTML element for the person closest to this year
+        const targetPerson = relevantPeople[0];
+        const targetElement = document.querySelector(`.person-card[data-id="${targetPerson.id}"]`);
+        
+        if (targetElement) {
+            // Scroll to the element
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Briefly highlight the matching person cards
+            highlightPeopleByYear(year, yearRange);
+            
+            // Update timeline cursor position
+            updateTimelineCursor(year);
+            
+            // Show a message about the current year view
+            showYearNavMessage(year, relevantPeople.length);
+        } else {
+            // If no element found, just show a navigation message
+            showYearNavMessage(year, relevantPeople.length, true);
+        }
+    } else {
+        // If no people found in this year range
+        showYearNavMessage(year, 0, true);
+    }
+}
+
+/**
+ * Highlight people born within a specific year range
+ * @param {number} year - The target year
+ * @param {number} range - The range around the target year
+ */
+function highlightPeopleByYear(year, range) {
+    const { processedData } = bloodlinesData;
+    const people = processedData.people;
+    
+    // Find all people born in this range
+    const relevantPeopleIds = people
+        .filter(person => 
+            person.birth_year >= year - range && 
+            person.birth_year <= year + range
+        )
+        .map(person => person.id);
+    
+    // Remove existing year highlights
+    document.querySelectorAll('.year-highlight').forEach(el => {
+        el.classList.remove('year-highlight');
+    });
+    
+    // Add highlights to matching person cards
+    relevantPeopleIds.forEach(id => {
+        const element = document.querySelector(`.person-card[data-id="${id}"]`);
+        if (element) {
+            element.classList.add('year-highlight');
+            
+            // Add a pulse animation
+            element.style.animation = 'pulseHighlight 1.5s ease-in-out';
+            
+            // Remove animation after it completes
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 1500);
+        }
+    });
+}
+
+/**
+ * Highlight a timeline marker
+ * @param {HTMLElement} marker - The marker to highlight
+ */
+function highlightTimelineMarker(marker) {
+    // Remove existing highlights
+    document.querySelectorAll('.marker-active').forEach(el => {
+        el.classList.remove('marker-active');
+    });
+    
+    // Add highlight to this marker
+    marker.classList.add('marker-active');
+}
+
+/**
+ * Show a message about the year navigation
+ * @param {number} year - The target year
+ * @param {number} count - Number of people found
+ * @param {boolean} notFound - Whether people were found
+ */
+function showYearNavMessage(year, count, notFound = false) {
+    // Create or get the message element
+    let messageEl = document.getElementById('timeline-message');
+    
+    if (!messageEl) {
+        messageEl = document.createElement('div');
+        messageEl.id = 'timeline-message';
+        messageEl.className = 'timeline-message';
+        
+        const viewport = document.querySelector('.bloodlines-viewport');
+        viewport.appendChild(messageEl);
+    }
+    
+    // Set the message text
+    if (notFound) {
+        messageEl.textContent = `No records found near year ${year}`;
+        messageEl.classList.add('no-results');
+    } else {
+        messageEl.textContent = `Year ${year}: ${count} people born within a decade`;
+        messageEl.classList.remove('no-results');
+    }
+    
+    // Show the message
+    messageEl.classList.add('show');
+    
+    // Hide after a few seconds
+    setTimeout(() => {
+        messageEl.classList.remove('show');
+    }, 3000);
+}
+
+/**
+ * Create a timeline cursor to show current position
+ */
+function createTimelineCursor() {
+    const timeline = document.querySelector('.timeline-decades');
+    
+    const cursor = document.createElement('div');
+    cursor.className = 'timeline-cursor';
+    cursor.innerHTML = '<div class="cursor-arrow"></div>';
+    timeline.appendChild(cursor);
+    
+    // Set initial position based on the current date
+    updateTimelineCursor(bloodlinesData.timeline.earliestYear + 100);
+}
+
+/**
+ * Update the position of the timeline cursor
+ * @param {number} year - The year to position the cursor at
+ */
+function updateTimelineCursor(year) {
+    const cursor = document.querySelector('.timeline-cursor');
+    if (!cursor) return;
+    
+    const { earliestYear, pixelsPerYear } = bloodlinesData.timeline;
+    
+    // Calculate position
+    const position = (year - earliestYear) * pixelsPerYear;
+    
+    // Update position
+    cursor.style.left = `${position}px`;
+}
+
+/**
+ * Create a position indicator that shows visible years in the viewport
+ */
+function createTimelinePositionIndicator() {
+    const timeline = document.querySelector('.timeline-navigation');
+    
+    const indicator = document.createElement('div');
+    indicator.className = 'timeline-position-indicator';
+    timeline.appendChild(indicator);
+}
+
+/**
+ * Update the timeline position indicator
+ * @param {number} startYear - Start year of visible range
+ * @param {number} endYear - End year of visible range
+ */
+function updateTimelinePositionIndicator(startYear, endYear) {
+    const indicator = document.querySelector('.timeline-position-indicator');
+    if (!indicator) return;
+    
+    const { earliestYear, pixelsPerYear } = bloodlinesData.timeline;
+    
+    // Calculate positions
+    const startPos = (startYear - earliestYear) * pixelsPerYear;
+    const endPos = (endYear - earliestYear) * pixelsPerYear;
+    const width = endPos - startPos;
+    
+    // Update indicator
+    indicator.style.left = `${startPos}px`;
+    indicator.style.width = `${width}px`;
+}
+
+/**
+ * Set up synchronization between timeline and bloodlines scroll
+ */
+function setupTimelineScrollSync() {
+    const timelineContainer = document.querySelector('.timeline-scale');
+    const bloodlinesViewport = document.querySelector('.bloodlines-viewport');
+    
+    // Sync bloodlines scroll to timeline
+    timelineContainer.addEventListener('scroll', () => {
+        // Prevent recursive triggering
+        if (timelineContainer.isScrolling) return;
+        
+        bloodlinesViewport.isScrolling = true;
+        
+        // Get visible range in the timeline
+        const visibleYears = calculateVisibleYearRange(timelineContainer);
+        
+        // Update cursor to center of visible range
+        const midYear = (visibleYears.start + visibleYears.end) / 2;
+        updateTimelineCursor(midYear);
+        
+        bloodlinesViewport.isScrolling = false;
+    });
+    
+    // Track visible people while scrolling the bloodlines view
+    bloodlinesViewport.addEventListener('scroll', () => {
+        // Prevent recursive triggering
+        if (bloodlinesViewport.isScrolling) return;
+        
+        timelineContainer.isScrolling = true;
+        
+        // Find the most visible person cards
+        const visiblePeople = findVisiblePeople(bloodlinesViewport);
+        
+        if (visiblePeople.length > 0) {
+            // Calculate the average birth year of visible people
+            const averageBirthYear = visiblePeople.reduce((sum, p) => sum + p.birthYear, 0) / visiblePeople.length;
+            
+            // Update the timeline cursor
+            updateTimelineCursor(averageBirthYear);
+            
+            // Scroll the timeline to make the cursor visible
+            const { earliestYear, pixelsPerYear } = bloodlinesData.timeline;
+            const cursorPosition = (averageBirthYear - earliestYear) * pixelsPerYear;
+            
+            timelineContainer.scrollLeft = cursorPosition - (timelineContainer.clientWidth / 2);
+            
+            // Find min and max birth years of visible people
+            const minYear = Math.min(...visiblePeople.map(p => p.birthYear));
+            const maxYear = Math.max(...visiblePeople.map(p => p.birthYear));
+            
+            // Update position indicator
+            updateTimelinePositionIndicator(minYear, maxYear);
+        }
+        
+        timelineContainer.isScrolling = false;
+    });
+}
+
+/**
+ * Calculate the visible year range in the timeline
+ * @param {HTMLElement} timelineContainer - The timeline container element
+ * @returns {Object} - Object with start and end years
+ */
+function calculateVisibleYearRange(timelineContainer) {
+    const { earliestYear, pixelsPerYear } = bloodlinesData.timeline;
+    
+    const scrollLeft = timelineContainer.scrollLeft;
+    const containerWidth = timelineContainer.clientWidth;
+    
+    const startYear = earliestYear + (scrollLeft / pixelsPerYear);
+    const endYear = earliestYear + ((scrollLeft + containerWidth) / pixelsPerYear);
+    
+    return {
+        start: Math.round(startYear),
+        end: Math.round(endYear)
+    };
+}
+
+/**
+ * Find the most visible person cards in the viewport
+ * @param {HTMLElement} viewport - The bloodlines viewport element
+ * @returns {Array} - Array of objects with person IDs and birth years
+ */
+function findVisiblePeople(viewport) {
+    const cards = document.querySelectorAll('.person-card');
+    const viewportRect = viewport.getBoundingClientRect();
+    const visiblePeople = [];
+    
+    // Calculate the viewport center
+    const viewportCenterY = viewportRect.top + (viewportRect.height / 2);
+    
+    cards.forEach(card => {
+        const cardRect = card.getBoundingClientRect();
+        
+        // If card is visible
+        if (cardRect.top < viewportRect.bottom && cardRect.bottom > viewportRect.top) {
+            const personId = card.getAttribute('data-id');
+            const person = bloodlinesData.processedData.personMap.get(personId);
+            
+            if (person && person.birth_year) {
+                // Calculate the vertical distance from viewport center
+                const distanceFromCenter = Math.abs(cardRect.top + (cardRect.height / 2) - viewportCenterY);
+                
+                visiblePeople.push({
+                    id: personId,
+                    birthYear: person.birth_year,
+                    distance: distanceFromCenter
+                });
+            }
+        }
+    });
+    
+    // Sort by distance from center
+    visiblePeople.sort((a, b) => a.distance - b.distance);
+    
+    // Return top results
+    return visiblePeople.slice(0, 5);
+}
+
+// Add the timeline initialization to the main initialization
+document.addEventListener('DOMContentLoaded', function() {
+    // The existing initialization will be called first
+    
+    // Wait for the bloodlines data to be loaded
+    const checkDataInterval = setInterval(() => {
+        if (bloodlinesData.processedData) {
+            clearInterval(checkDataInterval);
+            // Now initialize the enhanced timeline
+            initializeEnhancedTimeline();
+        }
+    }, 500);
+});
 
 //==============================================================================
 // VIEWPORT NAVIGATION AND ZOOM

@@ -14,7 +14,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -32,7 +32,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -50,7 +50,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -68,7 +68,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -86,7 +86,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -104,7 +104,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -122,7 +122,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -140,7 +140,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -158,12 +158,13 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
     "id": "D001",
     "name": "Tyrick Reed",
+    "generation": 2, 
     "birth_year": 966,
     "death_year": 1030,
     "parent_1": null,
@@ -176,7 +177,7 @@
     "description": null,
     "house_color_a": "--house-minor",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -194,13 +195,14 @@
     "description": null,
     "house_color_a": "--house-draven",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
     "id": "E001",
     "name": "Gwendolyn Eldran",
-    "birth_year": 960,
+    "generation": 3,
+    "birth_year": 1000,
     "death_year": 1069,
     "parent_1": null,
     "parent_2": null,
@@ -212,7 +214,7 @@
     "description": null,
     "house_color_a": "--house-eldran",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -230,12 +232,13 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
     "id": "E002",
     "name": "Alarice Eldran",
+    "generation": 3, 
     "birth_year": 1024,
     "death_year": null,
     "parent_1": "E001",
@@ -284,7 +287,7 @@
     "description": null,
     "house_color_a": "--house-thornefield",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -302,7 +305,7 @@
     "description": null,
     "house_color_a": "--house-astralor",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -320,7 +323,7 @@
     "description": null,
     "house_color_a": "--house-astralor",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -338,7 +341,7 @@
     "description": null,
     "house_color_a": "--house-astralor",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -356,12 +359,13 @@
     "description": null,
     "house_color_a": "--house-astralor",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
     "id": "M001",
     "name": "Thaelon Faebrook",
+    "generation": 2,
     "birth_year": 1028,
     "death_year": null,
     "parent_1": null,
@@ -374,12 +378,13 @@
     "description": null,
     "house_color_a": "--house-minor",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
     "id": "F011",
     "name": "Zara Callista",
+    "generation": 3,
     "birth_year": 1020,
     "death_year": 1059,
     "parent_1": null,
@@ -398,6 +403,7 @@
   {
     "id": "A002",
     "name": "Kasya Astralor",
+    "generation": 3,
     "birth_year": 1035,
     "death_year": null,
     "parent_1": "A001",
@@ -416,6 +422,7 @@
   {
     "id": "F012",
     "name": "Senua Oldblood",
+    "generation": 3, 
     "birth_year": 1040,
     "death_year": 1086,
     "parent_1": null,
@@ -470,6 +477,7 @@
   {
     "id": "V002",
     "name": "Sharn Veltaris",
+    "generation": 3, 
     "birth_year": 1054,
     "death_year": null,
     "parent_1": "V001",
@@ -506,6 +514,7 @@
   {
     "id": "F015",
     "name": "Circe Alysides",
+    "generation": 3,
     "birth_year": 1055,
     "death_year": null,
     "parent_1": null,
@@ -554,7 +563,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-foreign",
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -572,7 +581,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-foreign",
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -590,12 +599,13 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-veltaris",
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": "A003"
   },
   {
     "id": "A003",
     "name": "Selara Astralor",
+    "generation": 4, 
     "birth_year": 1076,
     "death_year": null,
     "parent_1": "A008",
@@ -608,7 +618,7 @@
     "description": null,
     "house_color_a": "--house-astralor",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": "F019"
   },
   {
@@ -626,7 +636,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -644,7 +654,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-eldran",
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -662,7 +672,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-eldran",
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -680,7 +690,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-eldran",
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -698,7 +708,7 @@
     "description": null,
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-eldran",
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -716,7 +726,7 @@
     "description": null,
     "house_color_a": "--house-draven",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -734,7 +744,7 @@
     "description": null,
     "house_color_a": "--house-foreign",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -752,7 +762,7 @@
     "description": null,
     "house_color_a": "--house-veltaris",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -770,7 +780,7 @@
     "description": null,
     "house_color_a": "--house-veltaris",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -788,7 +798,7 @@
     "description": null,
     "house_color_a": "--house-veltaris",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   },
   {
@@ -806,7 +816,7 @@
     "description": null,
     "house_color_a": "--house-veltaris",
     "house_color_b": null,
-    "portrait": "images/unknown.png",
+    "portrait": "assets/images/npcs/unknown.png",
     "betrothed": null
   }
 ]

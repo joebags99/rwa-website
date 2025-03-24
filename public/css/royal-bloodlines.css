@@ -28,7 +28,7 @@ House Colors & Variables
     --royal-crimson: #C30A3D;
     
     /* Timeline Variables */
-    --timeline-height: 60px;
+    --timeline-height: 80px; /* Increased from 60px */
     --timeline-color: rgba(212, 175, 55, 0.3);
     --timeline-marker-color: rgba(212, 175, 55, 0.6);
     
@@ -239,7 +239,7 @@ BLOODLINES CONTAINER
 .timeline-scale {
     height: 100%;
     position: relative;
-    padding: 0 var(--spacing-md);
+    padding: 20px var(--spacing-md); /* Increased from 10px */
 }
 
 .timeline-decades {
@@ -260,7 +260,7 @@ BLOODLINES CONTAINER
 .decade-marker::before {
     content: attr(data-year);
     position: absolute;
-    top: -24px;
+    top: -28px; /* Adjust from -24px for better vertical spacing */
     left: -20px;
     color: var(--royal-gold);
     font-family: var(--font-headers);
@@ -270,7 +270,7 @@ BLOODLINES CONTAINER
 }
 
 .decade-marker.century-marker {
-    height: 24px;
+    height: 30px; /* Increased from 24px */
     border-left: 2px solid var(--timeline-marker-color);
 }
 
@@ -779,6 +779,189 @@ PERSON DETAILS DRAWER
 
 /* 
 ======================
+ENHANCED TIMELINE STYLES
+======================
+*/
+
+/* Timeline container */
+.timeline-navigation {
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--royal-gold);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-scale {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    padding: 20px var(--spacing-md); /* Increased from 10px */
+}
+
+/* Timeline markers */
+.decade-marker {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.decade-marker:hover {
+    border-left-width: 3px !important;
+    border-left-color: var(--royal-gold-light) !important;
+}
+
+.decade-marker.century-marker:hover {
+    border-left-width: 3px !important;
+}
+
+.decade-marker::before {
+    transition: all 0.2s ease;
+    top: -28px; /* Adjust from -24px for better vertical spacing */
+}
+
+.decade-marker:hover::before {
+    color: var(--royal-gold-light);
+    font-weight: bold;
+    transform: translateY(-5px);
+}
+
+/* Active marker state */
+.decade-marker.marker-active {
+    border-left-color: var(--royal-gold-light) !important;
+    border-left-width: 3px !important;
+}
+
+.decade-marker.marker-active::before {
+    color: var(--royal-gold-light);
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* Timeline cursor */
+.timeline-cursor {
+    position: absolute;
+    top: 50%;
+    height: 30px;
+    width: 2px;
+    background-color: var(--royal-crimson);
+    transform: translateY(-50%);
+    z-index: 10;
+    pointer-events: none;
+    transition: left 0.3s ease-out;
+    box-shadow: 0 0 10px rgba(195, 10, 61, 0.5);
+}
+
+.cursor-arrow {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--royal-crimson);
+    transform: translateX(-50%);
+}
+
+/* Timeline position indicator */
+.timeline-position-indicator {
+    position: absolute;
+    bottom: 0;
+    height: 5px;
+    background: rgba(212, 175, 55, 0.3);
+    pointer-events: none;
+    z-index: 5;
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+/* Year tooltip */
+.year-tooltip {
+    opacity: 0;
+    animation: fadeIn 0.2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px) translateX(-50%); }
+    to { opacity: 1; transform: translateY(0) translateX(-50%); }
+}
+
+/* Timeline message */
+.timeline-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: rgba(212, 175, 55, 0.9);
+    color: #000;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-family: var(--font-headers);
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    text-align: center;
+    transition: transform 0.4s ease;
+    pointer-events: none;
+}
+
+.timeline-message.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.timeline-message.no-results {
+    background: rgba(195, 10, 61, 0.8);
+    color: white;
+}
+
+/* Person highlight based on year */
+.person-card.year-highlight {
+    border-color: var(--royal-gold-light);
+    border-width: 2px;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    z-index: 10;
+}
+
+@keyframes pulseHighlight {
+    0% { box-shadow: 0 0 0 rgba(212, 175, 55, 0.7); }
+    50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.9); }
+    100% { box-shadow: 0 0 0 rgba(212, 175, 55, 0.7); }
+}
+
+/* Timeline scrollbar */
+.timeline-scale::-webkit-scrollbar {
+    height: 10px;
+    background: rgba(15, 15, 26, 0.8);
+}
+
+.timeline-scale::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.3);
+    border-radius: 5px;
+}
+
+.timeline-scale::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .timeline-cursor {
+        height: 20px;
+    }
+    
+    .decade-marker::before {
+        font-size: 0.7rem;
+        top: -20px;
+    }
+    
+    .timeline-message {
+        width: 80%;
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
+
+/* 
+======================
 RESPONSIVE DESIGN
 ======================
 */
@@ -852,4 +1035,38 @@ RESPONSIVE DESIGN
     .person-details-drawer {
         max-height: 85vh;
     }
+}
+
+/* 
+======================
+HEADER VISIBILITY FIXES
+======================
+*/
+
+/* Override the initial hidden state from crimson-court.css */
+.royal-bloodlines-page .royal-header {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: none !important;
+}
+
+/* Ensure the return to court link is visible */
+.royal-bloodlines-page .return-court {
+    opacity: 1 !important;
+    color: var(--royal-gold);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Make sure the text is visible */
+.royal-bloodlines-page .return-court span {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Fix nav items */
+.royal-bloodlines-page .court-nav ul {
+    display: flex !important;
 }
