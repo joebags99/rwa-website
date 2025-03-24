@@ -1,0 +1,855 @@
+/* 
+=======================================
+ROYAL BLOODLINES - STYLING
+=======================================
+*/
+
+/* 
+House Colors & Variables 
+*/
+:root {
+    /* House Colors */
+    --house-falkrest: #4A9744;       /* Brightened green */
+    --house-veltaris: #2A6BC2;       /* Brightened blue */
+    --house-thornefield: #D8B968;    /* Brightened gold */
+    --house-astralor: #40D0D0;       /* Brightened teal */
+    --house-eldran: #9F80EB;         /* Brightened purple */
+    --house-emberlyn: #DD6C6C;       /* Brightened red */
+    --house-draven: #8D1515;         /* Brightened dark red */
+    --house-foreign: #8A88A8;        /* Brightened gray */
+    --house-minor: #898989;          /* Brightened dark gray */
+
+    /* Royal Colors */
+    --royal-black: #0F0F1A;
+    --royal-dark: #1A1A2E;
+    --royal-gold: #D4AF37;
+    --royal-gold-light: #F8E39C;
+    --royal-silver: #C0C0C0;
+    --royal-crimson: #C30A3D;
+    
+    /* Timeline Variables */
+    --timeline-height: 60px;
+    --timeline-color: rgba(212, 175, 55, 0.3);
+    --timeline-marker-color: rgba(212, 175, 55, 0.6);
+    
+    /* Card Variables */
+    --card-width: 280px;
+    --card-min-height: 120px;
+    --card-border-radius: 6px;
+    --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --card-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.3);
+    
+    /* Spacing Variables */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2.5rem;
+    
+    /* Animation Variables */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* 
+======================
+GENERAL LAYOUT
+======================
+*/
+.royal-bloodlines-page {
+    background-color: var(--royal-black);
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(195, 10, 61, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(42, 107, 194, 0.05) 0%, transparent 50%),
+        url('../assets/images/dark-texture.png');
+    background-blend-mode: overlay;
+    min-height: 100vh;
+}
+
+.royal-bloodlines-content {
+    padding: var(--spacing-md);
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* 
+======================
+CONTROLS SECTION
+======================
+*/
+.bloodlines-controls {
+    background: rgba(15, 15, 26, 0.7);
+    border: 1px solid var(--royal-gold);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.view-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.royal-btn {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--royal-gold);
+    border: 1px solid var(--royal-gold);
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+}
+
+.royal-btn:hover {
+    background: rgba(212, 175, 55, 0.3);
+    color: var(--royal-gold-light);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.royal-btn i {
+    margin-right: 0.4rem;
+}
+
+.filter-controls {
+    flex-grow: 1;
+    margin-left: var(--spacing-md);
+}
+
+.filter-title {
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+    font-size: 1rem;
+    margin-bottom: var(--spacing-xs);
+    text-align: center;
+}
+
+.house-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.house-filter {
+    background: transparent;
+    color: var(--royal-silver);
+    border: 1px solid var(--royal-silver);
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    font-family: var(--font-headers);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+}
+
+.house-filter:hover {
+    color: var(--royal-gold-light);
+    border-color: var(--royal-gold);
+}
+
+.house-filter.active {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--royal-gold);
+    border-color: var(--royal-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* House-specific filter buttons */
+.house-filter[data-house="falkrest"]:hover,
+.house-filter[data-house="falkrest"].active {
+    border-color: var(--house-falkrest);
+    color: var(--house-falkrest);
+    background: rgba(74, 151, 68, 0.1);
+}
+
+.house-filter[data-house="veltaris"]:hover,
+.house-filter[data-house="veltaris"].active {
+    border-color: var(--house-veltaris);
+    color: var(--house-veltaris);
+    background: rgba(42, 107, 194, 0.1);
+}
+
+.house-filter[data-house="astralor"]:hover,
+.house-filter[data-house="astralor"].active {
+    border-color: var(--house-astralor);
+    color: var(--house-astralor);
+    background: rgba(64, 208, 208, 0.1);
+}
+
+.house-filter[data-house="eldran"]:hover,
+.house-filter[data-house="eldran"].active {
+    border-color: var(--house-eldran);
+    color: var(--house-eldran);
+    background: rgba(159, 128, 235, 0.1);
+}
+
+.house-filter[data-house="thornefield"]:hover,
+.house-filter[data-house="thornefield"].active {
+    border-color: var(--house-thornefield);
+    color: var(--house-thornefield);
+    background: rgba(216, 185, 104, 0.1);
+}
+
+.house-filter[data-house="draven"]:hover,
+.house-filter[data-house="draven"].active {
+    border-color: var(--house-draven);
+    color: var(--house-draven);
+    background: rgba(141, 21, 21, 0.1);
+}
+
+.house-filter[data-house="foreign"]:hover,
+.house-filter[data-house="foreign"].active {
+    border-color: var(--house-foreign);
+    color: var(--house-foreign);
+    background: rgba(138, 136, 168, 0.1);
+}
+
+/* 
+======================
+BLOODLINES CONTAINER
+======================
+*/
+.bloodlines-container {
+    background: rgba(15, 15, 26, 0.5);
+    border: 2px solid var(--royal-gold);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Timeline Navigation */
+.timeline-navigation {
+    height: var(--timeline-height);
+    background: rgba(15, 15, 26, 0.8);
+    border-bottom: 1px solid var(--royal-gold);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.timeline-scale {
+    height: 100%;
+    position: relative;
+    padding: 0 var(--spacing-md);
+}
+
+.timeline-decades {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.decade-marker {
+    position: absolute;
+    height: 16px;
+    border-left: 1px solid var(--timeline-color);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.decade-marker::before {
+    content: attr(data-year);
+    position: absolute;
+    top: -24px;
+    left: -20px;
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+    font-size: 0.8rem;
+    width: 40px;
+    text-align: center;
+}
+
+.decade-marker.century-marker {
+    height: 24px;
+    border-left: 2px solid var(--timeline-marker-color);
+}
+
+.decade-marker.century-marker::before {
+    font-weight: bold;
+    color: var(--royal-gold-light);
+}
+
+/* Bloodlines Viewport */
+.bloodlines-viewport {
+    height: 70vh;
+    min-height: 600px;
+    overflow: auto;
+    position: relative;
+    background-color: var(--royal-black);
+    background-image: 
+        radial-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+        radial-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+}
+
+.bloodlines-content {
+    transform-origin: 0 0;
+    min-width: 100%;
+    min-height: 100%;
+    position: relative;
+    padding: var(--spacing-lg);
+}
+
+/* 
+======================
+LOADING INDICATOR
+======================
+*/
+.loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+}
+
+.crown-loader {
+    width: 70px;
+    height: 50px;
+    margin: 0 auto var(--spacing-md);
+    background-image: url("../assets/images/crown.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.7));
+    animation: floatCrown 2s ease-in-out infinite alternate;
+}
+
+@keyframes floatCrown {
+    0% {
+        transform: translateY(0) rotate(-3deg);
+    }
+    100% {
+        transform: translateY(-10px) rotate(3deg);
+    }
+}
+
+/* 
+======================
+BLOODLINE CARDS & CONNECTIONS
+======================
+*/
+/* Generation Group */
+.generation-group {
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.generation-label {
+    color: var(--royal-gold);
+    font-family: var(--font-titles);
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    opacity: 0.7;
+}
+
+.generation-people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-left: 30px;
+}
+
+/* Family Group within a generation */
+.family-group {
+    margin-bottom: var(--spacing-md);
+    padding-left: var(--spacing-md);
+    border-left: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+.family-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+/* Person Card */
+.person-card {
+    width: var(--card-width);
+    background: rgba(15, 15, 26, 0.9);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: var(--card-border-radius);
+    padding: var(--spacing-md);
+    position: relative;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    box-shadow: var(--card-shadow);
+    min-height: var(--card-min-height);
+}
+
+.person-card:hover {
+    border-color: var(--royal-gold);
+    transform: translateY(-3px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.person-card-content {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.card-portrait {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    flex-shrink: 0;
+}
+
+.card-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all var(--transition-medium);
+}
+
+.person-card:hover .card-portrait {
+    border-color: var(--royal-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.card-info {
+    flex-grow: 1;
+}
+
+.card-name {
+    font-family: var(--font-headers);
+    color: var(--royal-gold-light);
+    font-size: 1.2rem;
+    margin: 0 0 var(--spacing-xs);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.card-dates {
+    color: var(--royal-silver);
+    font-size: 0.85rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.card-title {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-bottom: var(--spacing-xs);
+}
+
+.card-houses {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: var(--spacing-xs);
+}
+
+.card-house-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* House color indicators */
+.house-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+    opacity: 0.8;
+}
+
+.house-secondary-indicator {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 5px;
+    border-radius: 0 var(--card-border-radius) 0 0;
+    opacity: 0.8;
+}
+
+/* House color classes */
+.house-falkrest { background-color: var(--house-falkrest); }
+.house-veltaris { background-color: var(--house-veltaris); }
+.house-thornefield { background-color: var(--house-thornefield); }
+.house-astralor { background-color: var(--house-astralor); }
+.house-eldran { background-color: var(--house-eldran); }
+.house-emberlyn { background-color: var(--house-emberlyn); }
+.house-draven { background-color: var(--house-draven); }
+.house-foreign { background-color: var(--house-foreign); }
+.house-minor { background-color: var(--house-minor); }
+
+/* Connection lines */
+.connection-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.connection-line {
+    stroke: rgba(212, 175, 55, 0.4);
+    stroke-width: 2;
+    fill: none;
+    transition: all var(--transition-medium);
+}
+
+.connection-line.partnership {
+    stroke-dasharray: 5,3;
+}
+
+.connection-line.highlighted {
+    stroke: var(--royal-gold);
+    stroke-width: 3;
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+}
+
+/* Person who is deceased */
+.person-deceased .card-name {
+    color: rgba(212, 175, 55, 0.6);
+}
+
+.person-deceased .card-portrait img {
+    filter: grayscale(0.7) brightness(0.8);
+}
+
+/* Highlight & Filter Effects */
+.person-card.filtered-out {
+    opacity: 0.3;
+    filter: grayscale(0.8);
+}
+
+.person-card.highlighted {
+    border-color: var(--royal-gold);
+    border-width: 2px;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    opacity: 1 !important;
+    filter: none !important;
+    z-index: 10;
+}
+
+/* 
+======================
+PERSON DETAILS DRAWER
+======================
+*/
+.person-details-drawer {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    max-height: 75vh;
+    background: rgba(15, 15, 26, 0.97);
+    border-top: 2px solid var(--royal-gold);
+    box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    transition: bottom var(--transition-slow);
+    overflow-y: auto;
+}
+
+.person-details-drawer.open {
+    bottom: 0;
+}
+
+.close-drawer-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--royal-gold);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    z-index: 10;
+}
+
+.close-drawer-btn:hover {
+    color: var(--royal-gold-light);
+    transform: scale(1.1);
+}
+
+.person-details-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+.person-header {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    align-items: center;
+}
+
+.person-portrait {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid var(--royal-gold);
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0;
+}
+
+.person-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.person-main-info {
+    flex-grow: 1;
+}
+
+.person-name {
+    font-family: var(--font-titles);
+    color: var(--royal-gold);
+    font-size: 2rem;
+    margin: 0 0 var(--spacing-sm);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.person-houses {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.house-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: white;
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.person-lifespan, .person-title {
+    color: var(--royal-silver);
+    margin-bottom: var(--spacing-xs);
+}
+
+.person-lifespan i, .person-title i {
+    color: var(--royal-gold);
+    margin-right: 0.5rem;
+}
+
+/* Aliases section */
+.person-aliases {
+    margin-bottom: var(--spacing-lg);
+}
+
+.person-aliases h3, .person-family h3 {
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    display: inline-block;
+}
+
+.person-aliases h3::after, .person-family h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--royal-gold), transparent);
+}
+
+.aliases-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.aliases-list li {
+    color: var(--royal-silver);
+    font-style: italic;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Family connections section */
+.family-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.family-section {
+    margin-bottom: var(--spacing-md);
+}
+
+.family-section h4 {
+    color: var(--royal-gold-light);
+    font-family: var(--font-headers);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 5px;
+}
+
+.family-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.family-list li {
+    color: var(--royal-silver);
+    margin-bottom: var(--spacing-xs);
+    padding-left: 1rem;
+    position: relative;
+}
+
+.family-list li::before {
+    content: '•';
+    color: var(--royal-gold);
+    position: absolute;
+    left: 0;
+}
+
+.family-list li a {
+    color: inherit;
+    text-decoration: none;
+    transition: all var(--transition-medium);
+}
+
+.family-list li a:hover {
+    color: var(--royal-gold-light);
+    text-decoration: underline;
+}
+
+/* Action buttons */
+.person-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    justify-content: center;
+}
+
+.highlight-btn {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--royal-gold);
+    border: 1px solid var(--royal-gold);
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+}
+
+.reset-btn {
+    background: rgba(195, 10, 61, 0.2);
+    color: var(--royal-silver);
+    border: 1px solid var(--royal-crimson);
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+}
+
+.reset-btn:hover {
+    background: rgba(195, 10, 61, 0.3);
+    color: white;
+    border-color: var(--royal-crimson);
+    box-shadow: 0 0 10px rgba(195, 10, 61, 0.3);
+}
+
+/* 
+======================
+RESPONSIVE DESIGN
+======================
+*/
+@media (max-width: 1200px) {
+    .bloodlines-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-controls {
+        margin-left: 0;
+        margin-top: var(--spacing-sm);
+    }
+    
+    .person-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .person-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --card-width: 250px;
+    }
+    
+    .house-filters {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: var(--spacing-xs);
+    }
+    
+    .bloodlines-viewport {
+        height: 60vh;
+    }
+    
+    .person-card-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .family-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .person-portrait {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --card-width: 100%;
+    }
+    
+    .bloodlines-viewport {
+        height: 50vh;
+    }
+    
+    .view-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .person-details-drawer {
+        max-height: 85vh;
+    }
+}

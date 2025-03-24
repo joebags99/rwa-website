@@ -473,7 +473,7 @@
     "birth_year": 1054,
     "death_year": null,
     "parent_1": "V001",
-    "parent_2": null,
+    "parent_2": "V003",
     "main_house": "Veltaris",
     "secondary_house": "Foreign",
     "title": null,
@@ -481,7 +481,7 @@
     "aliases": [],
     "description": null,
     "house_color_a": "--house-veltaris",
-    "house_color_b": null,
+    "house_color_b": "--house-foreign",
     "portrait": "assets/images/npcs/V002.png",
     "betrothed": null
   },
