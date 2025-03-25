@@ -1,0 +1,208 @@
+/* 
+======================
+SEARCH BAR & SUGGESTIONS
+======================
+*/
+
+.search-container {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+    margin: var(--spacing-sm) 0;
+}
+
+.search-input {
+    width: 100%;
+    background: rgba(15, 15, 26, 0.8);
+    border: 1px solid var(--royal-gold);
+    color: var(--royal-silver);
+    padding: 0.8rem 2.5rem;
+    font-family: var(--font-headers);
+    font-size: 1rem;
+    border-radius: 6px;
+    transition: all var(--transition-medium);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--royal-gold-light);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    color: var(--royal-gold-light);
+}
+
+.search-input::placeholder {
+    color: rgba(192, 192, 192, 0.6);
+    font-style: italic;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--royal-gold);
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--royal-silver);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    padding: 0.2rem;
+    line-height: 1;
+    display: none;
+}
+
+.search-clear-btn:hover {
+    color: var(--royal-gold-light);
+}
+
+/* Suggestions container */
+.search-suggestions {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(15, 15, 26, 0.95);
+    border: 1px solid var(--royal-gold);
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: none;
+}
+
+/* Suggestion items */
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.suggestion-house {
+    width: 8px;
+    height: 100%;
+    min-height: 40px;
+    margin-right: 1rem;
+    border-radius: 2px;
+}
+
+.suggestion-info {
+    flex: 1;
+}
+
+.suggestion-name {
+    color: var(--royal-gold-light);
+    font-family: var(--font-headers);
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.suggestion-details {
+    color: var(--royal-silver);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-results {
+    padding: 1rem;
+    text-align: center;
+    color: var(--royal-silver);
+    font-style: italic;
+}
+
+/* Scrollbar for suggestions */
+.search-suggestions::-webkit-scrollbar {
+    width: 8px;
+    background: rgba(15, 15, 26, 0.8);
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.5);
+}
+
+/* Highlighted search result */
+.person-card.search-highlight {
+    border: 2px solid var(--royal-gold-light);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.7);
+    z-index: 20;
+    animation: searchPulse 1.5s ease-in-out;
+}
+
+@keyframes searchPulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.7);
+    }
+    50% { 
+        transform: scale(1.05); 
+        box-shadow: 0 0 40px rgba(212, 175, 55, 0.9);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-container {
+        max-width: 100%;
+    }
+    
+    .suggestion-name {
+        font-size: 0.9rem;
+    }
+    
+    .suggestion-details {
+        font-size: 0.75rem;
+    }
+}
+
+/* Adaptive layout for controls */
+@media (min-width: 992px) {
+    .bloodlines-controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .search-container {
+        flex: 1;
+        margin: 0 var(--spacing-md);
+        order: 2;
+    }
+    
+    .view-controls {
+        order: 1;
+    }
+    
+    .filter-controls {
+        flex-basis: 100%;
+        order: 3;
+        margin-top: var(--spacing-md);
+    }
+}
