@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Quiz - Roll With Advantage</title>
+    <meta name="description" content="Discover which noble house of Ederia you belong to with our interactive personality quiz.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/house-quiz.css">
+    <link rel="stylesheet" href="css/discord-banner.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+    
+    <!-- Chart.js for Results Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="loading house-quiz-page">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="dice-loader">
+            <svg class="dice" viewBox="0 0 100 100">
+                <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
+                <path class="dice-number" d="M50 55 A5 5 0 1 1 50 45 A5 5 0 1 1 50 55z"/>
+            </svg>
+        </div>
+        <p class="loading-text">Rolling initiative...</p>
+    </div>
+    
+    <!-- Magical Particles Background -->
+    <div class="particles-container"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
+                    <div class="logo-glow"></div>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="articles.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
+                    <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="tools.html" class="nav-item active" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero parallax-section house-quiz-hero">
+            <div class="hero-background"></div>
+            <div class="magical-overlay"></div>
+            <div class="container">
+                <div class="hero-content reveal-content">
+                    <h1 class="magical-text">Which Ederian House Do You Belong To?</h1>
+                    <p class="animated-text">Discover your true allegiance among the five great houses that shape the realm of Ederia.</p>
+                    <div class="magic-line"></div>
+                </div>
+            </div>
+            <div class="section-divider purple-divider"></div>
+        </section>
+
+        <!-- Quiz Container -->
+        <section class="quiz-container section-appear">
+            <div class="container">
+                <!-- Introduction Screen -->
+                <div class="quiz-screen intro-screen active" id="intro-screen">
+                    <div class="section-header">
+                        <div class="section-icon purple-icon"><i class="fas fa-flag"></i></div>
+                        <h2 class="magical-heading purple-heading">The Ederian Houses Quiz</h2>
+                        <div class="magical-underline purple-underline"></div>
+                        <p>Answer a series of questions to discover which of the five noble houses of Ederia would claim you as one of their own. Will you align with House Ravencrest, House Lionheart, House Eagleclaw, House Staghorn, or House Foxhaven?</p>
+                    </div>
+                    
+                    <div class="house-crests-display">
+                        <div class="house-crest-preview">
+                            <div class="house-crest ravencrest">
+                                <div class="crest-glow"></div>
+                            </div>
+                            <div class="house-crest lionheart">
+                                <div class="crest-glow"></div>
+                            </div>
+                            <div class="house-crest eagleclaw">
+                                <div class="crest-glow"></div>
+                            </div>
+                            <div class="house-crest staghorn">
+                                <div class="crest-glow"></div>
+                            </div>
+                            <div class="house-crest foxhaven">
+                                <div class="crest-glow"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="intro-content">
+                        <p>The five great houses of Ederia each embody different values and strengths. Your answers will reveal which house's traditions and approach align most closely with your own character.</p>
+                        
+                        <div class="house-values">
+                            <div class="value">
+                                <i class="fas fa-brain"></i>
+                                <h4>Cunning</h4>
+                            </div>
+                            <div class="value">
+                                <i class="fas fa-fist-raised"></i>
+                                <h4>Strength</h4>
+                            </div>
+                            <div class="value">
+                                <i class="fas fa-eye"></i>
+                                <h4>Wisdom</h4>
+                            </div>
+                            <div class="value">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>Honor</h4>
+                            </div>
+                            <div class="value">
+                                <i class="fas fa-balance-scale"></i>
+                                <h4>Justice</h4>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary magical-btn purple-btn" id="start-quiz">
+                            <span class="btn-text"><i class="fas fa-play"></i> Begin Your Journey</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Question Template -->
+                <div class="quiz-screen question-screen" id="question-screen">
+                    <div class="question-header">
+                        <div class="progress-container">
+                            <div class="progress-bar" id="quiz-progress"></div>
+                        </div>
+                        <h3 class="question-number">Question <span id="current-question">1</span> of <span id="total-questions">10</span></h3>
+                    </div>
+                    
+                    <div class="question-content">
+                        <div class="question-text" id="question-text">
+                            <!-- Question text will be inserted here -->
+                        </div>
+                        
+                        <div class="answer-options" id="answer-options">
+                            <!-- Answer options will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div class="quiz-screen results-screen" id="results-screen">
+                    <div class="section-header">
+                        <div class="section-icon purple-icon"><i class="fas fa-flag"></i></div>
+                        <h2 class="magical-heading purple-heading">Your Results</h2>
+                        <div class="magical-underline purple-underline"></div>
+                        <p>The houses have deliberated and your allegiance has been decided!</p>
+                    </div>
+                    
+                    <div class="results-container">
+                        <div class="results-card" id="results-card">
+                            <div class="result-header">
+                                <h3>You belong to</h3>
+                                <h2 id="house-name">House Name</h2>
+                                <div class="match-percentage">
+                                    <span id="match-percent">0</span>% Match
+                                </div>
+                            </div>
+                            
+                            <div class="result-content">
+                                <div class="house-crest-large">
+                                    <img id="house-crest" src="assets/images/houses/placeholder.jpg" alt="House crest">
+                                    <div class="crest-frame"></div>
+                                </div>
+                                
+                                <div class="house-description">
+                                    <p id="house-description">House description will appear here.</p>
+                                    <div class="house-motto">
+                                        <i class="fas fa-quote-left"></i>
+                                        <p id="house-motto">House motto will appear here.</p>
+                                        <i class="fas fa-quote-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="result-footer">
+                                <div class="qr-code-container" id="qr-code"></div>
+                                <p class="share-text">Scan to take the quiz!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="results-analysis">
+                            <h3>Your House Match Breakdown</h3>
+                            <div class="chart-container">
+                                <canvas id="results-chart"></canvas>
+                            </div>
+                            
+                            <div class="results-traits">
+                                <h4>Your House Values</h4>
+                                <div class="traits-grid" id="traits-grid">
+                                    <!-- Traits will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <div class="house-notables">
+                                <h4>Notable Members</h4>
+                                <div id="notable-members">
+                                    <!-- Notable members will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <div class="results-actions">
+                                <button class="btn btn-secondary magical-btn" id="download-results">
+                                    <span class="btn-text"><i class="fas fa-download"></i> Download Results</span>
+                                </button>
+                                <button class="btn btn-tertiary magical-btn purple-btn" id="share-results">
+                                    <span class="btn-text"><i class="fas fa-share-alt"></i> Share Results</span>
+                                </button>
+                                <button class="btn btn-primary magical-btn purple-btn" id="retake-quiz">
+                                    <span class="btn-text"><i class="fas fa-redo"></i> Retake Quiz</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-divider blue-divider"></div>
+        </section>
+
+        <!-- More Quizzes Section -->
+        <section class="more-quizzes section-appear">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon blue-icon"><i class="fas fa-question-circle"></i></div>
+                    <h2 class="magical-heading blue-heading">More Quizzes</h2>
+                    <div class="magical-underline blue-underline"></div>
+                    <p>Continue your adventure with more interactive quizzes and tools!</p>
+                </div>
+                
+                <div class="quizzes-grid">
+                    <div class="quiz-card">
+                        <div class="quiz-image">
+                            <img src="assets/images/quizzes/character-quiz.jpg" alt="Character Quiz">
+                            <div class="quiz-overlay">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Which Crimson Court Character Are You?</h3>
+                            <p>Discover which of the five heirs to the throne of Ederia matches your personality and leadership style.</p>
+                            <a href="character-quiz.html" class="btn btn-secondary magical-btn">
+                                <span class="btn-text">Take the Quiz</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-card">
+                        <div class="quiz-image">
+                            <img src="assets/images/quizzes/class-quiz.jpg" alt="Class Quiz">
+                            <div class="quiz-overlay">
+                                <i class="fas fa-hat-wizard"></i>
+                            </div>
+                        </div>
+                        <div class="quiz-content">
+                            <h3>What D&D Class Are You?</h3>
+                            <p>Are you a mighty warrior, a cunning rogue, or a powerful spellcaster? Find your ideal character class for your next D&D campaign.</p>
+                            <a href="#" class="btn btn-tertiary magical-btn purple-btn">
+                                <span class="btn-text">Coming Soon</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="other-tools">
+                    <h3>Explore Our Other Tools</h3>
+                    <div class="tools-mini-grid">
+                        <a href="dice-roller.html" class="tool-mini-card">
+                            <i class="fas fa-dice-d20"></i>
+                            <span>Dice Roller</span>
+                        </a>
+                        <a href="interactive-map.html" class="tool-mini-card">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Interactive Map</span>
+                        </a>
+                        <a href="tools.html" class="tool-mini-card">
+                            <i class="fas fa-toolbox"></i>
+                            <span>All Tools</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="section-divider light-divider"></div>
+        </section>
+
+        <!-- Discord Community Section -->
+        <section class="newsletter section-appear">
+            <div class="glowing-particles"></div>
+            <div class="container">
+                <div class="section-header light-header">
+                    <div class="section-icon light-icon"><i class="fab fa-discord"></i></div>
+                    <h2 class="magical-heading light-heading">Join Our Community</h2>
+                    <div class="magical-underline light-underline"></div>
+                    <p>Connect with fellow adventurers, discuss episodes, share campaign ideas, and get exclusive D&D content in our Discord server.</p>
+                </div>
+                <div class="discord-banner">
+                    <div class="discord-features">
+                        <div class="discord-feature">
+                            <i class="fas fa-users"></i>
+                            <h3>Meet Players</h3>
+                            <p>Find your next party or campaign</p>
+                        </div>
+                        <div class="discord-feature">
+                            <i class="fas fa-dice-d20"></i>
+                            <h3>Game Resources</h3>
+                            <p>Access maps, character sheets & more</p>
+                        </div>
+                        <div class="discord-feature">
+                            <i class="fas fa-comment-alt"></i>
+                            <h3>Live Discussions</h3>
+                            <p>Chat during episode premieres</p>
+                        </div>
+                    </div>
+                    <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="btn btn-primary magical-btn discord-btn">
+                        <span class="btn-text"><i class="fab fa-discord"></i> Join Our Discord</span>
+                    </a>
+                </div>
+                <div class="scroll-to-top">
+                    <button id="scroll-top-btn" aria-label="Scroll to top">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <p>Roll With Advantage &copy; 2025</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="link-column">
+                            <h4>Content</h4>
+                            <ul>
+                                <li><a href="crimson-court.html">The Crimson Court</a></li>
+                                <li><a href="articles.html">DM Advice</a></li>
+                                <li><a href="meet-the-cast.html">Meet the Cast</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li><a href="dice-roller.html">Dice Roller</a></li>
+                                <li><a href="character-quiz.html">Character Quiz</a></li>
+                                <li><a href="house-quiz.html">House Quiz</a></li>
+                                <li><a href="interactive-map.html">Interactive Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
+                                <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
+                                <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
+                        <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
+                        <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
+                        <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
+                <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Share Modal -->
+    <div class="modal" id="share-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Your Results</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Share your Ederian House with friends!</p>
+                <div class="share-options">
+                    <a href="#" class="share-option twitter" id="share-twitter">
+                        <i class="fab fa-twitter"></i>
+                        <span>Twitter</span>
+                    </a>
+                    <a href="#" class="share-option facebook" id="share-facebook">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </a>
+                    <a href="#" class="share-option reddit" id="share-reddit">
+                        <i class="fab fa-reddit"></i>
+                        <span>Reddit</span>
+                    </a>
+                    <button class="share-option copy" id="share-copy">
+                        <i class="fas fa-link"></i>
+                        <span>Copy Link</span>
+                    </button>
+                </div>
+                <div class="copy-alert" id="copy-alert">Link copied to clipboard!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript - Order is important! -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/house-quiz.js"></script>
+</body>
+</html>
