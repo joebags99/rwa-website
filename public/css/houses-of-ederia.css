@@ -27,6 +27,8 @@ Houses Page Specific Variables
     --emberlyn-color: #CD5C5C;
     --emberlyn-secondary: #FAF0C8;
     --emberlyn-glow: rgba(205, 92, 92, 0.6);
+    --draven-color: #6d0505;
+    --foreign: #706e88;
     
     /* Animation timings */
     --circle-appear-duration: 1.2s;
