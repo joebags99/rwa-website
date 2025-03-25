@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roll With Advantage - D&D Actual Play & DM Advice</title>
-    <meta name="description" content="Roll With Advantage features The Crimson Court campaign and expert DM advice for tabletop RPG enthusiasts.">
+    <title>D&D Tools - Roll With Advantage</title>
+    <meta name="description" content="Enhance your D&D experience with our interactive tools, including a dice roller, character quiz, house quiz, and interactive map.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
@@ -17,13 +17,13 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="/css/discord-banner.css">
-
+    <link rel="stylesheet" href="css/tools.css">
+    <link rel="stylesheet" href="css/discord-banner.css">
     
     <!-- Font Awesome from CDN -->
     <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
 </head>
-<body class="loading">
+<body class="loading tools-page">
     <!-- Preloader -->
     <div class="preloader">
         <div class="dice-loader">
@@ -48,11 +48,11 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html" class="active nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="index.html" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
                     <li><a href="crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
                     <li><a href="articles.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
                     <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
-                    <li><a href="tools.html" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                    <li><a href="tools.html" class="nav-item active" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
                 </ul>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -63,48 +63,389 @@
         </div>
     </header>
 
-
-
-
-
-
-
-    <!-- Discord Community Section -->
-<section class="newsletter section-appear">
-    <div class="glowing-particles"></div>
-    <div class="container">
-        <div class="section-header light-header">
-            <div class="section-icon light-icon"><i class="fab fa-discord"></i></div>
-            <h2 class="magical-heading light-heading">Join Our Community</h2>
-            <div class="magical-underline light-underline"></div>
-            <p>Connect with fellow adventurers, discuss episodes, share campaign ideas, and get exclusive D&D content in our Discord server.</p>
-        </div>
-        <div class="discord-banner">
-            <div class="discord-features">
-                <div class="discord-feature">
-                    <i class="fas fa-users"></i>
-                    <h3>Meet Players</h3>
-                    <p>Find your next party or campaign</p>
-                </div>
-                <div class="discord-feature">
-                    <i class="fas fa-dice-d20"></i>
-                    <h3>Game Resources</h3>
-                    <p>Access maps, character sheets & more</p>
-                </div>
-                <div class="discord-feature">
-                    <i class="fas fa-comment-alt"></i>
-                    <h3>Live Discussions</h3>
-                    <p>Chat during episode premieres</p>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero parallax-section tools-hero">
+            <div class="hero-background"></div>
+            <div class="magical-overlay"></div>
+            <div class="floating-dice-container">
+                <!-- Dice will be added by JavaScript -->
+            </div>
+            <div class="container">
+                <div class="hero-content reveal-content">
+                    <h1 class="magical-text">Interactive D&D Tools</h1>
+                    <p class="animated-text">Enhance your tabletop experience with our custom tools designed to bring magic to your gameplay.</p>
+                    <div class="magic-line"></div>
                 </div>
             </div>
-            <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="btn btn-primary magical-btn discord-btn">
-                <span class="btn-text"><i class="fab fa-discord"></i> Join Our Discord</span>
-            </a>
+            <div class="section-divider blue-divider"></div>
+        </section>
+
+        <!-- Tools Overview Section -->
+        <section class="tools-overview section-appear">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon blue-icon"><i class="fas fa-dice-d20"></i></div>
+                    <h2 class="magical-heading blue-heading">Our Custom Tools</h2>
+                    <div class="magical-underline blue-underline"></div>
+                    <p>Discover our suite of free interactive tools created to enhance your D&D adventures and connect with The Crimson Court universe.</p>
+                </div>
+                
+                <!-- Tool Cards Grid -->
+                <div class="tools-grid enhanced">
+                    <!-- Dice Roller Tool Card -->
+                    <div class="tool-card-lg" data-tool="dice">
+                        <div class="card-glint"></div>
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-dice-d20"></i>
+                            </div>
+                            <h3>Dice Roller</h3>
+                        </div>
+                        <div class="tool-preview-lg">
+                            <img src="assets/images/tools/dice-roller-preview.jpg" alt="Dice Roller Screenshot" class="tool-screenshot">
+                            <div class="preview-overlay">
+                                <div class="mini-dice-set">
+                                    <div class="mini-die d20"></div>
+                                    <div class="mini-die d12"></div>
+                                    <div class="mini-die d10"></div>
+                                    <div class="mini-die d8"></div>
+                                    <div class="mini-die d6"></div>
+                                    <div class="mini-die d4"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-content">
+                            <p>Roll any combination of dice with our custom dice roller. Perfect for quick checks or complex rolls during your D&D sessions.</p>
+                            
+                            <h4>Features:</h4>
+                            <ul class="tool-features">
+                                <li><i class="fas fa-check"></i> Roll multiple dice types simultaneously</li>
+                                <li><i class="fas fa-check"></i> Add custom modifiers to your rolls</li>
+                                <li><i class="fas fa-check"></i> Save and reuse common dice combinations</li>
+                                <li><i class="fas fa-check"></i> View your roll history</li>
+                                <li><i class="fas fa-check"></i> Beautiful animations and sound effects</li>
+                            </ul>
+                            
+                            <a href="dice-roller.html" class="btn btn-primary magical-btn blue-btn">
+                                <span class="btn-text"><i class="fas fa-dice"></i> Launch Dice Roller</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Character Quiz Tool Card -->
+                    <div class="tool-card-lg" data-tool="character-quiz">
+                        <div class="card-glint"></div>
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3>Character Quiz</h3>
+                        </div>
+                        <div class="tool-preview-lg">
+                            <img src="assets/images/tools/character-quiz-preview.jpg" alt="Character Quiz Screenshot" class="tool-screenshot">
+                            <div class="preview-overlay">
+                                <div class="character-preview">
+                                    <div class="character-silhouette crown"></div>
+                                    <div class="character-silhouette sword"></div>
+                                    <div class="character-silhouette scroll"></div>
+                                    <div class="character-silhouette shield"></div>
+                                    <div class="character-silhouette wand"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-content">
+                            <p>Discover which Crimson Court heir you're most like! Take our personality quiz to find your royal match and learn about your leadership style.</p>
+                            
+                            <h4>Features:</h4>
+                            <ul class="tool-features">
+                                <li><i class="fas fa-check"></i> 15 thought-provoking scenario questions</li>
+                                <li><i class="fas fa-check"></i> Detailed character match analysis</li>
+                                <li><i class="fas fa-check"></i> Personalized result card with character art</li>
+                                <li><i class="fas fa-check"></i> Downloadable results to share</li>
+                            </ul>
+                            
+                            <a href="character-quiz.html" class="btn btn-secondary magical-btn">
+                                <span class="btn-text"><i class="fas fa-question-circle"></i> Take the Quiz</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- House Quiz Tool Card -->
+                    <div class="tool-card-lg" data-tool="house-quiz">
+                        <div class="card-glint"></div>
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <h3>House Quiz</h3>
+                        </div>
+                        <div class="tool-preview-lg">
+                            <img src="assets/images/tools/house-quiz-preview.jpg" alt="House Quiz Screenshot" class="tool-screenshot">
+                            <div class="preview-overlay">
+                                <div class="house-crests">
+                                    <div class="house-crest raven"></div>
+                                    <div class="house-crest lion"></div>
+                                    <div class="house-crest eagle"></div>
+                                    <div class="house-crest stag"></div>
+                                    <div class="house-crest fox"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-content">
+                            <p>Which noble house of Ederia would you belong to? Discover your house allegiance, from the fierce Ravencrest to the cunning Foxhaven.</p>
+                            
+                            <h4>Features:</h4>
+                            <ul class="tool-features">
+                                <li><i class="fas fa-check"></i> Discover your noble house alignment</li>
+                                <li><i class="fas fa-check"></i> Learn about house values and history</li>
+                                <li><i class="fas fa-check"></i> Receive your personalized house crest</li>
+                                <li><i class="fas fa-check"></i> Download your house membership card</li>
+                                <li><i class="fas fa-check"></i> Compare your results with friends</li>
+                            </ul>
+                            
+                            <a href="house-quiz.html" class="btn btn-tertiary magical-btn purple-btn">
+                                <span class="btn-text"><i class="fas fa-shield-alt"></i> Find Your House</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive Map Tool Card (fixed closing structure) -->
+                    <div class="tool-card-lg" data-tool="map">
+                        <div class="card-glint"></div>
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <h3>Interactive Map</h3>
+                        </div>
+                        <div class="tool-preview-lg">
+                            <img src="assets/images/tools/map-preview.jpg" alt="Interactive Map Screenshot" class="tool-screenshot">
+                            <div class="preview-overlay">
+                                <div class="map-markers">
+                                    <div class="map-marker"></div>
+                                    <div class="map-marker"></div>
+                                    <div class="map-marker"></div>
+                                    <div class="map-pulse"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-content">
+                            <p>Explore the kingdom of Ederia and the broader world of Illica. Discover the secrets of each noble house and the rich lore of this fantasy realm.</p>
+                            
+                            <h4>Features:</h4>
+                            <ul class="tool-features">
+                                <li><i class="fas fa-check"></i> Interactive zoomable fantasy map</li>
+                                <li><i class="fas fa-check"></i> Detailed information on regions and cities</li>
+                                <li><i class="fas fa-check"></i> Political boundaries and noble domains</li>
+                                <li><i class="fas fa-check"></i> Points of interest with historical notes</li>
+                                <li><i class="fas fa-check"></i> Toggleable map layers and search function</li>
+                            </ul>
+                            
+                            <a href="interactive-map.html" class="btn btn-tertiary magical-btn blue-btn">
+                                <span class="btn-text"><i class="fas fa-compass"></i> Explore the Map</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Party Loot Tool Card (now as a separate card) -->
+                    <div class="tool-card-lg" data-tool="party-loot">
+                        <div class="card-glint"></div>
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <h3>Party Loot App</h3>
+                        </div>
+                        <div class="tool-preview-lg">
+                            <img src="assets/images/tools/party-loot-preview.jpg" alt="Party Loot Screenshot" class="tool-screenshot">
+                            <div class="preview-overlay">
+                                <div class="character-preview">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-content">
+                            <p>Party Loot is a free web application designed by a fellow D&D enthusiast to streamline your party's treasure and inventory management.</p>
+                            <h4>Features:</h4>
+                            <ul class="tool-features">
+                                <li><i class="fas fa-check"></i> Maintain precise records of your party's wealth across all denominations, with automatic currency conversion</li>
+                                <li><i class="fas fa-check"></i>  Generate view-only links for party members, allowing them to view the inventory without needing an account</li>
+                                <li><i class="fas fa-check"></i> Locate items swiftly by filtering by owner, type, or search terms</li>
+                            </ul>
+                            
+                            <a href="https://www.partylootapp.com/home.html" target="_blank" class="btn btn-secondary magical-btn">
+                                <span class="btn-text"><i class="fas fa-piggy-bank"></i>Manage Your Loot</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-divider purple-divider"></div>
+        </section>
+
+        <!-- Get Started Section -->
+        <section class="get-started section-appear">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-icon blue-icon"><i class="fas fa-play-circle"></i></div>
+                    <h2 class="magical-heading blue-heading">Ready to Get Started?</h2>
+                    <div class="magical-underline blue-underline"></div>
+                    <p>Choose a tool below to begin your adventure into the world of Roll With Advantage.</p>
+                </div>
+                
+                <div class="get-started-grid">
+                    <a href="dice-roller.html" class="get-started-card">
+                        <div class="gs-icon">
+                            <i class="fas fa-dice-d20"></i>
+                        </div>
+                        <h3>Roll the Dice</h3>
+                        <div class="gs-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="character-quiz.html" class="get-started-card">
+                        <div class="gs-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Find Your Character</h3>
+                        <div class="gs-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="house-quiz.html" class="get-started-card">
+                        <div class="gs-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <h3>Discover Your House</h3>
+                        <div class="gs-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="interactive-map.html" class="get-started-card">
+                        <div class="gs-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h3>Explore the Map</h3>
+                        <div class="gs-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </a>
+
+                    <a href="https://www.partylootapp.com/home.html" target="_blank" class="get-started-card">
+                        <div class="gs-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3>Manage Your Loot</h3>
+                        <div class="gs-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+            <div class="section-divider rainbow-divider"></div>
+        </section>
+
+        <!-- Discord Community Section -->
+        <section class="newsletter section-appear">
+            <div class="glowing-particles"></div>
+            <div class="container">
+                <div class="section-header light-header">
+                    <div class="section-icon light-icon"><i class="fab fa-discord"></i></div>
+                    <h2 class="magical-heading light-heading">Join Our Community</h2>
+                    <div class="magical-underline light-underline"></div>
+                    <p>Connect with fellow adventurers, discuss episodes, share campaign ideas, and get exclusive D&D content in our Discord server.</p>
+                </div>
+                <div class="discord-banner">
+                    <div class="discord-features">
+                        <div class="discord-feature">
+                            <i class="fas fa-users"></i>
+                            <h3>Meet Players</h3>
+                            <p>Find your next party or campaign</p>
+                        </div>
+                        <div class="discord-feature">
+                            <i class="fas fa-dice-d20"></i>
+                            <h3>Game Resources</h3>
+                            <p>Access maps, character sheets & more</p>
+                        </div>
+                        <div class="discord-feature">
+                            <i class="fas fa-comment-alt"></i>
+                            <h3>Live Discussions</h3>
+                            <p>Chat during episode premieres</p>
+                        </div>
+                    </div>
+                    <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="btn btn-primary magical-btn discord-btn">
+                        <span class="btn-text"><i class="fab fa-discord"></i> Join Our Discord</span>
+                    </a>
+                </div>
+                <div class="scroll-to-top">
+                    <button id="scroll-top-btn" aria-label="Scroll to top">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <p>Roll With Advantage &copy; 2025</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="link-column">
+                            <h4>Content</h4>
+                            <ul>
+                                <li><a href="crimson-court.html">The Crimson Court</a></li>
+                                <li><a href="articles.html">DM Advice</a></li>
+                                <li><a href="meet-the-cast.html">Meet the Cast</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li><a href="dice-roller.html">Dice Roller</a></li>
+                                <li><a href="character-quiz.html">Character Quiz</a></li>
+                                <li><a href="house-quiz.html">House Quiz</a></li>
+                                <li><a href="interactive-map.html">Interactive Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
+                                <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
+                                <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
+                        <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
+                        <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
+                        <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="scroll-to-top">
-            <button id="scroll-top-btn" aria-label="Scroll to top">
-                <i class="fas fa-chevron-up"></i>
-            </button>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
+                <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
+            </div>
         </div>
-    </div>
-</section>
+    </footer>
+
+    <!-- JavaScript - Order is important! -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/tools.js"></script>
+</body>
+</html>

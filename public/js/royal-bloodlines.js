@@ -478,7 +478,7 @@ function renderBloodlines(data) {
         // Add generation label - negative numbers supported
         const generationLabel = document.createElement('h3');
         generationLabel.className = 'generation-label';
-        generationLabel.textContent = `Generation ${genNumber}`;
+        generationLabel.textContent = `Generation ${genNumber}`; // This is where the generation number will be inserted for display 
         generationGroup.appendChild(generationLabel);
         
         // Create container for people in this generation
