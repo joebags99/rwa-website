@@ -755,187 +755,277 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Download the result card
-    function downloadResult() {
-        // Create a larger canvas (1920x1080)
-        const canvas = document.getElementById('result-card-canvas');
-        canvas.width = 1920;
-        canvas.height = 1080;
-        const ctx = canvas.getContext('2d');
+        // Replace this completely revised function in your house-quiz.js
+function downloadResult() {
+    // Create a larger canvas (1920x1080)
+    const canvas = document.getElementById('result-card-canvas');
+    canvas.width = 1920;
+    canvas.height = 1080;
+    const ctx = canvas.getContext('2d');
+    
+    // Get the current results
+    const results = calculateResults();
+    const house = houses[results.topHouse];
+    
+    // Debugging
+    console.log("Downloading result for house:", house.name);
+    
+    // Clear canvas with white background
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw house-colored header background
+    const headerGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    headerGradient.addColorStop(0, house.color);
+    headerGradient.addColorStop(1, shade(house.color, -20)); // Darker shade of the house color
+    ctx.fillStyle = headerGradient;
+    ctx.fillRect(0, 0, canvas.width, 150);
+    
+    // Draw header text
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 70px Cinzel';
+    ctx.textAlign = 'center';
+    ctx.fillText('YOUR HOUSE OF EDERIA MATCH', canvas.width / 2, 95);
+    
+    // Draw the rest of the background
+    ctx.fillStyle = '#F8F8F8';  // Light background
+    ctx.fillRect(0, 150, canvas.width, canvas.height - 150);
+    
+    // Add subtle texture to background
+    ctx.globalAlpha = 0.03;
+    for (let i = 0; i < 40; i++) {
+        const x = Math.random() * canvas.width;
+        const y = 150 + Math.random() * (canvas.height - 150);
+        const size = Math.random() * 60 + 20;
         
-        // Get the current results
-        const results = calculateResults();
-        const house = houses[results.topHouse];
-        
-        // Clear canvas with white background
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw house-colored header background (taller for the larger canvas)
-        const headerGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        headerGradient.addColorStop(0, house.color);
-        headerGradient.addColorStop(1, shade(house.color, -20)); // Darker shade of the house color
-        ctx.fillStyle = headerGradient;
-        ctx.fillRect(0, 0, canvas.width, 150);
-        
-        // Draw header text
-        ctx.fillStyle = 'white';
-        ctx.font = 'bold 70px Cinzel';
-        ctx.textAlign = 'center';
-        ctx.fillText('YOUR HOUSE OF EDERIA MATCH', canvas.width / 2, 95);
-        
-        // Draw the rest of the background
-        ctx.fillStyle = '#F8F8F8';  // Light background
-        ctx.fillRect(0, 150, canvas.width, canvas.height - 150);
-        
-        // Add subtle texture to background
-        ctx.globalAlpha = 0.03;
-        for (let i = 0; i < 40; i++) {
-            const x = Math.random() * canvas.width;
-            const y = 150 + Math.random() * (canvas.height - 150);
-            const size = Math.random() * 60 + 20;
-            
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + size, y);
-            ctx.strokeStyle = house.color;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-        ctx.globalAlpha = 1.0;
-        
-        // Draw dividing line between header and content
         ctx.beginPath();
-        ctx.moveTo(0, 150);
-        ctx.lineTo(canvas.width, 150);
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + size, y);
         ctx.strokeStyle = house.color;
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+    ctx.globalAlpha = 1.0;
+    
+    // Draw dividing line between header and content
+    ctx.beginPath();
+    ctx.moveTo(0, 150);
+    ctx.lineTo(canvas.width, 150);
+    ctx.strokeStyle = house.color;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    // Define column layouts early for reference
+    const leftCol = {
+        x: 100,
+        width: 800
+    };
+    
+    const rightCol = {
+        x: 1020, // Increased distance for clearer separation
+        width: 800
+    };
+    
+    // Draw house name with larger font but positioned higher
+    ctx.fillStyle = house.color;
+    ctx.font = 'bold 120px Cinzel';
+    ctx.textAlign = 'left';
+    ctx.fillText(house.name, leftCol.x, 270);
+    
+    // Draw match percentage right below the name
+    ctx.font = 'bold 80px Cinzel';
+    ctx.fillText(`${results.topPercentage}% Match`, leftCol.x, 360);
+    
+    // Load house shield image
+    const houseImg = new Image();
+    houseImg.crossOrigin = "Anonymous";
+    
+    houseImg.onload = function() {
+        console.log("Shield image loaded successfully");
+        
+        // Draw shield image below name and percentage
+        const imgSize = 280; // Slightly smaller shield
+        const shieldX = leftCol.x;
+        const shieldY = 390;
+        ctx.drawImage(houseImg, shieldX, shieldY, imgSize, imgSize);
+        
+        // Draw noble title next to the shield
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 30px "EB Garamond"';
+        
+        // Position the title next to the shield
+        ctx.textAlign = 'left';
+        ctx.fillText(`Ser ${userName.firstName} of House ${userName.lastName}`, leftCol.x + 320, 420);
+        ctx.fillText(`is a proud banner bearer of House ${results.topHouse.charAt(0).toUpperCase() + results.topHouse.slice(1)}`, leftCol.x + 320, 460);
+        
+        // Calculate the shield's bottom position
+        const shieldBottom = shieldY + imgSize + 20;
+        
+        // Draw ALL traits to the right of the shield with more spacing between name and traits
+        ctx.font = '28px "EB Garamond"';
+        
+        // Add some margin between the name and traits
+        const traitStartY = 510; // Increased from 520
+        
+        house.traits.forEach((trait, index) => {
+            // Draw bullet point
+            ctx.fillText(`•`, leftCol.x + 320, traitStartY + (index * 45));
+            // Draw trait text with offset from bullet point
+            ctx.fillText(trait, leftCol.x + 350, traitStartY + (index * 45));
+        });
+        
+        // Add a separator line after the shield that spans full width
+        ctx.beginPath();
+        ctx.moveTo(leftCol.x, shieldBottom);
+        ctx.lineTo(leftCol.x + leftCol.width - 80, shieldBottom);
+        ctx.strokeStyle = `${house.color}50`;
+        ctx.lineWidth = 2;
         ctx.stroke();
         
-        // Load house shield image
-        const houseImg = new Image();
-        houseImg.crossOrigin = "Anonymous";
+        // Draw description with better text wrapping and more space
+        const description = house.description;
+        const descStart = shieldBottom + 40;
+        const lineHeight = 35; // Slightly smaller line height
+        const maxWidth = leftCol.width - 20; // More width for text
         
-        houseImg.onload = function() {
-            // Create a clearer two-column layout with more defined separation
-            // Make the left column narrower to ensure more room for the right
-            const leftCol = {
-                x: 100,
-                width: 800
-            };
-            
-            const rightCol = {
-                x: 1000, // Increased distance for clearer separation
-                width: 820
-            };
-            
-            // Draw house name with larger font - moved up to create more vertical space
-            ctx.fillStyle = house.color;
-            ctx.font = 'bold 120px Cinzel';
-            ctx.textAlign = 'left';
-            ctx.fillText(house.name, leftCol.x, 270);
-            
-            // Draw match percentage right below the name
-            ctx.font = 'bold 80px Cinzel';
-            ctx.fillText(`${results.topPercentage}% Match`, leftCol.x, 360);
-            
-            // Draw shield image below name and percentage
-            const imgSize = 300;
-            ctx.drawImage(houseImg, leftCol.x, 390, imgSize, imgSize);
-            
-            // Draw noble title next to the shield
-            ctx.fillStyle = '#333';
-            ctx.font = 'bold 30px "EB Garamond"';
-            
-            // Position the title next to the shield
-            ctx.textAlign = 'left';
-            ctx.fillText(`Ser ${userName.firstName} of House ${userName.lastName}`, leftCol.x + 320, 440);
-            ctx.fillText(`is a proud banner bearer of House ${results.topHouse.charAt(0).toUpperCase() + results.topHouse.slice(1)}`, leftCol.x + 320, 480);
-            
-            // Add a separator line after noble title and shield
-            const titleEndY = 520;
-            ctx.beginPath();
-            ctx.moveTo(leftCol.x, titleEndY);
-            ctx.lineTo(leftCol.x + leftCol.width - 80, titleEndY);
-            ctx.strokeStyle = `${house.color}50`;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            
-            // Draw traits with larger font
-            ctx.font = '30px "EB Garamond"';
-            
-            house.traits.forEach((trait, index) => {
-                ctx.fillText(`• ${trait}`, leftCol.x, titleEndY + 60 + (index * 40));
-            });
-            
-            // Add separator after traits
-            const traitsEndY = titleEndY + 60 + (house.traits.length * 40) + 20;
-            ctx.beginPath();
-            ctx.moveTo(leftCol.x, traitsEndY);
-            ctx.lineTo(leftCol.x + leftCol.width - 80, traitsEndY);
-            ctx.strokeStyle = `${house.color}50`;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            
-            // Draw description with text wrapping - start earlier and use more space
-            const description = house.description;
-            const descStart = traitsEndY + 40;
-            const lineHeight = 38;
-            const maxWidth = leftCol.width - 40;
-            
-            ctx.font = '28px "EB Garamond"';
-            // Use updated text wrapping that ensures all text fits
-            wrapTextInArea(ctx, description, leftCol.x, descStart, maxWidth, lineHeight, canvas.height - 80);
-            
-            // Add strong vertical divider between columns
-            ctx.beginPath();
-            ctx.moveTo(rightCol.x - 80, 180);
-            ctx.lineTo(rightCol.x - 80, canvas.height - 80);
-            ctx.strokeStyle = `${house.color}40`;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            
-            // Draw radar chart on the right side
-            const radarChartImage = document.getElementById('results-chart');
-            
-            // We need to wait for the radar chart to be rendered
-            setTimeout(() => {
-                // Add "YOUR ALIGNMENT WITH ALL HOUSES" title - positioned CLEARLY below house name
-                ctx.fillStyle = '#1a365d';
-                ctx.font = 'bold 44px Cinzel';
-                ctx.textAlign = 'center';
-                ctx.fillText('YOUR ALIGNMENT WITH ALL HOUSES', rightCol.x + 350, 270);
+        ctx.font = '26px "EB Garamond"'; // Slightly smaller font to fit more text
+        
+        // Use improved text wrapping that ensures all text fits
+        wrapText(ctx, description, leftCol.x, descStart, maxWidth, lineHeight);
+        
+        // Add strong vertical divider between columns
+        // ctx.beginPath();
+        // ctx.moveTo(rightCol.x - 80, 180);
+        // ctx.lineTo(rightCol.x - 80, canvas.height - 80);
+        // ctx.strokeStyle = `${house.color}40`;
+        // ctx.lineWidth = 2;
+        // ctx.stroke();
+        
+        // Draw "YOUR ALIGNMENT WITH ALL HOUSES" title
+        ctx.fillStyle = '#1a365d';
+        ctx.font = 'bold 44px Cinzel';
+        ctx.textAlign = 'center';
+        ctx.fillText('YOUR ALIGNMENT WITH ALL HOUSES', rightCol.x + 350, 340);
+        
+        const radarChartImage = document.getElementById('results-chart');
+        
+        // We need to wait for the radar chart to be rendered
+        setTimeout(() => {
+            try {
+                console.log("Rendering radar chart");
+                // Draw the radar chart
+                ctx.drawImage(radarChartImage, rightCol.x, 380, 700, 600);
                 
-                // Draw the radar chart - make it large but keep it within right column
-                ctx.drawImage(radarChartImage, rightCol.x, 330, 700, 700);
-                
-                // Draw website link at bottom
+                // Draw website link underneath the chart
                 ctx.fillStyle = '#333';
                 ctx.font = 'italic 28px "EB Garamond"';
                 ctx.textAlign = 'center';
-                ctx.fillText('Discover your noble house at rollwithadvantage.com', canvas.width / 2, canvas.height - 40);
+                ctx.fillText('Discover your noble house at rollwithadvantage.com', rightCol.x + 350, 1010);
                 
                 // Create download link
+                console.log("Creating download link");
                 const dataURL = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
                 link.href = dataURL;
                 link.download = `House-${results.topHouse}-${userName.lastName}.png`;
                 link.click();
-            }, 300); // Delay to ensure chart is rendered
-        };
+                console.log("Download initiated");
+            } catch (error) {
+                console.error("Error during chart rendering or download:", error);
+            }
+        }, 500); // Increased delay to ensure chart is rendered
+    };
+    
+    houseImg.onerror = function(error) {
+        console.error("Failed to load house image:", error);
+        // Fallback if image fails to load
+        ctx.fillStyle = '#DDD';
+        ctx.fillRect(100, 390, 280, 280);
+        ctx.fillStyle = house.color;
+        ctx.font = 'bold 80px Cinzel';
+        ctx.fillText(house.name[0], 240, 550);
         
-        houseImg.src = house.image;
-        houseImg.onerror = function() {
-            console.error("Failed to load house image");
-            // Fallback if image fails to load
-            ctx.fillStyle = '#DDD';
-            ctx.fillRect(100, 390, 300, 300);
-            ctx.fillStyle = house.color;
-            ctx.font = 'bold 80px Cinzel';
-            ctx.fillText(house.name[0], 250, 550);
-            
-            // Continue with the rest of the rendering
-        };
+        // Continue with the rest of the rendering without the image
+        completeRendering();
+    };
+    
+    // Function to complete rendering if image fails
+    function completeRendering() {
+        // Draw description and other elements
+        const description = house.description;
+        const descStart = 690; // Position below where shield would be
+        const lineHeight = 35;
+        const maxWidth = leftCol.width - 20;
+        
+        ctx.font = '26px "EB Garamond"';
+        wrapText(ctx, description, leftCol.x, descStart, maxWidth, lineHeight);
+        
+        // Draw alignment header
+        ctx.fillStyle = '#1a365d';
+        ctx.font = 'bold 32px Cinzel';
+        ctx.textAlign = 'center';
+        ctx.fillText('YOUR ALIGNMENT WITH ALL HOUSES', rightCol.x + 350, 340);
+        
+        // Try to render chart
+        setTimeout(() => {
+            try {
+                const radarChartImage = document.getElementById('results-chart');
+                ctx.drawImage(radarChartImage, rightCol.x, 380, 700, 600);
+                
+                // Add website link
+                ctx.fillStyle = '#333';
+                ctx.font = 'italic 28px "EB Garamond"';
+                ctx.textAlign = 'center';
+                ctx.fillText('Discover your noble house at rollwithadvantage.com', rightCol.x + 350, 1010);
+                
+                // Create download
+                const dataURL = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = dataURL;
+                link.download = `House-${results.topHouse}-${userName.lastName}.png`;
+                link.click();
+            } catch (error) {
+                console.error("Error in fallback rendering:", error);
+                alert("There was an error generating your download. Please try again.");
+            }
+        }, 500);
     }
+    
+    // Set the image source to trigger loading
+    console.log("Loading shield image from:", house.image);
+    houseImg.src = house.image;
+}
+
+// Text wrapping function
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    if (!text) {
+        console.error("No text provided to wrapText function");
+        return y;
+    }
+    
+    const words = text.split(' ');
+    let line = '';
+    let currentY = y;
+    
+    for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+        
+        if (testWidth > maxWidth && i > 0) {
+            ctx.fillText(line, x, currentY);
+            line = words[i] + ' ';
+            currentY += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+    
+    // Draw any remaining text
+    ctx.fillText(line, x, currentY);
+    
+    return currentY; // Return the final Y position
+}
     
     /**
      * Improved text wrapping function that ensures text fits within vertical bounds
