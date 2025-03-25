@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Quiz - Roll With Advantage</title>
-    <meta name="description" content="Discover which Crimson Court character you're most like with our interactive personality quiz.">
+    <meta name="description" content="Discover which Crimson Court character you're most like with our personality quiz.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
@@ -18,16 +18,13 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/character-quiz.css">
-    <link rel="stylesheet" href="css/discord-banner.css">
+    <link rel="stylesheet" href="/css/discord-banner.css">
     
     <!-- Font Awesome from CDN -->
     <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
     
-    <!-- Chart.js for Results Visualization -->
+    <!-- Chart.js for radar chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body class="loading quiz-page">
     <!-- Preloader -->
@@ -38,7 +35,7 @@
                 <path class="dice-number" d="M50 55 A5 5 0 1 1 50 45 A5 5 0 1 1 50 55z"/>
             </svg>
         </div>
-        <p class="loading-text">Rolling initiative...</p>
+        <p class="loading-text">Rolling for character...</p>
     </div>
     
     <!-- Magical Particles Background -->
@@ -77,232 +74,135 @@
             <div class="container">
                 <div class="hero-content reveal-content">
                     <h1 class="magical-text">Which Crimson Court Character Are You?</h1>
-                    <p class="animated-text">Discover which heir to the throne of Ederia matches your personality and leadership style.</p>
+                    <p class="animated-text">Answer these scenario questions to discover which heir to the Ederian throne shares your leadership style.</p>
                     <div class="magic-line"></div>
-                </div>
-            </div>
-            <div class="section-divider red-divider"></div>
-        </section>
-
-        <!-- Quiz Container -->
-        <section class="quiz-container section-appear">
-            <div class="container">
-                <!-- Introduction Screen -->
-                <div class="quiz-screen intro-screen active" id="intro-screen">
-                    <div class="section-header">
-                        <div class="section-icon red-icon"><i class="fas fa-crown"></i></div>
-                        <h2 class="magical-heading red-heading">The Crimson Court Character Quiz</h2>
-                        <div class="magical-underline red-underline"></div>
-                        <p>Answer 10 questions to discover which of the five heirs to the throne you most closely resemble. Will you be the noble Roland, the cunning Isolde, the scholarly Gareth, the fierce Lyra, or the charismatic Thorne?</p>
-                    </div>
-                    
-                    <div class="character-silhouettes">
-                        <div class="character-preview">
-                            <div class="character-silhouette roland">
-                                <div class="char-glow"></div>
-                            </div>
-                            <div class="character-silhouette isolde">
-                                <div class="char-glow"></div>
-                            </div>
-                            <div class="character-silhouette gareth">
-                                <div class="char-glow"></div>
-                            </div>
-                            <div class="character-silhouette lyra">
-                                <div class="char-glow"></div>
-                            </div>
-                            <div class="character-silhouette thorne">
-                                <div class="char-glow"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="intro-content">
-                        <p>The five heirs of the Crimson Court each embody different leadership styles and values. Your answers will reveal which character's approach to power and governance most closely aligns with your own.</p>
-                        
-                        <div class="character-traits">
-                            <div class="trait">
-                                <i class="fas fa-shield-alt"></i>
-                                <h4>Honor</h4>
-                            </div>
-                            <div class="trait">
-                                <i class="fas fa-chess"></i>
-                                <h4>Cunning</h4>
-                            </div>
-                            <div class="trait">
-                                <i class="fas fa-book"></i>
-                                <h4>Wisdom</h4>
-                            </div>
-                            <div class="trait">
-                                <i class="fas fa-fire"></i>
-                                <h4>Courage</h4>
-                            </div>
-                            <div class="trait">
-                                <i class="fas fa-comments"></i>
-                                <h4>Charm</h4>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary magical-btn red-btn" id="start-quiz">
-                            <span class="btn-text"><i class="fas fa-play"></i> Begin Your Journey</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question Template -->
-                <div class="quiz-screen question-screen" id="question-screen">
-                    <div class="question-header">
-                        <div class="progress-container">
-                            <div class="progress-bar" id="quiz-progress"></div>
-                        </div>
-                        <h3 class="question-number">Question <span id="current-question">1</span> of <span id="total-questions">10</span></h3>
-                    </div>
-                    
-                    <div class="question-content">
-                        <div class="question-text" id="question-text">
-                            <!-- Question text will be inserted here -->
-                        </div>
-                        
-                        <div class="answer-options" id="answer-options">
-                            <!-- Answer options will be inserted here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Results Screen -->
-                <div class="quiz-screen results-screen" id="results-screen">
-                    <div class="section-header">
-                        <div class="section-icon red-icon"><i class="fas fa-crown"></i></div>
-                        <h2 class="magical-heading red-heading">Your Results</h2>
-                        <div class="magical-underline red-underline"></div>
-                        <p>The stars have aligned to reveal your true character in the Crimson Court!</p>
-                    </div>
-                    
-                    <div class="results-container">
-                        <div class="results-card" id="results-card">
-                            <div class="result-header">
-                                <h3>You are most like</h3>
-                                <h2 id="character-name">Character Name</h2>
-                                <div class="match-percentage">
-                                    <span id="match-percent">0</span>% Match
-                                </div>
-                            </div>
-                            
-                            <div class="result-content">
-                                <div class="character-portrait">
-                                    <img id="character-image" src="assets/images/characters/placeholder.jpg" alt="Character portrait">
-                                    <div class="portrait-frame"></div>
-                                </div>
-                                
-                                <div class="character-description">
-                                    <p id="character-description">Character description will appear here.</p>
-                                    <div class="character-quote">
-                                        <i class="fas fa-quote-left"></i>
-                                        <p id="character-quote">Character quote will appear here.</p>
-                                        <i class="fas fa-quote-right"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="result-footer">
-                                <div class="qr-code-container" id="qr-code"></div>
-                                <p class="share-text">Scan to take the quiz!</p>
-                            </div>
-                        </div>
-                        
-                        <div class="results-analysis">
-                            <h3>Your Character Match Breakdown</h3>
-                            <div class="chart-container">
-                                <canvas id="results-chart"></canvas>
-                            </div>
-                            
-                            <div class="results-traits">
-                                <h4>Your Key Traits</h4>
-                                <div class="traits-grid" id="traits-grid">
-                                    <!-- Traits will be inserted here -->
-                                </div>
-                            </div>
-                            
-                            <div class="results-actions">
-                                <button class="btn btn-secondary magical-btn" id="download-results">
-                                    <span class="btn-text"><i class="fas fa-download"></i> Download Results</span>
-                                </button>
-                                <button class="btn btn-tertiary magical-btn purple-btn" id="share-results">
-                                    <span class="btn-text"><i class="fas fa-share-alt"></i> Share Results</span>
-                                </button>
-                                <button class="btn btn-primary magical-btn red-btn" id="retake-quiz">
-                                    <span class="btn-text"><i class="fas fa-redo"></i> Retake Quiz</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="section-divider purple-divider"></div>
         </section>
 
-        <!-- More Quizzes Section -->
-        <section class="more-quizzes section-appear">
+        <!-- Quiz Section -->
+        <section class="quiz-section section-appear">
             <div class="container">
-                <div class="section-header">
-                    <div class="section-icon purple-icon"><i class="fas fa-question-circle"></i></div>
-                    <h2 class="magical-heading purple-heading">More Quizzes</h2>
-                    <div class="magical-underline purple-underline"></div>
-                    <p>Continue your adventure with more interactive quizzes and tools!</p>
-                </div>
-                
-                <div class="quizzes-grid">
-                    <div class="quiz-card">
-                        <div class="quiz-image">
-                            <img src="assets/images/quizzes/house-quiz.jpg" alt="House Quiz">
-                            <div class="quiz-overlay">
-                                <i class="fas fa-flag"></i>
+                <div class="quiz-container">
+                    <!-- Quiz Intro -->
+                    <div class="quiz-intro" id="quiz-intro">
+                        <div class="intro-content">
+                            <h2 class="magical-heading purple-heading">The Heirs of Ederia</h2>
+                            <div class="magical-underline purple-underline"></div>
+                            <p>The kingdom of Ederia stands at a crossroads. Six unique heirs vie for the throne, each with their own strengths, values, and vision for the realm's future.</p>
+                            <p>Which of these noble scions reflects your own personality and approach to leadership? Answer fifteen scenario questions to discover your royal match.</p>
+                            
+                            <div class="character-silhouettes">
+                                <div class="silhouette" title="???">
+                                    <img src="assets/images/tools/silhouette_talon.png" alt="Character silhouette">
+                                </div>
+                                <div class="silhouette" title="???">
+                                    <img src="assets/images/tools/silhouette_edwinn.png" alt="Character silhouette">
+                                </div>
+                                <div class="silhouette" title="???">
+                                    <img src="assets/images/tools/silhouette_xanthe.png" alt="Character silhouette">
+                                </div>
+                                <div class="silhouette" title="???">
+                                    <img src="assets/images/tools/silhouette_cailynn.png" alt="Character silhouette">
+                                </div>
+                                <div class="silhouette" title="???">
+                                    <img src="assets/images/tools/silhouette_marik.png" alt="Character silhouette">
+                                </div>
+                                <div class="silhouette" title="???">
+                                    <img src="assets/images/tools/silhouette_via.png" alt="Character silhouette">
+                                </div>
                             </div>
-                        </div>
-                        <div class="quiz-content">
-                            <h3>Which Ederian House Do You Belong To?</h3>
-                            <p>Discover which noble house of Ederia would welcome you as one of their own based on your values and approach to power.</p>
-                            <a href="house-quiz.html" class="btn btn-secondary magical-btn">
-                                <span class="btn-text">Take the Quiz</span>
-                            </a>
+                            
+                            <button id="start-quiz" class="btn btn-primary magical-btn purple-btn">
+                                <span class="btn-text"><i class="fas fa-crown"></i> Begin Your Royal Assessment</span>
+                            </button>
                         </div>
                     </div>
                     
-                    <div class="quiz-card">
-                        <div class="quiz-image">
-                            <img src="assets/images/quizzes/class-quiz.jpg" alt="Class Quiz">
-                            <div class="quiz-overlay">
-                                <i class="fas fa-hat-wizard"></i>
+                    <!-- Quiz Questions -->
+                    <div class="quiz-questions" id="quiz-questions">
+                        <div class="quiz-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
                             </div>
+                            <div class="progress-text">Question <span id="current-question">1</span> of <span id="total-questions">15</span></div>
                         </div>
-                        <div class="quiz-content">
-                            <h3>What D&D Class Are You?</h3>
-                            <p>Are you a mighty warrior, a cunning rogue, or a powerful spellcaster? Find your ideal character class for your next D&D campaign.</p>
-                            <a href="#" class="btn btn-tertiary magical-btn purple-btn">
-                                <span class="btn-text">Coming Soon</span>
-                            </a>
+                        
+                        <div class="question-container" id="question-container">
+                            <!-- Questions will be dynamically inserted here -->
+                        </div>
+                        
+                        <div class="quiz-navigation">
+                            <button id="prev-question" class="btn btn-secondary magical-btn" disabled>
+                                <span class="btn-text"><i class="fas fa-arrow-left"></i> Previous</span>
+                            </button>
+                            <button id="next-question" class="btn btn-primary magical-btn purple-btn">
+                                <span class="btn-text">Next <i class="fas fa-arrow-right"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                
-                <div class="other-tools">
-                    <h3>Explore Our Other Tools</h3>
-                    <div class="tools-mini-grid">
-                        <a href="dice-roller.html" class="tool-mini-card">
-                            <i class="fas fa-dice-d20"></i>
-                            <span>Dice Roller</span>
-                        </a>
-                        <a href="interactive-map.html" class="tool-mini-card">
-                            <i class="fas fa-map-marked-alt"></i>
-                            <span>Interactive Map</span>
-                        </a>
-                        <a href="tools.html" class="tool-mini-card">
-                            <i class="fas fa-toolbox"></i>
-                            <span>All Tools</span>
-                        </a>
+                    
+                    <!-- Quiz Results -->
+                    <div class="quiz-results" id="quiz-results">
+                        <h2 class="magical-heading purple-heading">Your Royal Match</h2>
+                        <div class="magical-underline purple-underline"></div>
+                        
+                        <div class="results-container">
+                            <div class="primary-result">
+                                <div class="result-card">
+                                    <div class="result-header">
+                                        <h3 id="character-name">Character Name</h3>
+                                        <div class="match-percentage" id="primary-percentage">00%</div>
+                                    </div>
+                                    <div class="character-image">
+                                        <img id="character-image" src="assets/images/tools/chibi_talon.png" alt="Character Image">
+                                    </div>
+                                    <div class="character-traits">
+                                        <h4>Character Traits</h4>
+                                        <ul id="character-traits">
+                                            <!-- Traits will be dynamically inserted here -->
+                                        </ul>
+                                    </div>
+                                    <div class="character-description" id="character-description">
+                                        <!-- Description will be dynamically inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="additional-results">
+                                <div class="radar-chart-container">
+                                    <h3>Your Alignment with All Heirs</h3>
+                                    <canvas id="results-chart"></canvas>
+                                </div>
+                                
+                                <div class="result-actions">
+                                    <button id="download-result" class="btn btn-secondary magical-btn">
+                                        <span class="btn-text"><i class="fas fa-download"></i> Download Result Card</span>
+                                    </button>
+                                    <div class="share-buttons">
+                                        <button class="btn-share instagram" data-platform="instagram">
+                                            <i class="fab fa-instagram"></i>
+                                        </button>
+                                        <button class="btn-share facebook" data-platform="facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </button>
+                                        <button class="btn-share discord" data-platform="discord">
+                                            <i class="fab fa-discord"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <button id="retake-quiz" class="btn btn-primary magical-btn purple-btn">
+                                    <span class="btn-text"><i class="fas fa-redo-alt"></i> Take the Quiz Again</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="section-divider light-divider"></div>
+            
+            <div class="section-divider rainbow-divider"></div>
         </section>
 
         <!-- Discord Community Section -->
@@ -398,42 +298,18 @@
         </div>
     </footer>
 
-    <!-- Share Modal -->
-    <div class="modal" id="share-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Share Your Results</h3>
-                <button class="modal-close"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-                <p>Share your Crimson Court character match with friends!</p>
-                <div class="share-options">
-                    <a href="#" class="share-option twitter" id="share-twitter">
-                        <i class="fab fa-twitter"></i>
-                        <span>Twitter</span>
-                    </a>
-                    <a href="#" class="share-option facebook" id="share-facebook">
-                        <i class="fab fa-facebook"></i>
-                        <span>Facebook</span>
-                    </a>
-                    <a href="#" class="share-option reddit" id="share-reddit">
-                        <i class="fab fa-reddit"></i>
-                        <span>Reddit</span>
-                    </a>
-                    <button class="share-option copy" id="share-copy">
-                        <i class="fas fa-link"></i>
-                        <span>Copy Link</span>
-                    </button>
-                </div>
-                <div class="copy-alert" id="copy-alert">Link copied to clipboard!</div>
-            </div>
-        </div>
-    </div>
+    <!-- Result Card Canvas for downloading -->
+    <canvas id="result-card-canvas" width="1200" height="630" style="display: none;"></canvas>
 
     <!-- JavaScript - Order is important! -->
     <script src="js/config.js"></script>
     <script src="js/main.js"></script>
     <script src="js/particles.js"></script>
     <script src="js/character-quiz.js"></script>
+
+    <!-- QR Code Generator -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <!-- html2canvas for downloading result card -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
 </html>
