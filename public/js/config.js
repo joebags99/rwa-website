@@ -65,7 +65,7 @@ if (isProduction) {
 const commonConfig = {
   siteName: 'Roll With Advantage',
   videoMaxResults: 6,
-  contactEmail: 'info@rollwithadvantage.com',
+  contactEmail: 'rollwithadvantage@gmail.com',
   socialLinks: {
     youtube: 'https://www.youtube.com/@RollWithAdvantage5e',
     twitch: 'https://www.twitch.tv/rollwithadvantage5e',

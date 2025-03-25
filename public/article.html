@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/articles.css">
+    <link rel="stylesheet" href="/css/discord-banner.css">
     
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
@@ -53,7 +54,6 @@
                     <li><a href="articles.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
                     <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
                     <li><a href="tools.html" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
-                    <li><a href="contact.html" class="nav-item" data-text="Contact"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
                 </ul>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -108,17 +108,45 @@
             </div>
         </section>
         
-        <!-- Newsletter section - copy from your articles.html -->
-        <section class="newsletter">
-            <div class="container">
-                <h2>Subscribe to our Newsletter</h2>
-                <p>Get the latest updates, articles and DM tips delivered straight to your inbox.</p>
-                <form id="newsletter-form">
-                    <input type="email" placeholder="Your email address" required>
-                    <button type="submit">Subscribe</button>
-                </form>
+<!-- Discord Community Section -->
+<section class="newsletter section-appear">
+    <div class="glowing-particles"></div>
+    <div class="container">
+        <div class="section-header light-header">
+            <div class="section-icon light-icon"><i class="fab fa-discord"></i></div>
+            <h2 class="magical-heading light-heading">Join Our Community</h2>
+            <div class="magical-underline light-underline"></div>
+            <p>Connect with fellow adventurers, discuss episodes, share campaign ideas, and get exclusive D&D content in our Discord server.</p>
+        </div>
+        <div class="discord-banner">
+            <div class="discord-features">
+                <div class="discord-feature">
+                    <i class="fas fa-users"></i>
+                    <h3>Meet Players</h3>
+                    <p>Find your next party or campaign</p>
+                </div>
+                <div class="discord-feature">
+                    <i class="fas fa-dice-d20"></i>
+                    <h3>Game Resources</h3>
+                    <p>Access maps, character sheets & more</p>
+                </div>
+                <div class="discord-feature">
+                    <i class="fas fa-comment-alt"></i>
+                    <h3>Live Discussions</h3>
+                    <p>Chat during episode premieres</p>
+                </div>
             </div>
-        </section>
+            <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="btn btn-primary magical-btn discord-btn">
+                <span class="btn-text"><i class="fab fa-discord"></i> Join Our Discord</span>
+            </a>
+        </div>
+        <div class="scroll-to-top">
+            <button id="scroll-top-btn" aria-label="Scroll to top">
+                <i class="fas fa-chevron-up"></i>
+            </button>
+        </div>
+    </div>
+</section>
     </main>
 
     <!-- Footer - copy from your articles.html -->
@@ -137,7 +165,7 @@
                             <li><a href="/articles.html">Articles</a></li>
                             <li><a href="/meet-the-cast.html">Meet the Cast</a></li>
                             <li><a href="/tools.html">D&D Tools</a></li>
-                            <li><a href="/contact.html">Contact</a></li>
+  
                         </ul>
                     </div>
                     <div class="footer-column">
