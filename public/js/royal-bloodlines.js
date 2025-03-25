@@ -965,14 +965,16 @@ function showPersonDetails(personId) {
     // Houses
     const primaryHouse = document.getElementById('detailPrimaryHouse');
     primaryHouse.className = 'house-badge primary-house';
-    primaryHouse.classList.add(`house-${person.main_house.toLowerCase()}`);
+    const mainHouseClass = `house-${person.main_house.toLowerCase().replace(/\s+/g, '-')}`;
+    primaryHouse.classList.add(mainHouseClass);
     primaryHouse.querySelector('.house-name').textContent = person.main_house;
     
     const secondaryHouse = document.getElementById('detailSecondaryHouse');
     if (person.secondary_house) {
         secondaryHouse.style.display = 'block';
         secondaryHouse.className = 'house-badge secondary-house';
-        secondaryHouse.classList.add(`house-${person.secondary_house.toLowerCase()}`);
+        const secondaryHouseClass = `house-${person.secondary_house.toLowerCase().replace(/\s+/g, '-')}`;
+        secondaryHouse.classList.add(secondaryHouseClass);
         secondaryHouse.querySelector('.house-name').textContent = person.secondary_house;
     } else {
         secondaryHouse.style.display = 'none';
@@ -1005,6 +1007,21 @@ function showPersonDetails(personId) {
         });
     } else {
         aliasesEl.style.display = 'none';
+    }
+    
+    // Description
+    const descriptionEl = document.getElementById('detailDescription');
+    if (person.description) {
+        descriptionEl.style.display = 'block';
+        
+        // Handle both string and array descriptions
+        if (Array.isArray(person.description)) {
+            descriptionEl.querySelector('p').textContent = person.description.join(', ');
+        } else {
+            descriptionEl.querySelector('p').textContent = person.description;
+        }
+    } else {
+        descriptionEl.style.display = 'none';
     }
     
     // Update family lists

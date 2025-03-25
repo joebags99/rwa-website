@@ -660,6 +660,37 @@ PERSON DETAILS DRAWER
     margin-right: 0.5rem;
 }
 
+/* Description section styling */
+.detail-description {
+    margin-bottom: var(--spacing-lg);
+}
+
+.detail-description h3 {
+    color: var(--royal-gold);
+    font-family: var(--font-headers);
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    display: inline-block;
+}
+
+.detail-description h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--royal-gold), transparent);
+}
+
+.detail-description p {
+    color: var(--royal-silver);
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0;
+}
+
 /* Aliases section */
 .person-aliases {
     margin-bottom: var(--spacing-lg);
