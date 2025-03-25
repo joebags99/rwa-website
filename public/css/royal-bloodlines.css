@@ -64,6 +64,7 @@ GENERAL LAYOUT
         url('../assets/images/dark-texture.png');
     background-blend-mode: overlay;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 .royal-bloodlines-content {
@@ -231,6 +232,7 @@ BLOODLINES CONTAINER
     overflow: hidden;
     position: relative;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    max-height: 650px;
 }
 
 /* Timeline Navigation */
