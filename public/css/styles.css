@@ -1054,7 +1054,7 @@ HERO SECTION
 */
 .hero {
     padding: 0;
-    height: 100vh;
+    height: 50vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2105,21 +2105,6 @@ footer {
     overflow: hidden;
 }
 
-.footer-top {
-    position: relative;
-    height: 120px;
-    overflow: hidden;
-    line-height: 0;
-}
-
-.footer-top svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 120px;
-    transform: rotateX(180deg);
-}
-
 .footer-content {
     background-color: var(--background-dark);
     padding: var(--spacing-md) 0;
@@ -2447,10 +2432,6 @@ RESPONSIVE STYLES
     
     .section-divider svg, .hero-divider svg {
         height: 40px;
-    }
-    
-    .footer-top svg {
-        height: 80px;
     }
     
     nav ul {

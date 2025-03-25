@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/articles.css">
+    <link rel="stylesheet" href="/css/discord-banner.css">
+
     
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
@@ -40,19 +42,18 @@
     <header>
         <div class="container">
             <div class="logo">
-                <a href="/index.html">
-                    <img src="/assets/images/logo.png" alt="Roll With Advantage Logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
                     <div class="logo-glow"></div>
                 </a>
             </div>
             <nav>
                 <ul>
-                    <li><a href="/index.html" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
-                    <li><a href="/crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
-                    <li><a href="/articles.html" class="active nav-item" data-text="Articles"><i class="fas fa-scroll"></i> <span>Articles</span></a></li>
-                    <li><a href="/meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
-                    <li><a href="/tools.html" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
-                    <li><a href="/contact.html" class="nav-item" data-text="Contact"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
+                    <li><a href="index.html" class="active nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="articles.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
+                    <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="tools.html" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
                 </ul>
                 <div class="mobile-menu-toggle">
                     <span></span>
@@ -110,35 +111,48 @@
             </div>
         </section>
 
-        <!-- Newsletter Signup -->
-        <section class="newsletter">
-            <div class="glowing-particles"></div>
-            <div class="container">
-                <div class="section-header light-header">
-                    <div class="section-icon light-icon"><i class="fas fa-envelope"></i></div>
-                    <h2 class="magical-heading light-heading">Stay Updated</h2>
-                    <div class="magical-underline light-underline"></div>
-                    <p>Subscribe to our newsletter for the latest articles, DM tips, and Roll With Advantage news.</p>
+<!-- Discord Community Section -->
+<section class="newsletter section-appear">
+    <div class="glowing-particles"></div>
+    <div class="container">
+        <div class="section-header light-header">
+            <div class="section-icon light-icon"><i class="fab fa-discord"></i></div>
+            <h2 class="magical-heading light-heading">Join Our Community</h2>
+            <div class="magical-underline light-underline"></div>
+            <p>Connect with fellow adventurers, discuss episodes, share campaign ideas, and get exclusive D&D content in our Discord server.</p>
+        </div>
+        <div class="discord-banner">
+            <div class="discord-features">
+                <div class="discord-feature">
+                    <i class="fas fa-users"></i>
+                    <h3>Meet Players</h3>
+                    <p>Find your next party or campaign</p>
                 </div>
-                <form id="newsletter-form" class="newsletter-form">
-                    <div class="form-glow"></div>
-                    <input type="email" placeholder="Your email address" required>
-                    <button type="submit" class="btn-newsletter"><i class="fas fa-paper-plane"></i> <span>Subscribe</span></button>
-                </form>
-                <div class="scroll-to-top">
-                    <button id="scroll-top-btn" aria-label="Scroll to top">
-                        <i class="fas fa-chevron-up"></i>
-                    </button>
+                <div class="discord-feature">
+                    <i class="fas fa-dice-d20"></i>
+                    <h3>Game Resources</h3>
+                    <p>Access maps, character sheets & more</p>
+                </div>
+                <div class="discord-feature">
+                    <i class="fas fa-comment-alt"></i>
+                    <h3>Live Discussions</h3>
+                    <p>Chat during episode premieres</p>
                 </div>
             </div>
-        </section>
+            <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="btn btn-primary magical-btn discord-btn">
+                <span class="btn-text"><i class="fab fa-discord"></i> Join Our Discord</span>
+            </a>
+        </div>
+        <div class="scroll-to-top">
+            <button id="scroll-top-btn" aria-label="Scroll to top">
+                <i class="fas fa-chevron-up"></i>
+            </button>
+        </div>
+    </div>
+</section>
     </main>
 
     <footer>
-        <div class="footer-top">
-            <!-- Simple footer divider -->
-            <div class="footer-divider"></div>
-        </div>
         <div class="footer-content">
             <div class="container">
                 <div class="footer-grid">
@@ -170,7 +184,6 @@
                                 <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
                                 <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
                                 <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
-                                <li><a href="/contact.html">Contact</a></li>
                             </ul>
                         </div>
                     </div>

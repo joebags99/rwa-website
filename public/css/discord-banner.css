@@ -1,0 +1,96 @@
+/* Discord Banner Styles */
+.discord-banner {
+    background: rgba(114, 137, 218, 0.2);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(114, 137, 218, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.discord-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(114, 137, 218, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+    z-index: -1;
+}
+
+.discord-features {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.discord-feature {
+    text-align: center;
+    padding: var(--spacing-sm);
+    flex: 1;
+    min-width: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.discord-feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.discord-feature i {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--divine-light-white);
+    opacity: 0.9;
+}
+
+.discord-feature h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--divine-light-white);
+}
+
+.discord-feature p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    color: var(--divine-light-white);
+    opacity: 0.8;
+}
+
+.discord-btn {
+    background: linear-gradient(135deg, #7289DA, #5865F2);
+    border-color: rgba(255, 255, 255, 0.3);
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    margin-top: var(--spacing-sm);
+}
+
+.discord-btn:hover {
+    background: linear-gradient(135deg, #5865F2, #7289DA);
+    box-shadow: 0 0 20px rgba(114, 137, 218, 0.6);
+    transform: translateY(-5px) scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .discord-features {
+        flex-direction: column;
+    }
+    
+    .discord-feature {
+        margin-bottom: var(--spacing-sm);
+    }
+}
