@@ -89,8 +89,7 @@ roll-with-advantage/
 1. Start the server.
 2. Navigate to `http://localhost:5000/admin` in your web browser.
 3. Log in with the default credentials:
-   - Username: `admin`
-   - Password: `rollwithadvantage`
+
 4. Change the default password immediately for security.
 
 ### Managing NPCs
