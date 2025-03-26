@@ -355,7 +355,7 @@
     {
       "id": "dragons_strait",
       "name": "Dragon's Strait",
-      "type": "waterway",
+      "type": "region",
       "coordinates": [3233, 2324],
       "nation": "ederia",
       "description": "A crucial waterway separating Skyhaven in the north from the mainland of Ederia to the south. The Dragon's Strait serves as a significant geographical boundary and an important shipping route connecting major cities of the kingdom.",
