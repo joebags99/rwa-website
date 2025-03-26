@@ -110,7 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Define bounds for the map image (will be adjusted based on actual image dimensions)
         const mapWidth = 8192;
         const mapHeight = 4608; 
-        const bounds = [[0, 0], [mapHeight, mapWidth]];
+        const boundsArray = [[0, 0], [mapHeight, mapWidth]];
+
+        // Create a proper Leaflet bounds object
+        const bounds = L.latLngBounds(boundsArray);
 
         // Add the map image as a layer
         const mapImage = L.imageOverlay('assets/images/maps/illica_map.jpg', bounds);
@@ -119,10 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set the view to center of map with appropriate zoom
         map.setView([mapHeight/2, mapWidth/2], -1); // Center and set initial zoom
         map.setMaxBounds(bounds.pad(0.5)); // Add some padding to prevent dragging too far
-        
-        // Set the view to center of map with appropriate zoom
-        map.fitBounds(bounds);
-        map.setMaxBounds(bounds);
         
         // Add layer groups to map
         Object.values(markerGroups).forEach(group => {
@@ -169,8 +168,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Define icon based on location type
             const markerIcon = createMarkerIcon(location.type);
             
-            // Create the marker
-            const marker = L.marker(location.coordinates, {
+            // Create the marker - SWAP THE X,Y COORDINATES HERE
+            const marker = L.marker([location.coordinates[1], location.coordinates[0]], {
                 icon: markerIcon,
                 title: location.name,
                 alt: location.name,
@@ -331,8 +330,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         displayLocationDetails(relatedLocation);
-                        // Pan to the related location
-                        map.panTo(relatedLocation.coordinates);
+                        // Pan to the related location - swap coordinates here too
+                        map.panTo([relatedLocation.coordinates[1], relatedLocation.coordinates[0]]);
                         // Highlight the marker
                         highlightMarker(relatedId);
                     });
@@ -551,10 +550,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         console.log("Coordinate helper active - click on map to see coordinates");
     }
-
-    // Uncomment the next line during development to activate
-    addCoordinateHelper();
     
     // Initialize the interactive map
     initializeMap();
+
+        // Uncomment the next line during development to activate
+        addCoordinateHelper();
 });
