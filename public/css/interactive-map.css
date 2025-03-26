@@ -53,7 +53,8 @@ MAP SECTION
     grid-template-rows: auto;
     gap: 20px;
     height: calc(80vh - 100px);
-    min-height: 600px;
+    max-width: 80%;
+    max-height: 80%;
     background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-md);
