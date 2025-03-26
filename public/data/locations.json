@@ -1,193 +1,403 @@
 {
-    "nations": [
-      {
-        "name": "The Six Kingdoms of Ederia",
-        "id": "ederia",
-        "type": "nation",
-        "capital": "Crown's Rest",
-        "description": "A diverse and storied nation, with lands ranging from cold highlands and rolling farmlands to spell-scarred regions still marked by the dragons that once roamed here 700 years ago. The lingering remnants of draconic magic divide opinion, seen by some as a blessing and others as a curse. Travel across Ederia is efficient, with well-paved roads connecting the major cities, complemented by a ryanite-powered rail system that offers affordable transportation for its citizens.",
-        "travel": {
-          "caravan": "24 Miles Per Day",
-          "train": "36 Miles Per Day",
-          "ship": "48 Miles Per Day",
-          "airship": "96 Miles Per Day"
-        },
-        "image": "ederia_map.jpg"
+  "nations": [
+    {
+      "id": "ederia",
+      "name": "The Six Kingdoms of Ederia",
+      "type": "nation",
+      "coordinates": [2813, 1014],
+      "capital": "Crown's Rest",
+      "description": "Ederia is a land of contrasts, where cold highlands, fertile farmlands, and spell-scarred regions bear the marks of a draconic past. Emerging from 700 years of turmoil after the defeat of the Dragon's Triarchy, the nation now enjoys 70 years of unprecedented peace under House Falkrest. Travel across Ederia is efficient, with well-paved roads connecting major cities, complemented by a ryanite-powered rail system offering affordable transportation for citizens.",
+      "details": {
+        "Ruler": "King Talon Falkrest, 'The Kind'",
+        "Population": "Several million across all six kingdoms",
+        "Government": "Monarchy with the Concord of the Crowns system",
+        "Known For": "Resilience, pragmatism, and the legacy of the Dragon's Rebellion"
       },
-      {
-        "name": "Kingdom of Maldaris",
-        "id": "maldaris",
-        "type": "nation",
-        "description": "A land of iron spires and eternal twilight in northwestern Illica, Maldaris thrives in defiance of gods and time. Its capital, Abaddon, rises as a gothic marvel, while the Frostbane Highlands, Ebonwood Thicket, and Argent Fields echo a bloody past. Governed by the immortal Countess and five Barons, Maldaris blends gothic splendor with arcane innovation.",
-        "image": "maldaris.jpg"
+      "relatedLocations": ["crowns_rest", "skyhaven", "tomehold", "krakens_reach", "faithspire", "stonewatch", "highfields", "serpents_grove"],
+      "image": "assets/images/maps/map (16).jpg"
+    },
+    {
+      "id": "soleilae",
+      "name": "Kingdom of Soleilae",
+      "type": "nation",
+      "coordinates": [4753, 2614],
+      "capital": "Lumescar",
+      "description": "Soleilae is a kingdom of beauty, refinement, and ambition, founded on the ideals of high art and order. Nestled between rolling verdant highlands, shimmering desert sands, sweeping opal steppes, and the rugged Ember Valley, the nation's diverse terrain reflects its complex society. The kingdom is divided into regions of distinct roles and status, with its heart in the highlands and its labor-driven foundation in the Ember Valley.",
+      "details": {
+        "Ruler": "The Roi or Raine du Soleil",
+        "Government": "Monarchy with a strict caste system",
+        "Known For": "Rigid social hierarchy based on refinement and beauty, wealth concentrated in marble spire cities",
+        "Geography": "Sun-drenched steppes, French/Renaissance-inspired capital, desert trade hubs"
       },
-      {
-        "name": "Arcadian Republic of Elysia",
-        "id": "elysia",
-        "type": "nation",
-        "description": "A land of unparalleled natural beauty and magical wonders, governed by a balance of democracy and tradition. Five Tribunes, elected every five years, manage civic matters, while the Praetor oversees military leadership and religious rites. The capital, Mythera, is a dazzling city of floating and underwater districts, a testament to Elysian pride and ingenuity.",
-        "image": "elysia.jpg"
+      "relatedLocations": ["lumescar"],
+      "image": "assets/images/maps/map (22).png"
+    },
+    {
+      "id": "maldaris",
+      "name": "Kingdom of Maldaris",
+      "type": "nation",
+      "coordinates": [943, 3814],
+      "capital": "Abaddon",
+      "description": "Maldaris, a land of iron spires and eternal twilight in northwestern Illica, thrives in defiance of gods and time. Its capital, Abaddon, rises as a gothic marvel, while the Frostbane Highlands, Ebonwood Thicket, and Argent Fields echo a bloody past. Founded over a millennium ago by Veskas Draelthir, a necromancer who united tribes under a banner of independence, the kingdom forged its identity through war, necromancy, and unyielding ambition.",
+      "details": {
+        "Ruler": "The immortal Countess and five Barons",
+        "Government": "Gothic feudal aristocracy with necromantic elements",
+        "Known For": "Gothic architecture, necromancy, and defiance of divine authority"
       },
-      {
-        "name": "Jarldom of The Nornathi",
-        "id": "nornathi",
-        "type": "nation",
-        "description": "The Nornathi inhabit the cold, high-elevation lands east of Ederia, a brutal environment shaping their fate-obsessed and honor-bound culture. Guided by Seers who divine their destinies, every Nornathi bears tattoos symbolizing their life's foretold significance. The realm is ruled by various Jarls leading their clans, with the High King uniting them during dire threats.",
-        "image": "nornathi.jpg"
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (20).png"
+    },
+    {
+      "id": "elysia",
+      "name": "Arcadian Republic of Elysia",
+      "type": "nation",
+      "coordinates": [6999, 606],
+      "capital": "Mythera",
+      "description": "Elysia is a land of unparalleled natural beauty and magical wonders, governed by a balance of democracy and tradition. Five Tribunes, elected every five years, manage civic and legislative matters, while the Praetor, a noble descendant of Octavius Alysídes, oversees military leadership and religious rites. Founded by former slaves led to freedom by Octavius, Elysia flourishes as a harmonious blend of reverence for nature and innovation.",
+      "details": {
+        "Ruler": "The Praetor and five elected Tribunes",
+        "Government": "Republic with elected officials and hereditary military leadership",
+        "Founded": "33 AR during the Exodus of Chains",
+        "Known For": "Natural beauty, magical wonders, and balanced governance"
       },
-      {
-        "name": "The City States of Phoenia",
-        "id": "phoenia",
-        "type": "nation",
-        "description": "An archipelago of independent city-states known for arcane innovation and discovery. The island city of Myrios stands as their most prominent location, featuring enchanted architecture with glowing spires, floating platforms, and magically illuminated streets. Governed by councils of elected Archmages, the City States of Phoenia are hubs of magical learning and governance.",
-        "image": "phoenia.jpg"
+      "relatedLocations": [],
+      "image": "assets/images/maps/map.png"
+    },
+    {
+      "id": "nornathi",
+      "name": "Jarldom of The Nornathi",
+      "type": "nation",
+      "coordinates": [2877, 3628],
+      "capital": "Unknown",
+      "description": "The Nornathi inhabit the cold, high-elevation lands east of Ederia, a brutal environment shaping their fate-obsessed and honor-bound culture. Guided by Seers who divine their destinies, every Nornathi bears tattoos symbolizing their life's foretold significance, with intricate designs denoting greatness. Children are raised communally, divided by temperament into warriors or homesteaders, and earn their names through deeds on their 20th name day.",
+      "details": {
+        "Ruler": "High King Hajrik Stoneheart and various Jarls",
+        "Government": "Tribal confederation with Jarls ruling individual clans",
+        "Known For": "Strength, honor, courage, fate-driven culture, and distinctive tattoos"
       },
-      {
-        "name": "The Bleached Expanse",
-        "id": "bleached_expanse",
-        "type": "nation",
-        "capital": "Va'gro",
-        "description": "A vast, barren desert ruled from beneath by necromancers practicing their dark arts. White dunes shimmer with necromantic energy, while colossal skeletal remains form natural structures throughout the landscape. The society is governed by the secretive and hierarchical Council of Liches, with the Deathbound serving as elite necromancer-warriors who enforce order and keep watch over the dead.",
-        "unique_feature": "The Bone Ravines, massive dragon-like skeletons forming bridges and passageways underground.",
-        "major_conflict": "The Famine of Souls - As the supply of death wanes, the necromantic dominion risks collapse, with the Council of Liches debating desperate measures to find new sources of power.",
-        "image": "bleached_expanse.jpg"
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (6).png"
+    },
+    {
+      "id": "phoenia",
+      "name": "The City States of Phoenia",
+      "type": "nation",
+      "coordinates": [6947, 1535],
+      "capital": "None (confederation of city-states)",
+      "description": "An archipelago of independent city-states known for arcane innovation and discovery. Each city-state is self-governing, with Myrios standing as their most prominent location. The City States house the Order of the Edict, fervent followers of Seraphis who seek to spread arcane enlightenment to the 'savage' western lands.",
+      "details": {
+        "Government": "Various councils of elected Archmages",
+        "Known For": "Arcane mastery, magical innovation, and academic pursuits"
       },
-      {
-        "name": "The Shifting Sands",
-        "id": "shifting_sands",
-        "type": "nation",
-        "capital": "Zephrax",
-        "description": "A feudal vampire kingdom hidden beneath the desert sands, sustaining itself through blood magic. The landscape features moving dunes and hidden citadels, with underground blood-forged gardens creating a stark contrast to the arid surface. The nation is ruled by a vampiric noble class organized as a feudal aristocracy, with the Nightbound Court composed of vampire families competing for dominance and influence.",
-        "unique_feature": "The Crimson Mirage, a phenomenon caused by blood magic that lures travelers to their deaths with false visions.",
-        "major_conflict": "The Thinning Vein - As the blood harvest dwindles, the vampires face potential civil war, with noble houses hoarding resources and considering forbidden rituals for survival.",
-        "image": "shifting_sands.jpg"
+      "relatedLocations": ["myrios"],
+      "image": "assets/images/maps/map (17).png"
+    }
+  ],
+  "cities": [
+    {
+      "id": "crowns_rest",
+      "name": "Crown's Rest",
+      "type": "city",
+      "coordinates": [3145, 1974],
+      "nation": "ederia",
+      "description": "Crown's Rest is a sprawling metropolis, the seat of power for the 6 Kingdoms of Ederia, home to 2.3 million people. The city stands as a magnificent testament to the fusion of architecture and magic, with tall spires reaching towards the heavens. Despite its grandeur, many homes remain empty as the population continues to recover from a devastating plague that halved its numbers 40 years ago.",
+      "details": {
+        "Population": "2.3 million",
+        "Ruler": "King Talon Falkrest",
+        "Founded": "Built the day after the defeat of the Dragon's Triarchy",
+        "Known For": "Floating spires, the royal keep Dragon's End, and distinctly divided social districts"
       },
-      {
-        "name": "The Verdant Wastes",
-        "id": "verdant_wastes",
-        "type": "nation",
-        "description": "Home to the resourceful Aboawa People, deeply connected to the land and its spiritual history. The landscape features semi-arid mesas, sacred oases, and massive skeletal remains that form village centers. The nation is organized as a tribal confederation led by spiritual chieftains, with the Bonekeeper Clans serving as fiercely protective warriors and mystics ensuring the sanctity of the land.",
-        "unique_feature": "The Bone Gardens, thriving ecosystems surrounding ancient skeletons, seen as sacred by the Aboawa people.",
-        "major_conflict": "The Desecration War - Foreign relic hunters and rival factions seek to exploit the sacred skeletal remains, threatening the spiritual foundation of the Aboawa culture.",
-        "image": "verdant_wastes.jpg"
+      "districts": [
+        {"name": "The Heights", "description": "Home to the upper-middle and high classes, with polished white stone streets, lush gardens, and towering spires adorned with ryanite fixtures. Dragon's End, the floating royal keep, presides over this district."},
+        {"name": "The Reaches", "description": "A melting pot bridging The Heights and The Deepway, featuring buildings both above ground and below. Lifts and elevators descend into the subterranean city, while bustling streets connect to other districts."},
+        {"name": "The Deepway", "description": "Formerly called the Undercity, this subterranean area is illuminated by glowing ryanite running through glass pipes, casting the streets in eerie neon hues. Home to the destitute and dangerous, with criminal elements organized under the mysterious figure known as The Broker."}
+      ],
+      "landmarks": [
+        "Dragon's End (Royal Keep)",
+        "The Cathedral",
+        "The Dock of Dreams",
+        "Heroes Plaza",
+        "The Healing Quarter",
+        "The People's Stream",
+        "The Artisan's Market",
+        "The Scholar's Enclave",
+        "The Crimson Bloom"
+      ],
+      "relatedLocations": ["dragons_end", "crimson_bloom"],
+      "image": "assets/images/maps/map (7).png"
+    },
+    {
+      "id": "skyhaven",
+      "name": "Skyhaven",
+      "type": "city",
+      "coordinates": [3015, 2750],
+      "nation": "ederia",
+      "description": "Skyhaven, the seat of House Falkrest, is split into two distinct sections: the impenetrable keep and the small port city of Seahaven. The keep, a near-impenetrable fortress, is built within and on top of a mountain and ravine, utilizing the natural landscape for defense. Several plateaus with rich enough soil allow for the farming of smaller crops, making the fortress largely self-sustaining.",
+      "details": {
+        "Population": "200,000 between the keep and Seahaven",
+        "Ruler": "House Falkrest (historically Raynere Falkrest as Lord of Skyhaven)",
+        "Founded": "Originally established by a family of monster hunters and adventurers",
+        "Known For": "Defensive capabilities, strategic positioning, and connection to House Falkrest's rise to nobility"
       },
-      {
-        "name": "The Glasslands",
-        "id": "glasslands",
-        "type": "nation",
-        "description": "An arcane desert wasteland filled with remnants of a forgotten empire known as the Obsidian Walkers. The landscape features jagged obsidian dunes, volcanic glass plains, and dormant magical ruins. Governed by a secretive order of arcane beings overseeing the balance of the land's energy, with the Silent Order dedicated to preserving the lost knowledge while acting as both guardians and scholars.",
-        "unique_feature": "The Shards of Nekaru, massive crystal-like formations holding latent magical power.",
-        "major_conflict": "The Cracking Shards - The arcane energy that sustains the Glasslands is becoming unstable, with rogue mages and factions seeking to harness the power for themselves as dormant ruins stir with forgotten horrors.",
-        "image": "glasslands.jpg"
+      "relatedLocations": ["seahaven"],
+      "image": "assets/images/maps/map (16).png"
+    },
+    {
+      "id": "seahaven",
+      "name": "Seahaven",
+      "type": "city",
+      "coordinates": [3021, 2612],
+      "nation": "ederia",
+      "description": "The port city component of Skyhaven, Seahaven is simple yet strategically walled off and easily defensible. It serves as the main point of trade and contact with the outside world. Despite its modest size, Seahaven is bustling with activity due to the influx of people over the past 80 years.",
+      "details": {
+        "Population": "Part of Skyhaven's 200,000 total",
+        "Function": "Trade hub and outer defense for Skyhaven proper",
+        "Known For": "Maritime commerce and defensive structures"
       },
-      {
-        "name": "Soleilae",
-        "id": "soleilae",
-        "type": "nation",
-        "description": "An elegant high society kingdom with a strict social hierarchy based on refinement and beauty, where wealth is concentrated in marble spire cities. The landscape features sun-drenched steppes, a French/Renaissance-inspired capital, and desert trade hubs. Governed by a monarchy with a strict caste system, the Lumescar Aristocracy serves as an elite class that dictates policy and enforces the kingdom's rigid traditions.",
-        "unique_feature": "The Luminous Courts, grand assemblies of nobles, artists, and scholars that shape the kingdom's cultural and political landscape.",
-        "major_conflict": "The Cracks in Perfection - As dissent rises from the lower castes, the rigid social system faces potential collapse, with revolutionaries gathering in the shadows and rival nations scheming to exploit the unrest.",
-        "image": "soleilae.jpg"
+      "relatedLocations": ["skyhaven"],
+      "image": "assets/images/maps/map (14).png"
+    },
+    {
+      "id": "tomehold",
+      "name": "Tomehold",
+      "type": "city",
+      "coordinates": [3707, 1650],
+      "nation": "ederia",
+      "description": "Tomehold, the seat of House Astralor, is a towering structure filled with ancient tomes, magical artifacts, and a vast library of spells. Home to 900,000 people, Tomehold is a well-defended city protected by powerful magical wards that prevent scrying, messages, and other arcane threats. Magic can only be used in designated areas or by individuals who possess Amulets of Incitement.",
+      "details": {
+        "Population": "900,000",
+        "Ruler": "House Astralor",
+        "Founded": "Rose to prominence in 733 AR",
+        "Known For": "Magical knowledge, floating spires, and strict regulation of arcane practices"
       },
-      {
-        "name": "Harker Nomads",
-        "id": "harker_nomads",
-        "type": "nation",
-        "description": "A semi-nomadic society of mystic wanderers preserving oral traditions and ancient wisdom. Their presence is marked by gilded caravans, enchanted artifacts, and wandering shamans. Governed by a loose tribal council and oral tradition leadership, the Keepers of Ellowen serve as a secretive sect that safeguards the most powerful mystical relics and prophecies.",
-        "unique_feature": "The Rite of Departure, a sacred tradition where those who leave the society cannot return, ensuring secrecy and protection of their ancient knowledge.",
-        "major_conflict": "The Broken Oath - A former Keeper has returned with forbidden knowledge, dividing the nomads between those who wish to uphold the exile and those who see an opportunity to reclaim lost wisdom.",
-        "image": "harker_nomads.jpg"
-      }
-    ],
-    "cities": [
-      {
-        "name": "Crown's Rest",
-        "id": "crowns_rest",
-        "type": "city",
-        "nation": "Ederia",
-        "description": "The heart of Ederia and home of the ruling House Falkrest, Crown's Rest is a sprawling metropolis of 2.3 million people. Once devastated by a plague that halved its population, it is now a city of contrasts, with vibrant districts alongside abandoned neighborhoods under renovation. The city is dominated by Dragon's End, the royal keep with its floating spires, a testament to both architectural brilliance and magical ingenuity.",
-        "districts": [
-          {"name": "The Heights", "description": "Upper-class district with polished white stone streets, lush gardens, and towering spires adorned with ryanite fixtures"},
-          {"name": "The Reaches", "description": "Middle-class district connecting The Heights to the undercity, featuring buildings both above and below ground"},
-          {"name": "The Deepway", "description": "Former undercity illuminated by glowing ryanite, where locals refer to the Ederian Watch as 'Lamps' or 'Lampies'"}
-        ],
-        "image": "crowns_rest.jpg"
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (3).png"
+    },
+    {
+      "id": "krakens_reach",
+      "name": "Kraken's Reach",
+      "type": "city",
+      "coordinates": [3999, 1251],
+      "nation": "ederia",
+      "description": "Kraken's Reach, the seat of House Veltaris, is a coastal city known for its powerful navy and seafaring prowess. Located on the rugged coastline of Ederia, where steep cliffs and turbulent waters create a natural fortress, the cityscape is dominated by sturdy stone buildings fortified with defensive structures to withstand both natural elements and potential attacks.",
+      "details": {
+        "Population": "400,000 permanent, with 800,000 transient traders passing through regularly",
+        "Ruler": "House Veltaris",
+        "Founded": "Originally a pirate cove led by Edwinn 'Strongjaw' Veltaris",
+        "Known For": "Naval power, maritime trade, and formidable defensive coastline"
       },
-      {
-        "name": "Skyhaven",
-        "id": "skyhaven",
-        "type": "city",
-        "nation": "Ederia",
-        "description": "The ancestral seat of House Falkrest, Skyhaven is split into two distinct sections: the impenetrable mountain fortress and the port city of Seahaven. The keep is built within and atop a mountain and ravine, using the natural landscape for defense, while Seahaven serves as the main point of trade with the outside world. Located north of the Dragon's Strait, Skyhaven stands as a symbol of strength and resilience.",
-        "image": "skyhaven.jpg"
+      "relatedLocations": ["abyssal_hold"],
+      "image": "assets/images/maps/map (11).png"
+    },
+    {
+      "id": "faithspire",
+      "name": "Faithspire",
+      "type": "city",
+      "coordinates": [2387, 2332],
+      "nation": "ederia",
+      "description": "Faithspire is a city of striking contrasts, split into two distinct halves. The Craftsman's District is rugged yet organized, filled with workshops, forges, and factories. The Faith District is pristine and serene, dominated by towering spires and grand temples dedicated to the Flame. At the heart of Faithspire lies a large crater, now transformed into a beautiful lake surrounded by the grand temple and the keep of House Emberlyn.",
+      "details": {
+        "Population": "700,000 in the city, with more in surrounding villages",
+        "Ruler": "House Emberlyn",
+        "Founded": "Built atop rich Ryanite mines",
+        "Known For": "Religious devotion, craftsmanship, and the historical catastrophe when the Lucidic Spire imploded"
       },
-      {
-        "name": "Tomehold",
-        "id": "tomehold",
-        "type": "city",
-        "nation": "Ederia",
-        "description": "The arcane bastion of House Astralor, Tomehold is a towering structure filled with ancient tomes, magical artifacts, and a vast library of spells. Home to 900,000 people, the city is protected by powerful magical wards that prevent scrying and unauthorized magic. Many of its spires float thanks to arcane runes, giving the city a distinctive, advanced appearance that draws heavily from Arkan influence. Located south of the Dragon's Strait, it stands as Ederia's center of magical knowledge.",
-        "image": "tomehold.jpg"
+      "districts": [
+        {"name": "Craftsman's District", "description": "Rugged yet organized area filled with workshops, forges, and factories where finest craftsmen produce everything from everyday goods to intricate artifacts."},
+        {"name": "Faith District", "description": "Pristine and serene area dominated by towering spires and grand temples dedicated to the Flame, with exquisite architecture of polished stone and intricate carvings."}
+      ],
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (8).png"
+    },
+    {
+      "id": "stonewatch",
+      "name": "Stonewatch",
+      "type": "city",
+      "coordinates": [2133, 1375],
+      "nation": "ederia",
+      "description": "Stonewatch, the seat of power for House Eldran, is the oldest city in the nation and the continent. The keep of Stonewatch is built upon the ruins of a great dwarf city embedded into the mountains. Though many passages collapsed during the breaking, the people of Stonewatch repaired and revitalized them. The city boasts significant verticality, with tall towers and large buildings equipped with lifts and arcane elevators.",
+      "details": {
+        "Population": "Unknown but substantial",
+        "Ruler": "House Eldran",
+        "Founded": "The oldest city in Ederia, built on ancient dwarven ruins",
+        "Known For": "Wealth, ancient architecture, and the discovery of dragon-slaying weapons used in the rebellion"
       },
-      {
-        "name": "Kraken's Reach",
-        "id": "krakens_reach",
-        "type": "city",
-        "nation": "Ederia",
-        "description": "The maritime stronghold of House Veltaris, Kraken's Reach is a fortified coastal city known for its powerful navy and seafaring prowess. Located on the rugged coastline south of the Dragon's Strait, the city features metal spikes jutting from the shore, inscribed with protective runes that repel sea monsters. Home to 400,000 permanent residents and hosting up to 800,000 transient traders, Kraken's Reach embodies resilience and maritime innovation.",
-        "image": "krakens_reach.jpg"
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (1).png"
+    },
+    {
+      "id": "highfields",
+      "name": "Highfields",
+      "type": "city",
+      "coordinates": [2447, 765],
+      "nation": "ederia",
+      "description": "Highfields, the seat of House Thornefield, is a sprawling city built at the basin of a majestic mountain. A large, serene lake lies between the city and the mountain, while endless farmlands stretch out on the other side. The city is a marvel of pale woods and white stones, known for its immaculate beauty and considered the jewel of the lowlands.",
+      "details": {
+        "Population": "Unknown but substantial",
+        "Ruler": "House Thornefield",
+        "Known For": "Agricultural excellence, hanging gardens, rare flora, and being the primary food producer for Ederia"
       },
-      {
-        "name": "Faithspire",
-        "id": "faithspire",
-        "type": "city",
-        "nation": "Ederia",
-        "description": "Located along the northern coastline of Ederia, Faithspire is a city of striking contrasts, split into two distinct halves: the rugged yet organized Craftsman's District filled with workshops and forges, and the pristine Faith District dominated by temples and spires dedicated to the Flame. At the heart of the city lies a large crater, the result of a catastrophic magical event, which has been transformed into a beautiful lake surrounded by the grand temple and the keep of House Emberlyn.",
-        "image": "faithspire.jpg"
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (2).png"
+    },
+    {
+      "id": "myrios",
+      "name": "Myrios",
+      "type": "city",
+      "coordinates": [7413, 2258],
+      "nation": "phoenia",
+      "description": "Myrios, a sprawling city-state on an island in the Phoenian archipelago, is a bastion of arcane innovation and discovery. Its enchanted architecture—glowing spires, floating platforms, and magically illuminated streets—showcases unrestrained magical experimentation. Governed by a council of elected Archmages, Myrios thrives as a hub of magical learning and governance.",
+      "details": {
+        "Population": "Unknown",
+        "Ruler": "Council of elected Archmages",
+        "Known For": "Arcane innovation, the Order of the Edict, and magical architecture"
       },
-      {
-        "name": "Stonewatch",
-        "id": "stonewatch",
-        "type": "city",
-        "nation": "Ederia",
-        "description": "The oldest city in Ederia, Stonewatch stands in ancient dwarven ruins nestled in the mountains to the east. The keep is built upon the ruins of a great dwarf city embedded into the mountains, with many restored passages and revitalized chambers. The city at the base of the mountain serves as the first line of defense, featuring significant verticality with tall towers and arcane elevators facilitating movement. Stonewatch is the seat of House Eldran, the oldest and wealthiest house in the kingdom.",
-        "image": "stonewatch.jpg"
+      "landmarks": [
+        "The Luminous Spire",
+        "Academy of Xandoria",
+        "The Enchanted Market",
+        "Grand Hall of Arcanum"
+      ],
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (12).png"
+    },
+    {
+      "id": "lumescar",
+      "name": "Lumescar",
+      "type": "city",
+      "coordinates": [4524, 2444],
+      "nation": "soleilae",
+      "description": "The capital of Soleilae, Lumescar is a radiant city of marble spires and domed halls, where the Roi or Raine du Soleil resides. It stands as the pinnacle of Soleilae's architectural and cultural achievements, embodying the kingdom's ideals of beauty, refinement, and order.",
+      "details": {
+        "Population": "Unknown but substantial",
+        "Ruler": "The Roi or Raine du Soleil",
+        "Known For": "Marble spires, domed halls, and being the seat of the Luminous Courts"
       },
-      {
-        "name": "Highfields",
-        "id": "highfields",
-        "type": "city",
-        "nation": "Ederia",
-        "description": "Celebrated as the 'Gem of the South', Highfields is a sprawling city built at the basin of a majestic mountain. A large, serene lake lies between the city and the mountain, while endless farmlands stretch out on the other side. The city is a marvel of pale woods and white stones, known for its immaculate beauty. Within Highfields, hanging gardens and rare flowers showcase the horticultural prowess of House Thornefield's people, making it a center of agricultural excellence in Ederia.",
-        "image": "highfields.jpg"
-      }
-    ],
-    "regions": [
-      {
-        "name": "The Serpent's Grove",
-        "id": "serpents_grove",
-        "type": "region",
-        "nation": "Ederia",
-        "description": "A vast, untamed jungle in southwestern Ederia, spanning 159,300 km² of dense vegetation, winding rivers, and ancient ruins. Once ruled by the green dragon Szarris, the jungle bears his lingering malevolence in trees with snakeskin-like bark. The Serpent's Grove is home to the Wildbloods, fierce and independent people who reclaimed their freedom after Szarris, and is known for its profound connection to the spirit world, with a thin veil between the physical and spiritual realms.",
-        "image": "serpents_grove.jpg"
-      }
-    ],
-    "landmarks": [
-      {
-        "name": "The Abyssal Hold",
-        "id": "abyssal_hold",
-        "type": "landmark",
-        "nation": "Ederia",
-        "description": "A maximum-security underwater prison located near Kraken's Reach, accessible only via teleportation circles in high-security watchhouses or the royal keep. The Abyssal Hold is under constant magical surveillance, and escape is considered nearly impossible. This prison houses Ederia's most dangerous and organized criminals, cut off from the outside world entirely.",
-        "image": "abyssal_hold.jpg"
+      "relatedLocations": ["luminous_courts"],
+      "image": "assets/images/maps/map (18).png"
+    }
+  ],
+  "regions": [
+    {
+      "id": "serpents_grove",
+      "name": "The Serpent's Grove",
+      "type": "region",
+      "coordinates": [1731, 734],
+      "nation": "ederia",
+      "description": "The Serpent's Grove is a vast, untamed jungle in southwestern Ederia, spanning 159,300 km² of dense vegetation, winding rivers, and ancient ruins. Once ruled by the green dragon Szarris, the Serpent Tongued, the jungle bears his lingering malevolence. Trees where his blood fell grow bark like snakeskin, prized for crafting yet shadowed by dark whispers.",
+      "details": {
+        "Area": "159,300 km² (61,500 sq mi)",
+        "Inhabitants": "The Wildbloods, fierce and independent survivors who reclaimed their freedom from Szarris",
+        "Spiritual Significance": "Profound connection to the spirit world with the veil between physical and spiritual realms being thin",
+        "Known For": "Veilwalkers who can traverse between material and spirit realms, and worship of the World Serpent"
       },
-      {
-        "name": "Dragon's Strait",
-        "id": "dragons_strait",
-        "type": "waterway",
-        "nation": "Ederia",
-        "description": "A crucial waterway separating Skyhaven in the north from the mainland of Ederia to the south. The Dragon's Strait serves as a significant geographical boundary and an important shipping route connecting major cities of the kingdom.",
-        "image": "dragons_strait.jpg"
-      }
-    ]
-  }
+      "unique_features": [
+        "Spirit Pools - Crystal-clear springs that reflect glimpses of the spirit realm",
+        "Whispering Groves - Clearings where spirits' voices can be heard as rustling leaves",
+        "Serpentine Flora - Plants that move with apparent intelligence, some bearing snake-like bark",
+        "Twilight Canopy - Areas of perpetual twilight created by dense foliage",
+        "Ancient Guardians - Ents and sentient plant beings that watch over the forest's secrets"
+      ],
+      "relatedLocations": [],
+      "image": "assets/images/maps/map (15).png"
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "dragons_end",
+      "name": "Dragon's End",
+      "type": "landmark",
+      "coordinates": [3107, 2044],
+      "nation": "ederia",
+      "location": "Crown's Rest",
+      "description": "Dragon's End is the breathtaking fortress that serves as the royal keep of Crown's Rest. It features large spires suspended in the air by the arcane mastery of House Astralor, making any assault on the royal family nearly impossible. The majority of the keep is firmly rooted on the ground, fortified with large round towers equipped with arcane cannons to deter dragon attacks and thick walls capable of withstanding sieges for weeks.",
+      "details": {
+        "Age": "Constructed after the defeat of the Dragon's Triarchy, roughly 800 years ago",
+        "Notable Features": "Floating spires, arcane cannons, hidden passages, and magically enchanted labyrinthine dungeon",
+        "Known For": "Being the seat of royal power and housing the Crimson Bloom"
+      },
+      "relatedLocations": ["crowns_rest", "crimson_bloom"],
+      "image": "assets/images/maps/map (10).png"
+    },
+    {
+      "id": "crimson_bloom",
+      "name": "The Crimson Bloom",
+      "type": "landmark",
+      "coordinates": [3191, 2026],
+      "nation": "ederia",
+      "location": "Dragon's End, Crown's Rest",
+      "description": "At the center of Dragon's End lies the Crimson Bloom, an ancient and eerie tree planted by Sannira Warrendell after the death of Niderion. The tree's origins are tied to blood, its seeds mixed with the blood of both Niderion and Sannira's father. Originally meant to bloom with bright white petals symbolizing growth through death, it first blossomed with deep crimson petals instead, seen as an ill omen by rebellion warriors but as good fortune by the Serpent's Grove people.",
+      "details": {
+        "Age": "Approximately 800 years, planted after the Dragon Rebellion",
+        "Significance": "Linked to the monarchy's fate, rotting after each ruler's death and revived only by their blood",
+        "Unique Event": "The Night of Crimson Tears - annual shedding of crimson petals on the anniversary of King Alistair Draven's death",
+        "Mystical Properties": "Many believe the tree is bound to King Draven, yearning for the blood of the ruler who fed it freely"
+      },
+      "relatedLocations": ["dragons_end", "crowns_rest"],
+      "image": "assets/images/maps/map (1).jpg"
+    },
+    {
+      "id": "abyssal_hold",
+      "name": "The Abyssal Hold",
+      "type": "landmark",
+      "coordinates": [3901, 1418],
+      "nation": "ederia",
+      "location": "Near Kraken's Reach",
+      "description": "A maximum-security underwater prison located near Kraken's Reach, accessible only via teleportation circles in high-security watchhouses or the royal keep. The Abyssal Hold is under constant magical surveillance, and escape is considered nearly impossible. This prison houses Ederia's most dangerous and organized criminals, cut off from the outside world entirely.",
+      "details": {
+        "Security": "Magical surveillance, accessible only by teleportation circles",
+        "Prisoners": "Leaders and prominent members of criminal organizations, those guilty of organized crime",
+        "Known For": "Being virtually escape-proof and housing the most dangerous criminals in Ederia"
+      },
+      "relatedLocations": ["krakens_reach"],
+      "image": "assets/images/maps/map (4).png"
+    },
+    {
+      "id": "dragons_strait",
+      "name": "Dragon's Strait",
+      "type": "waterway",
+      "coordinates": [3233, 2324],
+      "nation": "ederia",
+      "description": "A crucial waterway separating Skyhaven in the north from the mainland of Ederia to the south. The Dragon's Strait serves as a significant geographical boundary and an important shipping route connecting major cities of the kingdom.",
+      "details": {
+        "Geographic Significance": "Separates Skyhaven from the mainland",
+        "Economic Importance": "Vital shipping route for trade",
+        "Known For": "Strategic maritime passage in Ederia"
+      },
+      "relatedLocations": ["skyhaven", "krakens_reach", "crowns_rest", "faithspire"],
+      "image": "assets/images/maps/map (21).png"
+    },
+    {
+      "id": "arcanveil_academy",
+      "name": "Arcanveil Academy",
+      "type": "landmark",
+      "coordinates": [3509, 1446],
+      "nation": "ederia",
+      "description": "A prestigious institution for gifted children aged 10-18 (with exceptions as young as 5), Arcanveil Academy blends historic grandeur with magical innovation. Located in a retrofitted keep once held by House Warrendell, its Tudor-style additions and enchanted gates create a vibrant environment fostering both history and arcane mastery. Divided into boys' and girls' schools, the academy emphasizes personal growth, offering a rigorous curriculum in history, politics, alchemy, magic, and martial arts.",
+      "details": {
+        "Age Range": "10-18 years (exceptions as young as 5)",
+        "Houses": "Six houses—Selkinroe, Wyvrinor, Valkendrin, Lynxendire, Orthimus, and Dullahan",
+        "Curriculum": "History, politics, alchemy, magic, and martial arts",
+        "Known For": "Producing Ederia's future scholars and leaders"
+      },
+      "relatedLocations": ["tomehold"],
+      "image": "assets/images/maps/map (5).png"
+    },
+    {
+      "id": "luminous_courts",
+      "name": "The Luminous Courts",
+      "type": "landmark",
+      "coordinates": [4532, 2701],
+      "nation": "soleilae",
+      "location": "Lumescar",
+      "description": "The Luminous Courts are grand assemblies of nobles, artists, and scholars that shape the kingdom's cultural and political landscape. These opulent gathering spaces serve as the heart of Soleilae's governance and social hierarchies, where the elite Lumescar Aristocracy dictates policy and enforces the kingdom's rigid traditions.",
+      "details": {
+        "Function": "Political and cultural center where kingdom policies are shaped",
+        "Participants": "Nobles, artists, scholars, and the Lumescar Aristocracy",
+        "Current Tension": "Debates over reform as dissent rises from lower castes"
+      },
+      "relatedLocations": ["lumescar", "soleilae"],
+      "image": "assets/images/maps/map (13).png"
+    }
+  ]
+}

@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: "falkrest",
             name: "Kingdom of Falkrest",
             type: "nation",
-            coordinates: [2305, 4096],
+            coordinates: [2681, 1046],
             image: "assets/images/tools/falkrest-nation.jpg",
             description: "The Kingdom of Falkrest is the central power in Ederia, known for its majestic castles and sprawling farmlands. The royal family has ruled from the capital city of Highcrown for over five centuries, maintaining peace through strategic alliances and a strong military presence. Falkrest's banner displays a golden crown on a deep blue field, representing their claim to the high throne of Ederia.",
             details: {
@@ -146,8 +146,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                // Successfully loaded data, create markers
-                createLocationMarkers(data);
+                // Process data structure - combine all location arrays into one
+                const allLocations = [
+                    ...(data.nations || []),
+                    ...(data.cities || []),
+                    ...(data.regions || []),
+                    ...(data.landmarks || [])
+                ];
+                
+                if (allLocations.length > 0) {
+                    // Successfully processed data, create markers
+                    createLocationMarkers(allLocations);
+                } else {
+                    // No locations found in the expected format
+                    console.warn('No valid locations found in JSON');
+                    createLocationMarkers(fallbackLocations);
+                }
             })
             .catch(error => {
                 console.warn('Failed to load location data:', error);
@@ -213,19 +227,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-        
-        // Add a handler for zooming to manage marker visibility
-        map.on('zoomanim', function() {
-            document.querySelectorAll('.leaflet-marker-icon').forEach(el => {
-                el.style.visibility = 'hidden';
-            });
-        });
-        
-        map.on('zoomend', function() {
-            document.querySelectorAll('.leaflet-marker-icon').forEach(el => {
-                el.style.visibility = 'visible';
-            });
-        });
     }
     
     // Create custom marker icon
@@ -262,7 +263,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 iconClass = 'fa-map-marker-alt';
         }
         
-        return `<i class="fas ${iconClass}"></i>`;
+        // Wrap the icon in a marker-inner div
+        return `<div class="marker-inner"><i class="fas ${iconClass}"></i></div>`;
     }
     
     // Display location details in the panel
@@ -513,8 +515,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (matches.length > 0) {
             // Display first match
             displayLocationDetails(matches[0].data);
-            // Pan to the location
-            map.panTo(matches[0].data.coordinates);
+            // Pan to the location - FIX: swap coordinates for consistency
+            map.panTo([matches[0].data.coordinates[1], matches[0].data.coordinates[0]]);
             // Highlight the marker
             highlightMarker(matches[0].data.id);
             
@@ -535,20 +537,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function addCoordinateHelper() {
         // Add click event to get coordinates
         map.on('click', function(e) {
-            console.log("Map coordinates:", e.latlng);
+            // Log coordinates in [longitude, latitude] order
+            console.log("Map coordinates:", [Math.round(e.latlng.lng), Math.round(e.latlng.lat)]);
+            
             // Create a temporary marker
             L.marker(e.latlng, {
                 icon: L.divIcon({
                     className: 'custom-marker',
-                    html: '<i class="fas fa-map-pin"></i>',
+                    html: '<div class="marker-inner"><i class="fas fa-map-pin"></i></div>', // Using marker-inner here too
                     iconSize: [40, 40],
                     iconAnchor: [20, 20]
                 })
             }).addTo(map)
-            .bindTooltip(`Coordinates: [${Math.round(e.latlng.lat)}, ${Math.round(e.latlng.lng)}]`);
+            // Show tooltip with coordinates in [lng, lat] order to match your data format
+            .bindTooltip(`Coordinates: [${Math.round(e.latlng.lng)}, ${Math.round(e.latlng.lat)}]`);
         });
         
-        console.log("Coordinate helper active - click on map to see coordinates");
+        console.log("Coordinate helper active - click on map to see coordinates in [longitude, latitude] format");
     }
     
     // Initialize the interactive map

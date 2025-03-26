@@ -19,11 +19,11 @@ MAP HERO SECTION
 */
 .map-hero {
     background-position: center;
-    height: 60vh;
+    height: 40vh;
 }
 
 .map-hero .hero-background {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../assets/images/tools/map-background.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/assets/images/maps/map (16).jpg');
     opacity: 1 !important;
     background-size: cover;
     background-position: center;
@@ -260,7 +260,6 @@ LEAFLET CUSTOM STYLES
 /* FIX FOR THE MARKER HOVER ISSUE */
 .leaflet-marker-icon {
     transition: none !important;
-    transform: none !important;
 }
 
 /* Custom Tooltips */
@@ -333,9 +332,14 @@ LEAFLET CUSTOM STYLES
 
 /* Custom Marker Hover - Using JS Instead of CSS */
 .custom-marker.hover {
-    transform: scale(1.1) !important;  /* Override Leaflet's transform */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     z-index: 1000 !important;
+}
+
+/* New inner element hover effect */
+.custom-marker.hover .marker-inner {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }
 
 /* 
