@@ -1,0 +1,113 @@
+/* 
+======================
+SPONSORS CAROUSEL STYLES
+======================
+*/
+
+.sponsors-section {
+    background-color: var(--divine-light-white);
+    position: relative;
+    padding: var(--spacing-md) 0;
+}
+
+.sponsors-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M82.42 180h-1.415L0 98.995v-2.827L6.167 90 0 83.833V81.004L81.005 0h2.827L90 6.167 96.167 0H98.996L180 81.005v2.827L173.833 90 180 96.167V98.996L98.995 180h-2.827L90 173.833 83.833 180H82.42zm0-1.414L1.413 97.58 8.994 90l-7.58-7.58L82.42 1.413 90 8.994l7.58-7.58 81.006 81.006-7.58 7.58 7.58 7.58-81.006 81.006-7.58-7.58-7.58 7.58z' fill='%230b2aa9' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.sponsors-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 20px 0;
+    margin: var(--spacing-md) 0;
+}
+
+.sponsor-track {
+    display: flex;
+    transition: transform 0.5s ease-out;
+    gap: 30px;
+    align-items: center;
+    width: fit-content; /* Allow the track to expand as needed */
+}
+
+.sponsor-item {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 120px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s var(--transition-bounce);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(11, 42, 169, 0.1);
+}
+
+.sponsor-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md), 0 0 15px rgba(127, 14, 189, 0.2);
+    border-color: var(--primary-blue-light);
+}
+
+.sponsor-item img {
+    max-width: 100%;
+    max-height: 100px;
+    border-radius: 10px;
+    object-fit: contain;
+    filter: grayscale(30%);
+    opacity: 0.85;
+    transition: all 0.3s ease;
+}
+
+.sponsor-item:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* Carousel controls removed in favor of auto-scroll only */
+
+/* Infinite loop animation - will be set dynamically by JS */
+@keyframes infiniteScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(var(--scroll-width, -1000px));
+    }
+}
+
+/* Always auto-scroll with infinite loop */
+.sponsor-track {
+    animation: infiniteScroll var(--scroll-duration, 30s) linear infinite;
+}
+
+/* Pause on hover */
+.sponsors-carousel:hover .sponsor-track {
+    animation-play-state: paused;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sponsor-item {
+        width: 150px;
+        height: 100px;
+    }
+    
+    .sponsor-item img {
+        max-height: 60px;
+    }
+    
+    .carousel-controls {
+        padding: 0 5px;
+    }
+}

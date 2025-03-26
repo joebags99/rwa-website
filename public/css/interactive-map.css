@@ -1,0 +1,509 @@
+/* 
+======================
+INTERACTIVE MAP STYLES
+======================
+*/
+
+:root {
+    /* Custom map colors */
+    --map-nation-color: var(--primary-blue);
+    --map-city-color: var(--primary-red);
+    --map-region-color: var(--primary-purple);
+    --map-landmark-color: #9F80EB; /* House Eldran purple from previous files */
+}
+
+/* 
+======================
+MAP HERO SECTION
+======================
+*/
+.map-hero {
+    background-position: center;
+    height: 40vh;
+}
+
+.map-hero .hero-background {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/assets/images/maps/map (16).jpg');
+    opacity: 1 !important;
+    background-size: cover;
+    background-position: center;
+}
+
+.map-hero .magical-overlay {
+    background: 
+        radial-gradient(circle at 30% 70%, rgba(11, 42, 169, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(127, 14, 189, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(74, 151, 68, 0.3) 0%, transparent 70%);
+}
+
+/* 
+======================
+MAP SECTION
+======================
+*/
+.map-section {
+    padding: var(--spacing-lg) 0;
+    background-color: var(--divine-light-white);
+}
+
+.map-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto;
+    gap: 20px;
+    height: calc(80vh - 100px);
+    min-height: 600px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: 0;
+    overflow: hidden;
+}
+
+@media (max-width: 992px) {
+    .map-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+}
+
+/* 
+======================
+MAP CONTROLS
+======================
+*/
+.map-controls {
+    background-color: var(--background-dark);
+    color: var(--divine-light-white);
+    padding: 20px;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1;
+}
+
+.filter-container h3 {
+    color: var(--divine-light-white);
+    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding-left: 30px;
+}
+
+.filter-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    height: 20px;
+    width: 20px;
+    background-color: #333;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.filter-option:hover input ~ .checkmark {
+    background-color: #444;
+}
+
+.filter-option input:checked ~ .checkmark {
+    background-color: var(--primary-blue);
+}
+
+.filter-option[data-type="nation"] input:checked ~ .checkmark {
+    background-color: var(--map-nation-color);
+}
+
+.filter-option[data-type="city"] input:checked ~ .checkmark {
+    background-color: var(--map-city-color);
+}
+
+.filter-option[data-type="region"] input:checked ~ .checkmark {
+    background-color: var(--map-region-color);
+}
+
+.filter-option[data-type="landmark"] input:checked ~ .checkmark {
+    background-color: var(--map-landmark-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.filter-option input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.filter-option .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.label-text {
+    font-family: var(--font-headers);
+    font-size: 1rem;
+}
+
+.search-container {
+    display: flex;
+    margin-top: 15px;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--divine-light-white);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    font-family: var(--font-body);
+}
+
+.search-container input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-container input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.search-container button {
+    background-color: var(--primary-blue);
+    color: var(--divine-light-white);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    transition: all 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: var(--primary-blue-light);
+}
+
+@media (max-width: 992px) {
+    .map-controls {
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    
+    .filter-container, .search-container {
+        flex: 1;
+        min-width: 250px;
+    }
+}
+
+/* 
+======================
+MAP DISPLAY
+======================
+*/
+#ederia-map {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    overflow: hidden;
+    position: relative;
+}
+
+@media (max-width: 992px) {
+    #ederia-map {
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+}
+
+/* 
+======================
+LEAFLET CUSTOM STYLES
+======================
+*/
+.leaflet-container {
+    background: #f5f5f5;
+    font-family: var(--font-body);
+}
+
+/* FIX FOR THE MARKER HOVER ISSUE */
+.leaflet-marker-icon {
+    transition: none !important;
+}
+
+/* Custom Tooltips */
+.custom-tooltip {
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--divine-light-white);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-family: var(--font-headers);
+    font-size: 0.9rem;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Popup */
+.leaflet-popup-content-wrapper {
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--divine-light-white);
+    border-radius: 10px;
+}
+
+.leaflet-popup-content {
+    margin: 12px;
+    font-family: var(--font-body);
+}
+
+.leaflet-popup-tip {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.leaflet-popup-close-button {
+    color: var(--divine-light-white) !important;
+}
+
+/* Custom Markers */
+.custom-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    font-size: 1rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.marker-nation {
+    color: var(--map-nation-color);
+    border-color: var(--map-nation-color);
+}
+
+.marker-city {
+    color: var(--map-city-color);
+    border-color: var(--map-city-color);
+}
+
+.marker-region {
+    color: var(--map-region-color);
+    border-color: var(--map-region-color);
+}
+
+.marker-landmark {
+    color: var(--map-landmark-color);
+    border-color: var(--map-landmark-color);
+}
+
+/* Custom Marker Hover - Using JS Instead of CSS */
+.custom-marker.hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000 !important;
+}
+
+/* New inner element hover effect */
+.custom-marker.hover .marker-inner {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* 
+======================
+LOCATION PANEL
+======================
+*/
+.location-panel {
+    position: absolute;
+    right: -400px; /* Start offscreen */
+    top: 0;
+    width: 400px;
+    height: 100%;
+    background-color: white;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: right 0.5s var(--transition-smooth);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.location-panel.active {
+    right: 0;
+}
+
+.panel-header {
+    background: var(--gradient-blue);
+    color: var(--divine-light-white);
+    padding: 20px;
+    position: relative;
+}
+
+.panel-header h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+    color: var(--divine-light-white);
+}
+
+.location-type {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.close-panel {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--divine-light-white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.close-panel:hover {
+    opacity: 1;
+}
+
+.panel-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.location-image-container {
+    width: 100%;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.location-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.location-description {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.location-details {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+.related-locations h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.related-locations ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.related-locations li {
+    margin-bottom: 8px;
+}
+
+.related-locations a {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: var(--border-radius);
+    background-color: rgba(11, 42, 169, 0.05);
+    transition: all 0.3s ease;
+}
+
+.related-locations a:hover {
+    background-color: rgba(11, 42, 169, 0.1);
+    transform: translateX(5px);
+}
+
+.related-locations a i {
+    margin-right: 8px;
+    color: var(--primary-blue);
+}
+
+/* Type-specific panel headers */
+.panel-header.type-nation {
+    background: linear-gradient(135deg, var(--map-nation-color), var(--primary-blue-dark));
+}
+
+.panel-header.type-city {
+    background: linear-gradient(135deg, var(--map-city-color), var(--primary-red-dark));
+}
+
+.panel-header.type-region {
+    background: linear-gradient(135deg, var(--map-region-color), var(--primary-purple-dark));
+}
+
+.panel-header.type-landmark {
+    background: linear-gradient(135deg, var(--map-landmark-color), #6b4bb8);
+}
+
+@media (max-width: 768px) {
+    .location-panel {
+        width: 100%;
+        right: -100%;
+    }
+}
