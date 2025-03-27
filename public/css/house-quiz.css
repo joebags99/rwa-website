@@ -121,6 +121,7 @@ QUIZ INTRO
     cursor: help;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    transform: translateZ(0); /* Force hardware acceleration */
 }
 
 .shield img {
@@ -128,17 +129,13 @@ QUIZ INTRO
     max-height: 80%;
     opacity: 0.6;
     filter: contrast(0%) brightness(0.5);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, filter 0.3s ease; /* Only transition specific properties */
 }
 
+/* Optional: Change hover to scale instead of vertical movement */
 .shield:hover {
-    transform: translateY(-5px);
+    transform: scale(1.05); /* Scale instead of vertical movement */
     box-shadow: 0 10px 20px rgba(42, 107, 194, 0.2);
-}
-
-.shield:hover img {
-    opacity: 0.8;
-    filter: contrast(0%) brightness(0.7);
 }
 
 .shield::after {
@@ -157,6 +154,48 @@ QUIZ INTRO
 
 #start-quiz {
     margin-top: 20px;
+    position: relative;
+    top: 30px;
+}
+
+/* Fix for shield alignment in quiz intro */
+.quiz-intro .house-shields {
+    display: grid;
+    grid-template-columns: repeat(6, 100px);
+    grid-gap: 20px;
+    width: 340px;
+    position: relative;
+    top: -30px;
+    left: -30px;
+    margin: 30px auto;
+    justify-content: center;
+}
+
+.quiz-intro .shield {
+    margin: 0;
+    width: 100px;
+    height: 100px;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.quiz-intro .shield img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+@media (max-width: 480px) {
+    .quiz-intro .house-shields {
+        grid-template-columns: repeat(2, 80px);
+        width: 200px;
+        grid-gap: 20px;
+    }
+    
+    .quiz-intro .shield {
+        width: 80px;
+        height: 80px;
+    }
 }
 
 /* 
