@@ -20,7 +20,7 @@ const Timeline = {
         eventsPerBatch: 5,          // Number of events to load per batch
         fadeOutThreshold: 200,      // Pixels from top to start fading out
         fadeInThreshold: 100,       // Pixels from bottom to start fading in
-        scrollThreshold: 300,       // Pixels from bottom to trigger loading more
+        scrollThreshold: 150,       // Pixels from bottom to trigger loading more
         animationDelay: 100,        // Ms delay between event animations
         monthNames: [
             "January", "February", "March", "April", "May", "June",
@@ -618,6 +618,7 @@ filterByEra: function(era) {
     loadMoreEvents: function() {
         if (this.state.isLoading) return;
         
+        console.log('LOADING MORE EVENTS - starting process');
         this.state.isLoading = true;
         
         // Show loader
@@ -627,6 +628,7 @@ filterByEra: function(era) {
         
         // We already have all data cached, just need to load the next batch
         const filteredEvents = this.filterEvents();
+        console.log('Total filtered events:', filteredEvents.length);
         
         // Calculate which events to load next
         const startIndex = this.config.eventsPerBatch * this.state.currentPage;
@@ -635,8 +637,12 @@ filterByEra: function(era) {
             startIndex + this.config.eventsPerBatch
         );
         
+        console.log('Loading events from index', startIndex, 'to', startIndex + this.config.eventsPerBatch);
+        console.log('Next batch contains', nextBatch.length, 'events');
+        
         // No more events to load
         if (nextBatch.length === 0) {
+            console.log('No more events to load');
             this.state.hasMoreEvents = false;
             this.state.isLoading = false;
             
@@ -648,30 +654,32 @@ filterByEra: function(era) {
             return;
         }
         
-        // Add a small delay to make the loading more natural
-        setTimeout(() => {
-            // Render next batch of events
-            nextBatch.forEach(event => {
-                this.renderTimelineItem(event);
-            });
-            
-            // Update state
-            this.state.currentPage++;
-            this.state.hasMoreEvents = filteredEvents.length > startIndex + this.config.eventsPerBatch;
-            this.state.isLoading = false;
-            
-            // Hide loader
-            if (this.elements.bottomLoader) {
-                this.elements.bottomLoader.classList.remove('active');
-            }
-            
-            // Observe new elements
-            document.querySelectorAll('.timeline-event, .timeline-break').forEach(el => {
-                if (!el.classList.contains('visible') && !el.classList.contains('fade-out')) {
-                    this.observer.observe(el);
-                }
-            });
-        }, 500);
+        // Instead of using setTimeout which can be unreliable, render immediately
+        console.log('Rendering next batch of events');
+        
+        // Render next batch of events
+        nextBatch.forEach(event => {
+            this.renderTimelineItem(event);
+        });
+        
+        // Update state
+        this.state.currentPage++;
+        this.state.hasMoreEvents = filteredEvents.length > startIndex + this.config.eventsPerBatch;
+        this.state.isLoading = false;
+        
+        console.log('New page number:', this.state.currentPage);
+        console.log('Has more events:', this.state.hasMoreEvents);
+        
+        // Hide loader
+        if (this.elements.bottomLoader) {
+            this.elements.bottomLoader.classList.remove('active');
+        }
+        
+        // Observe new elements
+        document.querySelectorAll('.timeline-event:not(.observed), .timeline-break:not(.observed)').forEach(el => {
+            this.observer.observe(el);
+            el.classList.add('observed'); // Mark as observed to avoid re-observing
+        });
     },
 
     // Load earlier events (when scrolling up)
