@@ -314,7 +314,7 @@ h1 {
     font-family: var(--font-titles);
     font-size: clamp(2.5rem, 8vw, 4.5rem);
     margin-bottom: var(--spacing-md);
-    letter-spacing: 2px;
+    letter-spacing: 0px;
     text-shadow: 
         0 2px 5px rgba(0, 0, 0, 0.3),
         0 0 15px rgba(127, 14, 189, 0.5);
@@ -624,30 +624,6 @@ section {
     transition: opacity 0.5s ease;
 }
 
-.section-icon::after {
-    content: '';
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    top: -25%;
-    left: -25%;
-    background: conic-gradient(
-        transparent, 
-        transparent, 
-        transparent, 
-        var(--divine-light-white)
-    );
-    animation: rotateLight 5s linear infinite;
-}
-
-@keyframes rotateLight {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
 
 .section-icon i {
     position: relative;
@@ -1111,7 +1087,7 @@ HERO SECTION
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     position: relative;
     z-index: var(--z-normal);
@@ -2310,16 +2286,15 @@ footer {
 }
 
 .easter-egg {
-    position: relative;
-    display: inline-block;
-    cursor: help;
-    font-style: italic;
-    font-size: 0.8rem;
-    transition: color 0.3s ease;
+    color: inherit !important; /* First, inherit the parent color */
+    opacity: 0 !important;  /* Make it completely invisible */
+    transition: opacity 0.3s ease !important; /* Smooth transition for visibility */
+    cursor: default !important; /* Keep the default cursor so it's truly hidden */
 }
 
 .easter-egg:hover {
-    color: var(--primary-purple-light);
+    color: var(--primary-purple-light) !important; /* Change color on hover */
+    opacity: 1 !important; /* Make fully visible on hover */
 }
 
 .sr-only {

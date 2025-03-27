@@ -125,6 +125,29 @@ function initializeDiceRoller() {
         clearHistory();
     });
     
+    // Add event listener for Enter key to roll dice
+    document.addEventListener('keydown', function(event) {
+        // Check if key pressed is Enter (key code 13)
+        if (event.key === 'Enter') {
+            // Check if any dice are selected before rolling
+            const hasDice = Object.values(selectedDice).some(count => count > 0);
+            
+            if (hasDice) {
+                // Prevent default action (like form submission)
+                event.preventDefault();
+                
+                // Roll the dice
+                rollDice();
+                
+                // Add visual feedback on the roll button
+                rollButton.classList.add('highlight');
+                setTimeout(() => {
+                    rollButton.classList.remove('highlight');
+                }, 300);
+            }
+        }
+    });
+    
     /**
      * Add a die to the selected dice
      * @param {string} diceType - The type of die (d4, d6, etc.)

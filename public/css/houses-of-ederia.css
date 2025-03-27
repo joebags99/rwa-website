@@ -284,7 +284,7 @@ HOUSE SECTIONS WITHIN CIRCLE
 }
 
 .house-section[data-house="veltaris"] {
-    top: 20%;
+    top: 10%;
     right: 5%;
     animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 2);
 }
@@ -302,7 +302,7 @@ HOUSE SECTIONS WITHIN CIRCLE
 }
 
 .house-section[data-house="eldran"] {
-    top: 20%;
+    top: 10%;
     left: 5%;
     animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 5);
 }
@@ -373,12 +373,12 @@ HOUSE SECTIONS WITHIN CIRCLE
 /* Crown marker for the ruling house (Falkrest) */
 .crown-marker {
     position: absolute;
-    width: 50px;
-    height: 30px;
-    background-image: url('../assets/images/crown.png');
+    width: 60px;
+    height: 60px;
+    background-image: url(../assets/images/crown.png);
     background-size: contain;
     background-repeat: no-repeat;
-    top: -30px;
+    top: -45px;
     left: 50%;
     transform: translateX(-50%);
     filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.7));

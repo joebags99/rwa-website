@@ -46,6 +46,137 @@
       "location": "The City States of Phoenia",
       "description": "Octavius Alysídes leads his people in a bloodless rebellion, escaping the tyranny of the City States of Phoenia. After 10 years of exploration, they settle in the Edenic lands of Arcadian Republic of Elysia, where Octavius is crowned ruler and takes the title \"Alysídes\" (Peace Bringer). Under his descendants, the nation thrives, adopting a governance system of five states led by Tribunes who report to the Praetor, ensuring balance and prosperity.",
       "createdAt": "2025-03-14T11:44:51.699Z"
+    },
+    {
+      "id": "1743022221641",
+      "type": "event",
+      "title": "The Breaking of the Font and the Mage's Rebellion",
+      "era": "arcane-reckoning",
+      "year": 703,
+      "month": 1,
+      "day": 1,
+      "location": "Faithspire, Ederia",
+      "description": "Faithspire is built atop rich Ryanite mines, fueling House Emberlyn’s rise to power and immense wealth. Four centuries ago, the house rebels against the ruling king, using the Lucidic Spire—a Ryanite and jade tower amplifying their mages’ power—as their key weapon. In a bid for godhood, Delphanis Emberlyn overextends the spire’s power, causing it to implode. The catastrophe shatters Ederia’s magical weave, leaving the land without magic for nearly 150 years.",
+      "createdAt": "2025-03-26T20:50:21.641Z"
+    },
+    {
+      "id": "1743022262362",
+      "type": "event",
+      "title": "The Sundering of Vassal Ties",
+      "era": "arcane-reckoning",
+      "year": 733,
+      "month": 5,
+      "day": 20,
+      "location": "Ederia",
+      "description": "House Astralor rises to prominence after discovering Ryanite in House Emberlyn’s former capital, leveraging their mastery of magic and combat to gain independence. Their elite \"Blades of Xandoria\" suppress the Ryanite-infused forces during House Emberlyn’s rebellion. Despite claims of harmony, slow trade deals and bruised egos hint at lingering tensions between the two houses.",
+      "createdAt": "2025-03-26T20:51:02.362Z",
+      "updatedAt": "2025-03-26T20:51:13.464Z"
+    },
+    {
+      "id": "1743022356763",
+      "type": "event",
+      "title": "The Calamity of the Broken Dawn",
+      "era": "broken-sun",
+      "year": 1010,
+      "month": 2,
+      "day": 2,
+      "location": "Ederia",
+      "description": "The sun shatters, plunging Ederia into twilight and unleashing Kython invaders from the Underdark. House Falkrest defends the kingdom during the Siege of Skyhaven and defeats the Kython queen in the Battle in the Broken Light. Though the sun is partially restored, it remains fractured, and the calamity leaves lasting scars on Ederia.",
+      "createdAt": "2025-03-26T20:52:36.763Z"
+    },
+    {
+      "id": "1743022425402",
+      "type": "event",
+      "title": "The Assassination of Princess Sannira Draven",
+      "era": "silent-war",
+      "year": 1020,
+      "month": 3,
+      "day": 15,
+      "location": "Crown's Rest, Ederia",
+      "description": "Khalia Safar of the Greycoats assassinates Princess Sannira Draven, triggering King Alistair’s descent into madness and his transformation into a lich. This act isolates the Deepways and fractures the Broker’s network.",
+      "createdAt": "2025-03-26T20:53:45.402Z"
+    },
+    {
+      "id": "1743022502732",
+      "type": "event",
+      "title": "The Night of Crimson Tears",
+      "era": "silent-war",
+      "year": 1030,
+      "month": 6,
+      "day": 28,
+      "location": "Skyhaven, Ederia",
+      "description": "King Alistair Draven massacres House Falkrest in a necromantic ritual to achieve lichdom. Elendara the Usurper escapes, leading the Survivors’ Rebellion to topple Draven and restore peace to Ederia.",
+      "image": "https://i.imgur.com/7lbG1KO.png",
+      "createdAt": "2025-03-26T20:55:02.733Z"
+    },
+    {
+      "id": "1743022567293",
+      "type": "event",
+      "title": "The Plague of Hollowed Veins",
+      "era": "uncertainty",
+      "year": 1070,
+      "month": 12,
+      "day": 28,
+      "location": "Ederia",
+      "description": "An arcane-infused plague sweeps through Ederia, claiming a quarter of the population, including King Edemere Falkrest and his heirs. The plague reshapes governance, spurs medical innovation, and leaves the cursed Husklands as a grim legacy.",
+      "createdAt": "2025-03-26T20:56:07.293Z"
+    },
+    {
+      "id": "1743022682924",
+      "type": "reign-break",
+      "title": "End of the Reign of Alistar Draven",
+      "era": "silent-war",
+      "year": 1033,
+      "month": 2,
+      "day": 9,
+      "breakType": "reign-end",
+      "createdAt": "2025-03-26T20:58:02.924Z",
+      "updatedAt": "2025-03-26T20:59:06.984Z"
+    },
+    {
+      "id": "1743022734969",
+      "type": "reign-break",
+      "title": "Beginning of the Reign of Elendara Falkrest and the Falkrest Dynasty",
+      "era": "uncertainty",
+      "year": 1033,
+      "month": 2,
+      "day": 28,
+      "breakType": "reign-beginning",
+      "createdAt": "2025-03-26T20:58:54.969Z"
+    },
+    {
+      "id": "1743023007133",
+      "type": "reign-break",
+      "title": "Beginning of the Reign of Edemere Falkrest",
+      "era": "uncertainty",
+      "year": 1059,
+      "month": 12,
+      "day": 28,
+      "breakType": "reign-beginning",
+      "createdAt": "2025-03-26T21:03:27.133Z"
+    },
+    {
+      "id": "1743023096587",
+      "type": "reign-break",
+      "title": "Beginning of the Reign of Talon Falkrest",
+      "era": "uncertainty",
+      "year": 1069,
+      "month": 1,
+      "day": 2,
+      "breakType": "reign-beginning",
+      "createdAt": "2025-03-26T21:04:56.587Z"
+    },
+    {
+      "id": "1743023238754",
+      "type": "event",
+      "title": "The Call Home and the Kings Hand",
+      "era": "uncertainty",
+      "year": 1103,
+      "month": 9,
+      "day": 2,
+      "location": "Crown's Rest, Ederia",
+      "description": "<p>King Talon the Kind calls his children home to Crown's Rest. They arrive to find a fragile peace between the Deepways, the Reaches, and the Heights. Tensions remain high, and mistrust lingers beneath the surface.</p>\n\n<p>Named the King's Hand, Talon's children depart on their first mission: to identify who owns the land surrounding Rosemont. Minor lords and farms have clashed over unclear borders, and the King's Hand must determine proper ownership before the conflict escalates. Their uncle Raynere Falkrest, Sentinel of Ederia, travels with them.</p>",
+      "createdAt": "2025-03-26T21:07:18.754Z"
     }
   ]
 }

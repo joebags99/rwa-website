@@ -36,6 +36,135 @@
       "imageSrc": "https://assets.legendkeeper.com/b4193db1-44b9-4d7e-b72a-73e3213157be.png",
       "createdAt": "2025-03-13T16:53:17.115Z",
       "updatedAt": "2025-03-14T02:44:05.582Z"
+    },
+    {
+      "id": "1743023521141",
+      "name": "Elandor Veythryn, the Revenant Flamebringer",
+      "importance": 1,
+      "appearance": "Act 1,  Chapter 5",
+      "relationship": "unknown",
+      "category": "religious",
+      "description": "A solemn, undead knight once bound to serve King Alistar Draven, Elandor broke free when the tyrant fell. Driven by guilt over his forced atrocities, he now leads the Church of the Cleansing Tempest with unwavering zeal, intent on eradicating the Crimson Court’s remaining corruption. Though he carries himself with measured restraint, his words burn with the fervor of a man compelled to redeem himself in the eyes of the realm he once harmed.",
+      "quote": "Though death chains me to my past, I live on to end the evil I once had no choice but to serve.",
+      "imageSrc": "https://assets.legendkeeper.com/c583c13e-3df6-4cc4-b8ca-a4982d28272e.png",
+      "tags": [
+        "clergy",
+        "church of the cleansing tempest",
+        "ederian",
+        "undead"
+      ],
+      "createdAt": "2025-03-26T21:12:01.141Z",
+      "updatedAt": "2025-03-26T21:13:42.288Z"
+    },
+    {
+      "id": "1743023677245",
+      "name": "Lady Alarice Eldran, Chancellor of the Treasury",
+      "importance": 1,
+      "appearance": "Act 1, Chapter 4",
+      "relationship": "friendly",
+      "category": "royal",
+      "description": "A half-elven noble with striking silver hair and bright green eyes, Lady Alarice Eldran carries herself with unwavering poise and integrity. Entrusted by King Talon to oversee the kingdom’s finances, she expertly balances the flow of gold and silver, ensuring Ederia’s economic lifeblood remains strong. Her approach to governance is as refined as her attire—practical, elegant, and meticulously organized. Though rarely one for public fanfare, her sage advice and sharp mind for numbers have made her indispensable in maintaining Ederia’s prosperity.",
+      "quote": "Wealth is not merely gold and silver, but the lifeblood of our kingdom. It must flow wisely and justly, or we risk bleeding ourselves dry.",
+      "imageSrc": "https://assets.legendkeeper.com/b42dc808-9983-4f51-8bb5-9ddd3f4b0a62.png?w=1200",
+      "tags": [
+        "nobility",
+        "house eldran",
+        "treasury",
+        "council"
+      ],
+      "createdAt": "2025-03-26T21:14:37.245Z",
+      "updatedAt": "2025-03-26T21:21:04.411Z"
+    },
+    {
+      "id": "1743023781702",
+      "name": "Archmage Morgana Umbren",
+      "importance": 2,
+      "appearance": "Prologue",
+      "relationship": "neutral",
+      "category": "royal",
+      "description": "A tiefling of deep purple skin and sharp horns, Morgana Umbren commands attention in her flowing, symbol-embroidered robes. Despite her renown as a necromancer, King Talon entrusts her with oversight of all magical affairs—a testament to her profound understanding of arcane arts. She moves with measured grace, her piercing violet eyes reflecting both caution and curiosity. Equal parts scholar and sorcerer, Morgana maintains strict vigilance over Ederia’s magical landscape, ever mindful of the delicate balance between ambition and responsibility.",
+      "quote": "Magic is a double-edged sword. Wield it with wisdom, for its power can either protect or consume.",
+      "imageSrc": "https://assets.legendkeeper.com/7094b6fa-1ce4-4746-8795-0dac0539e46e.png?w=1200",
+      "tags": [
+        "necromancy",
+        "house umbren",
+        "archmage",
+        "council"
+      ],
+      "createdAt": "2025-03-26T21:16:21.702Z",
+      "updatedAt": "2025-03-26T21:20:46.701Z"
+    },
+    {
+      "id": "1743023891896",
+      "name": "Lady Elyndra Maelis, Envoy General",
+      "importance": 1,
+      "appearance": "Act 1, Chapter 4",
+      "relationship": "ally",
+      "category": "royal",
+      "description": "A refined diplomat with flowing auburn hair that subtly shifts through seasonal hues, Elyndra Maelis carries herself with understated grace. Her kind blue eyes and warm smile disarm even the staunchest critics. Raised under Queen Elendara’s tutelage, she earned King Talon’s trust through years of loyal service and adept negotiations—proving that quiet resolve and gentle words can be as potent as any sword. Although Talon distrusts House Veltris, Elyndra’s steadfast loyalty and skilled diplomacy make her an essential voice in the royal court.",
+      "quote": "I always start with flowers and pleasantries, not because I am weak, but because the old guard underestimates a kind woman.",
+      "imageSrc": "https://assets.legendkeeper.com/de4d08ee-886e-419b-be33-f1ef89c1d8c4.png?w=1200",
+      "tags": [
+        "diplomacy",
+        "maelis",
+        "ally",
+        "envoy general",
+        "council"
+      ],
+      "createdAt": "2025-03-26T21:18:11.896Z",
+      "updatedAt": "2025-03-26T21:21:11.634Z"
+    },
+    {
+      "id": "1743024040734",
+      "name": "Ser Davion Thalon, Spymaster",
+      "importance": 2,
+      "appearance": "Act 1, Chapter 4",
+      "relationship": "unknown",
+      "category": "royal",
+      "description": "A small, wiry figure with dark hair and piercing blue eyes, Ser Davion blends seamlessly into his surroundings. Quiet yet observant, he dresses in the subdued hues of his monastic order—a reflection of both humility and tactical discretion. Though rarely in the spotlight, his keen intellect and unshakable loyalty to the crown make him the realm’s most reliable gatherer of secrets. Few individuals truly know him, but many respect the silent power he wields through whispered confessions and subtle investigations.",
+      "quote": "Pilgrims and penitents alike are ever willing to divulge their darkest secrets to strangers and members of the cloth. In these whispered confessions, the true pulse of the kingdom is revealed.",
+      "imageSrc": "https://assets.legendkeeper.com/1921e19d-5605-42ab-ace3-51196a1d676f.png?w=1200",
+      "tags": [
+        "thalon",
+        "spymaster",
+        "council"
+      ],
+      "createdAt": "2025-03-26T21:20:40.734Z"
+    },
+    {
+      "id": "1743024238183",
+      "name": "Mayor Brynden Goodbrook",
+      "importance": 1,
+      "appearance": "Act 1, Chapter 2",
+      "relationship": "friendly",
+      "category": "pastoral",
+      "description": "For a decade, this halfling has been a steady voice of kindness in the Lowlands, navigating the delicate balance between the surrounding noble houses. Though small in stature, their measured words and quiet diplomacy have kept Rosemont a neutral ground amidst shifting alliances.",
+      "quote": "I do hope you can resolve this unpleasant business between House Melanth and House Rivermoor soon and with minimal strife—our people not only grow uneasy when lords quarrel but we tend to be the ones who suffer.",
+      "imageSrc": "https://i.imgur.com/YhnzkA4.png",
+      "tags": [
+        "mayor",
+        "ederian"
+      ],
+      "createdAt": "2025-03-26T21:23:58.183Z",
+      "updatedAt": "2025-03-26T21:24:35.576Z"
+    },
+    {
+      "id": "1743024748413",
+      "name": "Ser Otis Von Phem, Burgrave of Gildarrow Keep",
+      "importance": 2,
+      "appearance": "Act 1, Chapter 3",
+      "relationship": "ally",
+      "category": "militant",
+      "description": "A grizzled veteran with iron-gray hair, Ser Otis stands at rigid attention in a deep blue and purple surcoat bearing an embroidered silver antelope. Known for his unflinching discipline and tactical mind, he earned the crown’s ear by championing an expanded Ederian Watch. Beneath his stern demeanor lies an unwavering devotion to protecting the realm’s common folk—an ideal that drives both his speechcraft and his sword arm.",
+      "quote": "What good is a crown that cannot protect its people?",
+      "imageSrc": "https://i.imgur.com/TWh8Ih7.png",
+      "tags": [
+        "ederian watch",
+        "burgrave",
+        "soldier"
+      ],
+      "createdAt": "2025-03-26T21:32:28.413Z",
+      "updatedAt": "2025-03-26T21:32:47.633Z"
     }
   ]
 }

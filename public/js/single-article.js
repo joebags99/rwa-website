@@ -88,6 +88,35 @@ const SingleArticle = {
             ).join('');
         }
         
+            // Add YouTube video if available
+    if (this.article.relatedVideo || this.article.youtubeVideo) {
+        const videoUrl = this.article.relatedVideo || this.article.youtubeVideo;
+        const videoId = this.getYouTubeId(videoUrl);
+        
+        if (videoId) {
+            // Create video container after the article header
+            const videoContainer = document.createElement('div');
+            videoContainer.className = 'article-video-container';
+            videoContainer.innerHTML = `
+                <iframe 
+                    src="https://www.youtube.com/embed/${videoId}" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+
+              // Insert after the header or before the content
+              const header = document.querySelector('.article-header');
+              if (header && header.nextElementSibling) {
+                  header.parentNode.insertBefore(videoContainer, header.nextElementSibling);
+              } else if (articleContent) {
+                  articleContent.parentNode.insertBefore(videoContainer, articleContent);
+              }
+          }
+      }
+
         // Set content - convert markdown to HTML
         if (articleContent) {
             if (typeof marked !== 'undefined') {
@@ -102,6 +131,17 @@ const SingleArticle = {
         
         // Fetch related articles
         this.fetchRelatedArticles();
+    },
+
+    // Helper function to extract YouTube video ID from URL
+    getYouTubeId(url) {
+        if (!url) return null;
+        
+        // Regular expression to match YouTube URL patterns
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        
+        return (match && match[2].length === 11) ? match[2] : null;
     },
     
     setupShareButtons() {

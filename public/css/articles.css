@@ -962,6 +962,45 @@ Articles Grid
     margin-bottom: var(--spacing-lg);
 }
 
+/* YouTube Video Container */
+.article-video-container {
+    margin: var(--spacing-md) 0;
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+}
+
+.article-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Add video link button below video container */
+.article-video-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-headers);
+    color: var(--primary-blue);
+}
+
+.article-video-link i {
+    margin-right: 8px;
+}
+
+.article-video-link:hover {
+    color: var(--primary-purple);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .articles-controls {
