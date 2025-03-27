@@ -155,13 +155,20 @@ const Timeline = {
         // Don't process if already loading
         if (this.state.isLoading) return;
 
-        const scrollY = window.scrollY;
+        const scrollY = window.scrollY || window.pageYOffset;
         const windowHeight = window.innerHeight;
-        const bodyHeight = document.body.offsetHeight;
+        const bodyHeight = document.body.scrollHeight; // Changed from offsetHeight to scrollHeight
         
-        // Check if we're near the bottom
-        if (this.state.hasMoreEvents && 
-            scrollY + windowHeight > bodyHeight - this.config.scrollThreshold) {
+        // Calculate if we're near the bottom
+        const nearBottom = scrollY + windowHeight > bodyHeight - this.config.scrollThreshold;
+        
+        // Debug info
+        console.log(`Scroll info: Position: ${scrollY}, Window: ${windowHeight}, Document: ${bodyHeight}`);
+        console.log(`Near bottom: ${nearBottom}, Has more events: ${this.state.hasMoreEvents}`);
+        
+        // Check if we're near the bottom and load more if needed
+        if (this.state.hasMoreEvents && nearBottom) {
+            console.log('Triggering loadMoreEvents()');
             this.loadMoreEvents();
         }
         
