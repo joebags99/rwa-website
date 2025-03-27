@@ -312,7 +312,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-family: var(--font-titles);
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-size: clamp(2rem, 8vw, 4.5rem);
     margin-bottom: var(--spacing-md);
     letter-spacing: 0px;
     text-shadow: 
@@ -321,7 +321,7 @@ h1 {
 }
 
 h2 {
-    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
     margin-bottom: var(--spacing-sm);
     position: relative;
     display: inline-block;
@@ -365,6 +365,8 @@ MAGICAL TEXT EFFECTS
     );
     background-size: 200% auto;
     background-clip: text;
+    position:relative;
+    left: -15px;
     -webkit-background-clip: text;
     color: transparent;
     animation: shineText 8s linear infinite;
@@ -2415,7 +2417,7 @@ RESPONSIVE STYLES
         top: 80px;
         left: 0;
         width: 100%;
-        background-color: rgba(251, 251, 215, 0.98);
+        background-color: hsla(274, 39%, 86%);
         flex-direction: column;
         padding: var(--spacing-sm);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

@@ -31,7 +31,7 @@ function initializeCardFlips() {
                 flipSound.currentTime = 0;
                 flipSound.play().catch(e => {
                     // Handling autoplay restrictions
-                    console.log('Audio play prevented:', e);
+                    
                 });
             }
             
@@ -43,7 +43,7 @@ function initializeCardFlips() {
         });
     });
     
-    console.log(`Initialized ${flipCards.length} flip cards`);
+    
 }
 
 /**
@@ -249,12 +249,12 @@ function initializeVideoCarousel() {
     const carouselContainer = document.getElementById('crimson-court-carousel');
     if (!carouselContainer) return;
     
-    console.log('Initializing Crimson Court video carousel - Direct Method');
+    
     
     // Get the correct playlist ID - hardcoding for reliability
     const crimsonCourtPlaylistId = 'PLul61JiSKZm_AKoWZ8KzcFF4J1FcaCpuo';
     
-    console.log('Using hardcoded Crimson Court playlist ID:', crimsonCourtPlaylistId);
+    
     
     // Prepare carousel for videos
     carouselContainer.classList.add('carousel-layout');
@@ -271,7 +271,7 @@ function initializeVideoCarousel() {
     
     // Make a direct API request to our server endpoint
     try {
-        console.log('Making direct API request to server endpoint');
+        
         // Use the server proxy endpoint
         const apiUrl = `/api/youtube/playlist/${crimsonCourtPlaylistId}?maxResults=8`;
         
@@ -288,7 +288,7 @@ function initializeVideoCarousel() {
                     throw new Error(data.message || 'Error from server proxy');
                 }
                 
-                console.log(`Received ${data.items ? data.items.length : 0} videos from API`);
+                
                 
                 // Render the videos
                 renderCarouselVideos(data.items, carouselContainer);
@@ -314,7 +314,7 @@ function initializeVideoCarousel() {
 function convertToCarouselItems(container) {
     if (!container) return;
     
-    console.log('Converting video cards to carousel items');
+    
     
     // Select all standard video cards that were rendered by the YouTube API
     const videoCards = container.querySelectorAll('.video-card');
@@ -324,7 +324,7 @@ function convertToCarouselItems(container) {
         return;
     }
     
-    console.log(`Found ${videoCards.length} video cards to convert`);
+    
     
     // Apply carousel-specific classes and styles
     videoCards.forEach(card => {
@@ -347,7 +347,7 @@ function renderCarouselVideos(videos, container) {
         return;
     }
     
-    console.log(`Rendering ${videos.length} videos to carousel`);
+    
     container.innerHTML = '';
     
     videos.forEach(video => {
@@ -412,7 +412,7 @@ function renderCarouselVideos(videos, container) {
 function renderPlaceholderVideos(container) {
     if (!container) return;
     
-    console.log('Rendering placeholder Crimson Court videos');
+    
     // Clear any existing content
     container.innerHTML = '';
     
@@ -460,7 +460,7 @@ function renderPlaceholderVideos(container) {
         container.appendChild(videoCard);
     });
     
-    console.log(`Rendered ${episodes.length} placeholder videos`);
+    
 }
 
 /**
@@ -495,7 +495,7 @@ function setupCarouselNavigation() {
     
     if (!carousel || !prevBtn || !nextBtn) return;
     
-    console.log('Setting up carousel navigation');
+    
     
     // Check if any videos are loaded
     const videoElements = carousel.querySelectorAll('.video-card, .carousel-item');
@@ -505,14 +505,14 @@ function setupCarouselNavigation() {
         return;
     }
     
-    console.log(`Found ${videoElements.length} video elements in carousel`);
+    
     
     // Calculate item width based on first video element
     const itemWidth = videoElements[0].offsetWidth || 300;
     const itemMargin = 16; // Margin between items
     const scrollDistance = itemWidth + itemMargin; // Distance to scroll for one item
     
-    console.log(`Item width: ${itemWidth}px, Scroll distance: ${scrollDistance}px`);
+    
     
     // Variables for scrolling
     let currentPosition = 0;
@@ -522,7 +522,7 @@ function setupCarouselNavigation() {
     const containerWidth = carousel.parentElement.clientWidth;
     const maxScroll = carouselWidth - containerWidth;
     
-    console.log(`Carousel width: ${carouselWidth}px, Container width: ${containerWidth}px, Max scroll: ${maxScroll}px`);
+    
     
     // Update button visibility
     function updateButtonStates() {
@@ -532,21 +532,21 @@ function setupCarouselNavigation() {
     
     // Add click handlers
     prevBtn.addEventListener('click', () => {
-        console.log('Previous button clicked');
+        
         // Scroll exactly one item distance
         currentPosition = Math.max(currentPosition - scrollDistance, 0);
         carousel.style.transform = `translateX(-${currentPosition}px)`;
         updateButtonStates();
-        console.log(`New position: ${currentPosition}px`);
+        
     });
     
     nextBtn.addEventListener('click', () => {
-        console.log('Next button clicked');
+        
         // Scroll exactly one item distance
         currentPosition = Math.min(currentPosition + scrollDistance, maxScroll);
         carousel.style.transform = `translateX(-${currentPosition}px)`;
         updateButtonStates();
-        console.log(`New position: ${currentPosition}px`);
+        
     });
     
     // Make sure carousel is initially visible
@@ -563,7 +563,7 @@ function setupCarouselNavigation() {
         const newContainerWidth = carousel.parentElement.clientWidth;
         const newMaxScroll = newCarouselWidth - newContainerWidth;
         
-        console.log(`Window resized. New max scroll: ${newMaxScroll}px`);
+        
         
         // Adjust position if needed
         if (currentPosition > newMaxScroll) {

@@ -30,7 +30,7 @@ const Articles = {
      * Initialize the articles module
      */
     init() {
-        console.log('Initializing Articles Module');
+        
         
         this.cacheElements();
         this.bindEvents();
@@ -203,7 +203,7 @@ const Articles = {
         });
         
         this.availableTags = Array.from(tagSet).sort();
-        console.log(`Extracted ${this.availableTags.length} unique tags`);
+        
     },
     
     /**

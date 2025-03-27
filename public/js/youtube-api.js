@@ -14,7 +14,7 @@ let PLAYLISTS = {};
  * Initialize YouTube videos with the latest configuration
  */
 function initializeYouTubeVideos() {
-  console.log('Initializing YouTube videos with current configuration');
+  
   
   // Get the latest config from the global variable
   const appConfig = window.RWA_CONFIG || {
@@ -40,28 +40,28 @@ function initializeYouTubeVideos() {
     FEATURED: appConfig.playlists.featured
   };
   
-  console.log('Using API base URL:', API_BASE_URL);
-  console.log('Using channel ID:', CHANNEL_ID);
-  console.log('Using playlists:', PLAYLISTS);
+  
+  
+  
   
   // Load featured videos on the homepage
   const featuredVideosContainer = document.getElementById('featured-videos');
   if (featuredVideosContainer) {
-    console.log('Loading featured videos');
+    
     fetchPlaylistVideos(PLAYLISTS.FEATURED, featuredVideosContainer, MAX_RESULTS);
   }
   
   // Load Crimson Court videos on the homepage
   const crimsonCourtContainer = document.getElementById('crimson-court-videos');
   if (crimsonCourtContainer) {
-    console.log('Loading Crimson Court videos');
+    
     fetchPlaylistVideos(PLAYLISTS.CRIMSON_COURT, crimsonCourtContainer, MAX_RESULTS);
   }
   
   // Load DM advice videos on the homepage
   const dmAdviceContainer = document.getElementById('dm-advice-videos');
   if (dmAdviceContainer) {
-    console.log('Loading DM advice videos');
+    
     fetchPlaylistVideos(PLAYLISTS.DM_ADVICE, dmAdviceContainer, MAX_RESULTS);
   }
   
@@ -83,7 +83,7 @@ window.initializeYouTubeVideos = initializeYouTubeVideos;
 
 // Initial setup when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('YouTube API script loaded');
+  
   
   // Do an initial initialization with whatever config is available
   // This will be updated later when the server config is fetched
@@ -110,7 +110,7 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
   if (!playlistId || playlistId === 'YOUR_CRIMSON_COURT_PLAYLIST_ID' || 
       playlistId === 'YOUR_DM_ADVICE_PLAYLIST_ID' || playlistId === 'YOUR_FEATURED_PLAYLIST_ID') {
     // Display message if playlist ID is not set
-    console.log('Playlist ID not configured, showing dummy videos');
+    
     container.innerHTML = `
       <div class="api-key-message">
         <p>YouTube playlist ID not configured. Using preview mode with dummy videos.</p>
@@ -123,7 +123,7 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
   // Use the server proxy endpoint
   const apiUrl = `${API_BASE_URL}/youtube/playlist/${playlistId}?maxResults=${maxResults}`;
   
-  console.log(`Fetching videos from playlist via proxy: ${playlistId}`);
+  
   
   fetch(apiUrl)
     .then(response => {
@@ -138,11 +138,11 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
       }
       
       // Log for debugging
-      console.log(`Successfully loaded ${data.items ? data.items.length : 0} videos`);
+      
       
       // Inspect the first item to understand its structure (helpful for debugging)
       if (data.items && data.items.length > 0) {
-        console.log('First video item example:', data.items[0]);
+        
       }
       
       // Render the videos
@@ -164,28 +164,28 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
  * Helper function to inspect YouTube API response
  */
 function inspectYouTubeResponse(data) {
-  console.log('YouTube API Response Structure:');
-  console.log(data);
+  
+  
   
   if (data.items && data.items.length > 0) {
     const firstItem = data.items[0];
-    console.log('First Item Structure:');
-    console.log(firstItem);
+    
+    
     
     if (firstItem.snippet) {
-      console.log('Snippet Structure:');
-      console.log(firstItem.snippet);
+      
+      
       
       if (firstItem.snippet.thumbnails) {
-        console.log('Available Thumbnail Types:');
-        console.log(Object.keys(firstItem.snippet.thumbnails));
+        
+        
         
         Object.keys(firstItem.snippet.thumbnails).forEach(type => {
-          console.log(`Thumbnail Type: ${type}`);
-          console.log(firstItem.snippet.thumbnails[type]);
+          
+          
         });
       } else {
-        console.log('No thumbnails available in the snippet');
+        
       }
     }
   }
@@ -243,13 +243,13 @@ function renderVideos(videos, container) {
     container.appendChild(videoCard);
   });
   
-  console.log(`Rendered ${videos.length} videos to container`);
+  
   
   // Initialize video preview functionality after a short delay to ensure DOM is updated
   setTimeout(() => {
     // First enhance with preview functionality
     if (typeof enhanceVideoThumbnails === 'function') {
-      console.log('Enhancing video thumbnails...');
+      
       enhanceVideoThumbnails();
     } else {
       console.warn('enhanceVideoThumbnails function not available');
@@ -257,7 +257,7 @@ function renderVideos(videos, container) {
     
     // Then apply sliding effect
     if (typeof initializeSlidingThumbnails === 'function') {
-      console.log('Initializing sliding thumbnails...');
+      
       initializeSlidingThumbnails();
     }
   }, 300);
@@ -281,7 +281,7 @@ function getThumbnailUrl(video, videoId) {
   }
   
   // Log for debugging
-  console.log(`Using direct YouTube thumbnail URL for video ${videoId}`);
+  
   
   // Fall back to direct YouTube thumbnail URL format
   return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
@@ -322,7 +322,7 @@ function handleThumbnailError(img, videoId) {
  * @param {number} count - Number of dummy videos to render
  */
 function renderDummyVideos(container, count) {
-  console.log(`Rendering ${count} dummy videos`);
+  
   
   const titles = [
     'The Crimson Court: Episode 1 - The Gathering Storm',
@@ -380,7 +380,7 @@ function renderDummyVideos(container, count) {
   // Initialize video thumbnail previews with slight delay
   setTimeout(() => {
     if (window.enhanceVideoThumbnails) {
-      console.log('Enhancing dummy video thumbnails...');
+      
       window.enhanceVideoThumbnails();
     }
   }, 300);

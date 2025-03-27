@@ -720,7 +720,7 @@ function enhanceToolPreviews() {
  * Creates a larger preview when clicking on video thumbnails
  */
 function enhanceVideoThumbnails() {
-    console.log('Initializing enhanced video thumbnails');
+    
     
     // First, add the video preview container to the body if it doesn't exist
     if (!document.getElementById('video-preview-container')) {
@@ -769,7 +769,7 @@ function enhanceVideoThumbnails() {
     // Add click event to all video thumbnails
     const videoThumbnails = document.querySelectorAll('.video-thumbnail');
     
-    console.log(`Found ${videoThumbnails.length} video thumbnails`);
+    
     
     videoThumbnails.forEach(thumbnail => {
         const img = thumbnail.querySelector('img');
@@ -784,7 +784,7 @@ function enhanceVideoThumbnails() {
         const title = titleElement ? titleElement.textContent.trim() : 'Video Preview';
         
         // Get the original thumbnail URL (for debugging)
-        console.log(`Thumbnail image src: ${img.src}`);
+        
         
         // Make sure the thumbnail is properly styled
         thumbnail.style.cursor = 'pointer';
@@ -794,7 +794,7 @@ function enhanceVideoThumbnails() {
             e.preventDefault();
             e.stopPropagation(); // Prevent event bubbling
             
-            console.log('Thumbnail clicked, opening preview');
+            
             
             // Show loading state
             previewContainer.classList.add('loading');
@@ -833,7 +833,7 @@ function enhanceVideoThumbnails() {
         thumbnail.addEventListener('click', thumbnailClickHandler);
     });
     
-    console.log(`Enhanced ${videoThumbnails.length} video thumbnails`);
+    
 }
 
 /**
@@ -943,7 +943,7 @@ function displayResults(results, total, container) {
  */
 function initializeCharacterQuiz() {
     // This will be implemented in a separate file
-    console.log('Character Quiz Ready');
+    
 }
 
 /**
@@ -952,7 +952,7 @@ function initializeCharacterQuiz() {
  */
 function initializeInteractiveMap() {
     // This will be implemented in a separate file
-    console.log('Interactive Map Ready');
+    
 }
 
 // Make these functions globally available

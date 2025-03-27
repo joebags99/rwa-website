@@ -272,13 +272,13 @@ function assignGenerations(people) {
     // Check for explicitly defined generations
     const peopleWithExplicitGen = people.filter(p => p.generation !== undefined);
     if (peopleWithExplicitGen.length > 0) {
-        console.log(`Found ${peopleWithExplicitGen.length} people with explicit generations`);
+        
     }
     
     // Set any explicitly defined generations first
     peopleWithExplicitGen.forEach(person => {
         // Ensure explicit generations are respected
-        console.log(`Setting explicit generation ${person.generation} for ${person.name} (${person.id})`);
+        
     });
     
     // Assign generation 0 to root people without explicit generation
@@ -368,7 +368,7 @@ function assignGenerations(people) {
     // Debugging output
     const minGeneration = Math.min(...people.map(p => p.generation));
     const maxGeneration = Math.max(...people.map(p => p.generation));
-    console.log(`Generation range: ${minGeneration} to ${maxGeneration}`);
+    
 }
 
 /**

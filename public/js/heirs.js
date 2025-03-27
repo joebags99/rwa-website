@@ -24,7 +24,7 @@ function initHeirs() {
     const backButton = document.querySelector('.back-to-circle');
     const detailedViews = document.querySelectorAll('.heir-detailed-view');
     
-    console.log('Initializing heirs gallery with', heirSections.length, 'heirs');
+    
     
     // Add click event to each heir section
     heirSections.forEach(section => {
@@ -55,7 +55,7 @@ function initHeirs() {
      * @param {string} heirId - The ID of the heir to display
      */
     function showHeirDetails(heirId) {
-        console.log('Showing details for heir:', heirId);
+        
         
         // Hide the selection circle
         selectionContainer.classList.add('hidden');
@@ -88,7 +88,7 @@ function initHeirs() {
      * Hide all heir detailed views and show the selection circle
      */
     function hideHeirDetails() {
-        console.log('Returning to heirs selection');
+        
         
         // Hide the detailed view container
         detailedViewContainer.classList.remove('active');
@@ -150,7 +150,7 @@ function initHeirs() {
         
         // Play the sound with error handling
         sound.play().catch(e => {
-            console.log('Sound playback prevented:', e);
+            
             // Most browsers require user interaction before playing audio
         });
     }

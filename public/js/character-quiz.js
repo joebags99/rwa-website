@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize the quiz
     function initQuiz() {
-        console.log("Initializing quiz with", quizQuestions.length, "questions");
+        
         
         // Set the total number of questions
         totalQuestionsSpan.textContent = quizQuestions.length;
@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Store the answer
                     userAnswers[index] = answer.character;
-                    console.log(`User selected answer for question ${index + 1}: ${answer.character}`);
+                    
                     
                     // Enable next button
                     nextQuestionBtn.disabled = false;
@@ -353,11 +353,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Always set up the next button to either go to next question or show results
         nextQuestionBtn.addEventListener('click', function() {
-            console.log("Next/Results button clicked");
+            
             if (currentQuestion < quizQuestions.length - 1) {
                 goToNextQuestion();
             } else {
-                console.log("On last question - showing results");
+                
                 showResults();
             }
         });
@@ -406,15 +406,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Go to the next question or show results
     function goToNextQuestion() {
-        console.log(`Next button clicked, current question: ${currentQuestion + 1} of ${quizQuestions.length}`);
+        
         
         // For debugging
-        console.log(`Current question index: ${currentQuestion}, Last question index: ${quizQuestions.length - 1}`);
-        console.log(`Is this the last question? ${currentQuestion === quizQuestions.length - 1}`);
+        
+        
         
         // If this is the last question, show results
         if (currentQuestion === quizQuestions.length - 1) {
-            console.log("This is the last question, showing results now");
+            
             showResults();
             return;
         }
@@ -438,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentQuestionSpan.textContent = currentQuestion + 1;
         progressFill.style.width = `${((currentQuestion + 1) / quizQuestions.length) * 100}%`;
         
-        console.log(`Displaying question ${currentQuestion + 1} of ${quizQuestions.length}`);
+        
         
         // Update button states
         prevQuestionBtn.disabled = currentQuestion === 0;
@@ -461,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Change text of next button on the last question
         if (currentQuestion === quizQuestions.length - 1) {
             nextQuestionBtn.innerHTML = '<span class="btn-text"><i class="fas fa-crown"></i> See Results</span>';
-            console.log("On last question, showing 'See Results' button");
+            
         } else {
             nextQuestionBtn.innerHTML = '<span class="btn-text">Next <i class="fas fa-arrow-right"></i></span>';
         }
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate the results
     function calculateResults() {
-        console.log("Calculating results based on user answers:", userAnswers);
+        
         
         // Count the occurrences of each character
         const results = {
@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        console.log("Raw character counts:", results);
+        
         
         // Convert to percentages
         const percentages = {};
@@ -517,9 +517,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show the results
     function showResults() {
-        console.log("showResults function called");
+        
         const results = calculateResults();
-        console.log("Calculated results:", results);
+        
         
         // Hide questions, show results
         quizQuestionsSection.style.display = 'none';
@@ -527,7 +527,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update main result
         const character = characters[results.topCharacter];
-        console.log("Top character:", character.name);
+        
         characterName.textContent = character.name;
         characterImage.src = character.image;
         characterImage.alt = character.name;

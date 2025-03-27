@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the Admin Dashboard with error handling
     try {
         AdminDashboard.init();
-        console.log('Admin Dashboard initialized successfully');
+        
     } catch (error) {
         console.error('Failed to initialize Admin Dashboard:', error);
         // Show error message to user
@@ -727,13 +727,13 @@ window.AdminDashboard = {
                 
                 // Handle authentication issues
                 if (response.status === 401) {
-                    console.log('Session expired, attempting to refresh token...');
+                    
                     
                     // Try to refresh the token
                     const refreshSuccess = await this.refreshToken();
                     
                     if (!refreshSuccess) {
-                        console.log('Token refresh failed, redirecting to login...');
+                        
                         this.redirectToLogin();
                         throw new Error('Authentication failed');
                     }
@@ -1090,7 +1090,7 @@ window.AdminDashboard = {
             try {
                 const refreshSuccess = await this.API.refreshToken();
                 if (!refreshSuccess) {
-                    console.log('Session refresh failed');
+                    
                     clearInterval(refreshInterval);
                     this.API.redirectToLogin();
                 }
@@ -3483,7 +3483,7 @@ AdminDashboard.StoryEpisodes = {
             this.availableLocations = await AdminDashboard.API.request(
                 AdminDashboard.config.apiEndpoints.locations
             );
-            console.log(`Loaded ${this.availableLocations.length} locations`);
+            
             return this.availableLocations;
         } catch (error) {
             console.error('Error loading available locations:', error);
@@ -3501,7 +3501,7 @@ AdminDashboard.StoryEpisodes = {
             this.availableActs = await AdminDashboard.API.request(
                 AdminDashboard.config.apiEndpoints.acts
             );
-            console.log(`Loaded ${this.availableActs.length} acts`);
+            
             this.updateActsDropdown();
             return this.availableActs;
         } catch (error) {
@@ -3520,7 +3520,7 @@ AdminDashboard.StoryEpisodes = {
             this.availableChapters = await AdminDashboard.API.request(
                 AdminDashboard.config.apiEndpoints.chapters
             );
-            console.log(`Loaded ${this.availableChapters.length} chapters`);
+            
             this.updateChaptersDropdown();
             return this.availableChapters;
         } catch (error) {
@@ -7075,7 +7075,7 @@ AdminDashboard.cleanup = function() {
         clearInterval(this._sessionRefreshInterval);
     }
     
-    console.log('Admin Dashboard resources cleaned up');
+    
 };
 
 /**
@@ -7084,7 +7084,7 @@ AdminDashboard.cleanup = function() {
 AdminDashboard.init = function() {
     try {
         // Show initialization message
-        console.log('Initializing Admin Dashboard...');
+        
         
         // Initialize UI module first
         this.UI.init();
@@ -7127,7 +7127,7 @@ AdminDashboard.init = function() {
         // Set up cleanup on page unload
         window.addEventListener('beforeunload', () => this.cleanup());
         
-        console.log('Admin Dashboard initialization complete');
+        
     } catch (error) {
         console.error('Fatal error during Admin Dashboard initialization:', error);
         
@@ -7159,7 +7159,7 @@ AdminDashboard.initSessionRefresh = function() {
         try {
             const refreshSuccess = await this.API.refreshToken();
             if (!refreshSuccess) {
-                console.log('Session refresh failed, redirecting to login');
+                
                 clearInterval(intervalId);
                 this.API.redirectToLogin();
             }

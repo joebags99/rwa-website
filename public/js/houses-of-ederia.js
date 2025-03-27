@@ -24,7 +24,7 @@ function initHouses() {
     const detailedViews = document.querySelectorAll('.house-detailed-view');
     const revealAllButton = document.querySelector('.reveal-all-btn');
     
-    console.log('Initializing houses gallery with', houseSections.length, 'houses');
+    
     
     // Add click event to each house section
     houseSections.forEach(section => {
@@ -88,7 +88,7 @@ function initHouses() {
      * @param {string} houseId - The ID of the house to display
      */
     function showHouseDetails(houseId) {
-        console.log('Showing details for house:', houseId);
+        
         
         // Hide the selection circle
         selectionContainer.classList.add('hidden');
@@ -122,7 +122,7 @@ function initHouses() {
      * Hide all house detailed views and show the selection circle
      */
     function hideHouseDetails() {
-        console.log('Returning to houses selection');
+        
         
         // Hide the detailed view container
         detailedViewContainer.classList.remove('active');
@@ -184,7 +184,7 @@ function initHouses() {
         
         // Play the sound with error handling
         sound.play().catch(e => {
-            console.log('Sound playback prevented:', e);
+            
             // Most browsers require user interaction before playing audio
         });
     }

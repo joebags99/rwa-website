@@ -169,10 +169,10 @@ const Timeline = {
         
         // Calculate distance from bottom
         const distanceFromBottom = documentHeight - (scrollPosition + windowHeight);
-        console.log(`Distance from bottom: ${distanceFromBottom}px`);
+        
         
         if (distanceFromBottom < this.config.scrollThreshold && this.state.hasMoreEvents) {
-            console.log('Near bottom - loading more events!');
+            
             this.loadMoreEvents();
         }
     },
@@ -245,7 +245,7 @@ const Timeline = {
 
     // Filter by era
     filterByEra: function(era) {
-        console.log('Filtering by era:', era);
+        
         
         // Update active button state
         this.updateEraButtons(era);
@@ -340,7 +340,7 @@ const Timeline = {
     // Filter events based on current state
    // Filter by era - updated to work with your HTML structure
 filterByEra: function(era) {
-    console.log('Filtering by era:', era);
+    
     
     // Find era buttons - use your class structure
     const eraButtons = document.querySelectorAll('.era-navigation .era-button');
@@ -361,7 +361,7 @@ filterByEra: function(era) {
         this.state.currentEra = era;
     }
     
-    console.log('Current era set to:', this.state.currentEra);
+    
     
     // Reset timeline and apply filters
     this.resetTimeline();
@@ -369,7 +369,7 @@ filterByEra: function(era) {
     // Add a slight delay to ensure DOM is updated
     setTimeout(() => {
         const filteredEvents = this.filterEvents();
-        console.log('Filtered events:', filteredEvents.length);
+        
         
         // Take the first batch
         const firstBatch = filteredEvents.slice(0, this.config.eventsPerBatch);
@@ -400,15 +400,15 @@ filterByEra: function(era) {
     
     // Filter events - updated function
     filterEvents: function() {
-        console.log('Filtering events. Era:', this.state.currentEra, 'Search:', this.state.searchTerm);
-        console.log('Total cached events:', this.state.cachedEvents.length);
+        
+        
         
         // Start with all events
         let filteredEvents = [...this.state.cachedEvents];
         
         // Apply era filter
         if (this.state.currentEra) {
-            console.log('Applying era filter for:', this.state.currentEra);
+            
             filteredEvents = filteredEvents.filter(event => {
                 const match = event.era === this.state.currentEra;
                 return match;
@@ -428,7 +428,7 @@ filterByEra: function(era) {
             });
         }
         
-        console.log('Filtered events count:', filteredEvents.length);
+        
         
         // Sort by year and month
         filteredEvents.sort((a, b) => {
@@ -459,7 +459,7 @@ filterByEra: function(era) {
         window.addEventListener('scroll', this.handleScroll.bind(this));
         
         // Log which era buttons are found
-        console.log('Era buttons found:', this.elements.eraButtons ? this.elements.eraButtons.length : 0);
+        
         
         // Search functionality
         if (this.elements.searchInput && this.elements.searchButton) {
@@ -478,26 +478,26 @@ filterByEra: function(era) {
         
         // Era filter buttons - improved handling
         if (this.elements.eraButtons && this.elements.eraButtons.length > 0) {
-            console.log('Setting up era button listeners');
+            
             this.elements.eraButtons.forEach(button => {
-                console.log('Button found:', button.dataset.era);
+                
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('Era button clicked:', button.dataset.era);
+                    
                     this.filterByEra(button.dataset.era);
                 });
             });
         } else {
             // Try to find buttons a different way as a fallback
-            console.log('No era buttons found with querySelector. Trying direct method...');
+            
             const eraButtons = document.querySelectorAll('.era-button');
             if (eraButtons.length > 0) {
-                console.log('Found', eraButtons.length, 'era buttons directly');
+                
                 this.elements.eraButtons = eraButtons;
                 eraButtons.forEach(button => {
                     button.addEventListener('click', (e) => {
                         e.preventDefault();
-                        console.log('Era button clicked:', button.dataset.era);
+                        
                         this.filterByEra(button.dataset.era);
                     });
                 });
@@ -531,7 +531,7 @@ filterByEra: function(era) {
                 return response.json();
             })
             .then(data => {
-                console.log('Timeline data loaded:', data);
+                
                 
                 // Store the fetched data in our cache
                 this.state.cachedEvents = data || [];
@@ -602,7 +602,7 @@ filterByEra: function(era) {
     loadMoreEvents: function() {
         if (this.state.isLoading) return;
         
-        console.log('Loading more events...');
+        
         this.state.isLoading = true;
         
         // Show loader
@@ -616,17 +616,17 @@ filterByEra: function(era) {
         
         // Get filtered events
         const filteredEvents = this.filterEvents();
-        console.log(`Total events: ${filteredEvents.length}, Loading: ${startIndex} to ${endIndex}`);
+        
         
         // Get next batch
         const nextBatch = filteredEvents.slice(startIndex, endIndex);
         
         // Check if we have events to render
         if (nextBatch.length === 0) {
-            console.log('No more events to load');
+            
             this.state.hasMoreEvents = false;
         } else {
-            console.log(`Rendering ${nextBatch.length} more events`);
+            
             
             // Render the events immediately
             nextBatch.forEach(event => {
@@ -638,7 +638,7 @@ filterByEra: function(era) {
             
             // Update whether we have more events
             this.state.hasMoreEvents = (startIndex + nextBatch.length) < filteredEvents.length;
-            console.log(`More events available: ${this.state.hasMoreEvents}`);
+            
             
             // Observe new elements
             setTimeout(() => {

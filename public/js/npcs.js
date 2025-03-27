@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Main initialization function - entry point for the page
  */
 function initNPCPage() {
-    console.log('Initializing NPC Page...');
+    
     
     // Simple fade transition - remove loading class after short delay
     setTimeout(() => {
@@ -72,15 +72,15 @@ async function fetchServerNPCs() {
         if (loadingIndicator) loadingIndicator.style.display = 'none';
         
         // Fetch NPCs from server
-        console.log('Fetching NPCs from server...');
+        
         const response = await fetch('/api/npcs');
         const npcs = await response.json();
         
-        console.log(`Received ${npcs.length} NPCs from server`);
+        
         
         // Exit if no NPCs found
         if (!npcs || npcs.length === 0) {
-            console.log('No NPCs found on server');
+            
             return;
         }
         
@@ -225,7 +225,7 @@ function createNPCCards(npcs, container) {
         // Add to the beginning of the list (before existing examples)
         container.insertBefore(npcCard, container.firstChild);
         
-        console.log(`Added NPC: ${npc.name}`);
+        
     });
 }
 
@@ -571,6 +571,6 @@ function playFilterSound(type = 'default') {
     
     // Only play on desktop (optional)
     if (!document.body.classList.contains('mobile-device')) {
-        sound.play().catch(e => console.log('Error playing sound:', e));
+        sound.play().catch(e => 
     }
 }

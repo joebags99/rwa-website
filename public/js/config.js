@@ -52,13 +52,13 @@ const environmentConfig = {
 let activeConfig;
 if (isProduction) {
   activeConfig = environmentConfig.production;
-  console.log('Running in production environment');
+  
 } else if (isStaging) {
   activeConfig = environmentConfig.staging;
-  console.log('Running in staging environment');
+  
 } else {
   activeConfig = environmentConfig.development;
-  console.log('Running in development environment');
+  
 }
 
 // Add common configuration that's the same across all environments
@@ -83,14 +83,14 @@ window.RWA_CONFIG = {
 // Fetch configuration from the server
 async function fetchServerConfig() {
   try {
-    console.log('Fetching configuration from server...');
+    
     const response = await fetch(`${window.RWA_CONFIG.apiBaseUrl}/config`);
     if (!response.ok) {
       throw new Error(`Failed to fetch configuration from server: ${response.status} ${response.statusText}`);
     }
     const serverConfig = await response.json();
     
-    console.log('Received server configuration:', serverConfig);
+    
     
     // Update the config
     if (serverConfig.channelId) {
@@ -101,7 +101,7 @@ async function fetchServerConfig() {
       window.RWA_CONFIG.playlists = serverConfig.playlists;
     }
     
-    console.log('Updated configuration with server values:', window.RWA_CONFIG);
+    
     
     // Re-initialize YouTube videos if the function exists
     if (typeof window.initializeYouTubeVideos === 'function') {

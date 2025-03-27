@@ -17,14 +17,14 @@
 if (document.body.classList.contains('timeline-page') || 
     document.body.classList.contains('heirs-page') || 
     document.body.classList.contains('story-page')) {
-    console.log('Special page detected, disabling crimson-court.js transitions');
+    
     
     // Replace the original event handlers with empty ones
     const originalAddEventListener = window.addEventListener;
     window.addEventListener = function(type, listener, options) {
         // Block load event handlers from crimson-court.js
         if (type === 'load' && !listener.toString().includes('timeline')) {
-            console.log('Blocked crimson-court.js load handler on special page');
+            
             return;
         }
         return originalAddEventListener.call(window, type, listener, options);
@@ -32,12 +32,12 @@ if (document.body.classList.contains('timeline-page') ||
     
     // Also override the initialization function to do nothing
     window.initCrimsonCourt = function() {
-        console.log('Crimson Court initialization bypassed for special page');
+        
         return; // Do nothing
     };
     
     window.startCrimsonTransition = function() {
-        console.log('Crimson Court transition bypassed for special page');
+        
         return; // Do nothing
     };
 }
@@ -89,7 +89,7 @@ function initCrimsonCourt() {
     if (document.body.classList.contains('timeline-page') || 
         document.body.classList.contains('heirs-page') || 
         document.body.classList.contains('story-page')) {
-        console.log('Skipping Crimson Court initialization for special page');
+        
         return;
     }
 
@@ -167,7 +167,7 @@ function animateBurnEffect() {
         // Stop when all frames have played
         if (currentFrame < 0) {
             clearInterval(burnAnimation);
-            console.log("Burn animation complete");
+            
             burnEffect.style.opacity = '0'; // Ensure it's fully transparent at the end
         }
     }, frameInterval);
@@ -249,7 +249,7 @@ function createEmbers() {
  * @param {HTMLElement} preloader - The preloader element to hide after transition
  */
 function startCrimsonTransition(preloader) {
-    console.log('Starting Crimson Court transition...');
+    
     
         // Check for excluded pages
         const isTimelinePage = document.body.classList.contains('timeline-page');
@@ -258,7 +258,7 @@ function startCrimsonTransition(preloader) {
         
         // Skip burn effect for excluded pages
         if (isTimelinePage || isHeirsPage || isStoryPage) {
-            console.log('Using simplified transition for special page...');
+            
             performSimpleTransition(preloader);
             return;
         }
@@ -321,7 +321,7 @@ function startCrimsonTransition(preloader) {
                 setTimeout(() => {
                     // Hide preloader after portals have started animating
                     if (preloader) {
-                        console.log("Hiding preloader now that portals are animating");
+                        
                         preloader.classList.add('fade-out');
                         setTimeout(() => {
                             preloader.style.display = 'none';
@@ -397,7 +397,7 @@ function ensurePortalsVisible() {
         portal.style.transform = 'translateY(0)';
     });
     
-    console.log('Portals visibility enforced. Found ' + portals.length + ' portals.');
+    
 }
 
 //==============================================================================
@@ -421,7 +421,7 @@ function playLoadingSound() {
     const sound = document.getElementById('loading-sound');
     if (sound) {
         sound.currentTime = 0;
-        sound.play().catch(e => console.log('Error playing loading sound:', e));
+        sound.play().catch(e => 
     }
 }
 
@@ -443,7 +443,7 @@ function playTransitionSound() {
     const sound = document.getElementById('transition-sound');
     if (sound) {
         sound.currentTime = 0;
-        sound.play().catch(e => console.log('Error playing sound:', e));
+        sound.play().catch(e => 
     }
 }
 
@@ -463,7 +463,7 @@ function initAmbientAudio() {
         
         // Play ambient audio after user interacts with the page
         document.addEventListener('click', function playAmbient() {
-            audio.play().catch(e => console.log('Error playing ambient sound:', e));
+            audio.play().catch(e => 
             // Remove the event listener after first interaction
             document.removeEventListener('click', playAmbient);
         }, { once: true });
@@ -536,7 +536,7 @@ function portalTransition(destination) {
     const sound = document.createElement('audio');
     sound.src = 'assets/sounds/portal-select.mp3';
     sound.volume = 0.5;
-    sound.play().catch(e => console.log('Error playing sound:', e));
+    sound.play().catch(e => 
     
     // Navigate after animation completes
     setTimeout(() => {
@@ -561,7 +561,7 @@ function setupReturnButton() {
             const sound = document.createElement('audio');
             sound.src = 'assets/sounds/portal-close.mp3';
             sound.volume = 0.5;
-            sound.play().catch(e => console.log('Error playing sound:', e));
+            sound.play().catch(e => 
             
             // Navigate after animation completes
             setTimeout(() => {

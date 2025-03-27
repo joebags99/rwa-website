@@ -61,7 +61,7 @@ const Story = {
 
     // Initialize Story
     init: function() {
-        console.log('Initializing Story module...');
+        
         
         // Cache DOM elements first
         this.elements = {
@@ -84,9 +84,9 @@ const Story = {
         };
 
         // Debug element presence
-        console.log('Story content element:', !!this.elements.storyContent);
-        console.log('Episode template:', !!this.elements.episodeTemplate);
-        console.log('Story content HTML:', this.elements.storyContent?.innerHTML);
+        
+        
+        
 
         // Verify critical elements
         if (!this.elements.storyContent || !this.elements.episodeTemplate) {
@@ -103,7 +103,7 @@ const Story = {
         this.initDropdowns();
 
         // Load initial data
-        console.log('Loading initial episodes...');
+        
         this.loadInitialEpisodes(); // Call the async method
     },
 
@@ -266,10 +266,10 @@ const Story = {
         const nearBottom = scrollY + windowHeight > bodyHeight - this.config.scrollThreshold;
         
         // For troubleshooting
-        console.log(`Scroll position: ${scrollY}, Window height: ${windowHeight}, Document height: ${bodyHeight}, Near bottom: ${nearBottom}, Has more: ${this.state.hasMoreEpisodes}`);
+        
         
         if (this.state.hasMoreEpisodes && nearBottom) {
-            console.log('Triggering load more episodes');
+            
             this.loadMoreEpisodes();
         }
     },
@@ -464,11 +464,11 @@ const Story = {
             }
             
             this.state.cachedEpisodes = await response.json();
-            console.log(`Loaded ${this.state.cachedEpisodes.length} episodes from server`);
+            
             
             // If no episodes found, use sample data as fallback
             if (this.state.cachedEpisodes.length === 0) {
-                console.log('No episodes found, using sample data');
+                
                 this.state.cachedEpisodes = this.getSampleStoryData();
             }
             
@@ -478,7 +478,7 @@ const Story = {
             
             // Filter and display episodes
             const filteredEpisodes = this.filterCachedEpisodes();
-            console.log('Filtered episodes:', filteredEpisodes.length);
+            
             
             if (filteredEpisodes.length === 0) {
                 if (this.elements.noResultsMessage) {
@@ -590,8 +590,8 @@ const Story = {
             }
         });
         
-        console.log("Extracted locations:", Array.from(this.state.knownLocations));
-        console.log("Extracted chapters:", Array.from(this.state.knownChapters));
+        
+        
     },
 
     // Update dropdowns with dynamic data
@@ -721,7 +721,7 @@ const Story = {
             return;
         }
 
-        console.log('Rendering episodes:', episodes.length);
+        
 
         let lastAct = null;
         let lastChapter = null;

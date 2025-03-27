@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize the quiz
     function initQuiz() {
-        console.log("Initializing House quiz with", quizQuestions.length, "questions");
+        
         
         // Set the total number of questions
         totalQuestionsSpan.textContent = quizQuestions.length;
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Store the answer
                     userAnswers[index] = answer.house;
-                    console.log(`User selected answer for question ${index + 1}: ${answer.house}`);
+                    
                     
                     // Enable next button
                     nextQuestionBtn.disabled = false;
@@ -403,11 +403,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Handle next button click - either go to next question or show name form
     function handleNextButton() {
-        console.log(`Next button clicked, current question: ${currentQuestion + 1} of ${quizQuestions.length}`);
+        
         
         // If this is the last question, show name input form
         if (currentQuestion === quizQuestions.length - 1) {
-            console.log("This is the last question, showing name input form");
+            
             showNameForm();
             return;
         }
@@ -465,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
             userName.firstName = firstNameInput.value.trim();
             userName.lastName = lastNameInput.value.trim();
             
-            console.log(`Name submitted: ${userName.firstName} ${userName.lastName}`);
+            
             showResults();
         }
     }
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentQuestionSpan.textContent = currentQuestion + 1;
         progressFill.style.width = `${((currentQuestion + 1) / quizQuestions.length) * 100}%`;
         
-        console.log(`Displaying question ${currentQuestion + 1} of ${quizQuestions.length}`);
+        
         
         // Update button states
         prevQuestionBtn.disabled = currentQuestion === 0;
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Change text of next button on the last question
         if (currentQuestion === quizQuestions.length - 1) {
             nextQuestionBtn.innerHTML = '<span class="btn-text"><i class="fas fa-scroll"></i> Complete Quiz</span>';
-            console.log("On last question, showing 'Complete Quiz' button");
+            
         } else {
             nextQuestionBtn.innerHTML = '<span class="btn-text">Next <i class="fas fa-arrow-right"></i></span>';
         }
@@ -515,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calculate the results
     function calculateResults() {
-        console.log("Calculating results based on user answers:", userAnswers);
+        
         
         // Count the occurrences of each house
         const results = {
@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        console.log("Raw house counts:", results);
+        
         
         // Convert to percentages
         const percentages = {};
@@ -563,9 +563,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show the results
     function showResults() {
-        console.log("showResults function called");
+        
         const results = calculateResults();
-        console.log("Calculated results:", results);
+        
         
         // Hide name form, show results
         nameInputForm.style.display = 'none';
@@ -573,7 +573,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update main result
         const house = houses[results.topHouse];
-        console.log("Top house:", house.name);
+        
         houseName.textContent = house.name;
         houseImage.src = house.image;
         houseImage.alt = house.name;
@@ -768,7 +768,7 @@ function downloadResult() {
     const house = houses[results.topHouse];
     
     // Debugging
-    console.log("Downloading result for house:", house.name);
+    
     
     // Clear canvas with white background
     ctx.fillStyle = 'white';
@@ -841,7 +841,7 @@ function downloadResult() {
     houseImg.crossOrigin = "Anonymous";
     
     houseImg.onload = function() {
-        console.log("Shield image loaded successfully");
+        
         
         // Draw shield image below name and percentage
         const imgSize = 280; // Slightly smaller shield
@@ -912,7 +912,7 @@ function downloadResult() {
         // We need to wait for the radar chart to be rendered
         setTimeout(() => {
             try {
-                console.log("Rendering radar chart");
+                
                 // Draw the radar chart
                 ctx.drawImage(radarChartImage, rightCol.x, 380, 700, 600);
                 
@@ -923,13 +923,13 @@ function downloadResult() {
                 ctx.fillText('Discover your noble house at rollwithadvantage.com', rightCol.x + 350, 1010);
                 
                 // Create download link
-                console.log("Creating download link");
+                
                 const dataURL = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
                 link.href = dataURL;
                 link.download = `House-${results.topHouse}-${userName.lastName}.png`;
                 link.click();
-                console.log("Download initiated");
+                
             } catch (error) {
                 console.error("Error during chart rendering or download:", error);
             }
@@ -992,7 +992,7 @@ function downloadResult() {
     }
     
     // Set the image source to trigger loading
-    console.log("Loading shield image from:", house.image);
+    
     houseImg.src = house.image;
 }
 

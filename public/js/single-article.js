@@ -3,7 +3,7 @@ const SingleArticle = {
     elements: {},
     
     init() {
-        console.log('Initializing single article view');
+        
         this.cacheElements();
         const articleId = this.getArticleIdFromUrl();
         
@@ -36,13 +36,13 @@ const SingleArticle = {
     
     async loadArticle(articleId) {
         try {
-            console.log('Loading article:', articleId);
+            
             
             const response = await fetch(`/api/articles/${articleId}`);
             if (!response.ok) throw new Error('Article not found');
             
             this.article = await response.json();
-            console.log('Article loaded:', this.article.title);
+            
             
             this.renderArticle();
             document.title = `${this.article.title} - Roll With Advantage`;

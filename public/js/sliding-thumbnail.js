@@ -9,7 +9,7 @@
  * Initialize the sliding overlay effect for all video cards
  */
 function initializeSlidingThumbnails() {
-    console.log('Initializing sliding overlays...');
+    
     
     const videoCards = document.querySelectorAll('.video-card');
     let processedCount = 0;
@@ -46,10 +46,10 @@ function initializeSlidingThumbnails() {
         thumbnail.appendChild(slidingOverlay);
         
         processedCount++;
-        console.log(`Added overlay ${processedCount}`);
+        
     });
     
-    console.log(`Processed ${processedCount} video thumbnails with sliding overlay effect`);
+    
     
     // Set up click event for sliding overlays
     document.addEventListener('click', function(e) {
@@ -68,7 +68,7 @@ function initializeSlidingThumbnails() {
                 // Open the video link
                 window.open(href, '_blank');
             } else {
-                console.log('Video link is not available or is a placeholder');
+                
             }
         }
     });

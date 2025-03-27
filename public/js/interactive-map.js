@@ -4,7 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing Interactive Map');
+    
     
     // Map elements
     const mapElement = document.getElementById('ederia-map');
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.warn('Failed to load location data:', error);
                 // Use fallback data instead
-                console.log('Using fallback location data');
+                
                 createLocationMarkers(fallbackLocations);
             });
     }
@@ -523,7 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // If there are multiple matches, show a count
             if (matches.length > 1) {
                 // Could be enhanced to display all matches in a dropdown
-                console.log(`Found ${matches.length} matches for "${searchTerm}"`);
+                
             }
         } else {
             // No matches found
@@ -538,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add click event to get coordinates
         map.on('click', function(e) {
             // Log coordinates in [longitude, latitude] order
-            console.log("Map coordinates:", [Math.round(e.latlng.lng), Math.round(e.latlng.lat)]);
+            
             
             // Create a temporary marker
             L.marker(e.latlng, {
@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .bindTooltip(`Coordinates: [${Math.round(e.latlng.lng)}, ${Math.round(e.latlng.lat)}]`);
         });
         
-        console.log("Coordinate helper active - click on map to see coordinates in [longitude, latitude] format");
+        
     }
     
     // Initialize the interactive map

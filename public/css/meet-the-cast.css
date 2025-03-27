@@ -51,6 +51,7 @@ MEET THE CAST STYLES
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    overflow: hidden; /* Add this default */
 }
 
 .card-flip-container {
@@ -367,5 +368,38 @@ MEET THE CAST STYLES
 @media (max-width: 576px) {
     .card-flip-container {
         height: 350px;
+    }
+}
+
+/* Add this new media query for very small devices */
+@media (max-width: 400px) {
+    .card-flip-container {
+        height: 300px;
+    }
+    
+    .card-content {
+        overflow: visible; /* This now properly overrides the default */
+    }
+    
+    .cast-card {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .card-front, .card-back {
+        max-width: 100%;
+    }
+    
+    .cast-image {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .cast-info h3 {
+        font-size: 1.4rem;
+    }
+    
+    .cast-info h4 {
+        font-size: 1.1rem;
     }
 }

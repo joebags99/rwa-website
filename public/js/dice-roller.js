@@ -156,7 +156,7 @@ function initializeDiceRoller() {
         // Play click sound
         if (diceClickSound) {
             diceClickSound.currentTime = 0;
-            diceClickSound.play().catch(e => console.log('Error playing sound:', e));
+            diceClickSound.play().catch(e => 
         }
         
         // Update count
@@ -174,7 +174,7 @@ function initializeDiceRoller() {
             // Play click sound
             if (diceClickSound) {
                 diceClickSound.currentTime = 0;
-                diceClickSound.play().catch(e => console.log('Error playing sound:', e));
+                diceClickSound.play().catch(e => 
             }
             
             // Update count
@@ -272,7 +272,7 @@ function initializeDiceRoller() {
         // Play rolling sound
         if (diceRollSound) {
             diceRollSound.currentTime = 0;
-            diceRollSound.play().catch(e => console.log('Error playing sound:', e));
+            diceRollSound.play().catch(e => 
         }
         
         // Clear the animation area first
@@ -354,7 +354,7 @@ function initializeDiceRoller() {
             
             if (hasNatural20 && successSound) {
                 successSound.currentTime = 0;
-                successSound.play().catch(e => console.log('Error playing sound:', e));
+                successSound.play().catch(e => 
             }
         }, 1500);
     }
@@ -518,7 +518,7 @@ function initializeDiceRoller() {
         // Play click sound
         if (diceClickSound) {
             diceClickSound.currentTime = 0;
-            diceClickSound.play().catch(e => console.log('Error playing sound:', e));
+            diceClickSound.play().catch(e => 
         }
     }
     
@@ -698,14 +698,14 @@ function addDie(diceType) {
     // Play click sound
     if (diceClickSound) {
         diceClickSound.currentTime = 0;
-        diceClickSound.play().catch(e => console.log('Error playing sound:', e));
+        diceClickSound.play().catch(e => 
     }
     
     // Update count
     selectedDice[diceType]++;
     
     // Log the selection for debugging
-    console.log(`Added ${diceType}, current count: ${selectedDice[diceType]}`);
+    
     
     updateDiceDisplay();
     updateCounters();
@@ -731,14 +731,14 @@ function rollDice() {
     // Play rolling sound
     if (diceRollSound) {
         diceRollSound.currentTime = 0;
-        diceRollSound.play().catch(e => console.log('Error playing sound:', e));
+        diceRollSound.play().catch(e => 
     }
     
     // Clear the animation area first
     diceAnimationArea.innerHTML = '';
     
     // Log the dice being rolled
-    console.log("Rolling dice:", selectedDice);
+    
     
     // Prepare results
     let results = [];
@@ -750,7 +750,7 @@ function rollDice() {
             const sides = parseInt(diceType.substring(1));
             const rolls = rollDiceType(count, sides);
             
-            console.log(`Rolling ${count} ${diceType} dice: ${rolls.join(', ')}`);
+            
             
             // Create animated dice for each roll - with a small delay between them
             rolls.forEach((rollValue, index) => {
@@ -763,7 +763,7 @@ function rollDice() {
                     diceAnimationArea.appendChild(animatedDie);
                     
                     // Log each die added to animation area
-                    console.log(`Added ${diceType} with value ${rollValue} to animation area`);
+                    
                 }, index * 100); // Stagger the appearance slightly
             });
             
@@ -823,7 +823,7 @@ function rollDice() {
         
         if (hasNatural20 && successSound) {
             successSound.currentTime = 0;
-            successSound.play().catch(e => console.log('Error playing sound:', e));
+            successSound.play().catch(e => 
         }
     }, 1500);
 }
