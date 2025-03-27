@@ -140,13 +140,13 @@
       "category": "pastoral",
       "description": "For a decade, this halfling has been a steady voice of kindness in the Lowlands, navigating the delicate balance between the surrounding noble houses. Though small in stature, their measured words and quiet diplomacy have kept Rosemont a neutral ground amidst shifting alliances.",
       "quote": "I do hope you can resolve this unpleasant business between House Melanth and House Rivermoor soon and with minimal strife—our people not only grow uneasy when lords quarrel but we tend to be the ones who suffer.",
-      "imageSrc": "https://i.imgur.com/YhnzkA4.png",
+      "imageSrc": "assets/images/npcs/brynden.png",
       "tags": [
         "mayor",
         "ederian"
       ],
       "createdAt": "2025-03-26T21:23:58.183Z",
-      "updatedAt": "2025-03-26T21:24:35.576Z"
+      "updatedAt": "2025-03-27T00:31:14.175Z"
     },
     {
       "id": "1743024748413",
@@ -157,14 +157,14 @@
       "category": "militant",
       "description": "A grizzled veteran with iron-gray hair, Ser Otis stands at rigid attention in a deep blue and purple surcoat bearing an embroidered silver antelope. Known for his unflinching discipline and tactical mind, he earned the crown’s ear by championing an expanded Ederian Watch. Beneath his stern demeanor lies an unwavering devotion to protecting the realm’s common folk—an ideal that drives both his speechcraft and his sword arm.",
       "quote": "What good is a crown that cannot protect its people?",
-      "imageSrc": "https://i.imgur.com/TWh8Ih7.png",
+      "imageSrc": "assets/images/npcs/otis.png",
       "tags": [
         "ederian watch",
         "burgrave",
         "soldier"
       ],
       "createdAt": "2025-03-26T21:32:28.413Z",
-      "updatedAt": "2025-03-26T21:32:47.633Z"
+      "updatedAt": "2025-03-27T00:30:57.749Z"
     }
   ]
 }
