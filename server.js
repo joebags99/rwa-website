@@ -303,6 +303,48 @@ app.get('/article', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'article.html'));
 });
 
+// API endpoint to list images in the artist folder
+app.get('/api/list-artist-images', (req, res) => {
+  try {
+    const artistDir = path.join(__dirname, 'public', 'assets', 'images', 'artist');
+    
+    // Check if directory exists
+    if (!fs.existsSync(artistDir)) {
+      console.log(`Artist directory not found: ${artistDir}`);
+      // Create the directory if it doesn't exist
+      fs.mkdirSync(artistDir, { recursive: true });
+      console.log(`Created artist directory: ${artistDir}`);
+      return res.json([]); // Return empty array since we just created the directory
+    }
+    
+    // Read the directory
+    const files = fs.readdirSync(artistDir);
+    
+    // Filter for image files
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    const imageFiles = files.filter(file => {
+      const ext = path.extname(file).toLowerCase();
+      return imageExtensions.includes(ext);
+    });
+    
+    // Format the response - ensure paths use the correct web path (not filesystem path)
+    // The key is to NOT include 'public' in the path since it's the web root
+    const images = imageFiles.map(file => {
+      return {
+        path: `assets/images/artist/${file}`, // No 'public' in web path
+        alt: `Character artwork by Gemma`
+      };
+    });
+    
+    console.log(`Found ${images.length} images in artist directory`);
+    console.log('Image paths:', images.map(img => img.path));
+    res.json(images);
+  } catch (error) {
+    console.error('Error reading artist directory:', error);
+    res.status(500).json({ error: 'Error reading artist directory' });
+  }
+});
+
 // Handle any other routes by serving index.html
 app.get('*', (req, res) => {
   // Skip for admin routes which are handled by the admin router
