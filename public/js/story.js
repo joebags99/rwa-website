@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 const Story = {
     // Configuration
     config: {
-        episodesPerBatch: 5,          // Number of episodes to load per batch
+        episodesPerBatch: 15,          // Number of episodes to load per batch
         fadeInThreshold: 100,         // Pixels from bottom to start fading in
         scrollThreshold: 300,         // Pixels from bottom to trigger loading more
         animationDelay: 100,          // Ms delay between episode animations
@@ -258,13 +258,18 @@ const Story = {
         // Don't process if already loading
         if (this.state.isLoading) return;
 
-        const scrollY = window.scrollY;
+        const scrollY = window.scrollY || window.pageYOffset;
         const windowHeight = window.innerHeight;
-        const bodyHeight = document.body.offsetHeight;
+        const bodyHeight = document.body.scrollHeight; // Changed from offsetHeight to scrollHeight
         
         // Check if we're near the bottom
-        if (this.state.hasMoreEpisodes && 
-            scrollY + windowHeight > bodyHeight - this.config.scrollThreshold) {
+        const nearBottom = scrollY + windowHeight > bodyHeight - this.config.scrollThreshold;
+        
+        // For troubleshooting
+        console.log(`Scroll position: ${scrollY}, Window height: ${windowHeight}, Document height: ${bodyHeight}, Near bottom: ${nearBottom}, Has more: ${this.state.hasMoreEpisodes}`);
+        
+        if (this.state.hasMoreEpisodes && nearBottom) {
+            console.log('Triggering load more episodes');
             this.loadMoreEpisodes();
         }
     },

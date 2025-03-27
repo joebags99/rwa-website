@@ -2,6 +2,12 @@
   {
     "icon": "fa-book-open",
     "title": "Story Episode Updated",
+    "description": "Updated story episode: The Weight of Steel and Shadow",
+    "timestamp": "2025-03-27T01:16:24.494Z"
+  },
+  {
+    "icon": "fa-book-open",
+    "title": "Story Episode Updated",
     "description": "Updated story episode: The Sea Calls",
     "timestamp": "2025-03-27T01:14:08.228Z"
   },
@@ -292,11 +298,5 @@
     "title": "Timeline Entry Created",
     "description": "Created new event: The Breaking of the Font and the Mage's Rebellion",
     "timestamp": "2025-03-26T20:50:21.647Z"
-  },
-  {
-    "icon": "fa-book-open",
-    "title": "Story Episode Updated",
-    "description": "Updated story episode: The Sea Calls",
-    "timestamp": "2025-03-26T20:46:08.904Z"
   }
 ]
