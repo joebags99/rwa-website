@@ -421,7 +421,7 @@ function playLoadingSound() {
     const sound = document.getElementById('loading-sound');
     if (sound) {
         sound.currentTime = 0;
-        sound.play().catch(e => 
+        sound.play().catch(e => {});
     }
 }
 
@@ -443,7 +443,7 @@ function playTransitionSound() {
     const sound = document.getElementById('transition-sound');
     if (sound) {
         sound.currentTime = 0;
-        sound.play().catch(e => 
+        sound.play().catch(e => {});
     }
 }
 
@@ -463,7 +463,7 @@ function initAmbientAudio() {
         
         // Play ambient audio after user interacts with the page
         document.addEventListener('click', function playAmbient() {
-            audio.play().catch(e => 
+            audio.play().catch(e => {});
             // Remove the event listener after first interaction
             document.removeEventListener('click', playAmbient);
         }, { once: true });
@@ -536,7 +536,7 @@ function portalTransition(destination) {
     const sound = document.createElement('audio');
     sound.src = 'assets/sounds/portal-select.mp3';
     sound.volume = 0.5;
-    sound.play().catch(e => 
+    sound.play().catch(e => {});
     
     // Navigate after animation completes
     setTimeout(() => {
@@ -561,7 +561,7 @@ function setupReturnButton() {
             const sound = document.createElement('audio');
             sound.src = 'assets/sounds/portal-close.mp3';
             sound.volume = 0.5;
-            sound.play().catch(e => 
+            sound.play().catch(e => {});
             
             // Navigate after animation completes
             setTimeout(() => {

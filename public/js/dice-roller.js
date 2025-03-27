@@ -156,7 +156,7 @@ function initializeDiceRoller() {
         // Play click sound
         if (diceClickSound) {
             diceClickSound.currentTime = 0;
-            diceClickSound.play().catch(e => 
+            diceClickSound.play().catch(e => {})
         }
         
         // Update count
@@ -174,7 +174,7 @@ function initializeDiceRoller() {
             // Play click sound
             if (diceClickSound) {
                 diceClickSound.currentTime = 0;
-                diceClickSound.play().catch(e => 
+                diceClickSound.play().catch(e => {})
             }
             
             // Update count
@@ -272,7 +272,7 @@ function initializeDiceRoller() {
         // Play rolling sound
         if (diceRollSound) {
             diceRollSound.currentTime = 0;
-            diceRollSound.play().catch(e => 
+            diceRollSound.play().catch(e => {})
         }
         
         // Clear the animation area first
@@ -354,7 +354,7 @@ function initializeDiceRoller() {
             
             if (hasNatural20 && successSound) {
                 successSound.currentTime = 0;
-                successSound.play().catch(e => 
+                successSound.play().catch(e => {})
             }
         }, 1500);
     }
@@ -518,7 +518,7 @@ function initializeDiceRoller() {
         // Play click sound
         if (diceClickSound) {
             diceClickSound.currentTime = 0;
-            diceClickSound.play().catch(e => 
+            diceClickSound.play().catch(e => {});
         }
     }
     
@@ -698,7 +698,7 @@ function addDie(diceType) {
     // Play click sound
     if (diceClickSound) {
         diceClickSound.currentTime = 0;
-        diceClickSound.play().catch(e => 
+        diceClickSound.play().catch(e => {})
     }
     
     // Update count
@@ -731,7 +731,7 @@ function rollDice() {
     // Play rolling sound
     if (diceRollSound) {
         diceRollSound.currentTime = 0;
-        diceRollSound.play().catch(e => 
+        diceRollSound.play().catch(e => {});
     }
     
     // Clear the animation area first
@@ -823,7 +823,7 @@ function rollDice() {
         
         if (hasNatural20 && successSound) {
             successSound.currentTime = 0;
-            successSound.play().catch(e => 
+            successSound.play().catch(e => {});
         }
     }, 1500);
 }

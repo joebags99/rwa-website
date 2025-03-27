@@ -571,6 +571,9 @@ function playFilterSound(type = 'default') {
     
     // Only play on desktop (optional)
     if (!document.body.classList.contains('mobile-device')) {
-        sound.play().catch(e => 
+        sound.play().catch(e => {
+            // Silently handle sound playback errors
+            console.log('Sound playback failed:', e);
+        });
     }
 }
