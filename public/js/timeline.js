@@ -154,7 +154,7 @@ const Timeline = {
     handleScroll: function() {
         // Don't process if already loading
         if (this.state.isLoading) return;
-
+    
         const scrollY = window.scrollY || window.pageYOffset;
         const windowHeight = window.innerHeight;
         const bodyHeight = document.body.scrollHeight; // Changed from offsetHeight to scrollHeight
