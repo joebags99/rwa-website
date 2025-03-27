@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
 const Timeline = {
     // Configuration
     config: {
-        eventsPerBatch: 5,          // Number of events to load per batch
-        fadeOutThreshold: 200,      // Pixels from top to start fading out
-        fadeInThreshold: 100,       // Pixels from bottom to start fading in
-        scrollThreshold: 150,       // Pixels from bottom to trigger loading more
-        animationDelay: 100,        // Ms delay between event animations
+        eventsPerBatch: 15,        // Increased from 5 to show more events initially
+        fadeOutThreshold: 200,     
+        fadeInThreshold: 100,      
+        scrollThreshold: 300,      // Increased to give more space at bottom
+        animationDelay: 100,
         monthNames: [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -150,46 +150,30 @@ const Timeline = {
         }, options);
     },
 
-    // Handle scroll event for lazy loading
+    // Handle scroll event for lazy loading - completely revised
     handleScroll: function() {
-        // Don't process if already loading
-        if (this.state.isLoading) return;
-    
-        const scrollY = window.scrollY || window.pageYOffset;
+        // Skip if already loading
+        if (this.state.isLoading) {
+            return;
+        }
+        
+        const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
-        const bodyHeight = document.body.scrollHeight; // Changed from offsetHeight to scrollHeight
+        const documentHeight = Math.max(
+            document.body.scrollHeight, 
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight, 
+            document.documentElement.offsetHeight
+        );
         
-        // Calculate if we're near the bottom
-        const nearBottom = scrollY + windowHeight > bodyHeight - this.config.scrollThreshold;
+        // Calculate distance from bottom
+        const distanceFromBottom = documentHeight - (scrollPosition + windowHeight);
+        console.log(`Distance from bottom: ${distanceFromBottom}px`);
         
-        // Debug info
-        console.log(`Scroll info: Position: ${scrollY}, Window: ${windowHeight}, Document: ${bodyHeight}`);
-        console.log(`Near bottom: ${nearBottom}, Has more events: ${this.state.hasMoreEvents}`);
-        
-        // Check if we're near the bottom and load more if needed
-        if (this.state.hasMoreEvents && nearBottom) {
-            console.log('Triggering loadMoreEvents()');
+        if (distanceFromBottom < this.config.scrollThreshold && this.state.hasMoreEvents) {
+            console.log('Near bottom - loading more events!');
             this.loadMoreEvents();
-        }
-        
-        // Check if we're near the top
-        if (this.state.hasEarlierEvents && scrollY < this.config.scrollThreshold) {
-            this.loadEarlierEvents();
-        }
-        
-        // Use a debounced or throttled approach to checking visibility
-        // to reduce processing during scroll
-        if (!this._scrollThrottleTimeout) {
-            this._scrollThrottleTimeout = setTimeout(() => {
-                // Ensure event visibility
-                document.querySelectorAll('.timeline-event:not(.visible), .timeline-break:not(.visible)').forEach(el => {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top < windowHeight && rect.bottom > 0) {
-                        el.classList.add('visible');
-                    }
-                });
-                this._scrollThrottleTimeout = null;
-            }, 100); // Throttle to execute at most every 100ms
         }
     },
 
@@ -614,11 +598,11 @@ filterByEra: function(era) {
             });
     },
 
-    // Load more events (when scrolling down)
+    // Load more events (when scrolling down) - simplified for reliability
     loadMoreEvents: function() {
         if (this.state.isLoading) return;
         
-        console.log('LOADING MORE EVENTS - starting process');
+        console.log('Loading more events...');
         this.state.isLoading = true;
         
         // Show loader
@@ -626,60 +610,53 @@ filterByEra: function(era) {
             this.elements.bottomLoader.classList.add('active');
         }
         
-        // We already have all data cached, just need to load the next batch
-        const filteredEvents = this.filterEvents();
-        console.log('Total filtered events:', filteredEvents.length);
-        
-        // Calculate which events to load next
+        // Calculate batch indices
         const startIndex = this.config.eventsPerBatch * this.state.currentPage;
-        const nextBatch = filteredEvents.slice(
-            startIndex, 
-            startIndex + this.config.eventsPerBatch
-        );
+        const endIndex = startIndex + this.config.eventsPerBatch;
         
-        console.log('Loading events from index', startIndex, 'to', startIndex + this.config.eventsPerBatch);
-        console.log('Next batch contains', nextBatch.length, 'events');
+        // Get filtered events
+        const filteredEvents = this.filterEvents();
+        console.log(`Total events: ${filteredEvents.length}, Loading: ${startIndex} to ${endIndex}`);
         
-        // No more events to load
+        // Get next batch
+        const nextBatch = filteredEvents.slice(startIndex, endIndex);
+        
+        // Check if we have events to render
         if (nextBatch.length === 0) {
             console.log('No more events to load');
             this.state.hasMoreEvents = false;
-            this.state.isLoading = false;
+        } else {
+            console.log(`Rendering ${nextBatch.length} more events`);
             
-            // Hide loader
-            if (this.elements.bottomLoader) {
-                this.elements.bottomLoader.classList.remove('active');
-            }
+            // Render the events immediately
+            nextBatch.forEach(event => {
+                this.renderTimelineItem(event);
+            });
             
-            return;
+            // Update page counter
+            this.state.currentPage += 1;
+            
+            // Update whether we have more events
+            this.state.hasMoreEvents = (startIndex + nextBatch.length) < filteredEvents.length;
+            console.log(`More events available: ${this.state.hasMoreEvents}`);
+            
+            // Observe new elements
+            setTimeout(() => {
+                document.querySelectorAll('.timeline-event:not(.observed), .timeline-break:not(.observed)')
+                    .forEach(el => {
+                        this.observer.observe(el);
+                        el.classList.add('observed');
+                    });
+            }, 100);
         }
-        
-        // Instead of using setTimeout which can be unreliable, render immediately
-        console.log('Rendering next batch of events');
-        
-        // Render next batch of events
-        nextBatch.forEach(event => {
-            this.renderTimelineItem(event);
-        });
-        
-        // Update state
-        this.state.currentPage++;
-        this.state.hasMoreEvents = filteredEvents.length > startIndex + this.config.eventsPerBatch;
-        this.state.isLoading = false;
-        
-        console.log('New page number:', this.state.currentPage);
-        console.log('Has more events:', this.state.hasMoreEvents);
         
         // Hide loader
         if (this.elements.bottomLoader) {
             this.elements.bottomLoader.classList.remove('active');
         }
         
-        // Observe new elements
-        document.querySelectorAll('.timeline-event:not(.observed), .timeline-break:not(.observed)').forEach(el => {
-            this.observer.observe(el);
-            el.classList.add('observed'); // Mark as observed to avoid re-observing
-        });
+        // Reset loading state
+        this.state.isLoading = false;
     },
 
     // Load earlier events (when scrolling up)
