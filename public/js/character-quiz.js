@@ -573,19 +573,30 @@ document.addEventListener('DOMContentLoaded', function() {
         canvas.style.height = containerHeight + 'px';
         canvas.style.maxHeight = '400px';
         
-        // Prepare chart data
+        // Transform the percentages to make small differences more visible
+        // using a logarithmic-like scale transformation
+        const transformedData = {
+            talon: transformValueForRadar(percentages.talon),
+            edwinn: transformValueForRadar(percentages.edwinn),
+            xanthe: transformValueForRadar(percentages.xanthe),
+            cailynn: transformValueForRadar(percentages.cailynn),
+            marik: transformValueForRadar(percentages.marik),
+            via: transformValueForRadar(percentages.via)
+        };
+        
+        // Prepare chart data with transformed values
         const chartData = {
             labels: ['Talon', 'Edwinn', 'Xanthe', 'Cailynn', 'Marik', 'Via'],
             datasets: [
                 {
                     label: 'Character Match',
                     data: [
-                        percentages.talon,
-                        percentages.edwinn,
-                        percentages.xanthe,
-                        percentages.cailynn,
-                        percentages.marik,
-                        percentages.via
+                        transformedData.talon,
+                        transformedData.edwinn,
+                        transformedData.xanthe,
+                        transformedData.cailynn,
+                        transformedData.marik,
+                        transformedData.via
                     ],
                     backgroundColor: 'rgba(127, 14, 189, 0.2)',
                     borderColor: 'rgba(127, 14, 189, 1)',
@@ -597,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         };
         
-        // Chart configuration
+        // Chart configuration 
         const config = {
             type: 'radar',
             data: chartData,
@@ -615,13 +626,18 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: true,
                             color: 'rgba(0, 0, 0, 0.1)'
                         },
-                        suggestedMin: 0,
-                        suggestedMax: 100,
+                        min: 0,
+                        max: 100,
                         ticks: {
+                            // Use custom tick values at more frequent intervals at lower values
                             stepSize: 20,
                             backdropColor: 'transparent',
                             callback: function(value) {
-                                return value + '%';
+                                // Convert the displayed value back to original scale for labels
+                                return Math.round(inverseTransformValueForRadar(value)) + '%';
+                            },
+                            font: {
+                                size: 12
                             }
                         },
                         pointLabels: {
@@ -641,7 +657,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return context.raw + '% match with ' + context.label;
+                                // Show original percentage value in tooltip
+                                const originalValue = percentages[Object.keys(percentages)[context.dataIndex]];
+                                return originalValue + '% match with ' + context.label;
                             }
                         }
                     }
@@ -651,6 +669,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create the chart
         radarChart = new Chart(resultsChart, config);
+    }
+    
+    // Helper function to transform values (apply a power scale)
+    function transformValueForRadar(value) {
+        // Square root transformation for a logarithmic-like effect
+        // This will make smaller values more visible
+        return Math.pow(value, 0.5) * 10;
+    }
+    
+    // Inverse transform function to convert display values back to original scale
+    function inverseTransformValueForRadar(value) {
+        return Math.pow(value / 10, 2);
     }
     
     // Retake the quiz
@@ -768,7 +798,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.fillStyle = '#333';
                 ctx.font = 'italic 18px EB Garamond';
                 ctx.textAlign = 'center';
-                ctx.fillText('Find out which heir you are at rollwithadvantage.com', canvas.width / 2, canvas.height - 30);
+                ctx.fillText('Find out which heir you are at rollwithadvantage.co', canvas.width / 2, canvas.height - 30);
                 
                 // Draw dividing line between header and content
                 ctx.beginPath();
@@ -809,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const character = characters[results.topCharacter];
         
         const text = `I'm a ${results.topPercentage}% match with ${character.name} from The Crimson Court! Take the quiz to discover your royal match:`;
-        const url = 'https://rollwithadvantage.com/character-quiz.html';
+        const url = 'https://rollwithadvantage.co/character-quiz.html';
         
         switch (platform) {
             case 'instagram':

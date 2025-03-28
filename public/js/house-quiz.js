@@ -606,122 +606,152 @@ document.addEventListener('DOMContentLoaded', function() {
         quizResults.scrollIntoView({ behavior: 'smooth' });
     }
     
-    // Create the radar chart
-    function createRadarChart(percentages, topHouse) {
-        // Destroy previous chart if it exists
-        if (radarChart) {
-            radarChart.destroy();
-        }
-        
-        // Get the container dimensions
-        const container = document.querySelector('.radar-chart-container');
-        const containerWidth = container.clientWidth;
-        const containerHeight = 360; // Fixed height to prevent excessive growth
-        
-        // Set the canvas size explicitly
-        const canvas = document.getElementById('results-chart');
-        canvas.width = containerWidth;
-        canvas.height = containerHeight;
-        canvas.style.width = containerWidth + 'px';
-        canvas.style.height = containerHeight + 'px';
-        canvas.style.maxHeight = '400px';
-        
-        // Get the house color for the chart
-        const houseColor = houses[topHouse].color;
+   // House Quiz - Updated createRadarChart function
+function createRadarChart(percentages, topHouse) {
+    // Destroy previous chart if it exists
+    if (radarChart) {
+        radarChart.destroy();
+    }
+    
+    // Get the container dimensions
+    const container = document.querySelector('.radar-chart-container');
+    const containerWidth = container.clientWidth;
+    const containerHeight = 360; // Fixed height to prevent excessive growth
+    
+    // Set the canvas size explicitly
+    const canvas = document.getElementById('results-chart');
+    canvas.width = containerWidth;
+    canvas.height = containerHeight;
+    canvas.style.width = containerWidth + 'px';
+    canvas.style.height = containerHeight + 'px';
+    canvas.style.maxHeight = '400px';
+    
+    // Get the house color for the chart
+    const houseColor = houses[topHouse].color;
 
-        // Use abbreviated house names for chart labels to prevent overlap
-        const chartLabels = [
-            'Falkrest',
-            'Veltaris',
-            'Thornefield',
-            'Astralor',
-            'Eldran',
-            'Emberlyn'
-        ];
-        
-        // Prepare chart data
-        const chartData = {
-            labels: chartLabels,
-            datasets: [
-                {
-                    label: 'House Match',
-                    data: [
-                        percentages.falkrest,
-                        percentages.veltaris,
-                        percentages.thornefield,
-                        percentages.astralor,
-                        percentages.eldran,
-                        percentages.emberlyn
-                    ],
-                    backgroundColor: `${houseColor}33`, // Add alpha for transparency
-                    borderColor: houseColor,
-                    pointBackgroundColor: houseColor,
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: houseColor
+    // Use abbreviated house names for chart labels to prevent overlap
+    const chartLabels = [
+        'Falkrest',
+        'Veltaris',
+        'Thornefield',
+        'Astralor',
+        'Eldran',
+        'Emberlyn'
+    ];
+    
+    // Transform the percentages to make small differences more visible
+    const transformedData = [
+        transformValueForRadar(percentages.falkrest),
+        transformValueForRadar(percentages.veltaris),
+        transformValueForRadar(percentages.thornefield),
+        transformValueForRadar(percentages.astralor),
+        transformValueForRadar(percentages.eldran),
+        transformValueForRadar(percentages.emberlyn)
+    ];
+    
+    // Create an array of the original values for use in the tooltip
+    const originalValues = [
+        percentages.falkrest,
+        percentages.veltaris,
+        percentages.thornefield,
+        percentages.astralor,
+        percentages.eldran,
+        percentages.emberlyn
+    ];
+    
+    // Prepare chart data with transformed values
+    const chartData = {
+        labels: chartLabels,
+        datasets: [
+            {
+                label: 'House Match',
+                data: transformedData,
+                originalData: originalValues, // Store original values for tooltips
+                backgroundColor: `${houseColor}33`, // Add alpha for transparency
+                borderColor: houseColor,
+                pointBackgroundColor: houseColor,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: houseColor
+            }
+        ]
+    };
+    
+    // Chart configuration
+    const config = {
+        type: 'radar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            elements: {
+                line: {
+                    borderWidth: 3
                 }
-            ]
-        };
-        
-        // Chart configuration
-        const config = {
-            type: 'radar',
-            data: chartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                elements: {
-                    line: {
-                        borderWidth: 3
-                    }
-                },
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true,
-                            color: 'rgba(0, 0, 0, 0.1)'
-                        },
-                        suggestedMin: 0,
-                        suggestedMax: 100,
-                        ticks: {
-                            stepSize: 20,
-                            backdropColor: 'transparent',
-                            callback: function(value) {
-                                return value + '%';
-                            },
-                            font: {
-                                size: 12
-                            }
-                        },
-                        pointLabels: {
-                            font: {
-                                size: 14,
-                                family: "'Cinzel', serif",
-                                weight: 'bold'
-                            },
-                            color: '#333',
-                            padding: 10 // Add padding between labels and chart
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
+            },
+            scales: {
+                r: {
+                    angleLines: {
+                        display: true,
+                        color: 'rgba(0, 0, 0, 0.1)'
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.raw + '% match with House ' + chartLabels[context.dataIndex];
-                            }
+                    min: 0,
+                    max: 100,
+                    ticks: {
+                        // Use custom tick values at more frequent intervals at lower values
+                        stepSize: 20,
+                        backdropColor: 'transparent',
+                        callback: function(value) {
+                            // Convert the displayed value back to original scale for labels
+                            return Math.round(inverseTransformValueForRadar(value)) + '%';
+                        },
+                        font: {
+                            size: 12
+                        }
+                    },
+                    pointLabels: {
+                        font: {
+                            size: 14,
+                            family: "'Cinzel', serif",
+                            weight: 'bold'
+                        },
+                        color: '#333',
+                        padding: 10 // Add padding between labels and chart
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            // Show original percentage value in tooltip
+                            const originalValue = originalValues[context.dataIndex];
+                            return originalValue + '% match with House ' + chartLabels[context.dataIndex];
                         }
                     }
                 }
             }
-        };
-        
-        // Create the chart
-        radarChart = new Chart(resultsChart, config);
-    }
+        }
+    };
+    
+    // Create the chart
+    radarChart = new Chart(resultsChart, config);
+}
+
+// Helper function to transform values (apply a power scale)
+function transformValueForRadar(value) {
+    // Square root transformation for a logarithmic-like effect
+    // This will make smaller values more visible
+    return Math.pow(value, 0.5) * 10;
+}
+
+// Inverse transform function to convert display values back to original scale
+function inverseTransformValueForRadar(value) {
+    return Math.pow(value / 10, 2);
+}
     
     // Retake the quiz
     function retakeQuiz() {
@@ -920,7 +950,7 @@ function downloadResult() {
                 ctx.fillStyle = '#333';
                 ctx.font = 'italic 28px "EB Garamond"';
                 ctx.textAlign = 'center';
-                ctx.fillText('Discover your noble house at rollwithadvantage.com', rightCol.x + 350, 1010);
+                ctx.fillText('Discover your noble house at rollwithadvantage.co', rightCol.x + 350, 1010);
                 
                 // Create download link
                 
@@ -976,7 +1006,7 @@ function downloadResult() {
                 ctx.fillStyle = '#333';
                 ctx.font = 'italic 28px "EB Garamond"';
                 ctx.textAlign = 'center';
-                ctx.fillText('Discover your noble house at rollwithadvantage.com', rightCol.x + 350, 1010);
+                ctx.fillText('Discover your noble house at rollwithadvantage.co', rightCol.x + 350, 1010);
                 
                 // Create download
                 const dataURL = canvas.toDataURL('image/png');
@@ -1107,7 +1137,7 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
         const house = houses[results.topHouse];
         
         const text = `I am Ser ${userName.firstName} of House ${userName.lastName}, a ${results.topPercentage}% match with ${house.name} of Ederia! Take the quiz to discover your noble house:`;
-        const url = 'https://rollwithadvantage.com/house-quiz.html';
+        const url = 'https://rollwithadvantage.co/house-quiz.html';
         
         switch (platform) {
             case 'instagram':

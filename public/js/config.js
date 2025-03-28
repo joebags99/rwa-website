@@ -4,8 +4,8 @@
  */
 
 // Detect environment
-const isProduction = window.location.hostname === 'rollwithadvantage.com' || window.location.hostname === 'www.rollwithadvantage.com';
-const isStaging = window.location.hostname === 'staging.rollwithadvantage.com';
+const isProduction = window.location.hostname === 'rollwithadvantage.co' || window.location.hostname === 'www.rollwithadvantage.co';
+const isStaging = window.location.hostname === 'staging.rollwithadvantage.co';
 const isDevelopment = !isProduction && !isStaging;
 
 // Environment-specific configuration
@@ -24,7 +24,7 @@ const environmentConfig = {
   },
   staging: {
     apiBaseUrl: '/api',
-    siteBaseUrl: 'https://staging.rollwithadvantage.com',
+    siteBaseUrl: 'https://staging.rollwithadvantage.co',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
       crimsonCourt: 'YOUR_CRIMSON_COURT_PLAYLIST_ID',
@@ -36,7 +36,7 @@ const environmentConfig = {
   },
   production: {
     apiBaseUrl: '/api',
-    siteBaseUrl: 'https://rollwithadvantage.com',
+    siteBaseUrl: 'https://rollwithadvantage.co',
     channelId: 'YOUR_CHANNEL_ID',
     playlists: {
       crimsonCourt: 'YOUR_CRIMSON_COURT_PLAYLIST_ID',
