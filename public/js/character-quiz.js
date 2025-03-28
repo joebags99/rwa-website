@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const characters = {
         talon: {
             name: "Talon",
-            image: "assets/images/tools/chibi_talon.png",
+            image: "/assets/images/tools/chibi_talon.png",
             traits: [
                 "Diplomatic & Compassionate",
                 "Values peace and understanding",
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         edwinn: {
             name: "Edwinn",
-            image: "assets/images/tools/chibi_edwinn.png",
+            image: "/assets/images/tools/chibi_edwinn.png",
             traits: [
                 "Healer & Helper",
                 "Seeks peaceful resolutions",
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         xanthe: {
             name: "Xanthe",
-            image: "assets/images/tools/chibi_xanthe.png",
+            image: "/assets/images/tools/chibi_xanthe.png",
             traits: [
                 "Decisive & Strategic",
                 "Values efficiency and results",
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         cailynn: {
             name: "Cailynn",
-            image: "assets/images/tools/chibi_cailynn.png",
+            image: "/assets/images/tools/chibi_cailynn.png",
             traits: [
                 "Spiritual & Insightful",
                 "Connected to mystical forces",
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         marik: {
             name: "Marik",
-            image: "assets/images/tools/chibi_marik.png",
+            image: "/assets/images/tools/chibi_marik.png",
             traits: [
                 "Practical & Observant",
                 "Values honesty and integrity",
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         via: {
             name: "Via",
-            image: "assets/images/tools/chibi_via.png",
+            image: "/assets/images/tools/chibi_via.png",
             traits: [
                 "Enthusiastic & Optimistic",
                 "Values friendship and loyalty",
