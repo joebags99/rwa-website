@@ -1,0 +1,13 @@
+# robots.txt for rollwithadvantage.co
+User-agent: *
+Allow: /
+
+# Important pages to crawl
+Sitemap: https://rollwithadvantage.co/sitemap.xml
+
+# Admin area should not be indexed
+Disallow: /admin/
+Disallow: /data/
+
+# Don't index the API endpoints
+Disallow: /api/
