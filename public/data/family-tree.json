@@ -681,7 +681,7 @@
     "house_color_a": "--house-falkrest",
     "house_color_b": "--house-veltaris",
     "portrait": "assets/images/npcs/F019.png",
-    "betrothed": "A003"
+    "betrothed": null
   },
   {
     "id": "A003",
