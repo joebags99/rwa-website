@@ -795,6 +795,79 @@ function renderWorldBuilder() {
             font-style: italic;
             font-size: 0.8rem;
         }
+
+        /* Alignment details panel styling */
+        .alignment-details {
+            background: linear-gradient(to bottom, #f9f9f9, #f0f0f0);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .alignment-details:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .alignment-details h3 {
+            color: #4a6da7;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(74, 109, 167, 0.3);
+            text-align: center;
+        }
+
+        .alignment-details p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .alignment-details p:nth-child(3) {
+            font-style: italic;
+            color: #666;
+            padding: 8px 0;
+        }
+
+        .alignment-stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(74, 109, 167, 0.08);
+            border-radius: 6px;
+            padding: 15px 10px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+            padding: 0 15px;
+        }
+
+        .stat:first-child {
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a6da7;
+        }
     `;
 
     // Add the style element to the head if it's not already there
