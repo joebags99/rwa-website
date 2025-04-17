@@ -23,6 +23,7 @@ const initialState = {
     ],
     pillars: {
         magic: {
+            scale: 3,
             primeLaw: '',
             loopholeMYth: '',
             enforcerAvatar: '',
@@ -34,6 +35,7 @@ const initialState = {
             sensoryMotifs: ['', '', '']
         },
         religion: {
+            scale: 3,
             primeLaw: '',
             loopholeMYth: '',
             enforcerAvatar: '',
@@ -45,6 +47,7 @@ const initialState = {
             sensoryMotifs: ['', '', '']
         },
         society: {
+            scale: 3,
             primeLaw: '',
             loopholeMYth: '',
             enforcerAvatar: '',
@@ -56,6 +59,7 @@ const initialState = {
             sensoryMotifs: ['', '', '']
         },
         wilds: {
+            scale: 3,
             primeLaw: '',
             loopholeMYth: '',
             enforcerAvatar: '',
@@ -174,6 +178,154 @@ const brainsparkQuestions = {
     ]
 };
 
+// Define scales for each pillar
+const pillarScales = {
+  magic: {
+    name: "Arcane Saturation",
+    description: "How prevalent and powerful is magic in your world?",
+    levels: [
+      {
+        value: 1,
+        name: "Rare Magic",
+        description: "Magic is extremely rare, perhaps even considered myth by most people",
+        example: "Game of Thrones, specifically Westeros"
+      },
+      {
+        value: 2,
+        name: "Limited Magic",
+        description: "Magic exists but is uncommon and limited in scope",
+        example: "Lord of the Rings, Conan the Barbarian"
+      },
+      {
+        value: 3,
+        name: "Moderate Magic",
+        description: "Magic is recognized and somewhat common, but not everyday for most people",
+        example: "Dungeons & Dragons, Wheel of Time"
+      },
+      {
+        value: 4,
+        name: "Abundant Magic",
+        description: "Magic is common and shapes many aspects of the world",
+        example: "Harry Potter, Eberron campaign setting"
+      },
+      {
+        value: 5,
+        name: "Pervasive Magic",
+        description: "Magic infuses nearly everything, fundamental to society",
+        example: "Avatar: The Last Airbender, Arcane (Runterra), Final Fantasy"
+      }
+    ]
+  },
+  religion: {
+    name: "Divine Presence",
+    description: "How active and manifest are gods and divine forces?",
+    levels: [
+      {
+        value: 1,
+        name: "Absent Divinity",
+        description: "Gods may or may not exist; they have no apparent influence",
+        example: "Game of Thrones, real-world atheistic perspective"
+      },
+      {
+        value: 2,
+        name: "Distant Divinity",
+        description: "The gods are real and acknowledged. Their power is known, sometimes even visible through miracles or divine agents",
+        example: "The Elder Scrolls, Conan the Barbarian"
+      },
+      {
+        value: 3,
+        name: "Responsive Divinity",
+        description: "Gods respond to prayer and grant power to followers",
+        example: "Standard D&D, Forgotten Realms"
+      },
+      {
+        value: 4,
+        name: "Active Divinity",
+        description: "Gods regularly interact through avatars and miracles",
+        example: "Norse mythology, Critical Role Campaign 3"
+      },
+      {
+        value: 5,
+        name: "Manifest Divinity",
+        description: "Gods walk the world and directly involve themselves in mortal affairs",
+        example: "Greek mythology, American Gods, God of War"
+      }
+    ]
+  },
+  society: {
+    name: "Societal Development",
+    description: "How advanced and complex is your world's civilization?",
+    levels: [
+      {
+        value: 1,
+        name: "Pre-civilization",
+        description: "Nomadic tribes, hunter-gatherers, minimal technology",
+        example: "Far Cry Primal, 10,000 BC"
+      },
+      {
+        value: 2,
+        name: "Early Civilization",
+        description: "Early agriculture, city-states, bronze/iron age",
+        example: "Conan the Barbarian, early Mesopotamia"
+      },
+      {
+        value: 3,
+        name: "Established Civilization",
+        description: "Medieval to Renaissance level technology and social structures",
+        example: "Standard D&D, Game of Thrones, Lord of the Rings"
+      },
+      {
+        value: 4,
+        name: "Advanced Civilization",
+        description: "Early industrial to Victorian-equivalent complexity",
+        example: "Eberron, Dishonored, early Bioshock"
+      },
+      {
+        value: 5,
+        name: "Complex Civilization",
+        description: "Highly developed cultures, magical technology integration",
+        example: "Final Fantasy, Legend of Korra, Arcane"
+      }
+    ]
+  },
+  wilds: {
+    name: "Wilderness Peril",
+    description: "How dangerous are the untamed parts of your world?",
+    levels: [
+      {
+        value: 1,
+        name: "Tame Wilderness",
+        description: "The wild presents few dangers beyond natural elements",
+        example: "Pastoral fantasy, The Shire in Lord of the Rings"
+      },
+      {
+        value: 2,
+        name: "Moderate Wilderness",
+        description: "Wilderness has some dangers but is largely navigable",
+        example: "Narnia, standard fairy tales"
+      },
+      {
+        value: 3,
+        name: "Hazardous Wilderness",
+        description: "Significant dangers exist in the wild; common folk avoid travel",
+        example: "Standard D&D, Witcher wilderness"
+      },
+      {
+        value: 4,
+        name: "Perilous Wilderness",
+        description: "The wilds are filled with lethal threats; travel requires preparations",
+        example: "Dark Sun, Fallout, Monster Hunter"
+      },
+      {
+        value: 5,
+        name: "Lethal Wilderness",
+        description: "Venturing into the wild is a death sentence for most; extreme danger",
+        example: "Dark Souls, Darkest Dungeon, Bloodborne"
+      }
+    ]
+  }
+};
+
 // Global variables
 let worldData = {};
 let activeSection = 'introduction';
@@ -289,55 +441,340 @@ function renderWorldBuilder() {
     const container = document.getElementById('world-builder-container');
     if (!container) return;
     
-    // Create HTML for the World Builder
-    const html = `
-        <div class="mb-8 text-center">
-            <h1 class="text-3xl font-bold text-primary-blue mb-4">4-Pillar World Builder</h1>
-            <p class="text-lg">Create your D&D campaign world using the 4-Pillar framework.</p>
-        </div>
+    // Add this at the beginning of the renderWorldBuilder function before the HTML generation:
+
+    const styleElement = document.head.querySelector('style.world-builder-styles') || 
+                        document.createElement('style');
+    styleElement.className = 'world-builder-styles';
+
+    // Add or update styles
+    styleElement.textContent = `
+        /* Existing styles... */
         
-        <!-- Navigation -->
+        /* Scale UI styles */
+        .pillar-scale-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 8px;
+        }
+        
+        .scale-selector {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            position: relative;
+            align-items: center;
+            padding: 0 10px;
+            height: 50px;
+        }
+        
+        /* Background inactive line */
+        .scale-selector:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 28px;
+            right: 28px;
+            height: 3px;
+            background-color: #e0e0e0;
+            z-index: 0;
+        }
+        
+        /* Active highlighted line */
+        .scale-selector:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 28px;
+            height: 3px;
+            background-color: #4a6da7;
+            z-index: 1;
+            transition: width 0.4s ease-in-out;
+            width: 0%; /* Will be set via JS */
+        }
+        
+        .scale-option {
+            text-align: center;
+            position: relative;
+            z-index: 2; /* Ensure dots appear above both lines */
+        }
+        
+        .scale-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .scale-option label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #d0d0d0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .scale-option input[type="radio"]:checked + label {
+            background-color: #4a6da7;
+            color: white;
+            border-color: #2a4d87;
+            transform: scale(1.1);
+        }
+        
+        /* Add a new rule for scale options that are at or below the selected value */
+        .scale-option.active label {
+            background-color: #4a6da7;
+            color: white;
+            border-color: #2a4d87;
+        }
+        
+        .scale-option:hover label {
+            transform: scale(1.05);
+            background-color: #e5e5e5;
+        }
+        
+        .scale-option input[type="radio"]:checked:hover + label {
+            background-color: #4a6da7;
+        }
+        
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        .scale-current-value {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: rgba(0,0,0,0.05);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .scale-current-value strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .scale-current-value p {
+            margin-bottom: 8px;
+        }
+
+        /* World Summary Styles */
+        .world-summary {
+          background-color: rgba(0,0,0,0.02);
+          border-radius: 8px;
+          padding: 20px;
+          margin: 30px 0;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .world-summary h3 {
+          font-size: 1.8rem;
+          color: #4a6da7;
+          margin-bottom: 20px;
+          text-align: center;
+          font-weight: bold;
+        }
+        
+        .world-summary h4 {
+          font-size: 1.4rem;
+          color: #6a4aa7;
+          margin: 25px 0 10px;
+          padding-bottom: 5px;
+          border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+        
+        .world-summary h5 {
+          font-size: 1.2rem;
+          font-weight: 600;
+          margin-bottom: 10px;
+          color: #4a6da7;
+        }
+        
+        .summary-alignment p {
+          font-style: italic;
+          color: #555;
+        }
+        
+        .summary-thesis-text {
+          font-weight: 500;
+          font-size: 1.1rem;
+          color: #444;
+          font-style: italic;
+        }
+        
+        /* Scale bars */
+        .summary-scales {
+          margin: 25px 0;
+        }
+        
+        .summary-scale-bars {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+        
+        .summary-scale-bar {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+        
+        .scale-bar-label {
+          width: 80px;
+          font-weight: 600;
+          text-align: right;
+        }
+        
+        .scale-bar-container {
+          flex-grow: 1;
+          height: 25px;
+          background-color: #f0f0f0;
+          border-radius: 4px;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .scale-bar-fill {
+          height: 100%;
+          background: linear-gradient(to right, #4a6da7, #7a9fd7);
+          border-radius: 4px;
+          transition: width 0.5s ease;
+        }
+        
+        .scale-bar-markers {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          padding: 0 10px;
+          color: rgba(0,0,0,0.5);
+          font-size: 0.7rem;
+          pointer-events: none;
+        }
+        
+        .scale-bar-markers span {
+          position: relative;
+          top: 5px;
+        }
+        
+        .scale-bar-value {
+          width: 120px;
+          font-style: italic;
+          font-size: 0.9rem;
+        }
+        
+        /* Pillar summaries */
+        .pillar-summary-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr; /* Change from auto-fill to exactly 2 columns */
+          gap: 20px;
+          margin-top: 15px;
+        }
+        
+        .pillar-summary {
+          background-color: white;
+          border-radius: 6px;
+          padding: 15px;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .pillar-conflicts-barriers {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          margin-top: 10px;
+        }
+        
+        .pillar-conflicts-barriers ul {
+          padding-left: 20px;
+          margin-top: 5px;
+          font-size: 0.9rem;
+        }
+        
+        .pillar-conflicts-barriers li {
+          margin-bottom: 5px;
+        }
+        
+        /* Summary twists */
+        .summary-twists {
+          background-color: rgba(0,0,0,0.03);
+          border-radius: 6px;
+          padding: 15px;
+          margin-top: 25px;
+        }
+        
+        .world-summary-placeholder {
+          text-align: center;
+          padding: 30px;
+          background-color: rgba(0,0,0,0.03);
+          border-radius: 8px;
+          color: #666;
+          font-style: italic;
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+          .pillar-summary-grid {
+            grid-template-columns: 1fr;
+          }
+          
+          .pillar-conflicts-barriers {
+            grid-template-columns: 1fr;
+          }
+        }
+    `;
+
+    // Add the style element to the head if it's not already there
+    if (!document.head.querySelector('style.world-builder-styles')) {
+        document.head.appendChild(styleElement);
+    }
+    
+    // Generate the HTML content
+    const html = `
+        <!-- Navigation Bar -->
         <div class="wb-nav-buttons">
             <button class="wb-nav-btn ${activeSection === 'introduction' ? 'active' : ''}" data-section="introduction">Introduction</button>
             <button class="wb-nav-btn ${activeSection === 'alignment' ? 'active' : ''}" data-section="alignment">Alignment</button>
             <button class="wb-nav-btn ${activeSection === 'foundation' ? 'active' : ''}" data-section="foundation">Foundation</button>
-            <button class="wb-nav-btn ${activeSection === 'pillars' ? 'active' : ''}" data-section="pillars">Pillars</button>
+            <button class="wb-nav-btn ${activeSection === 'pillars' ? 'active' : ''}" data-section="pillars">Four Pillars</button>
             <button class="wb-nav-btn ${activeSection === 'inverse' ? 'active' : ''}" data-section="inverse">Inverse Twists</button>
             <button class="wb-nav-btn ${activeSection === 'export' ? 'active' : ''}" data-section="export">Export</button>
         </div>
 
         <!-- Introduction Section -->
         <div class="wb-section ${activeSection === 'introduction' ? 'active' : ''}" id="introduction-section">
-            <h2>About the 4-Pillar Framework</h2>
-            <p>The 4-Pillar World Builder is a structured approach to creating compelling fantasy worlds. It helps you establish consistent rules across four fundamental pillars of your setting: Magic, Religion, Society, and Wilds.</p>
-            <p>By defining these pillars with clear laws, conflicts, and sensory elements, you'll create a world that feels both coherent and exciting for your players to explore.</p>
-            
-            <h3 class="text-xl font-bold mb-3 text-primary-purple mt-6">Quick Roadmap:</h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li><strong>Alignment Thesis</strong> - Define the tone and core concept of your world</li>
-                <li><strong>Four Pillars</strong> - Establish the laws of Magic, Religion, Society, and Wilds</li>
-                <li><strong>Conflicts & Barriers</strong> - Create problems for heroes and reasons why ordinary people can't solve them</li>
-                <li><strong>Tier Ladders</strong> - Scale conflicts across character levels</li>
-                <li><strong>Inverse Twists</strong> - Add complexity with exceptions to your established rules</li>
-            </ul>
+            <h2>Welcome to the 4-Pillar World Builder</h2>
+            <p>Create a rich, cohesive world for your tabletop RPG adventures using this guided framework.</p>
             
             <div class="wb-btn-row">
-                <div></div> <!-- Empty div for spacing -->
-                <button class="wb-btn wb-btn-primary" id="begin-btn">Let's Begin</button>
+                <button class="wb-btn wb-btn-primary" id="begin-btn">Begin</button>
             </div>
         </div>
-
-        <!-- Alignment Grid Section -->
+        
+        <!-- Alignment Selection Section -->
         <div class="wb-section ${activeSection === 'alignment' ? 'active' : ''}" id="alignment-section">
-            <h2>Choose Your World's Alignment</h2>
-            <p>Select a position on the grid that best describes your world's tone and level of character agency. This will determine the recommended number of conflicts and barriers for each pillar.</p>
+            <h2>World Alignment</h2>
+            <p>Start by selecting your world's alignment. This sets the baseline tone and conflict level for your setting.</p>
             
-            <div class="alignment-grid-container">
+            <div class="alignment-container">
                 <div class="alignment-grid">
                     ${renderAlignmentGrid()}
                 </div>
-                
-                <div class="alignment-description">
+                <div class="alignment-details-panel">
                     ${renderAlignmentDescription()}
                 </div>
             </div>
@@ -347,58 +784,49 @@ function renderWorldBuilder() {
                 <button class="wb-btn wb-btn-primary" id="alignment-next-btn">Next: Foundation</button>
             </div>
         </div>
-
+        
         <!-- Foundation Section -->
         <div class="wb-section ${activeSection === 'foundation' ? 'active' : ''}" id="foundation-section">
             <h2>World Foundation</h2>
-            <p>Let's establish the core elements of your world. These fundamentals will guide all your future decisions.</p>
+            <p>Establish the core principles that make your world unique.</p>
             
             <div class="wb-form-group">
-                <label for="alignment-square">Alignment Square:</label>
-                <span class="hint">Your world's tone based on the grid selection.</span>
-                <input type="text" id="alignment-square" value="${worldData.alignmentSquare}" placeholder="e.g., Bright-Noble (Heroic Fantasy)" readonly>
-                ${getAlignmentRequirementHint()}
-            </div>
-            
-            <div class="wb-form-group">
-                <label for="thesis">Thesis:</label>
-                <span class="hint">Write a one-sentence summary of your world's core concept.</span>
-                <input type="text" id="thesis" value="${worldData.thesis}" placeholder="e.g., A world where magic is fading and ancient gods are returning">
+                <label for="thesis">World Thesis:</label>
+                <span class="hint">The one-sentence pitch that captures your world's essence.</span>
+                <input type="text" id="thesis" value="${worldData.thesis}" placeholder="e.g., A world where magic comes at the cost of memories">
             </div>
             
             <div class="wb-form-group">
                 <label>Rule-Zero Laws:</label>
-                <span class="hint">Define 1-3 universal truths that trump everything else in your world.</span>
+                <span class="hint">Three universal principles that govern how your world works.</span>
                 ${worldData.ruleZeroLaws.map((law, index) => `
-                    <input type="text" id="rule-zero-${index}" class="rule-zero-law" value="${law}" placeholder="Rule-Zero Law ${index + 1}" style="margin-bottom: 10px;">
+                    <input type="text" id="rule-zero-${index}" class="rule-zero-law" value="${law}" placeholder="Law ${index + 1}" style="margin-bottom: 10px;">
                 `).join('')}
             </div>
             
             <div class="wb-form-group">
-                <label>Touchstones:</label>
-                <span class="hint">Name two inspirational works and what you're borrowing from them.</span>
+                <label>Touchstone Properties:</label>
+                <span class="hint">List media you're inspired by and what you're stealing from them.</span>
                 ${worldData.touchstones.map((touchstone, index) => `
-                    <div class="wb-grid-2" style="margin-bottom: 10px;">
-                        <input type="text" id="touchstone-name-${index}" class="touchstone-name" value="${touchstone.name}" placeholder="Work name">
-                        <input type="text" id="touchstone-stealing-${index}" class="touchstone-stealing" value="${touchstone.stealing}" placeholder="What you're borrowing">
+                    <div style="display: flex; margin-bottom: 10px;">
+                        <input type="text" class="touchstone-name" value="${touchstone.name}" placeholder="Property name" style="flex: 1; margin-right: 10px;">
+                        <input type="text" class="touchstone-stealing" value="${touchstone.stealing}" placeholder="What you're stealing" style="flex: 2;">
                     </div>
                 `).join('')}
             </div>
             
             <div class="wb-btn-row">
                 <button class="wb-btn wb-btn-secondary" id="foundation-back-btn">Back</button>
-                <button class="wb-btn wb-btn-primary" id="foundation-next-btn">Next: Define Pillars</button>
+                <button class="wb-btn wb-btn-primary" id="foundation-next-btn">Next: Four Pillars</button>
             </div>
         </div>
-
-        <!-- Pillars Section -->
+        
+        <!-- Four Pillars Section -->
         <div class="wb-section ${activeSection === 'pillars' ? 'active' : ''}" id="pillars-section">
             <h2>The Four Pillars</h2>
-            <p>Define the foundational rules for each pillar of your world. These pillars will create a cohesive framework for your setting.</p>
+            <p>Define the four core systems that shape your world.</p>
             
-            <div class="alignment-requirement-reminder">
-                ${getAlignmentRequirementHint()}
-            </div>
+            ${getAlignmentRequirementHint()}
             
             <div class="wb-tabs">
                 <div class="wb-tab ${activeTab === 'magic' ? 'active' : ''}" data-tab="magic">Magic</div>
@@ -407,52 +835,26 @@ function renderWorldBuilder() {
                 <div class="wb-tab ${activeTab === 'wilds' ? 'active' : ''}" data-tab="wilds">Wilds</div>
             </div>
             
-            <!-- Magic Tab -->
-            <div class="wb-tab-content ${activeTab === 'magic' ? 'active' : ''}" id="magic-tab">
-                <div class="brainspark-box">
-                    <h4>Brain-Spark Questions:</h4>
-                    <ul>
-                        ${brainsparkQuestions.magic.map(q => `<li>${q}</li>`).join('')}
-                    </ul>
+            <div class="wb-tab-content-container">
+                <div id="magic-tab" class="wb-tab-content ${activeTab === 'magic' ? 'active' : ''}">
+                    ${renderPillarScale('magic')}
+                    ${renderPillarForm('magic')}
                 </div>
                 
-                ${renderPillarForm('magic')}
-            </div>
-            
-            <!-- Religion Tab -->
-            <div class="wb-tab-content ${activeTab === 'religion' ? 'active' : ''}" id="religion-tab">
-                <div class="brainspark-box">
-                    <h4>Brain-Spark Questions:</h4>
-                    <ul>
-                        ${brainsparkQuestions.religion.map(q => `<li>${q}</li>`).join('')}
-                    </ul>
+                <div id="religion-tab" class="wb-tab-content ${activeTab === 'religion' ? 'active' : ''}">
+                    ${renderPillarScale('religion')}
+                    ${renderPillarForm('religion')}
                 </div>
                 
-                ${renderPillarForm('religion')}
-            </div>
-            
-            <!-- Society Tab -->
-            <div class="wb-tab-content ${activeTab === 'society' ? 'active' : ''}" id="society-tab">
-                <div class="brainspark-box">
-                    <h4>Brain-Spark Questions:</h4>
-                    <ul>
-                        ${brainsparkQuestions.society.map(q => `<li>${q}</li>`).join('')}
-                    </ul>
+                <div id="society-tab" class="wb-tab-content ${activeTab === 'society' ? 'active' : ''}">
+                    ${renderPillarScale('society')}
+                    ${renderPillarForm('society')}
                 </div>
                 
-                ${renderPillarForm('society')}
-            </div>
-            
-            <!-- Wilds Tab -->
-            <div class="wb-tab-content ${activeTab === 'wilds' ? 'active' : ''}" id="wilds-tab">
-                <div class="brainspark-box">
-                    <h4>Brain-Spark Questions:</h4>
-                    <ul>
-                        ${brainsparkQuestions.wilds.map(q => `<li>${q}</li>`).join('')}
-                    </ul>
+                <div id="wilds-tab" class="wb-tab-content ${activeTab === 'wilds' ? 'active' : ''}">
+                    ${renderPillarScale('wilds')}
+                    ${renderPillarForm('wilds')}
                 </div>
-                
-                ${renderPillarForm('wilds')}
             </div>
             
             <div class="wb-btn-row">
@@ -487,6 +889,8 @@ function renderWorldBuilder() {
         <div class="wb-section ${activeSection === 'export' ? 'active' : ''}" id="export-section">
             <h2>Export Your World</h2>
             <p>Your world is ready! Export it to save a copy or to share with others.</p>
+            
+            ${renderWorldSummary()}
             
             <div class="summary-box">
                 <h3>Completion Status</h3>
@@ -601,6 +1005,49 @@ function renderPillarForm(pillar) {
     `;
 }
 
+// Update the renderPillarScale function
+
+function renderPillarScale(pillar) {
+    const scale = pillarScales[pillar];
+    const currentValue = worldData.pillars[pillar].scale || 3;
+    
+    let html = `
+        <div class="wb-form-group pillar-scale-container" data-pillar="${pillar}" data-current-value="${currentValue}">
+            <label for="${pillar}-scale">${scale.name}:</label>
+            <span class="hint">${scale.description}</span>
+            <div class="scale-selector">
+    `;
+    
+    // Add radio buttons for each scale level
+    for (let i = 1; i <= 5; i++) {
+        const level = scale.levels.find(l => l.value === i);
+        const isActive = i <= currentValue; // Check if this option should be marked as active
+        html += `
+            <div class="scale-option ${isActive ? 'active' : ''}" title="${level.name}: ${level.description}&#10;Example: ${level.example}" data-value="${i}">
+                <input type="radio" name="${pillar}-scale" id="${pillar}-scale-${i}" 
+                    value="${i}" ${currentValue === i ? 'checked' : ''}>
+                <label for="${pillar}-scale-${i}">${i}</label>
+            </div>
+        `;
+    }
+    
+    html += `
+            </div>
+            <div class="scale-labels">
+                <span>Low</span>
+                <span>High</span>
+            </div>
+            <div class="scale-current-value">
+                <strong>${scale.levels.find(l => l.value === currentValue)?.name || ''}</strong>
+                <p>${scale.levels.find(l => l.value === currentValue)?.description || ''}</p>
+                <p><em>Example: ${scale.levels.find(l => l.value === currentValue)?.example || ''}</em></p>
+            </div>
+        </div>
+    `;
+    
+    return html;
+}
+
 function setupEventListeners() {
     // Section navigation
     document.querySelectorAll('.wb-nav-btn').forEach(btn => {
@@ -624,6 +1071,9 @@ function setupEventListeners() {
     
     // Alignment grid cell selection
     setupAlignmentGridListeners();
+
+    // Scale radio button listeners
+    setupScaleListeners();
 }
 
 function setupAlignmentGridListeners() {
@@ -1056,6 +1506,10 @@ function exportToWord() {
                     spacing: { before: 400, after: 200 }
                 }),
                 new Paragraph({
+                    text: `${pillarScales[pillarKey].name}: ${pillar.scale}/5 - ${pillarScales[pillarKey].levels.find(l => l.value === pillar.scale)?.name || "Not specified"}`,
+                    spacing: { before: 100, after: 100 }
+                }),
+                new Paragraph({
                     text: `Prime Law: ${pillar.primeLaw || "Not specified"}`,
                     spacing: { before: 200, after: 100 }
                 }),
@@ -1195,6 +1649,7 @@ function exportToText() {
         
         content += `${pillarTitle.toUpperCase()}\n`;
         content += "".padEnd(pillarTitle.length, "=") + "\n\n";
+        content += `${pillarScales[pillarKey].name}: ${pillar.scale}/5 - ${pillarScales[pillarKey].levels.find(l => l.value === pillar.scale)?.name || "Not specified"}\n`;
         
         content += `Prime Law: ${pillar.primeLaw || "Not specified"}\n`;
         content += `Loophole/Myth: ${pillar.loopholeMYth || "Not specified"}\n`;
@@ -1329,4 +1784,217 @@ function setupFormListeners() {
             });
         }
     }
+}
+
+// Update the setupScaleListeners function
+
+function setupScaleListeners() {
+    // First, set the initial line width for all pillar scales
+    document.querySelectorAll('.pillar-scale-container').forEach(container => {
+        updateScaleLine(container);
+    });
+
+    // Add event listeners to scale radio buttons
+    ['magic', 'religion', 'society', 'wilds'].forEach(pillar => {
+        document.querySelectorAll(`input[name="${pillar}-scale"]`).forEach(radio => {
+            radio.addEventListener('change', () => {
+                // Update the display immediately when a scale option is clicked
+                const scaleValue = parseInt(radio.value);
+                const scale = pillarScales[pillar];
+                const level = scale.levels.find(l => l.value === scaleValue);
+                const container = radio.closest('.pillar-scale-container');
+                
+                // Update data attribute for current value
+                container.setAttribute('data-current-value', scaleValue);
+                
+                // Update active states for scale options
+                const options = container.querySelectorAll('.scale-option');
+                options.forEach(option => {
+                    const optionValue = parseInt(option.getAttribute('data-value'));
+                    if (optionValue <= scaleValue) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+                
+                // Update the line width
+                updateScaleLine(container);
+                
+                // Update the current value display
+                const currentValueDiv = container.querySelector('.scale-current-value');
+                if (currentValueDiv && level) {
+                    currentValueDiv.innerHTML = `
+                        <strong>${level.name}</strong>
+                        <p>${level.description}</p>
+                        <p><em>Example: ${level.example}</em></p>
+                    `;
+                }
+                
+                // Save to world data
+                worldData.pillars[pillar].scale = scaleValue;
+                saveToLocalStorage();
+            });
+        });
+    });
+}
+
+// Update the updateScaleLine function
+
+function updateScaleLine(container) {
+    const currentValue = parseInt(container.getAttribute('data-current-value')) || 3;
+    const selector = container.querySelector('.scale-selector');
+    
+    if (selector) {
+        // Use specific percentages for each value point
+        let percentage;
+        switch (currentValue) {
+            case 1:
+                percentage = 0;
+                break;
+            case 2:
+                percentage = 25;
+                break;
+            case 3:
+                percentage = 48; // mid-point of 46-49%
+                break;
+            case 4:
+                percentage = 72; // mid-point of 70-73%
+                break;
+            case 5:
+                percentage = 95;
+                break;
+            default:
+                percentage = 48; // Default to middle value
+        }
+        
+        // Apply the width to the pseudo-element using a CSS variable
+        selector.style.setProperty('--scale-line-width', percentage + '%');
+        
+        // We need to adjust the CSS to use this variable
+        if (!document.head.querySelector('style.scale-line-styles')) {
+            const lineStyle = document.createElement('style');
+            lineStyle.className = 'scale-line-styles';
+            lineStyle.textContent = `
+                .scale-selector:after {
+                    width: var(--scale-line-width, 0%);
+                }
+            `;
+            document.head.appendChild(lineStyle);
+        }
+    }
+}
+
+// Add this function before renderWorldBuilder()
+
+function renderWorldSummary() {
+  // Get alignment info
+  const alignmentInfo = worldData.alignmentPosition ? 
+    alignmentGrid[worldData.alignmentPosition.row][worldData.alignmentPosition.col] : null;
+  
+  // If no alignment is selected, show a placeholder
+  if (!alignmentInfo) {
+    return `
+      <div class="world-summary-placeholder">
+        <p>Select an alignment and complete at least some of your pillars to see a world summary.</p>
+      </div>
+    `;
+  }
+  
+  // Generate pillar scale bars
+  const pillarBars = [];
+  ['magic', 'religion', 'society', 'wilds'].forEach(pillar => {
+    const scaleValue = worldData.pillars[pillar].scale || 3;
+    const scaleName = pillarScales[pillar].levels.find(l => l.value === scaleValue)?.name || '';
+    
+    // Map scale values to specific percentages
+    let percentage;
+    switch (scaleValue) {
+      case 1: percentage = 0; break;
+      case 2: percentage = 27; break;
+      case 3: percentage = 51; break;
+      case 4: percentage = 75; break;
+      case 5: percentage = 100; break;
+      default: percentage = 51; // Default to middle value
+    }
+    
+    pillarBars.push(`
+      <div class="summary-scale-bar">
+        <div class="scale-bar-label">${pillar.charAt(0).toUpperCase() + pillar.slice(1)}</div>
+        <div class="scale-bar-container">
+          <div class="scale-bar-fill" style="width: ${percentage}%"></div>
+          <div class="scale-bar-markers">
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+          </div>
+        </div>
+        <div class="scale-bar-value">${scaleName}</div>
+      </div>
+    `);
+  });
+  
+  // Generate the summary
+  return `
+    <div class="world-summary">
+      <h3>World Overview</h3>
+      
+      <div class="summary-alignment">
+        <h4>${worldData.alignmentSquare || "No Alignment Selected"}</h4>
+        <p>${alignmentInfo ? alignmentInfo.description : ""}</p>
+      </div>
+      
+      <div class="summary-scales">
+        <h4>Pillar Scales</h4>
+        <div class="summary-scale-bars">
+          ${pillarBars.join('')}
+        </div>
+      </div>
+      
+      <div class="summary-thesis">
+        <h4>Thesis</h4>
+        <p class="summary-thesis-text">${worldData.thesis || "No thesis defined"}</p>
+      </div>
+      
+      <div class="summary-pillars">
+        <h4>Pillar Summary</h4>
+        
+        <div class="pillar-summary-grid">
+          ${['magic', 'religion', 'society', 'wilds'].map(pillar => {
+            const pillarData = worldData.pillars[pillar];
+            const scaleValue = pillarData.scale || 3;
+            const scaleName = pillarScales[pillar].levels.find(l => l.value === scaleValue)?.name || '';
+            
+            return `
+              <div class="pillar-summary">
+                <h5>${pillar.charAt(0).toUpperCase() + pillar.slice(1)}: ${scaleName}</h5>
+                <p><strong>Prime Law:</strong> ${pillarData.primeLaw || "Not defined"}</p>
+                <div class="pillar-conflicts-barriers">
+                  <div>
+                    <strong>Conflicts:</strong>
+                    <ul>
+                      ${pillarData.conflicts.map(conflict => 
+                        conflict ? `<li>${conflict}</li>` : ''
+                      ).join('')}
+                    </ul>
+                  </div>
+                  <div>
+                    <strong>Barriers:</strong>
+                    <ul>
+                      ${pillarData.barriers.map(barrier => 
+                        barrier ? `<li>${barrier}</li>` : ''
+                      ).join('')}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+      
+      <div class="summary-twists">
+        <h4>Inverse Twists (${worldData.inverseTwists.roll || "0"})</h4>
+        <p>${worldData.inverseTwists.twists || "No inverse twists defined"}</p>
+      </div>
+    </div>
+  `;
 }
