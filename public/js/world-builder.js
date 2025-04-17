@@ -346,7 +346,23 @@ function initWorldBuilder() {
 }
 
 function renderAlignmentGrid() {
-    let html = '<table class="alignment-table"><thead><tr>';
+    let html = `
+        <div class="alignment-grid-container">
+            <!-- Horizontal axis label (agency/impact) -->
+            <div class="axis-label horizontal-axis">
+                <span class="axis-start">Less Agency & Impact</span>
+                <span class="axis-name">AGENCY & IMPACT</span>
+                <span class="axis-end">More Agency & Impact</span>
+            </div>
+            
+            <!-- Vertical axis label (opportunity/optimism) -->
+            <div class="axis-label vertical-axis">
+                <span class="axis-end">More Opportunity & Optimism</span>
+                <span class="axis-name">OPPORTUNITY & OPTIMISM</span>
+                <span class="axis-start">Less Opportunity & Optimism</span>
+            </div>
+            
+            <table class="alignment-table"><thead><tr>`;
     
     // Add column headers
     html += '<th></th><th>Grim</th><th>Neutral</th><th>Noble</th></tr></thead><tbody>';
@@ -380,7 +396,7 @@ function renderAlignmentGrid() {
         html += '</tr>';
     }
     
-    html += '</tbody></table>';
+    html += '</tbody></table></div>';
     return html;
 }
 
@@ -735,6 +751,49 @@ function renderWorldBuilder() {
           .pillar-conflicts-barriers {
             grid-template-columns: 1fr;
           }
+        }
+
+        /* Alignment grid axis labels */
+        .alignment-grid-container {
+            position: relative;
+            padding: 40px 80px;
+        }
+
+        .axis-label {
+            position: absolute;
+            display: flex;
+            justify-content: space-between;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        .axis-name {
+            font-weight: 600;
+            color: #444;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .horizontal-axis {
+            bottom: 0;
+            left: 80px;
+            right: 10px;
+            text-align: center;
+        }
+
+        .vertical-axis {
+            top: 40px;
+            bottom: 40px;
+            left: 10px;
+            width: 30px;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .axis-start, .axis-end {
+            font-style: italic;
+            font-size: 0.8rem;
         }
     `;
 

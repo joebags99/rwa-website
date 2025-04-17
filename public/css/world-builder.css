@@ -62,7 +62,7 @@ WORLD BUILDER STYLES
 /* Section Styles */
 .wb-section {
     background-color: var(--divine-light-white);
-    padding: 25px;
+    padding: 30px;
     border-radius: var(--border-radius);
     margin-bottom: 30px;
     box-shadow: var(--shadow-md);
@@ -474,7 +474,7 @@ ALIGNMENT GRID STYLES
 
 /* Alignment requirement hint styling */
 .alignment-requirement-hint {
-    background-color: rgba(251, 251, 215, 0.5);
+    background-color: rgba(220, 212, 226, 0.5);
     padding: 10px 15px;
     border-radius: var(--border-radius);
     margin-top: 10px;
