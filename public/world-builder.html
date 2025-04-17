@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-85GK01X7F7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-85GK01X7F7');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-Pillar World Builder - Roll With Advantage</title>
+    <meta name="description" content="Create your D&D campaign world using the 4-Pillar framework. Define magic, religion, society, and wilderness with this interactive world-building tool.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/discord-banner.css">
+    <link rel="stylesheet" href="css/world-builder.css">
+    
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="loading">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="dice-loader">
+            <svg class="dice" viewBox="0 0 100 100">
+                <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
+                <path class="dice-number" d="M50 55 A5 5 0 1 1 50 45 A5 5 0 1 1 50 55z"/>
+            </svg>
+        </div>
+        <p class="loading-text">Rolling initiative...</p>
+    </div>
+    
+    <!-- Magical Particles Background -->
+    <div class="particles-container"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
+                    <div class="logo-glow"></div>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="articles.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
+                    <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="tools.html" class="nav-item active" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero parallax-section tools-hero">
+            <div class="hero-background"></div>
+            <div class="magical-overlay"></div>
+            <div class="floating-dice-container">
+                <!-- Dice will be added by JavaScript -->
+            </div>
+            <div class="container">
+                <div class="hero-content reveal-content">
+                    <h1 class="magical-text">4-Pillar World Builder</h1>
+                    <p class="animated-text">Create your D&D campaign world using the 4-Pillar framework. Define magic, religion, society, and wilderness with consistent rules.</p>
+                    <div class="magic-line"></div>
+                </div>
+            </div>
+            <div class="section-divider blue-divider"></div>
+        </section>
+
+        <!-- World Builder Tool -->
+        <section class="world-builder-section section-appear">
+            <div class="container">
+                <div id="world-builder-container" class="world-builder-container bg-white p-6 rounded-lg shadow-lg">
+                    <!-- World Builder tool will be inserted here by JavaScript -->
+                    <div class="loading-spinner">
+                        <div class="spinner-d20">
+                            <div class="spinner-inner"></div>
+                        </div>
+                        <p>Loading the World Builder tool...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="section-divider light-divider"></div>
+        </section>
+
+        <!-- Discord Community Section -->
+        <section class="newsletter section-appear">
+            <div class="glowing-particles"></div>
+            <div class="container">
+                <div class="section-header light-header">
+                    <div class="section-icon light-icon"><i class="fab fa-discord"></i></div>
+                    <h2 class="magical-heading light-heading">Join Our Community</h2>
+                    <div class="magical-underline light-underline"></div>
+                    <p>Connect with fellow adventurers, discuss worldbuilding, share campaign ideas, and get D&D content in our Discord server.</p>
+                </div>
+                <div class="discord-banner">
+                    <div class="discord-features">
+                        <div class="discord-feature">
+                            <i class="fas fa-users"></i>
+                            <h3>Meet Players</h3>
+                            <p>Find your next party or campaign</p>
+                        </div>
+                        <div class="discord-feature">
+                            <i class="fas fa-dice-d20"></i>
+                            <h3>Game Resources</h3>
+                            <p>Access maps, character sheets & more</p>
+                        </div>
+                        <div class="discord-feature">
+                            <i class="fas fa-comment-alt"></i>
+                            <h3>Live Discussions</h3>
+                            <p>Chat during episode premieres</p>
+                        </div>
+                    </div>
+                    <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="btn btn-primary magical-btn discord-btn">
+                        <span class="btn-text"><i class="fab fa-discord"></i> Join Our Discord</span>
+                    </a>
+                </div>
+                <div class="scroll-to-top">
+                    <button id="scroll-top-btn" aria-label="Scroll to top">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <!-- Your existing footer -->
+        <div class="footer-content">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">
+                        <img src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <p>Roll With Advantage &copy; 2025</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="link-column">
+                            <h4>Content</h4>
+                            <ul>
+                                <li><a href="crimson-court.html">The Crimson Court</a></li>
+                                <li><a href="articles.html">DM Advice</a></li>
+                                <li><a href="meet-the-cast.html">Meet the Cast</a></li>
+                                <li><a href="ai-disclaimer.html">AI Disclaimer</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li><a href="dice-roller.html">Dice Roller</a></li>
+                                <li><a href="character-quiz.html">Character Quiz</a></li>
+                                <li><a href="house-quiz.html">House Quiz</a></li>
+                                <li><a href="interactive-map.html">Interactive Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
+                                <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
+                                <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
+                        <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
+                        <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
+                        <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
+                <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="js/world-builder.js"></script>
+</body>
+</html>
