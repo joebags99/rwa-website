@@ -1947,8 +1947,12 @@ function updateScaleLine(container) {
 // Add this function before renderWorldBuilder()
 
 function renderWorldSummary() {
-  // Get alignment info
-  const alignmentInfo = worldData.alignmentPosition ? 
+  // Get alignment info - add more thorough validation
+  const alignmentInfo = worldData.alignmentPosition && 
+                       worldData.alignmentPosition.row !== null && 
+                       worldData.alignmentPosition.col !== null && 
+                       alignmentGrid[worldData.alignmentPosition.row] && 
+                       alignmentGrid[worldData.alignmentPosition.row][worldData.alignmentPosition.col] ? 
     alignmentGrid[worldData.alignmentPosition.row][worldData.alignmentPosition.col] : null;
   
   // If no alignment is selected, show a placeholder
