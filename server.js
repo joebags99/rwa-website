@@ -345,6 +345,35 @@ app.get('/api/list-artist-images', (req, res) => {
   }
 });
 
+// Define routes for all your HTML pages
+app.get('/crimson-court', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'crimson-court.html'));
+});
+
+app.get('/articles', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'articles.html'));
+});
+
+app.get('/meet-the-cast', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'meet-the-cast.html'));
+});
+
+app.get('/tools', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'tools.html'));
+});
+
+app.get('/dice-roller', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'dice-roller.html'));
+});
+
+app.get('/interactive-map', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'interactive-map.html'));
+});
+
+app.get('/ai-disclaimer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'ai-disclaimer.html'));
+});
+
 // Handle any other routes by serving index.html
 app.get('*', (req, res) => {
   // Skip for admin routes which are handled by the admin router
