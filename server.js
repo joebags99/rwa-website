@@ -345,36 +345,29 @@ app.get('/api/list-artist-images', (req, res) => {
   }
 });
 
-// Define routes for all your HTML pages
-app.get('/crimson-court', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'crimson-court.html'));
+// Dynamic page handler - automatically serves HTML files for clean URLs
+app.get('/:page', (req, res, next) => {
+  const page = req.params.page;
+  
+  // Skip API and admin routes
+  if (page.startsWith('api') || page.startsWith('admin') || page.startsWith('assets')) {
+    return next();
+  }
+  
+  const htmlFile = path.join(__dirname, 'public', `${page}.html`);
+  
+  // Check if the HTML file exists
+  fs.access(htmlFile, fs.constants.F_OK, (err) => {
+    if (err) {
+      // File doesn't exist, move to next route handler
+      return next();
+    }
+    // File exists, serve it
+    res.sendFile(htmlFile);
+  });
 });
 
-app.get('/articles', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'articles.html'));
-});
-
-app.get('/meet-the-cast', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'meet-the-cast.html'));
-});
-
-app.get('/tools', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'tools.html'));
-});
-
-app.get('/dice-roller', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'dice-roller.html'));
-});
-
-app.get('/interactive-map', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'interactive-map.html'));
-});
-
-app.get('/ai-disclaimer', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'ai-disclaimer.html'));
-});
-
-// Handle any other routes by serving index.html
+// Keep this catch-all route at the end
 app.get('*', (req, res) => {
   // Skip for admin routes which are handled by the admin router
   if (req.path.startsWith('/admin')) {
