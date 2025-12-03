@@ -367,13 +367,84 @@ app.get('/:page', (req, res, next) => {
   });
 });
 
-// Keep this catch-all route at the end
-app.get('*', (req, res) => {
+// 404 handler - must be after all other routes
+app.use((req, res, next) => {
   // Skip for admin routes which are handled by the admin router
   if (req.path.startsWith('/admin')) {
-    return;
+    return next();
   }
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+
+  // Check if this is an API request
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({
+      error: 'Not Found',
+      message: `API endpoint ${req.path} not found`
+    });
+  }
+
+  // Serve the custom 404 page for regular page requests
+  const notFoundPath = path.join(__dirname, 'public', '404.html');
+
+  fs.access(notFoundPath, fs.constants.F_OK, (err) => {
+    if (err) {
+      // 404.html doesn't exist, send a simple response
+      return res.status(404).send('Page not found');
+    }
+    // Serve the custom 404 page
+    res.status(404).sendFile(notFoundPath);
+  });
+});
+
+// Global error handler - must be after all other middleware and routes
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+
+  // Check if this is an API request
+  if (req.path.startsWith('/api')) {
+    return res.status(err.status || 500).json({
+      error: 'Internal Server Error',
+      message: process.env.NODE_ENV === 'production'
+        ? 'An error occurred processing your request'
+        : err.message
+    });
+  }
+
+  // For regular page requests, send a generic error page
+  res.status(err.status || 500).send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Error - Roll With Advantage</title>
+      <style>
+        body {
+          font-family: 'Arial', sans-serif;
+          background: #1a0b2e;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          margin: 0;
+          padding: 20px;
+        }
+        .error-container {
+          text-align: center;
+          max-width: 500px;
+        }
+        h1 { color: #d4af37; font-size: 3rem; margin: 0 0 20px 0; }
+        p { font-size: 1.2rem; line-height: 1.6; }
+        a { color: #d4af37; text-decoration: underline; }
+      </style>
+    </head>
+    <body>
+      <div class="error-container">
+        <h1>Oops!</h1>
+        <p>Something went wrong on our end.</p>
+        <p><a href="/">Return to Homepage</a></p>
+      </div>
+    </body>
+    </html>
+  `);
 });
 
 // Start server
