@@ -41,27 +41,30 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body class="map-page">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Preloader -->
-    <div class="preloader">
+    <div class="preloader" aria-hidden="true">
         <div class="dice-loader">
             <svg class="dice" viewBox="0 0 100 100">
                 <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
                 <path class="dice-number" d="M50 55 A5 5 0 1 1 50 45 A5 5 0 1 1 50 55z"/>
             </svg>
-        </div>
+        </button>
         <p class="loading-text">Discovering Ederia...</p>
-    </div>
+    </button>
     
     <!-- Header -->
-    <header>
+    <header role="banner">
         <div class="container">
             <div class="logo">
                 <a href="/">
                     <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
-                    <div class="logo-glow"></div>
+                    <div class="logo-glow"></button>
                 </a>
-            </div>
-            <nav>
+            </button>
+            <nav role="navigation" aria-label="Main navigation">
                 <ul>
                     <li><a href="/" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
                     <li><a href="/crimson-court" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
@@ -69,28 +72,28 @@
                     <li><a href="/meet-the-cast" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
                     <li><a href="/tools" class="nav-item active" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
                 </ul>
-                <div class="mobile-menu-toggle">
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </nav>
-        </div>
+        </button>
     </header>
 
-    <main>
+    <main id="main-content" role="main">
         <!-- Hero Section -->
         <section class="hero parallax-section map-hero">
-            <div class="hero-background"></div>
-            <div class="magical-overlay"></div>
+            <div class="hero-background"></button>
+            <div class="magical-overlay"></button>
             <div class="container">
                 <div class="hero-content reveal-content">
                     <h1 class="magical-text">The World of Illica</h1>
                     <p class="animated-text">Explore the lands where the Crimson Court campaign takes place. Discover nations, cities, regions, and landmarks that shape the political landscape of this fantasy realm.</p>
-                    <div class="magic-line"></div>
-                </div>
-            </div>
-            <div class="section-divider blue-divider"></div>
+                    <div class="magic-line"></button>
+                </button>
+            </button>
+            <div class="section-divider blue-divider"></button>
         </section>
 
         <!-- Map Section -->
@@ -126,56 +129,56 @@
                                 <span class="checkmark"></span>
                                 <span class="label-text">Landmarks</span>
                             </label>
-                        </div>
-                    </div>
+                        </button>
+                    </button>
                     <div class="search-container">
                         <input type="text" id="location-search" placeholder="Search locations...">
                         <button id="search-button"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
+                    </button>
+                </button>
                 
                 <!-- Map Display -->
-                <div id="ederia-map"></div>
+                <div id="ederia-map"></button>
                 
                 <!-- Location Info Panel (Initially Hidden) -->
                 <div class="location-panel" id="location-panel">
                     <div class="panel-header">
                         <button class="close-panel" id="close-panel"><i class="fas fa-times"></i></button>
                         <h2 id="location-name">Location Name</h2>
-                        <div class="location-type" id="location-type">Location Type</div>
-                    </div>
+                        <div class="location-type" id="location-type">Location Type</button>
+                    </button>
                     <div class="panel-content">
                         <div class="location-image-container">
                             <img id="location-image" src="assets/images/tools/map-placeholder.jpg" alt="Location Image">
-                        </div>
+                        </button>
                         <div class="location-description" id="location-description">
                             <p>Location description will appear here.</p>
-                        </div>
+                        </button>
                         <div class="location-details">
                             <div class="detail-section" id="location-details-section">
                                 <!-- Details will be populated dynamically -->
-                            </div>
+                            </button>
                             <div class="related-locations" id="related-locations">
                                 <h3>Related Locations</h3>
                                 <ul id="related-locations-list">
                                     <!-- Related locations will be populated dynamically -->
                                 </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </button>
+                        </button>
+                    </button>
+                </button>
+            </button>
         </section>
     </main>
 
-    <footer>
+    <footer role="contentinfo">
         <div class="footer-content">
             <div class="container">
                 <div class="footer-grid">
                     <div class="footer-logo">
                         <img loading="lazy" src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
                         <p>Roll With Advantage &copy; 2025</p>
-                    </div>
+                    </button>
                     <div class="footer-links">
                         <div class="link-column">
                             <h4>Content</h4>
@@ -185,7 +188,7 @@
                                 <li><a href="/meet-the-cast">Meet the Cast</a></li>
                                 <li><a href="/ai-disclaimer">AI Disclaimer</a></li>
                             </ul>
-                        </div>
+                        </button>
                         <div class="link-column">
                             <h4>Tools</h4>
                             <ul>
@@ -193,7 +196,7 @@
                                 <li><a href="/house-quiz">House Quiz</a></li>
                                 <li><a href="/interactive-map">Interactive Map</a></li>
                             </ul>
-                        </div>
+                        </button>
                         <div class="link-column">
                             <h4>Connect</h4>
                             <ul>
@@ -201,23 +204,23 @@
                                 <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
                                 <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
                             </ul>
-                        </div>
-                    </div>
+                        </button>
+                    </button>
                     <div class="social-links">
                         <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
                         <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
                         <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
                         <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </button>
+                </button>
+            </button>
+        </button>
         <div class="footer-bottom">
             <div class="container">
                 <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
                 <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
-            </div>
-        </div>
+            </button>
+        </button>
     </footer>
 
     <!-- JavaScript -->

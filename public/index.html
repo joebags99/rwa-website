@@ -115,8 +115,11 @@
     </script>
 </head>
 <body class="loading">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Preloader -->
-    <div class="preloader">
+    <div class="preloader" aria-hidden="true">
         <div class="dice-loader">
             <svg class="dice" viewBox="0 0 100 100">
                 <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
@@ -127,9 +130,9 @@
     </div>
     
     <!-- Magical Particles Background -->
-    <div class="particles-container"></div>
+    <div class="particles-container" aria-hidden="true"></div>
     
-    <header>
+    <header role="banner">
         <div class="container">
             <div class="logo">
                 <a href="/">
@@ -137,7 +140,7 @@
                     <div class="logo-glow"></div>
                 </a>
             </div>
-            <nav>
+            <nav role="navigation" aria-label="Main navigation">
                 <ul>
                     <li><a href="/" class="active nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
                     <li><a href="/crimson-court" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
@@ -145,21 +148,21 @@
                     <li><a href="/meet-the-cast" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
                     <li><a href="/tools" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
                 </ul>
-                <div class="mobile-menu-toggle">
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </nav>
         </div>
     </header>
 
-    <main>
+    <main id="main-content" role="main">
         <!-- Hero Section -->
         <section class="hero parallax-section">
             <div class="hero-background"></div>
             <div class="magical-overlay"></div>
-            <div class="floating-dice-container">
+            <div class="floating-dice-container" aria-hidden="true">
                 <!-- Dice will be added by JavaScript -->
             </div>
             <div class="container">
@@ -398,7 +401,7 @@
 </section>
     </main>
 
-    <footer>
+    <footer role="contentinfo">
         <div class="footer-content">
             <div class="container">
                 <div class="footer-grid">

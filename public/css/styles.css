@@ -2443,3 +2443,54 @@ RESPONSIVE STYLES
         display: flex;
     }
 }
+/* 
+======================
+ACCESSIBILITY STYLES
+======================
+*/
+
+/* Skip to main content link - visible only when focused */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--primary-purple);
+    color: var(--text-light);
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-decoration: none;
+    font-weight: bold;
+    z-index: var(--z-modal);
+    border-radius: 0 0 var(--border-radius) 0;
+    transition: top var(--transition-speed) var(--transition-smooth);
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* Improved focus indicators for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--primary-purple);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Screen reader only text */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+

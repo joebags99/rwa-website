@@ -53,8 +53,11 @@
     </script>
 </head>
 <body class="loading crimson-court-page">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Preloader -->
-    <div class="preloader">
+    <div class="preloader" aria-hidden="true">
         <div class="crown-loader">
             <img class="crown" src="assets/images/cc-icon-nb.png" alt="Crimson Court Icon">
         </div>
@@ -77,14 +80,14 @@
     <!-- Court Portal (Appears after transition) -->
     <div class="court-portal">
         <!-- Royal Header (Crimson Court Style) -->
-        <header class="royal-header">
+        <header class="royal-header" role="banner">
             <div class="container">
                 <div class="court-logo">
                     <a href="/" class="return-home">
                         <img src="assets/images/logo.png" alt="RWA" class="cc-logo-image">
                     </a>
                 </div>
-                <nav class="court-nav">
+                <nav class="court-nav" role="navigation" aria-label="Main navigation">
                     <ul>
                         <li><a href="/" class="court-nav-item"><i class="fas fa-home"></i> <span>Return to Main Site</span></a></li>
                     </ul>
@@ -197,7 +200,7 @@
         </div>
 
         <!-- Court Footer -->
-        <footer class="royal-footer">
+        <footer class="royal-footer" role="contentinfo">
             <div class="container">
                 <div class="royal-decree">
                     <p>May the rightful heir claim the throne, for the kingdom's fate hangs in the balance</p>
