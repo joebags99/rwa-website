@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-85GK01X7F7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-85GK01X7F7');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a0b2e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RWA">
+    <meta name="format-detection" content="telephone=no">
+    <title>Page Not Found - Roll With Advantage</title>
+    <meta name="description" content="The page you're looking for has vanished into the Astral Plane.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Font Awesome from CDN -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--secondary-blue) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="50" opacity="0.03" fill="%23fff">404</text></svg>') repeat;
+            background-size: 200px;
+            opacity: 0.3;
+            animation: backgroundScroll 20s linear infinite;
+        }
+
+        @keyframes backgroundScroll {
+            from { background-position: 0 0; }
+            to { background-position: 200px 200px; }
+        }
+
+        .error-header {
+            padding: var(--spacing-lg) 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .error-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-container {
+            max-width: 700px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .error-dice {
+            font-size: 8rem;
+            margin-bottom: var(--spacing-lg);
+            animation: diceRoll 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
+        }
+
+        @keyframes diceRoll {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-15deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(1); }
+            75% { transform: rotate(15deg) scale(1.1); }
+        }
+
+        .error-code {
+            font-family: var(--font-heading);
+            font-size: 8rem;
+            font-weight: 900;
+            margin: 0;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--gold) 0%, #fff 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .error-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin: var(--spacing-md) 0;
+            color: var(--text-light);
+        }
+
+        .error-message {
+            font-size: 1.2rem;
+            margin: var(--spacing-md) 0;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .error-suggestion {
+            margin: var(--spacing-lg) 0;
+            padding: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .error-suggestion h3 {
+            font-family: var(--font-heading);
+            margin-top: 0;
+            color: var(--gold);
+        }
+
+        .error-links {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: var(--spacing-xl);
+        }
+
+        .error-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: linear-gradient(135deg, var(--gold) 0%, #d4a638 100%);
+            color: var(--primary-purple);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: all var(--transition-speed);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .error-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .error-link.secondary {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .error-link.secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .floating-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 3rem;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-icon:nth-child(3) { bottom: 15%; left: 20%; animation-delay: 4s; }
+        .floating-icon:nth-child(4) { bottom: 25%; right: 10%; animation-delay: 6s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 5rem;
+            }
+
+            .error-title {
+                font-size: 1.8rem;
+            }
+
+            .error-dice {
+                font-size: 5rem;
+            }
+
+            .error-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body class="error-page">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="error-header" role="banner">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" role="main" class="error-content">
+        <div class="floating-icons" aria-hidden="true">
+            <i class="floating-icon fas fa-dice-d20"></i>
+            <i class="floating-icon fas fa-dragon"></i>
+            <i class="floating-icon fas fa-hat-wizard"></i>
+            <i class="floating-icon fas fa-scroll"></i>
+        </div>
+
+        <div class="error-container">
+            <div class="error-dice" aria-hidden="true">
+                <i class="fas fa-dice-d20"></i>
+            </div>
+
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Critical Miss!</h2>
+
+            <p class="error-message">
+                You've rolled a natural 1 on your navigation check. The page you're seeking has vanished into the Astral Plane.
+            </p>
+
+            <div class="error-suggestion">
+                <h3><i class="fas fa-lightbulb"></i> What happened?</h3>
+                <p>The path you're following might be outdated, the page may have been moved to a different realm, or perhaps a mischievous mimic is playing tricks on you.</p>
+            </div>
+
+            <div class="error-links">
+                <a href="/" class="error-link">
+                    <i class="fas fa-home"></i>
+                    Return to Safety (Home)
+                </a>
+                <a href="/crimson-court" class="error-link secondary">
+                    <i class="fas fa-crown"></i>
+                    The Crimson Court
+                </a>
+                <a href="/tools" class="error-link secondary">
+                    <i class="fas fa-dice-d20"></i>
+                    D&D Tools
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

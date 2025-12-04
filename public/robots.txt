@@ -1,13 +1,38 @@
 # robots.txt for rollwithadvantage.co
+# Last updated: 2025-12-03
+
+# Allow all bots by default
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
-# Important pages to crawl
-Sitemap: https://rollwithadvantage.co/sitemap.xml
-
-# Admin area should not be indexed
+# Block admin and backend areas
 Disallow: /admin/
 Disallow: /data/
-
-# Don't index the API endpoints
 Disallow: /api/
+
+# Block temp/cache files if any
+Disallow: /*.json$
+Disallow: /node_modules/
+
+# Sitemap location
+Sitemap: https://rollwithadvantage.co/sitemap.xml
+
+# Special rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /assets/images/
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block problematic bots (optional - uncomment if needed)
+# User-agent: AhrefsBot
+# Disallow: /
+#
+# User-agent: SemrushBot
+# Disallow: /

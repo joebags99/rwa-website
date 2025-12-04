@@ -7,10 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remove loading class once everything is loaded
     window.addEventListener('load', function() {
         document.body.classList.remove('loading');
-        document.querySelector('.preloader').classList.add('fade-out');
-        setTimeout(() => {
-            document.querySelector('.preloader').style.display = 'none';
-        }, 3000);
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 3000);
+        }
         
         // Show hero content after a small delay
         setTimeout(() => {
@@ -72,42 +75,66 @@ function initializeDeviceDetection() {
 function initializeMobileMenu() {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('nav ul');
-    
+    const navLinks = navMenu ? navMenu.querySelectorAll('a') : [];
+
     if (mobileMenuToggle && navMenu) {
-        mobileMenuToggle.addEventListener('click', function() {
+        // Toggle menu function
+        function toggleMenu() {
+            const isActive = navMenu.classList.contains('active');
             navMenu.classList.toggle('active');
             mobileMenuToggle.classList.toggle('active');
-            
-            // Toggle menu icon
-            const spans = this.querySelectorAll('span');
-            if (navMenu.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
+
+            // Update aria-expanded for accessibility
+            mobileMenuToggle.setAttribute('aria-expanded', !isActive);
+
+            // Toggle menu icon with smooth animation
+            const spans = mobileMenuToggle.querySelectorAll('span');
+            if (!isActive) {
+                // Menu opening - transform to X
+                spans[0].style.transform = 'rotate(45deg) translate(7px, 7px)';
                 spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
+                spans[1].style.transform = 'scale(0)';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+                // Prevent body scroll when menu is open
+                document.body.style.overflow = 'hidden';
             } else {
+                // Menu closing - transform back to hamburger
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
+                spans[1].style.transform = 'scale(1)';
                 spans[2].style.transform = 'none';
+                // Re-enable body scroll
+                document.body.style.overflow = '';
             }
+        }
+
+        // Toggle menu on button click
+        mobileMenuToggle.addEventListener('click', toggleMenu);
+
+        // Close menu when clicking on a navigation link
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
         });
-        
+
         // Close menu when clicking outside
         document.addEventListener('click', function(event) {
             if (!navMenu.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
                 if (navMenu.classList.contains('active')) {
-                    mobileMenuToggle.click();
+                    toggleMenu();
                 }
             }
         });
-        
-        // Close menu when clicking on a link
-        const navLinks = navMenu.querySelectorAll('a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (navMenu.classList.contains('active')) {
-                    mobileMenuToggle.click();
-                }
-            });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && navMenu.classList.contains('active')) {
+                toggleMenu();
+                mobileMenuToggle.focus();
+            }
         });
     }
 }

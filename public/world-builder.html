@@ -11,7 +11,13 @@
       gtag('config', 'G-85GK01X7F7');
     </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a0b2e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RWA">
+    <meta name="format-detection" content="telephone=no">
     <title>4-Pillar World Builder - Roll With Advantage</title>
     <meta name="description" content="Create your D&D campaign world using the 4-Pillar framework. Define magic, religion, society, and wilderness with this interactive world-building tool.">
     
@@ -33,8 +39,21 @@
     <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
 </head>
 <body class="loading">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <noscript>
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #1a0b2e; color: #fff; display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; text-align: center;">
+            <div>
+                <h1 style="font-family: 'Cinzel', serif; margin-bottom: 20px;">JavaScript Required</h1>
+                <p style="font-size: 1.2rem; margin-bottom: 15px;">The 4-Pillar World Builder requires JavaScript to function.</p>
+                <p>Please enable JavaScript in your browser settings to use this tool.</p>
+                <p style="margin-top: 30px;"><a href="/" style="color: #d4af37; text-decoration: underline;">Return to Homepage</a></p>
+            </div>
+        </div>
+    </noscript>
+
     <!-- Preloader -->
-    <div class="preloader">
+    <div class="preloader" aria-hidden="true">
         <div class="dice-loader">
             <svg class="dice" viewBox="0 0 100 100">
                 <path class="dice-outline" d="M50 0L100 25v50L50 100L0 75V25L50 0z"/>
@@ -45,34 +64,34 @@
     </div>
     
     <!-- Magical Particles Background -->
-    <div class="particles-container"></div>
+    <div class="particles-container" aria-hidden="true"></div>
     
-    <header>
+    <header role="banner">
         <div class="container">
             <div class="logo">
-                <a href="index.html">
+                <a href="/">
                     <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
                     <div class="logo-glow"></div>
                 </a>
             </div>
-            <nav>
+            <nav role="navigation" aria-label="Main navigation">
                 <ul>
-                    <li><a href="index.html" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
-                    <li><a href="crimson-court.html" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
-                    <li><a href="articles.html" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
-                    <li><a href="meet-the-cast.html" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
-                    <li><a href="tools.html" class="nav-item active" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                    <li><a href="/" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="/crimson-court" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="/articles" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
+                    <li><a href="/meet-the-cast" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="/tools" class="nav-item active" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
                 </ul>
-                <div class="mobile-menu-toggle">
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </nav>
         </div>
     </header>
 
-    <main>
+    <main id="main-content" role="main">
         <!-- Hero Section -->
         <section class="hero parallax-section tools-hero">
             <div class="hero-background"></div>
@@ -147,32 +166,32 @@
         </section>
     </main>
 
-    <footer>
+    <footer role="contentinfo">
         <!-- Your existing footer -->
         <div class="footer-content">
             <div class="container">
                 <div class="footer-grid">
                     <div class="footer-logo">
-                        <img src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <img loading="lazy" src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
                         <p>Roll With Advantage &copy; 2025</p>
                     </div>
                     <div class="footer-links">
                         <div class="link-column">
                             <h4>Content</h4>
                             <ul>
-                                <li><a href="crimson-court.html">The Crimson Court</a></li>
-                                <li><a href="articles.html">DM Advice</a></li>
-                                <li><a href="meet-the-cast.html">Meet the Cast</a></li>
-                                <li><a href="ai-disclaimer.html">AI Disclaimer</a></li>
+                                <li><a href="/crimson-court">The Crimson Court</a></li>
+                                <li><a href="/articles">DM Advice</a></li>
+                                <li><a href="/meet-the-cast">Meet the Cast</a></li>
+                                <li><a href="/ai-disclaimer">AI Disclaimer</a></li>
                             </ul>
                         </div>
                         <div class="link-column">
                             <h4>Tools</h4>
                             <ul>
-                                <li><a href="dice-roller.html">Dice Roller</a></li>
-                                <li><a href="character-quiz.html">Character Quiz</a></li>
-                                <li><a href="house-quiz.html">House Quiz</a></li>
-                                <li><a href="interactive-map.html">Interactive Map</a></li>
+                                <li><a href="/dice-roller">Dice Roller</a></li>
+                                <li><a href="/character-quiz">Character Quiz</a></li>
+                                <li><a href="/house-quiz">House Quiz</a></li>
+                                <li><a href="/interactive-map">Interactive Map</a></li>
                             </ul>
                         </div>
                         <div class="link-column">

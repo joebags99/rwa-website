@@ -2185,3 +2185,199 @@ RESPONSIVE STYLES
 .mt-4 {
     margin-top: 20px;
 }
+/* ================================
+   Phase 1 Improvements - Quick Wins
+   ================================ */
+
+/* Enhanced Loading States */
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #7f0ebd;
+}
+
+.loading-indicator i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    animation: spin 1s linear infinite;
+}
+
+.loading-indicator p {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Pulse animation for loading states */
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Keyboard Shortcut Hints */
+.keyboard-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(26, 11, 46, 0.95);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 300px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+}
+
+.keyboard-hint.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.keyboard-hint h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #d4af37;
+}
+
+.keyboard-hint ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.keyboard-hint li {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 13px;
+}
+
+.keyboard-hint kbd {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    margin-right: 10px;
+    min-width: 60px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Search Input Enhancement - Visual feedback while typing */
+input[type="search"]:focus,
+input[type="text"].form-control:focus {
+    border-color: #7f0ebd;
+    box-shadow: 0 0 0 3px rgba(127, 14, 189, 0.1);
+    outline: none;
+}
+
+/* Debouncing indicator */
+.search-bar.debouncing::after {
+    content: "Searching...";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #7f0ebd;
+    font-style: italic;
+}
+
+/* Smooth transitions for filters */
+.filter-options select {
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter-options select:focus {
+    border-color: #7f0ebd;
+    box-shadow: 0 0 0 3px rgba(127, 14, 189, 0.1);
+}
+
+/* Toast notification improvements */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 12px 24px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.toast.success {
+    border-left: 4px solid #22c55e;
+}
+
+.toast.error {
+    border-left: 4px solid #ef4444;
+}
+
+.toast.info {
+    border-left: 4px solid #3b82f6;
+}
+
+.toast i {
+    font-size: 18px;
+}
+
+.toast.success i {
+    color: #22c55e;
+}
+
+.toast.error i {
+    color: #ef4444;
+}
+
+.toast.info i {
+    color: #3b82f6;
+}
+
+/* Responsive improvements for keyboard hints */
+@media (max-width: 768px) {
+    .keyboard-hint {
+        display: none; /* Hide on mobile */
+    }
+}
+
+/* Performance indicator (optional) */
+.performance-badge {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(127, 14, 189, 0.1);
+    color: #7f0ebd;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    z-index: 999;
+}
+
