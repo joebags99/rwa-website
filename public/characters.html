@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="/">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-85GK01X7F7"></script>
     <script>
@@ -12,10 +13,10 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Character Tracker - Roll With Advantage</title>
+    <title>Characters - The Crimson Court | Roll With Advantage</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,36 +24,43 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/characters.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/characters.css">
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
 </head>
 <body class="characters-page">
-    <!-- Background Particles Container -->
-    <div class="particle-background" id="particle-bg"></div>
+    <!-- Magical Particles Background -->
+    <div class="particles-container" aria-hidden="true"></div>
 
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="nav-container">
-            <a href="/" class="nav-logo">
-                <img src="/assets/images/logo-small.png" alt="Roll With Advantage">
-                <span>Roll With Advantage</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/npcs">NPCs</a></li>
-                <li><a href="/characters" class="active">Characters</a></li>
-                <li><a href="/timeline">Timeline</a></li>
-                <li><a href="/episodes">Episodes</a></li>
-            </ul>
-            <button class="nav-toggle" id="nav-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
+    <!-- Header with Main Navigation -->
+    <header role="banner">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="assets/images/logo.png" alt="Roll With Advantage Logo">
+                    <div class="logo-glow"></div>
+                </a>
+            </div>
+            <nav role="navigation" aria-label="Main navigation">
+                <ul>
+                    <li><a href="/" class="nav-item" data-text="Home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="/crimson-court" class="nav-item" data-text="The Crimson Court"><i class="fas fa-crown"></i> <span>The Crimson Court</span></a></li>
+                    <li><a href="/articles" class="nav-item" data-text="DM Advice"><i class="fas fa-book-open"></i> <span>DM Advice</span></a></li>
+                    <li><a href="/meet-the-cast" class="nav-item" data-text="Meet the Cast"><i class="fas fa-users"></i> <span>Meet the Cast</span></a></li>
+                    <li><a href="/tools" class="nav-item" data-text="D&D Tools"><i class="fas fa-dice-d20"></i> <span>D&D Tools</span></a></li>
+                    <li><a href="/characters" class="nav-item active" data-text="Characters"><i class="fas fa-hat-wizard"></i> <span>Characters</span></a></li>
+                </ul>
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <!-- Main Content -->
     <main class="characters-container">
@@ -102,18 +110,59 @@
     </main>
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer role="contentinfo">
         <div class="footer-content">
-            <p>&copy; 2025 Roll With Advantage. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">
+                        <img loading="lazy" src="assets/images/logo-small.png" alt="Roll With Advantage Logo">
+                        <p>Roll With Advantage &copy; 2025</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="link-column">
+                            <h4>Content</h4>
+                            <ul>
+                                <li><a href="/crimson-court">The Crimson Court</a></li>
+                                <li><a href="/articles">DM Advice</a></li>
+                                <li><a href="/meet-the-cast">Meet the Cast</a></li>
+                                <li><a href="/characters">Characters</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li><a href="/dice-roller">Dice Roller</a></li>
+                                <li><a href="/character-quiz">Character Quiz</a></li>
+                                <li><a href="/interactive-map">Interactive Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="link-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank">YouTube</a></li>
+                                <li><a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank">Twitch</a></li>
+                                <li><a href="https://discord.gg/Yjx3vJzN5Q" target="_blank">Discord</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@RollWithAdvantage5e" target="_blank" class="social-icon youtube"><i class="fab fa-youtube fa-lg"></i><span class="sr-only">YouTube</span></a>
+                        <a href="https://www.twitch.tv/rollwithadvantage5e" target="_blank" class="social-icon twitch"><i class="fab fa-twitch fa-lg"></i><span class="sr-only">Twitch</span></a>
+                        <a href="https://www.instagram.com/rollwithadv5e/" target="_blank" class="social-icon instagram"><i class="fab fa-instagram fa-lg"></i><span class="sr-only">Instagram</span></a>
+                        <a href="https://discord.gg/Yjx3vJzN5Q" target="_blank" class="social-icon discord"><i class="fab fa-discord fa-lg"></i><span class="sr-only">Discord</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>Website designed for tabletop RPG enthusiasts, by tabletop RPG enthusiasts</p>
+                <p class="easter-egg" title="Roll for perception check...">May your dice roll high and your stories never end.</p>
             </div>
         </div>
     </footer>
 
     <!-- JavaScript -->
-    <script src="/js/characters.js"></script>
+    <script src="js/characters.js"></script>
 </body>
 </html>

@@ -791,38 +791,116 @@
                     .replace(/\s+/g, ' ') // Collapse whitespace
                     .trim();
 
-                const bookmarkletUrl = `javascript:(${encodeURIComponent(minified)})()`;
+                const bookmarkletUrl = `javascript:${encodeURIComponent(minified)}`;
 
-                // Open bookmarklet modal
-                if (window.AdminModals && window.AdminModals.bookmarklet) {
-                    window.AdminModals.bookmarklet.open();
+                // Create custom modal HTML
+                const modalHTML = `
+                    <div class="modal-overlay" id="bookmarklet-modal-overlay">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2>
+                                        <i class="fas fa-dragon"></i>
+                                        D&D Beyond Character Importer
+                                    </h2>
+                                    <button class="modal-close" id="close-bookmarklet-modal">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="bookmarklet-instructions">
+                                        <p><strong>How to use:</strong></p>
+                                        <ol>
+                                            <li>Drag the purple button below to your bookmarks bar</li>
+                                            <li>Navigate to any D&D Beyond character sheet</li>
+                                            <li>Click the bookmark to import the character</li>
+                                        </ol>
 
-                    // Set the bookmarklet link href
-                    setTimeout(() => {
-                        const link = document.getElementById('bookmarklet-link');
-                        if (link) {
-                            link.href = bookmarkletUrl;
-                        }
+                                        <div style="text-align: center; margin: 30px 0; padding: 20px; background: var(--bg-tertiary, #1f1f2e); border-radius: 8px;">
+                                            <a href="${bookmarkletUrl}"
+                                               id="bookmarklet-link"
+                                               class="btn btn-lg btn-primary"
+                                               style="font-size: 18px; padding: 15px 30px; text-decoration: none; cursor: move;">
+                                                <i class="fas fa-dragon"></i> Import from D&D Beyond
+                                            </a>
+                                            <p style="margin-top: 15px; font-size: 14px; color: var(--text-secondary);">
+                                                ⬆️ Drag this button to your bookmarks bar
+                                            </p>
+                                        </div>
 
-                        const textarea = document.getElementById('bookmarklet-code');
-                        if (textarea) {
-                            textarea.value = bookmarkletUrl;
-                        }
+                                        <div style="margin-top: 20px; padding: 15px; background: rgba(13, 110, 253, 0.1); border-left: 4px solid #0d6efd; border-radius: 4px;">
+                                            <i class="fas fa-info-circle"></i>
+                                            <strong>Note:</strong> Make sure you're logged in to this admin panel before using the bookmarklet.
+                                        </div>
 
-                        const copyBtn = document.getElementById('copy-bookmarklet');
-                        if (copyBtn) {
-                            copyBtn.addEventListener('click', () => {
-                                textarea.select();
-                                document.execCommand('copy');
-                                AdminDashboard.showToast('Bookmarklet code copied!', 'success');
-                            });
-                        }
-                    }, 100);
+                                        <details style="margin-top: 20px;">
+                                            <summary style="cursor: pointer; font-weight: bold; padding: 10px; background: var(--bg-secondary); border-radius: 4px;">
+                                                <i class="fas fa-code"></i> Manual Installation
+                                            </summary>
+                                            <div style="margin-top: 10px; padding: 15px; background: var(--bg-tertiary, #1f1f2e); border-radius: 4px;">
+                                                <p>If drag-and-drop doesn't work, follow these steps:</p>
+                                                <ol>
+                                                    <li>Create a new bookmark in your browser</li>
+                                                    <li>Set the bookmark name to: <code>Import D&D Character</code></li>
+                                                    <li>Copy the code below and paste it as the URL</li>
+                                                </ol>
+                                                <textarea id="bookmarklet-code" readonly style="width: 100%; height: 150px; font-family: monospace; font-size: 12px; margin-top: 10px; padding: 10px; background: #1a1a1a; color: #0f0; border: 1px solid #444; border-radius: 4px;">${bookmarkletUrl}</textarea>
+                                                <button id="copy-bookmarklet" class="btn btn-secondary" style="margin-top: 10px;">
+                                                    <i class="fas fa-copy"></i> Copy Code
+                                                </button>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Remove existing modal if any
+                const existingModal = document.getElementById('bookmarklet-modal-overlay');
+                if (existingModal) {
+                    existingModal.remove();
                 }
+
+                // Add modal to DOM
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                // Add event listeners
+                document.getElementById('close-bookmarklet-modal').addEventListener('click', () => {
+                    this.closeBookmarkletModal();
+                });
+
+                // Copy button
+                const copyBtn = document.getElementById('copy-bookmarklet');
+                const textarea = document.getElementById('bookmarklet-code');
+                if (copyBtn && textarea) {
+                    copyBtn.addEventListener('click', () => {
+                        textarea.select();
+                        document.execCommand('copy');
+                        AdminDashboard.showToast('Bookmarklet code copied!', 'success');
+                    });
+                }
+
+                // Show modal
+                setTimeout(() => {
+                    document.getElementById('bookmarklet-modal-overlay').classList.add('active');
+                }, 10);
 
             } catch (error) {
                 console.error('Error loading bookmarklet code:', error);
                 AdminDashboard.showToast('Error loading bookmarklet', 'error');
+            }
+        },
+
+        /**
+         * Close bookmarklet modal
+         */
+        closeBookmarkletModal() {
+            const modal = document.getElementById('bookmarklet-modal-overlay');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.remove(), 300);
             }
         }
     };
