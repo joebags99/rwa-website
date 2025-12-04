@@ -213,14 +213,17 @@ module.exports = function(app) {
 
     console.log('Setting up CRUD routes...');
 
-    // NPCs
+    // NPCs - with public read access for the public NPCs page
     createCRUDRoutes({
         router,
         requireAuth,
         resourceName: 'NPCs',
         resourcePath: '/api/npcs',
         dataFile: path.join(DATA_DIR, 'npcs.json'),
-        arrayKey: 'npcs'
+        arrayKey: 'npcs',
+        config: {
+            publicRead: true // Allow unauthenticated reads for public NPCs page
+        }
     });
 
     // Timeline
