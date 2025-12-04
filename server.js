@@ -82,8 +82,8 @@ app.get('/api/articles/:id', (req, res) => {
     res.json(article);
 });
 
-// Import and use admin routes
-const adminRoutes = require('./routes/admin')(app);
+// Import and use admin routes (refactored with CRUD factory pattern)
+const adminRoutes = require('./routes/admin-refactored')(app);
 app.use('/admin', adminRoutes);
 
 // API Routes
