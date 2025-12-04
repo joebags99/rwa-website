@@ -44,10 +44,13 @@ window.AdminDashboard = {
     config: {
         // Session refresh interval in milliseconds (4 minutes)
         sessionRefreshInterval: 4 * 60 * 1000,
-        
+
         // Default toast notification display time in milliseconds
         toastDisplayTime: 3000,
-        
+
+        // Debounce delay for search inputs in milliseconds
+        searchDebounceDelay: 300,
+
         // API endpoints
         apiEndpoints: {
             base: '/admin/api',
@@ -63,6 +66,79 @@ window.AdminDashboard = {
             locations: '/admin/api/locations',
             acts: '/admin/api/acts',
             chapters: '/admin/api/chapters'
+        },
+
+        // Keyboard shortcuts
+        keyboardShortcuts: {
+            'ctrl+d': 'dashboard',  // Navigate to dashboard
+            'ctrl+n': 'npcs',        // Navigate to NPCs
+            'ctrl+t': 'timeline',    // Navigate to timeline
+            'ctrl+s': 'story',       // Navigate to story
+            'ctrl+a': 'articles',    // Navigate to articles
+            'escape': 'closeModal'   // Close active modal
+        }
+    },
+
+    /**
+     * Utility functions for common operations
+     */
+    Utils: {
+        /**
+         * Debounce function to limit how often a function can fire
+         * @param {Function} func - Function to debounce
+         * @param {number} delay - Delay in milliseconds
+         * @returns {Function} - Debounced function
+         */
+        debounce(func, delay) {
+            let timeoutId;
+            return function(...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
+        },
+
+        /**
+         * Throttle function to limit execution rate
+         * @param {Function} func - Function to throttle
+         * @param {number} limit - Time limit in milliseconds
+         * @returns {Function} - Throttled function
+         */
+        throttle(func, limit) {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        },
+
+        /**
+         * Show loading state on an element
+         * @param {Element} element - Element to show loading state on
+         * @param {string} message - Optional loading message
+         */
+        showLoading(element, message = 'Loading...') {
+            if (!element) return;
+
+            element.classList.add('loading');
+            const loadingHTML = `
+                <div class="loading-indicator">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>${message}</p>
+                </div>
+            `;
+            element.innerHTML = loadingHTML;
+        },
+
+        /**
+         * Hide loading state on an element
+         * @param {Element} element - Element to hide loading state on
+         */
+        hideLoading(element) {
+            if (!element) return;
+            element.classList.remove('loading');
         }
     },
 
@@ -1240,12 +1316,16 @@ AdminDashboard.NPCs = {
                 );
             }
             
-            // Search and filters
+            // Search and filters with debouncing
             if (npcSearch) {
+                const debouncedFilter = AdminDashboard.Utils.debounce(
+                    () => this.applyFilters(),
+                    AdminDashboard.config.searchDebounceDelay
+                );
                 AdminDashboard.UI.addEventListenerWithCleanup(
-                    npcSearch, 
-                    'input', 
-                    () => this.applyFilters()
+                    npcSearch,
+                    'input',
+                    debouncedFilter
                 );
             }
             
@@ -2108,12 +2188,16 @@ AdminDashboard.Timeline = {
                 );
             }
             
-            // Search and filters
+            // Search and filters with debouncing
             if (timelineSearch) {
+                const debouncedFilter = AdminDashboard.Utils.debounce(
+                    () => this.applyFilters(),
+                    AdminDashboard.config.searchDebounceDelay
+                );
                 AdminDashboard.UI.addEventListenerWithCleanup(
-                    timelineSearch, 
-                    'input', 
-                    () => this.applyFilters()
+                    timelineSearch,
+                    'input',
+                    debouncedFilter
                 );
             }
             
@@ -3291,11 +3375,16 @@ AdminDashboard.StoryEpisodes = {
             }
             
             // Story list search and filters
+            // Story search with debouncing
             if (storySearch) {
+                const debouncedFilter = AdminDashboard.Utils.debounce(
+                    () => this.applyFilters(),
+                    AdminDashboard.config.searchDebounceDelay
+                );
                 AdminDashboard.UI.addEventListenerWithCleanup(
                     storySearch,
                     'input',
-                    () => this.applyFilters()
+                    debouncedFilter
                 );
             }
             
@@ -5430,11 +5519,16 @@ AdminDashboard.Articles = {
             }
             
             // Search and filters
+            // Article search with debouncing
             if (articleSearch) {
+                const debouncedFilter = AdminDashboard.Utils.debounce(
+                    () => this.applyFilters(),
+                    AdminDashboard.config.searchDebounceDelay
+                );
                 AdminDashboard.UI.addEventListenerWithCleanup(
                     articleSearch,
                     'input',
-                    () => this.applyFilters()
+                    debouncedFilter
                 );
             }
             
@@ -7088,7 +7182,10 @@ AdminDashboard.init = function() {
         
         // Initialize UI module first
         this.UI.init();
-        
+
+        // Initialize keyboard shortcuts
+        this.initKeyboardShortcuts();
+
         // Set up session refresh interval
         this._sessionRefreshInterval = this.initSessionRefresh();
         
@@ -7154,12 +7251,12 @@ AdminDashboard.init = function() {
  */
 AdminDashboard.initSessionRefresh = function() {
     const refreshInterval = this.config.sessionRefreshInterval;
-    
+
     const intervalId = setInterval(async () => {
         try {
             const refreshSuccess = await this.API.refreshToken();
             if (!refreshSuccess) {
-                
+
                 clearInterval(intervalId);
                 this.API.redirectToLogin();
             }
@@ -7167,6 +7264,52 @@ AdminDashboard.initSessionRefresh = function() {
             console.error('Session refresh error:', error);
         }
     }, refreshInterval);
-    
+
     return intervalId;
+}
+
+/**
+ * Initialize keyboard shortcuts for quick navigation
+ */
+AdminDashboard.initKeyboardShortcuts = function() {
+    document.addEventListener('keydown', (e) => {
+        // Check if user is typing in an input field
+        const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
+
+        // Build the shortcut key combination
+        const key = e.key.toLowerCase();
+        const shortcut = (e.ctrlKey || e.metaKey ? 'ctrl+' : '') + key;
+
+        // Handle Escape key always (even when typing)
+        if (key === 'escape') {
+            const activeModal = document.querySelector('.modal.active');
+            if (activeModal) {
+                e.preventDefault();
+                this.UI.closeModal(activeModal);
+                return;
+            }
+        }
+
+        // Don't handle other shortcuts when user is typing
+        if (isTyping && key !== 'escape') return;
+
+        // Get the action for this shortcut
+        const action = this.config.keyboardShortcuts[shortcut];
+
+        if (action) {
+            e.preventDefault();
+
+            // Navigate to the section
+            const menuItem = document.querySelector(`.sidebar-menu li[data-section="${action}"]`);
+            if (menuItem) {
+                menuItem.click();
+
+                // Show a brief toast notification
+                this.UI.showToast('info', `Navigated to ${action.charAt(0).toUpperCase() + action.slice(1)}`, 1500);
+            }
+        }
+    });
+
+    console.log('Keyboard shortcuts initialized');
+    console.log('Available shortcuts:', this.config.keyboardShortcuts);
 }
