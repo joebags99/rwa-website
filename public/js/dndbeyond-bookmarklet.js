@@ -106,7 +106,9 @@
             source: 'dndbeyond'
         };
 
-        // Extract character name and race
+        // Extract character name (try new selector first, fall back to old)
+        characterData.name = getText('h1[class*="characterName"]') || getText('.ddbc-character-name');
+
         console.log('📝 Character Name:', characterData.name);
         console.log('🧝 Race:', characterData.race);
 
@@ -152,10 +154,10 @@
         });
         console.log('💪 Abilities extracted:', characterData.abilities);
 
-        // Extract HP
-        const hpCurrent = parseNumber(getText('.ct-health-summary__hp-current'));
-        const hpMax = parseNumber(getText('.ct-health-summary__hp-max'));
-        const hpTemp = parseNumber(getText('.ct-health-summary__hp-temp'));
+        // Extract HP (try new selectors first, fall back to old)
+        let hpCurrent = parseNumber(getText('button[aria-label*="Current hit points"]') || getText('.ct-health-summary__hp-current'));
+        let hpMax = parseNumber(getText('[data-testid="max-hp"]') || getText('.ct-health-summary__hp-max'));
+        let hpTemp = parseNumber(getText('.ct-health-summary__hp-temp'));
         characterData.hp = { current: hpCurrent, max: hpMax, temp: hpTemp };
         console.log('❤️ HP:', characterData.hp);
 
@@ -191,29 +193,53 @@
         });
         console.log('🎯 Skills:', characterData.skills.length, 'skills extracted');
 
-        // Extract Equipment
-        document.querySelectorAll('.ddbc-inventory-slot').forEach(itemElement => {
-            const itemName = getText('.ddbc-inventory-slot__name', itemElement);
-            const itemQuantity = getText('.ddbc-inventory-slot__quantity', itemElement);
+        // Extract Equipment (try new structure first, fall back to old)
+        const inventoryItems = document.querySelectorAll('.ct-inventory-item, .ddbc-inventory-slot');
+        inventoryItems.forEach(itemElement => {
+            // Try new selectors first
+            let itemName = getText('[class*="itemName"]', itemElement) ||
+                          getText('.ddbc-inventory-slot__name', itemElement);
+
+            // Try to find quantity from tooltip or direct element
+            let itemQuantity = itemElement.querySelector('[data-tippy]')?.getAttribute('data-original-title') ||
+                              getText('.ct-inventory-item__quantity', itemElement) ||
+                              getText('.ddbc-inventory-slot__quantity', itemElement);
 
             if (itemName) {
                 characterData.equipment.push({
                     name: itemName,
                     quantity: itemQuantity ? parseInt(itemQuantity, 10) : 1,
-                    equipped: itemElement.classList.contains('ddbc-inventory-slot--equipped')
+                    equipped: itemElement.classList.contains('ddbc-inventory-slot--equipped') ||
+                             itemElement.querySelector('[aria-checked="true"]') !== null
                 });
             }
         });
         console.log('🎒 Equipment:', characterData.equipment.length, 'items extracted');
 
-        // Extract Currency
+        // Extract Currency (try both new and old selectors)
         const currencyTypes = ['cp', 'sp', 'ep', 'gp', 'pp'];
+
+        // Try new structure first
+        document.querySelectorAll('.ct-currency-button__currency-item-count').forEach((currencyElement) => {
+            const ariaLabel = currencyElement.getAttribute('aria-label') || '';
+            const amount = parseNumber(getText('.ct-currency-button__currency-item-count', currencyElement));
+
+            // Map aria-label to currency type
+            if (ariaLabel.includes('Gold')) characterData.currency.gp = amount;
+            else if (ariaLabel.includes('Silver')) characterData.currency.sp = amount;
+            else if (ariaLabel.includes('Copper')) characterData.currency.cp = amount;
+            else if (ariaLabel.includes('Platinum')) characterData.currency.pp = amount;
+            else if (ariaLabel.includes('Electrum')) characterData.currency.ep = amount;
+        });
+
+        // Fall back to old structure if needed
         document.querySelectorAll('.ddbc-currency-item').forEach((currencyElement, index) => {
             if (index < currencyTypes.length) {
                 const amount = parseNumber(getText('.ddbc-currency-item__value', currencyElement));
-                characterData.currency[currencyTypes[index]] = amount;
+                if (amount > 0) characterData.currency[currencyTypes[index]] = amount;
             }
         });
+
         console.log('💰 Currency:', characterData.currency);
 
         // Extract Features & Traits
