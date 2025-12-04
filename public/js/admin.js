@@ -1589,7 +1589,7 @@ AdminDashboard.NPCs = {
             category: npcCategory?.value || 'commoner',
             description: npcDescription?.value.trim() || '',
             quote: npcQuote?.value.trim() || '',
-            imageSrc: npcImage?.value.trim() || '/assets/images/npcs/default.jpg'
+            imageSrc: npcImage?.value.trim() || '/assets/images/npcs/unknown.png'
         };
         
         // Add ID if editing
@@ -1912,10 +1912,10 @@ AdminDashboard.NPCs = {
         
         // Format relationship display
         const relationshipDisplay = `<span class="npc-relation relation-${npc.relationship || 'neutral'}">${npc.relationship || 'neutral'}</span>`;
-        
+
         // Check if image src is provided
-        const imageSrc = npc.imageSrc || '/assets/images/npcs/default.jpg';
-        
+        const imageSrc = npc.imageSrc || '/assets/images/npcs/unknown.png';
+
         // Generate tags HTML if available
         let tagsHtml = '';
         if (Array.isArray(npc.tags) && npc.tags.length > 0) {
@@ -1928,7 +1928,7 @@ AdminDashboard.NPCs = {
         
         npcItem.innerHTML = `
             <div class="npc-image">
-                <img src="${imageSrc}" alt="${npc.name}" onerror="this.src='/assets/images/npcs/default.jpg'">
+                <img src="${imageSrc}" alt="${npc.name}" onerror="this.src='/assets/images/npcs/unknown.png'">
             </div>
             <div class="npc-info">
                 <h3 class="npc-name-title">${npc.name || 'Unnamed NPC'}</h3>
