@@ -57,10 +57,11 @@ module.exports = function(app) {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: false,
+            secure: false, // Set to true in production with HTTPS
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,
-            path: '/'
+            path: '/',
+            sameSite: 'none' // Required for cross-origin requests (bookmarklet from D&D Beyond)
         },
         rolling: true
     }));

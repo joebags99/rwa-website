@@ -783,7 +783,14 @@
             // Load bookmarklet code
             try {
                 const response = await fetch('/js/dndbeyond-bookmarklet.js');
-                const bookmarkletCode = await response.text();
+                let bookmarkletCode = await response.text();
+
+                // Replace API endpoint with actual website URL
+                const actualOrigin = window.location.origin;
+                bookmarkletCode = bookmarkletCode.replace(
+                    /const API_ENDPOINT = window\.location\.origin \+ '\/admin\/api\/characters\/import-from-dndbeyond';/,
+                    `const API_ENDPOINT = '${actualOrigin}/admin/api/characters/import-from-dndbeyond';`
+                );
 
                 // Minify and create bookmarklet URL
                 const minified = bookmarkletCode
