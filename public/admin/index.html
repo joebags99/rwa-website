@@ -48,6 +48,9 @@
                     <li data-section="npcs">
                         <a href="#npcs"><i class="fas fa-users"></i> NPCs</a>
                     </li>
+                    <li data-section="characters">
+                        <a href="#characters"><i class="fas fa-hat-wizard"></i> Characters</a>
+                    </li>
                     <li data-section="timeline">
                         <a href="#timeline"><i class="fas fa-hourglass-half"></i> Timeline</a>
                     </li>
@@ -105,7 +108,17 @@
                             <p class="stat-count" id="npcs-count">0</p>
                         </div>
                     </div>
-                        
+
+                    <div class="stat-card" onclick="window.location.href='#characters'" style="cursor: pointer;">
+                        <div class="stat-icon">
+                            <i class="fas fa-hat-wizard"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Characters</h3>
+                            <p class="stat-count" id="characters-count">0</p>
+                        </div>
+                    </div>
+
                     <div class="stat-card" onclick="window.location.href='#timeline'" style="cursor: pointer;">
                         <div class="stat-icon">
                             <i class="fas fa-hourglass-half"></i>
@@ -222,7 +235,43 @@
                         </div>
                     </div>
                 </section>
-                
+
+                <!-- Characters Section -->
+                <section id="characters-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-hat-wizard"></i> Character Progression Tracker</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" id="create-character-btn">
+                                <i class="fas fa-plus"></i> Create Character
+                            </button>
+                            <button class="btn btn-secondary" id="show-bookmarklet-btn">
+                                <i class="fas fa-bookmark"></i> Get Bookmarklet
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="search-filter">
+                        <div class="search-bar">
+                            <form autocomplete="off" onsubmit="return false;">
+                                <i class="fas fa-search"></i>
+                                <input type="search"
+                                    id="character-search"
+                                    placeholder="Search characters..."
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="item-list character-list" id="character-list">
+                        <div class="loading-indicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading characters...</p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Timeline Section -->
  <!-- Timeline Section (Updated from "Coming Soon") -->
  <section id="timeline-section" class="content-section">
@@ -1107,5 +1156,8 @@
     <!-- Main Admin Dashboard -->
     <!-- Use admin.min.js in production for better performance (55% smaller) -->
     <script src="/js/admin.js"></script>
+
+    <!-- Character Management Module -->
+    <script src="/js/admin-characters.js"></script>
 </body>
 </html>

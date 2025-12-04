@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-85GK01X7F7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-85GK01X7F7');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Tracker - Roll With Advantage</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/characters.css">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
+</head>
+<body class="characters-page">
+    <!-- Background Particles Container -->
+    <div class="particle-background" id="particle-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/assets/images/logo-small.png" alt="Roll With Advantage">
+                <span>Roll With Advantage</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/npcs">NPCs</a></li>
+                <li><a href="/characters" class="active">Characters</a></li>
+                <li><a href="/timeline">Timeline</a></li>
+                <li><a href="/episodes">Episodes</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="characters-container">
+        <!-- Party Lineup View -->
+        <section class="party-lineup" id="party-lineup">
+            <div class="section-header">
+                <h1 class="page-title">
+                    <i class="fas fa-users"></i>
+                    The Adventuring Party
+                </h1>
+                <p class="page-subtitle">Select a character to view their journey through our campaign</p>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-state">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <p>Summoning the party...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <i class="fas fa-hat-wizard"></i>
+                <h2>No Characters Yet</h2>
+                <p>The adventure awaits! Characters will appear here once they're added by the DM.</p>
+            </div>
+
+            <!-- Character Cards -->
+            <div class="character-lineup" id="character-lineup">
+                <!-- Characters will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- Character Focus View -->
+        <section class="character-focus" id="character-focus">
+            <button class="back-button" id="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Party</span>
+            </button>
+
+            <!-- Character Sheet Container -->
+            <div class="character-sheet-container" id="character-sheet-container">
+                <!-- Character sheet will be dynamically inserted here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Roll With Advantage. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/characters.js"></script>
+</body>
+</html>
