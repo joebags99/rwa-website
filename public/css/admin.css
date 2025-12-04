@@ -2666,6 +2666,29 @@ input[type="text"].form-control:focus {
     margin-bottom: 2rem;
 }
 
+/* Bookmarklet Modal Overlay - needs high z-index to appear above sidebar */
+#bookmarklet-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bookmarklet-modal-overlay.active {
+    opacity: 1;
+}
+
+#bookmarklet-modal-overlay .modal-dialog {
+    position: relative;
+    z-index: 10001;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .character-card-header {
