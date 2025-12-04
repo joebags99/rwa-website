@@ -25,8 +25,12 @@
     }
 
     // Helper function to safely get text content
-    function getText(selector, defaultValue = '') {
-        const element = document.querySelector(selector);
+    function getText(selector, parentOrDefault = '', isParent = false) {
+        // Check if second parameter is a parent element or default value
+        const parent = (parentOrDefault && typeof parentOrDefault === 'object') ? parentOrDefault : document;
+        const defaultValue = (typeof parentOrDefault === 'string') ? parentOrDefault : '';
+
+        const element = parent.querySelector(selector);
         return element ? element.textContent.trim() : defaultValue;
     }
 
@@ -38,12 +42,14 @@
 
     // Helper function to parse number from text
     function parseNumber(text) {
+        if (!text || typeof text !== 'string') return 0;
         const match = text.match(/-?\d+/);
         return match ? parseInt(match[0], 10) : 0;
     }
 
     // Helper function to parse modifier
     function parseModifier(text) {
+        if (!text || typeof text !== 'string') return 0;
         const match = text.match(/([+-]?\d+)/);
         return match ? parseInt(match[1], 10) : 0;
     }
