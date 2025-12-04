@@ -792,10 +792,13 @@
                     `const API_ENDPOINT = '${actualOrigin}/admin/api/characters/import-from-dndbeyond';`
                 );
 
-                // Minify and create bookmarklet URL
+                // Light minification that preserves code structure
+                // We keep newlines to preserve JavaScript's automatic semicolon insertion
                 const minified = bookmarkletCode
-                    .replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '') // Remove comments
-                    .replace(/\s+/g, ' ') // Collapse whitespace
+                    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove block comments
+                    .replace(/\/\/[^\n]*/g, '') // Remove line comments (but keep newlines)
+                    .replace(/^\s+/gm, '') // Remove leading whitespace from each line
+                    .replace(/\n\s*\n+/g, '\n') // Collapse multiple blank lines
                     .trim();
 
                 const bookmarkletUrl = `javascript:${encodeURIComponent(minified)}`;
