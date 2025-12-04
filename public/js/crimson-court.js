@@ -249,16 +249,17 @@ function createEmbers() {
  * @param {HTMLElement} preloader - The preloader element to hide after transition
  */
 function startCrimsonTransition(preloader) {
-    
-    
+
+
         // Check for excluded pages
         const isTimelinePage = document.body.classList.contains('timeline-page');
         const isHeirsPage = document.body.classList.contains('heirs-page');
         const isStoryPage = document.body.classList.contains('story-page');
-        
+        const isNPCsPage = document.body.classList.contains('npcs-page');
+
         // Skip burn effect for excluded pages
-        if (isTimelinePage || isHeirsPage || isStoryPage) {
-            
+        if (isTimelinePage || isHeirsPage || isStoryPage || isNPCsPage) {
+
             performSimpleTransition(preloader);
             return;
         }

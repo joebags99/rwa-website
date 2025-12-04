@@ -7,10 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remove loading class once everything is loaded
     window.addEventListener('load', function() {
         document.body.classList.remove('loading');
-        document.querySelector('.preloader').classList.add('fade-out');
-        setTimeout(() => {
-            document.querySelector('.preloader').style.display = 'none';
-        }, 3000);
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 3000);
+        }
         
         // Show hero content after a small delay
         setTimeout(() => {
