@@ -152,13 +152,19 @@
             }
         }
 
-        // Extract ability scores
+        // Extract ability scores (updated for new structure)
         const abilityNames = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
         document.querySelectorAll('.ddbc-ability-summary').forEach((ability, index) => {
             if (index < abilityNames.length) {
                 const abilityName = abilityNames[index];
-                const score = parseNumber(getText('.ddbc-ability-summary__primary .ddbc-signed-number__number', ability));
-                const modifier = parseModifier(getText('.ddbc-ability-summary__secondary', ability));
+
+                // Score is in .ddbc-ability-summary__secondary
+                const score = parseNumber(getText('.ddbc-ability-summary__secondary', ability));
+
+                // Modifier is in the button > span structure
+                const modifierText = getText('.integrated-dice__container .styles_numberDisplay__Rg1za', ability) ||
+                                    getText('.ddbc-ability-summary__primary', ability);
+                const modifier = parseModifier(modifierText);
 
                 characterData.abilities[abilityName] = {
                     score: score,
@@ -179,12 +185,16 @@
         characterData.ac = parseNumber(getText('.ddbc-armor-class-box__value'));
         console.log('🛡️ AC:', characterData.ac);
 
-        // Extract Initiative
-        characterData.initiative = parseModifier(getText('.ddbc-initiative-box__value'));
+        // Extract Initiative (updated for new structure)
+        const initiativeText = getText('.styles_value__hqDak .integrated-dice__container .styles_numberDisplay__Rg1za') ||
+                              getText('.ddbc-initiative-box__value');
+        characterData.initiative = parseModifier(initiativeText);
         console.log('⚡ Initiative:', characterData.initiative);
 
-        // Extract Speed
-        characterData.speed = parseNumber(getText('.ddbc-speed-box__value'));
+        // Extract Speed (updated for new structure)
+        const speedText = getText('.ct-speed-box__box-value .styles_numberDisplay__Rg1za') ||
+                         getText('.ddbc-speed-box__value');
+        characterData.speed = parseNumber(speedText);
         console.log('🏃 Speed:', characterData.speed);
 
         // Calculate proficiency bonus (based on level)
