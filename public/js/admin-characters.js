@@ -600,16 +600,327 @@
                 const character = await AdminDashboard.API.Characters.get(characterId);
                 const snapshot = character.snapshots.find(s => s.id === snapshotId);
 
-                if (window.AdminModals && window.AdminModals.snapshot) {
-                    window.AdminModals.snapshot.characterId = characterId;
-                    window.AdminModals.snapshot.open(snapshot);
-                } else {
-                    console.error('Snapshot modal not initialized');
-                }
+                // Open the comprehensive snapshot data editor
+                this.openSnapshotDataEditor(characterId, snapshot);
             } catch (error) {
                 console.error('Error loading snapshot:', error);
                 AdminDashboard.showToast('Error loading snapshot', 'error');
             }
+        },
+
+        /**
+         * Open snapshot data editor (comprehensive editor for all character stats)
+         * @param {string} characterId - Character ID
+         * @param {Object} snapshot - Snapshot data
+         */
+        openSnapshotDataEditor(characterId, snapshot) {
+            const modal = document.getElementById('snapshot-data-modal');
+            if (!modal) {
+                console.error('Snapshot data modal not found');
+                return;
+            }
+
+            // Store references
+            document.getElementById('snapshot-character-id').value = characterId;
+            document.getElementById('snapshot-snapshot-id').value = snapshot.id;
+
+            // Populate form
+            this.populateSnapshotDataForm(snapshot);
+
+            // Setup tab switching
+            this.setupSnapshotTabs();
+
+            // Setup event listeners
+            this.setupSnapshotDataListeners();
+
+            // Show modal
+            modal.classList.add('active');
+        },
+
+        /**
+         * Populate snapshot data form
+         * @param {Object} snapshot - Snapshot data
+         */
+        populateSnapshotDataForm(snapshot) {
+            const data = snapshot.data || {};
+
+            // Snapshot metadata
+            document.getElementById('snapshot-act').value = snapshot.act || 1;
+            document.getElementById('snapshot-chapter').value = snapshot.chapter || 1;
+            document.getElementById('snapshot-date').value = snapshot.date ? snapshot.date.split('T')[0] : '';
+            document.getElementById('snapshot-notes').value = snapshot.notes || '';
+
+            // Basics
+            document.getElementById('snapshot-level').value = data.level || '';
+            document.getElementById('snapshot-xp').value = data.xp || 0;
+
+            // Combat stats
+            document.getElementById('snapshot-hp-current').value = data.hp?.current || 0;
+            document.getElementById('snapshot-hp-max').value = data.hp?.max || 0;
+            document.getElementById('snapshot-hp-temp').value = data.hp?.temp || 0;
+            document.getElementById('snapshot-ac').value = data.ac || 0;
+            document.getElementById('snapshot-initiative').value = data.initiative || 0;
+            document.getElementById('snapshot-speed').value = data.speed || 0;
+            document.getElementById('snapshot-proficiency').value = data.proficiencyBonus || 2;
+
+            // Abilities
+            const abilities = data.abilities || {};
+            ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(ability => {
+                const fullName = {
+                    str: 'strength',
+                    dex: 'dexterity',
+                    con: 'constitution',
+                    int: 'intelligence',
+                    wis: 'wisdom',
+                    cha: 'charisma'
+                }[ability];
+
+                document.getElementById(`snapshot-${ability}-score`).value = abilities[fullName]?.score || 10;
+                document.getElementById(`snapshot-${ability}-mod`).value = abilities[fullName]?.modifier || 0;
+            });
+
+            // Equipment (simplified - one item per line)
+            const equipment = data.equipment || [];
+            const equipmentText = equipment.map(item => `${item.name} (${item.quantity || 1})`).join('\n');
+            document.getElementById('snapshot-equipment').value = equipmentText;
+
+            // Currency
+            const currency = data.currency || {};
+            document.getElementById('snapshot-cp').value = currency.cp || 0;
+            document.getElementById('snapshot-sp').value = currency.sp || 0;
+            document.getElementById('snapshot-ep').value = currency.ep || 0;
+            document.getElementById('snapshot-gp').value = currency.gp || 0;
+            document.getElementById('snapshot-pp').value = currency.pp || 0;
+
+            // Spells (simplified - one spell per line)
+            const spells = data.spells || [];
+            const spellsText = spells.map(spell => `${spell.name} (${spell.level || 'Cantrip'})`).join('\n');
+            document.getElementById('snapshot-spells').value = spellsText;
+
+            // Spell slots
+            const spellSlots = data.spellSlots || {};
+            for (let i = 1; i <= 9; i++) {
+                const slot = spellSlots[i] || spellSlots[`${i}`] || { total: 0, used: 0 };
+                document.getElementById(`snapshot-slot-${i}-total`).value = slot.total || 0;
+                document.getElementById(`snapshot-slot-${i}-used`).value = slot.used || 0;
+            }
+        },
+
+        /**
+         * Setup tab switching for snapshot editor
+         */
+        setupSnapshotTabs() {
+            const tabItems = document.querySelectorAll('.snapshot-tabs .tab-item');
+            const tabContents = document.querySelectorAll('.snapshot-tabs .tab-content');
+
+            tabItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetTab = item.dataset.tab;
+
+                    // Remove active class from all tabs
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked tab
+                    item.classList.add('active');
+                    document.querySelector(`.tab-content[data-tab="${targetTab}"]`).classList.add('active');
+                });
+            });
+        },
+
+        /**
+         * Setup event listeners for snapshot data editor
+         */
+        setupSnapshotDataListeners() {
+            // Close button
+            const closeBtn = document.getElementById('close-snapshot-data-modal');
+            if (closeBtn) {
+                closeBtn.replaceWith(closeBtn.cloneNode(true)); // Remove old listeners
+                document.getElementById('close-snapshot-data-modal').addEventListener('click', () => {
+                    this.closeSnapshotDataEditor();
+                });
+            }
+
+            // Cancel button
+            const cancelBtn = document.getElementById('cancel-snapshot-data');
+            if (cancelBtn) {
+                cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+                document.getElementById('cancel-snapshot-data').addEventListener('click', () => {
+                    this.closeSnapshotDataEditor();
+                });
+            }
+
+            // Save button
+            const saveBtn = document.getElementById('save-snapshot-data');
+            if (saveBtn) {
+                saveBtn.replaceWith(saveBtn.cloneNode(true));
+                document.getElementById('save-snapshot-data').addEventListener('click', () => {
+                    this.saveSnapshotData();
+                });
+            }
+        },
+
+        /**
+         * Close snapshot data editor
+         */
+        closeSnapshotDataEditor() {
+            const modal = document.getElementById('snapshot-data-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        },
+
+        /**
+         * Save snapshot data
+         */
+        async saveSnapshotData() {
+            try {
+                const characterId = document.getElementById('snapshot-character-id').value;
+                const snapshotId = document.getElementById('snapshot-snapshot-id').value;
+
+                // Collect form data
+                const snapshotData = {
+                    act: parseInt(document.getElementById('snapshot-act').value),
+                    chapter: parseInt(document.getElementById('snapshot-chapter').value),
+                    date: document.getElementById('snapshot-date').value,
+                    notes: document.getElementById('snapshot-notes').value,
+                    data: {
+                        level: parseInt(document.getElementById('snapshot-level').value) || 1,
+                        xp: parseInt(document.getElementById('snapshot-xp').value) || 0,
+                        hp: {
+                            current: parseInt(document.getElementById('snapshot-hp-current').value) || 0,
+                            max: parseInt(document.getElementById('snapshot-hp-max').value) || 0,
+                            temp: parseInt(document.getElementById('snapshot-hp-temp').value) || 0
+                        },
+                        ac: parseInt(document.getElementById('snapshot-ac').value) || 0,
+                        initiative: parseInt(document.getElementById('snapshot-initiative').value) || 0,
+                        speed: parseInt(document.getElementById('snapshot-speed').value) || 0,
+                        proficiencyBonus: parseInt(document.getElementById('snapshot-proficiency').value) || 2,
+                        abilities: {
+                            strength: {
+                                score: parseInt(document.getElementById('snapshot-str-score').value) || 10,
+                                modifier: parseInt(document.getElementById('snapshot-str-mod').value) || 0
+                            },
+                            dexterity: {
+                                score: parseInt(document.getElementById('snapshot-dex-score').value) || 10,
+                                modifier: parseInt(document.getElementById('snapshot-dex-mod').value) || 0
+                            },
+                            constitution: {
+                                score: parseInt(document.getElementById('snapshot-con-score').value) || 10,
+                                modifier: parseInt(document.getElementById('snapshot-con-mod').value) || 0
+                            },
+                            intelligence: {
+                                score: parseInt(document.getElementById('snapshot-int-score').value) || 10,
+                                modifier: parseInt(document.getElementById('snapshot-int-mod').value) || 0
+                            },
+                            wisdom: {
+                                score: parseInt(document.getElementById('snapshot-wis-score').value) || 10,
+                                modifier: parseInt(document.getElementById('snapshot-wis-mod').value) || 0
+                            },
+                            charisma: {
+                                score: parseInt(document.getElementById('snapshot-cha-score').value) || 10,
+                                modifier: parseInt(document.getElementById('snapshot-cha-mod').value) || 0
+                            }
+                        },
+                        equipment: this.parseEquipmentText(document.getElementById('snapshot-equipment').value),
+                        currency: {
+                            cp: parseInt(document.getElementById('snapshot-cp').value) || 0,
+                            sp: parseInt(document.getElementById('snapshot-sp').value) || 0,
+                            ep: parseInt(document.getElementById('snapshot-ep').value) || 0,
+                            gp: parseInt(document.getElementById('snapshot-gp').value) || 0,
+                            pp: parseInt(document.getElementById('snapshot-pp').value) || 0
+                        },
+                        spells: this.parseSpellsText(document.getElementById('snapshot-spells').value),
+                        spellSlots: this.parseSpellSlots()
+                    }
+                };
+
+                // Save via API
+                await AdminDashboard.API.Characters.updateSnapshot(characterId, snapshotId, snapshotData);
+                AdminDashboard.showToast('Snapshot updated successfully', 'success');
+
+                // Close editor
+                this.closeSnapshotDataEditor();
+
+                // Reload snapshots view
+                const character = await AdminDashboard.API.Characters.get(characterId);
+                this.showSnapshotsView(character);
+
+            } catch (error) {
+                console.error('Error saving snapshot:', error);
+                AdminDashboard.showToast('Error saving snapshot', 'error');
+            }
+        },
+
+        /**
+         * Parse equipment text into array
+         * @param {string} text - Equipment text (one item per line)
+         * @returns {Array} - Equipment array
+         */
+        parseEquipmentText(text) {
+            if (!text || !text.trim()) return [];
+
+            return text.split('\n')
+                .filter(line => line.trim())
+                .map(line => {
+                    const match = line.match(/^(.+?)\s*\((\d+)\)\s*$/);
+                    if (match) {
+                        return {
+                            name: match[1].trim(),
+                            quantity: parseInt(match[2]),
+                            equipped: false
+                        };
+                    }
+                    return {
+                        name: line.trim(),
+                        quantity: 1,
+                        equipped: false
+                    };
+                });
+        },
+
+        /**
+         * Parse spells text into array
+         * @param {string} text - Spells text (one spell per line)
+         * @returns {Array} - Spells array
+         */
+        parseSpellsText(text) {
+            if (!text || !text.trim()) return [];
+
+            return text.split('\n')
+                .filter(line => line.trim())
+                .map(line => {
+                    const match = line.match(/^(.+?)\s*\((.+?)\)\s*$/);
+                    if (match) {
+                        return {
+                            name: match[1].trim(),
+                            level: match[2].trim(),
+                            prepared: true
+                        };
+                    }
+                    return {
+                        name: line.trim(),
+                        level: 'Cantrip',
+                        prepared: true
+                    };
+                });
+        },
+
+        /**
+         * Parse spell slots from form
+         * @returns {Object} - Spell slots object
+         */
+        parseSpellSlots() {
+            const slots = {};
+            for (let i = 1; i <= 9; i++) {
+                const total = parseInt(document.getElementById(`snapshot-slot-${i}-total`).value) || 0;
+                const used = parseInt(document.getElementById(`snapshot-slot-${i}-used`).value) || 0;
+
+                if (total > 0) {
+                    slots[`${i}`] = { total, used };
+                }
+            }
+            return slots;
         },
 
         /**

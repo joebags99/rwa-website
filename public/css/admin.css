@@ -2689,6 +2689,147 @@ input[type="text"].form-control:focus {
     z-index: 10001;
 }
 
+/* Snapshot Data Editor Modal */
+.snapshot-tabs {
+    margin-top: 2rem;
+}
+
+.snapshot-tabs .tab-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    border-bottom: 2px solid var(--border-color);
+    gap: 0.5rem;
+}
+
+.snapshot-tabs .tab-item {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.snapshot-tabs .tab-item:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+.snapshot-tabs .tab-item.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.snapshot-tabs .tab-item i {
+    margin-right: 0.5rem;
+}
+
+.snapshot-tabs .tab-content {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.snapshot-tabs .tab-content.active {
+    display: block;
+}
+
+/* Abilities Grid */
+.abilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.ability-item {
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.ability-item label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+.ability-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.ability-inputs input {
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Currency Grid */
+.currency-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+}
+
+.currency-item label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.currency-item input {
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Spell Slots Grid */
+.spell-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.spell-slot-item label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.slot-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.slot-inputs input {
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+/* Larger modal */
+.modal-xl .modal-dialog {
+    max-width: 1200px;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .character-card-header {
@@ -2713,6 +2854,27 @@ input[type="text"].form-control:focus {
     .snapshot-actions {
         width: 100%;
         justify-content: flex-end;
+    }
+
+    .abilities-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .currency-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .spell-slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .snapshot-tabs .tab-nav {
+        flex-wrap: wrap;
+    }
+
+    .snapshot-tabs .tab-item {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
     }
 }
 
