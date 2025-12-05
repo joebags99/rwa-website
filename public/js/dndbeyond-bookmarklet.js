@@ -295,7 +295,8 @@
 
         // Extract Spells
         document.querySelectorAll('.ct-spells-spell').forEach(spellElement => {
-            const spellName = getText('.ct-spell-name__text, .ct-spells__spell-name', spellElement);
+            const spellName = getText('[class*="spellName"]', spellElement) ||
+                             getText('.ct-spell-name__text, .ct-spells__spell-name', spellElement);
             const spellLevel = getText('.ct-spell-level-casting__level', spellElement);
 
             if (spellName) {
