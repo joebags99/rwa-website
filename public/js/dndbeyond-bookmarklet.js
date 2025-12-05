@@ -294,7 +294,7 @@
         await switchTab('SPELLS');
 
         // Extract Spells
-        document.querySelectorAll('.ct-spells__spell').forEach(spellElement => {
+        document.querySelectorAll('.ct-spells-spell').forEach(spellElement => {
             const spellName = getText('.ct-spell-name__text, .ct-spells__spell-name', spellElement);
             const spellLevel = getText('.ct-spell-level-casting__level', spellElement);
 
