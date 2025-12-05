@@ -302,31 +302,40 @@
             if (spellName) {
                 characterData.spells.push({
                     name: spellName,
-                    level: spellLevel,
-                    prepared: spellElement.classList.contains('ct-spells__spell--prepared')
+                    level: spellLevel || 'Cantrip',
+                    prepared: true // All visible spells on D&D Beyond are prepared/granted
                 });
             }
         });
         console.log('🔮 Spells:', characterData.spells.length, 'spells extracted');
 
-        // Extract spell slots
-        document.querySelectorAll('.ct-spell-level-slots__info').forEach(slotElement => {
-            const levelText = getText('.ct-spell-level-slots__level', slotElement);
-            const slotsText = getText('.ct-spell-level-slots__count', slotElement);
+        // Extract spell slots - D&D Beyond shows spell level headers with slot checkboxes
+        const spellLevelSections = document.querySelectorAll('.ct-content-group');
+        spellLevelSections.forEach(section => {
+            const levelText = getText('.ct-content-group__header-content', section);
+            const levelMatch = levelText.match(/(\d+)(?:st|nd|rd|th)\s+Level/i);
 
-            if (levelText && slotsText) {
-                const levelMatch = levelText.match(/\d+/);
-                const slotsMatch = slotsText.match(/(\d+)\s*\/\s*(\d+)/);
+            if (levelMatch) {
+                const level = parseInt(levelMatch[1], 10);
+                const slotManager = section.querySelector('.ct-slot-manager');
 
-                if (levelMatch && slotsMatch) {
-                    const level = parseInt(levelMatch[0], 10);
-                    characterData.spellSlots[`level${level}`] = {
-                        used: parseInt(slotsMatch[1], 10),
-                        total: parseInt(slotsMatch[2], 10)
-                    };
+                if (slotManager) {
+                    const slotCheckboxes = slotManager.querySelectorAll('.ct-slot-manager__slot');
+                    const totalSlots = slotCheckboxes.length;
+                    const usedSlots = Array.from(slotCheckboxes).filter(slot =>
+                        slot.getAttribute('aria-checked') === 'true'
+                    ).length;
+
+                    if (totalSlots > 0) {
+                        characterData.spellSlots[`${level}`] = {
+                            total: totalSlots,
+                            used: usedSlots
+                        };
+                    }
                 }
             }
         });
+        console.log('✨ Spell Slots:', characterData.spellSlots);
 
         // Extract avatar/portrait URL
         const avatarElement = document.querySelector('.ddbc-character-avatar__portrait, .ct-character-header-desktop__avatar-image');
