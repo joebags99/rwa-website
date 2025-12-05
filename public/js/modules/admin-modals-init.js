@@ -139,11 +139,33 @@
             ...ModalConfigs.character,
             onSave: (data) => {
                 if (window.AdminDashboard && window.AdminDashboard.Characters) {
+                    // Parse classes string into array format
+                    // Expected input: "Cleric 3" or "Fighter 3 / Wizard 2" or "Cleric 3 (Life Domain)"
+                    let classesArray = [];
+                    if (data.classes && typeof data.classes === 'string') {
+                        const classParts = data.classes.split('/').map(s => s.trim());
+                        classesArray = classParts.map(part => {
+                            // Match: "ClassName Level" or "ClassName Level (Subclass)"
+                            const match = part.match(/^(.+?)\s+(\d+)(?:\s+\((.+)\))?$/);
+                            if (match) {
+                                return {
+                                    name: match[1].trim(),
+                                    level: parseInt(match[2], 10),
+                                    subclass: match[3] || ''
+                                };
+                            }
+                            // Fallback if format doesn't match
+                            return { name: part, level: 1, subclass: '' };
+                        });
+                    } else if (Array.isArray(data.classes)) {
+                        classesArray = data.classes;
+                    }
+
                     const characterData = {
                         name: data.name,
                         player: data.player,
                         race: data.race,
-                        classes: data.classes,
+                        classes: classesArray,
                         avatarUrl: data.avatarUrl,
                         accentColor: data.accentColor || '#7F0EBD'
                     };
@@ -157,6 +179,34 @@
                 }
             }
         });
+
+        // Override the open method to handle data conversion
+        const originalCharacterOpen = characterModal.open;
+        characterModal.open = function(character) {
+            if (character) {
+                // Convert classes array to display string
+                let classesString = '';
+                if (Array.isArray(character.classes) && character.classes.length > 0) {
+                    classesString = character.classes.map(cls => {
+                        let str = `${cls.name} ${cls.level}`;
+                        if (cls.subclass) {
+                            str += ` (${cls.subclass})`;
+                        }
+                        return str;
+                    }).join(' / ');
+                }
+
+                const displayData = {
+                    ...character,
+                    classes: classesString
+                };
+
+                characterModal.setData(displayData);
+            } else {
+                characterModal.reset();
+            }
+            originalCharacterOpen.call(this);
+        };
 
         // Create Snapshot Modal
         const snapshotModal = ModalFactory.create({
