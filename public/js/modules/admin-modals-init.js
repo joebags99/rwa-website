@@ -184,6 +184,8 @@
         const originalCharacterOpen = characterModal.open;
         characterModal.open = function(character) {
             if (character) {
+                console.log('Opening character modal with:', character);
+
                 // Convert classes array to display string
                 let classesString = '';
                 if (Array.isArray(character.classes) && character.classes.length > 0) {
@@ -196,11 +198,18 @@
                     }).join(' / ');
                 }
 
+                // Explicitly build the display data with only the fields we need
                 const displayData = {
-                    ...character,
-                    classes: classesString
+                    id: character.id, // Explicitly include ID first
+                    name: character.name || '',
+                    player: character.player || '',
+                    race: character.race || '',
+                    classes: classesString,
+                    avatarUrl: character.avatarUrl || '',
+                    accentColor: character.accentColor || '#7F0EBD'
                 };
 
+                console.log('Setting modal data:', displayData);
                 characterModal.setData(displayData);
             } else {
                 characterModal.reset();

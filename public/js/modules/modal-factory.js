@@ -392,6 +392,13 @@ window.ModalFactory = {
             return;
         }
 
+        // Remove focus from any focused element inside the modal before hiding
+        // This prevents aria-hidden accessibility warnings
+        const focusedElement = modal.element.querySelector(':focus');
+        if (focusedElement) {
+            focusedElement.blur();
+        }
+
         modal.element.classList.remove('active');
         modal.element.setAttribute('aria-hidden', 'true');
 
