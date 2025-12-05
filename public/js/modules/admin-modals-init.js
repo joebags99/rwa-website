@@ -183,45 +183,51 @@
         // Override the open method to handle data conversion
         const originalCharacterOpen = characterModal.open;
         characterModal.open = function(character) {
+            // Open the modal first
+            originalCharacterOpen.call(this);
+
+            // Then populate data after modal is visible
             if (character) {
                 console.log('Opening character modal with:', character);
 
-                // Convert classes array to display string
-                let classesString = '';
-                if (Array.isArray(character.classes) && character.classes.length > 0) {
-                    classesString = character.classes.map(cls => {
-                        let str = `${cls.name} ${cls.level}`;
-                        if (cls.subclass) {
-                            str += ` (${cls.subclass})`;
-                        }
-                        return str;
-                    }).join(' / ');
-                }
+                // Use setTimeout to ensure modal DOM is fully rendered
+                setTimeout(() => {
+                    // Convert classes array to display string
+                    let classesString = '';
+                    if (Array.isArray(character.classes) && character.classes.length > 0) {
+                        classesString = character.classes.map(cls => {
+                            let str = `${cls.name} ${cls.level}`;
+                            if (cls.subclass) {
+                                str += ` (${cls.subclass})`;
+                            }
+                            return str;
+                        }).join(' / ');
+                    }
 
-                // Build display data WITHOUT id (we'll set it separately to avoid selector bug)
-                const displayData = {
-                    name: character.name || '',
-                    player: character.player || '',
-                    race: character.race || '',
-                    classes: classesString,
-                    avatarUrl: character.avatarUrl || '',
-                    accentColor: character.accentColor || '#7F0EBD'
-                };
+                    // Build display data WITHOUT id (we'll set it separately to avoid selector bug)
+                    const displayData = {
+                        name: character.name || '',
+                        player: character.player || '',
+                        race: character.race || '',
+                        classes: classesString,
+                        avatarUrl: character.avatarUrl || '',
+                        accentColor: character.accentColor || '#7F0EBD'
+                    };
 
-                console.log('Setting modal data:', displayData);
-                characterModal.setData(displayData);
+                    console.log('Setting modal data:', displayData);
+                    characterModal.setData(displayData);
 
-                // Set ID directly on the hidden input to avoid setData selector bug
-                // Bug: setData's selector `#${modalId}-id` matches for ALL keys, causing overwrites
-                const idInput = document.getElementById('character-modal-id');
-                if (idInput && character.id) {
-                    idInput.value = character.id;
-                    console.log('Set character ID to:', character.id);
-                }
+                    // Set ID directly on the hidden input to avoid setData selector bug
+                    // Bug: setData's selector `#${modalId}-id` matches for ALL keys, causing overwrites
+                    const idInput = document.getElementById('character-modal-id');
+                    if (idInput && character.id) {
+                        idInput.value = character.id;
+                        console.log('Set character ID to:', character.id);
+                    }
+                }, 50); // Small delay to ensure DOM is ready
             } else {
                 characterModal.reset();
             }
-            originalCharacterOpen.call(this);
         };
 
         // Create Snapshot Modal

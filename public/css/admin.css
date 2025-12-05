@@ -2542,6 +2542,11 @@ input[type="text"].form-control:focus {
     box-shadow: 0 5px 15px rgba(127, 14, 189, 0.2);
 }
 
+/* Snapshot Data Editor - needs higher z-index than snapshots-modal-overlay */
+#snapshot-data-modal {
+    z-index: 10001; /* Higher than snapshots-modal-overlay (10000) */
+}
+
 .snapshot-header {
     display: flex;
     justify-content: space-between;
