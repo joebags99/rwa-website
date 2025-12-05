@@ -198,9 +198,8 @@
                     }).join(' / ');
                 }
 
-                // Explicitly build the display data with only the fields we need
+                // Build display data WITHOUT id (we'll set it separately to avoid selector bug)
                 const displayData = {
-                    id: character.id, // Explicitly include ID first
                     name: character.name || '',
                     player: character.player || '',
                     race: character.race || '',
@@ -211,6 +210,14 @@
 
                 console.log('Setting modal data:', displayData);
                 characterModal.setData(displayData);
+
+                // Set ID directly on the hidden input to avoid setData selector bug
+                // Bug: setData's selector `#${modalId}-id` matches for ALL keys, causing overwrites
+                const idInput = document.getElementById('character-modal-id');
+                if (idInput && character.id) {
+                    idInput.value = character.id;
+                    console.log('Set character ID to:', character.id);
+                }
             } else {
                 characterModal.reset();
             }
