@@ -580,20 +580,22 @@ window.CharacterViewer = {
                 <div class="sheet-section">
                     <h2 class="section-title">
                         <i class="fas fa-magic"></i>
-                        Spells
+                        Spells & Spell Slots
                     </h2>
+                    ${this.renderSpellSlots(data)}
                     ${this.renderSpells(data)}
                 </div>
             ` : ''}
 
-            <!-- Equipment -->
-            ${data.equipment && data.equipment.length > 0 ? `
+            <!-- Equipment & Currency -->
+            ${data.equipment && data.equipment.length > 0 || data.currency ? `
                 <div class="sheet-section">
                     <h2 class="section-title">
                         <i class="fas fa-suitcase"></i>
-                        Equipment
+                        Equipment & Currency
                     </h2>
-                    ${this.renderEquipment(data)}
+                    ${data.equipment && data.equipment.length > 0 ? this.renderEquipment(data) : ''}
+                    ${data.currency ? this.renderCurrency(data) : ''}
                 </div>
             ` : ''}
         `;
@@ -633,11 +635,15 @@ window.CharacterViewer = {
      * Render combat stats
      */
     renderCombatStats(data) {
+        const hasTemp = data.hp && data.hp.temp && data.hp.temp > 0;
         return `
             <div class="combat-stats-grid">
-                <div class="stat-box">
+                <div class="stat-box ${hasTemp ? 'has-temp' : ''}">
                     <div class="stat-label">HP</div>
-                    <div class="stat-value">${data.hp ? `${data.hp.current}/${data.hp.max}` : '?'}</div>
+                    <div class="stat-value">
+                        ${data.hp ? `${data.hp.current}/${data.hp.max}` : '?'}
+                        ${hasTemp ? `<span class="temp-hp">+${data.hp.temp} temp</span>` : ''}
+                    </div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">AC</div>
@@ -774,6 +780,105 @@ window.CharacterViewer = {
                         <span class="equipment-quantity">×${item.quantity || 1}</span>
                     </div>
                 `).join('')}
+            </div>
+        `;
+    },
+
+    /**
+     * Render spell slots
+     */
+    renderSpellSlots(data) {
+        const spellSlots = data.spellSlots || {};
+        const slots = [];
+
+        // Convert spell slots object to array
+        for (let i = 1; i <= 9; i++) {
+            const level = `${i}`;
+            if (spellSlots[level] && spellSlots[level].total > 0) {
+                slots.push({
+                    level: i,
+                    total: spellSlots[level].total,
+                    used: spellSlots[level].used || 0,
+                    available: spellSlots[level].total - (spellSlots[level].used || 0)
+                });
+            }
+        }
+
+        if (slots.length === 0) return '';
+
+        const levelNames = ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th'];
+
+        return `
+            <div class="spell-slots-container">
+                <h4 class="spell-slots-title">
+                    <i class="fas fa-circle"></i>
+                    Spell Slots
+                </h4>
+                <div class="spell-slots-grid">
+                    ${slots.map(slot => `
+                        <div class="spell-slot-box">
+                            <div class="slot-level">${levelNames[slot.level]} Level</div>
+                            <div class="slot-tracker">
+                                ${Array.from({ length: slot.total }, (_, i) => {
+                                    const isUsed = i < slot.used;
+                                    return `<span class="slot-circle ${isUsed ? 'used' : 'available'}"></span>`;
+                                }).join('')}
+                            </div>
+                            <div class="slot-count">${slot.available}/${slot.total} available</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    },
+
+    /**
+     * Render currency
+     */
+    renderCurrency(data) {
+        const currency = data.currency || {};
+        const hasCurrency = currency.cp || currency.sp || currency.ep || currency.gp || currency.pp;
+
+        if (!hasCurrency) return '';
+
+        return `
+            <div class="currency-container">
+                <h4 class="currency-title">
+                    <i class="fas fa-coins"></i>
+                    Currency
+                </h4>
+                <div class="currency-grid">
+                    ${currency.pp > 0 ? `
+                        <div class="currency-item platinum">
+                            <span class="currency-amount">${currency.pp}</span>
+                            <span class="currency-type">PP</span>
+                        </div>
+                    ` : ''}
+                    ${currency.gp > 0 ? `
+                        <div class="currency-item gold">
+                            <span class="currency-amount">${currency.gp}</span>
+                            <span class="currency-type">GP</span>
+                        </div>
+                    ` : ''}
+                    ${currency.ep > 0 ? `
+                        <div class="currency-item electrum">
+                            <span class="currency-amount">${currency.ep}</span>
+                            <span class="currency-type">EP</span>
+                        </div>
+                    ` : ''}
+                    ${currency.sp > 0 ? `
+                        <div class="currency-item silver">
+                            <span class="currency-amount">${currency.sp}</span>
+                            <span class="currency-type">SP</span>
+                        </div>
+                    ` : ''}
+                    ${currency.cp > 0 ? `
+                        <div class="currency-item copper">
+                            <span class="currency-amount">${currency.cp}</span>
+                            <span class="currency-type">CP</span>
+                        </div>
+                    ` : ''}
+                </div>
             </div>
         `;
     }
