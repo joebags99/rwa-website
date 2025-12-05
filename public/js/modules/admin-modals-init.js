@@ -134,12 +134,73 @@
             }
         });
 
+        // Create Character Modal
+        const characterModal = ModalFactory.create({
+            ...ModalConfigs.character,
+            onSave: (data) => {
+                if (window.AdminDashboard && window.AdminDashboard.Characters) {
+                    const characterData = {
+                        name: data.name,
+                        player: data.player,
+                        race: data.race,
+                        classes: data.classes,
+                        avatarUrl: data.avatarUrl,
+                        accentColor: data.accentColor || '#7F0EBD'
+                    };
+
+                    if (data.id) {
+                        characterData.id = data.id;
+                        AdminDashboard.Characters._updateCharacter(characterData);
+                    } else {
+                        AdminDashboard.Characters._createCharacter(characterData);
+                    }
+                }
+            }
+        });
+
+        // Create Snapshot Modal
+        const snapshotModal = ModalFactory.create({
+            ...ModalConfigs.snapshot,
+            onSave: (data) => {
+                if (window.AdminDashboard && window.AdminDashboard.Characters) {
+                    const snapshotData = {
+                        act: data.act,
+                        chapter: data.chapter,
+                        date: data.date,
+                        notes: data.notes,
+                        data: {} // Will be populated by D&D Beyond import or manual entry
+                    };
+
+                    // Get the character ID from the modal's stored state
+                    const characterId = snapshotModal.characterId;
+
+                    if (!characterId) {
+                        console.error('No character ID set for snapshot');
+                        return;
+                    }
+
+                    if (data.id) {
+                        snapshotData.id = data.id;
+                        AdminDashboard.Characters._updateSnapshot(characterId, snapshotData);
+                    } else {
+                        AdminDashboard.Characters._createSnapshot(characterId, snapshotData);
+                    }
+                }
+            }
+        });
+
+        // Create Bookmarklet Instructions Modal
+        const bookmarkletModal = ModalFactory.create(ModalConfigs.bookmarklet);
+
         // Expose modals for easy access
         window.AdminModals = {
             npc: npcModal,
             timeline: timelineModal,
             story: storyModal,
-            article: articleModal
+            article: articleModal,
+            character: characterModal,
+            snapshot: snapshotModal,
+            bookmarklet: bookmarkletModal
         };
 
         console.log('✅ All admin modals initialized');

@@ -48,6 +48,9 @@
                     <li data-section="npcs">
                         <a href="#npcs"><i class="fas fa-users"></i> NPCs</a>
                     </li>
+                    <li data-section="characters">
+                        <a href="#characters"><i class="fas fa-hat-wizard"></i> Characters</a>
+                    </li>
                     <li data-section="timeline">
                         <a href="#timeline"><i class="fas fa-hourglass-half"></i> Timeline</a>
                     </li>
@@ -105,7 +108,17 @@
                             <p class="stat-count" id="npcs-count">0</p>
                         </div>
                     </div>
-                        
+
+                    <div class="stat-card" onclick="window.location.href='#characters'" style="cursor: pointer;">
+                        <div class="stat-icon">
+                            <i class="fas fa-hat-wizard"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Characters</h3>
+                            <p class="stat-count" id="characters-count">0</p>
+                        </div>
+                    </div>
+
                     <div class="stat-card" onclick="window.location.href='#timeline'" style="cursor: pointer;">
                         <div class="stat-icon">
                             <i class="fas fa-hourglass-half"></i>
@@ -222,7 +235,43 @@
                         </div>
                     </div>
                 </section>
-                
+
+                <!-- Characters Section -->
+                <section id="characters-section" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-hat-wizard"></i> Character Progression Tracker</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" id="create-character-btn">
+                                <i class="fas fa-plus"></i> Create Character
+                            </button>
+                            <button class="btn btn-secondary" id="show-bookmarklet-btn">
+                                <i class="fas fa-bookmark"></i> Get Bookmarklet
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="search-filter">
+                        <div class="search-bar">
+                            <form autocomplete="off" onsubmit="return false;">
+                                <i class="fas fa-search"></i>
+                                <input type="search"
+                                    id="character-search"
+                                    placeholder="Search characters..."
+                                    autocomplete="off"
+                                    spellcheck="false"
+                                >
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="item-list character-list" id="character-list">
+                        <div class="loading-indicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading characters...</p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Timeline Section -->
  <!-- Timeline Section (Updated from "Coming Soon") -->
  <section id="timeline-section" class="content-section">
@@ -1098,6 +1147,275 @@
         </div>
     </div>
 
+    <!-- Snapshot Data Editor Modal -->
+    <div class="modal" id="snapshot-data-modal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="snapshot-data-modal-title">Edit Character Snapshot</h2>
+                    <button class="close-btn" id="close-snapshot-data-modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="snapshot-data-form">
+                        <input type="hidden" id="snapshot-character-id">
+                        <input type="hidden" id="snapshot-snapshot-id">
+
+                        <!-- Snapshot Metadata -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Snapshot Info</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="snapshot-act">Act</label>
+                                    <input type="number" id="snapshot-act" class="form-control" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="snapshot-chapter">Chapter</label>
+                                    <input type="number" id="snapshot-chapter" class="form-control" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="snapshot-date">Date</label>
+                                    <input type="date" id="snapshot-date" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="snapshot-notes">DM Notes</label>
+                                <textarea id="snapshot-notes" class="form-control" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Tabbed Interface for Character Data -->
+                        <div class="snapshot-tabs">
+                            <ul class="tab-nav">
+                                <li class="tab-item active" data-tab="basics"><i class="fas fa-user"></i> Basics</li>
+                                <li class="tab-item" data-tab="combat"><i class="fas fa-sword"></i> Combat</li>
+                                <li class="tab-item" data-tab="abilities"><i class="fas fa-fist-raised"></i> Abilities</li>
+                                <li class="tab-item" data-tab="equipment"><i class="fas fa-backpack"></i> Equipment</li>
+                                <li class="tab-item" data-tab="spells"><i class="fas fa-magic"></i> Spells</li>
+                            </ul>
+
+                            <!-- Basics Tab -->
+                            <div class="tab-content active" data-tab="basics">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="snapshot-level">Level</label>
+                                        <input type="number" id="snapshot-level" class="form-control" min="1" max="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="snapshot-xp">Experience Points</label>
+                                        <input type="number" id="snapshot-xp" class="form-control" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Combat Tab -->
+                            <div class="tab-content" data-tab="combat">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="snapshot-hp-current">HP Current</label>
+                                        <input type="number" id="snapshot-hp-current" class="form-control" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="snapshot-hp-max">HP Max</label>
+                                        <input type="number" id="snapshot-hp-max" class="form-control" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="snapshot-hp-temp">HP Temp</label>
+                                        <input type="number" id="snapshot-hp-temp" class="form-control" min="0">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="snapshot-ac">Armor Class</label>
+                                        <input type="number" id="snapshot-ac" class="form-control" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="snapshot-initiative">Initiative</label>
+                                        <input type="number" id="snapshot-initiative" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="snapshot-speed">Speed</label>
+                                        <input type="number" id="snapshot-speed" class="form-control" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="snapshot-proficiency">Proficiency Bonus</label>
+                                        <input type="number" id="snapshot-proficiency" class="form-control" min="2" max="6">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Abilities Tab -->
+                            <div class="tab-content" data-tab="abilities">
+                                <div class="abilities-grid">
+                                    <div class="ability-item">
+                                        <label>Strength</label>
+                                        <div class="ability-inputs">
+                                            <input type="number" id="snapshot-str-score" class="form-control" placeholder="Score" min="1" max="30">
+                                            <input type="number" id="snapshot-str-mod" class="form-control" placeholder="Mod">
+                                        </div>
+                                    </div>
+                                    <div class="ability-item">
+                                        <label>Dexterity</label>
+                                        <div class="ability-inputs">
+                                            <input type="number" id="snapshot-dex-score" class="form-control" placeholder="Score" min="1" max="30">
+                                            <input type="number" id="snapshot-dex-mod" class="form-control" placeholder="Mod">
+                                        </div>
+                                    </div>
+                                    <div class="ability-item">
+                                        <label>Constitution</label>
+                                        <div class="ability-inputs">
+                                            <input type="number" id="snapshot-con-score" class="form-control" placeholder="Score" min="1" max="30">
+                                            <input type="number" id="snapshot-con-mod" class="form-control" placeholder="Mod">
+                                        </div>
+                                    </div>
+                                    <div class="ability-item">
+                                        <label>Intelligence</label>
+                                        <div class="ability-inputs">
+                                            <input type="number" id="snapshot-int-score" class="form-control" placeholder="Score" min="1" max="30">
+                                            <input type="number" id="snapshot-int-mod" class="form-control" placeholder="Mod">
+                                        </div>
+                                    </div>
+                                    <div class="ability-item">
+                                        <label>Wisdom</label>
+                                        <div class="ability-inputs">
+                                            <input type="number" id="snapshot-wis-score" class="form-control" placeholder="Score" min="1" max="30">
+                                            <input type="number" id="snapshot-wis-mod" class="form-control" placeholder="Mod">
+                                        </div>
+                                    </div>
+                                    <div class="ability-item">
+                                        <label>Charisma</label>
+                                        <div class="ability-inputs">
+                                            <input type="number" id="snapshot-cha-score" class="form-control" placeholder="Score" min="1" max="30">
+                                            <input type="number" id="snapshot-cha-mod" class="form-control" placeholder="Mod">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Equipment Tab -->
+                            <div class="tab-content" data-tab="equipment">
+                                <div class="form-group">
+                                    <label>Equipment</label>
+                                    <textarea id="snapshot-equipment" class="form-control" rows="6" placeholder="One item per line. Format: Item Name (quantity)"></textarea>
+                                    <small>Enter equipment items, one per line. Example: Longsword (1), Health Potion (3)</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Currency</label>
+                                    <div class="currency-grid">
+                                        <div class="currency-item">
+                                            <label>CP</label>
+                                            <input type="number" id="snapshot-cp" class="form-control" min="0" value="0">
+                                        </div>
+                                        <div class="currency-item">
+                                            <label>SP</label>
+                                            <input type="number" id="snapshot-sp" class="form-control" min="0" value="0">
+                                        </div>
+                                        <div class="currency-item">
+                                            <label>EP</label>
+                                            <input type="number" id="snapshot-ep" class="form-control" min="0" value="0">
+                                        </div>
+                                        <div class="currency-item">
+                                            <label>GP</label>
+                                            <input type="number" id="snapshot-gp" class="form-control" min="0" value="0">
+                                        </div>
+                                        <div class="currency-item">
+                                            <label>PP</label>
+                                            <input type="number" id="snapshot-pp" class="form-control" min="0" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Spells Tab -->
+                            <div class="tab-content" data-tab="spells">
+                                <div class="form-group">
+                                    <label>Spells</label>
+                                    <textarea id="snapshot-spells" class="form-control" rows="6" placeholder="One spell per line. Format: Spell Name (level)"></textarea>
+                                    <small>Enter spells, one per line. Example: Magic Missile (1st), Fireball (3rd)</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Spell Slots</label>
+                                    <div class="spell-slots-grid">
+                                        <div class="spell-slot-item">
+                                            <label>1st Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-1-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-1-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>2nd Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-2-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-2-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>3rd Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-3-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-3-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>4th Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-4-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-4-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>5th Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-5-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-5-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>6th Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-6-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-6-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>7th Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-7-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-7-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>8th Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-8-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-8-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="spell-slot-item">
+                                            <label>9th Level</label>
+                                            <div class="slot-inputs">
+                                                <input type="number" id="snapshot-slot-9-total" class="form-control" placeholder="Total" min="0" value="0">
+                                                <input type="number" id="snapshot-slot-9-used" class="form-control" placeholder="Used" min="0" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancel-snapshot-data">Cancel</button>
+                    <button class="btn btn-primary" id="save-snapshot-data">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript for Admin Dashboard -->
     <!-- Modal Factory System (Phase 3) -->
     <script src="/js/modules/modal-factory.js"></script>
@@ -1107,5 +1425,8 @@
     <!-- Main Admin Dashboard -->
     <!-- Use admin.min.js in production for better performance (55% smaller) -->
     <script src="/js/admin.js"></script>
+
+    <!-- Character Management Module -->
+    <script src="/js/admin-characters.js"></script>
 </body>
 </html>

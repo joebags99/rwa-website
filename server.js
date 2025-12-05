@@ -34,7 +34,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors()); // Enable CORS for all routes
+// Enable CORS with credentials for bookmarklet to work from D&D Beyond
+app.use(cors({
+    origin: true, // Allow all origins (in production, specify your domain)
+    credentials: true, // Allow cookies to be sent
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies

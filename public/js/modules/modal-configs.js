@@ -352,6 +352,183 @@ window.ModalConfigs = {
                 { id: 'save', text: 'Save Article', class: 'btn btn-primary', icon: 'fas fa-save', action: 'submit' }
             ]
         }
+    },
+
+    /**
+     * Character Modal Configuration
+     */
+    character: {
+        id: 'character-modal',
+        title: 'Create Character',
+        fields: [
+            {
+                type: 'row',
+                fields: [
+                    {
+                        id: 'name',
+                        label: 'Character Name',
+                        type: 'text',
+                        required: true,
+                        placeholder: 'Thorin Ironforge'
+                    },
+                    {
+                        id: 'player',
+                        label: 'Player Name',
+                        type: 'text',
+                        required: true,
+                        placeholder: 'John Smith'
+                    }
+                ]
+            },
+            {
+                type: 'row',
+                fields: [
+                    {
+                        id: 'race',
+                        label: 'Race',
+                        type: 'text',
+                        required: true,
+                        placeholder: 'Dwarf'
+                    },
+                    {
+                        id: 'classes',
+                        label: 'Class(es)',
+                        type: 'text',
+                        required: true,
+                        help: 'e.g., "Fighter 5" or "Fighter 3 / Wizard 2"'
+                    }
+                ]
+            },
+            {
+                id: 'avatarUrl',
+                label: 'Avatar URL',
+                type: 'url',
+                help: 'Character portrait image URL'
+            },
+            {
+                id: 'accentColor',
+                label: 'Accent Color',
+                type: 'text',
+                placeholder: '#7F0EBD',
+                help: 'Hex color code for character theme (e.g., #FF5733)'
+            }
+        ],
+        options: {
+            footerButtons: [
+                { id: 'cancel', text: 'Cancel', class: 'btn btn-secondary', action: 'close' },
+                { id: 'save', text: 'Save Character', class: 'btn btn-primary', icon: 'fas fa-save', action: 'submit' }
+            ]
+        }
+    },
+
+    /**
+     * Character Snapshot Modal Configuration
+     */
+    snapshot: {
+        id: 'snapshot-modal',
+        title: 'Add Character Snapshot',
+        fields: [
+            {
+                type: 'row',
+                fields: [
+                    {
+                        id: 'act',
+                        label: 'Act',
+                        type: 'number',
+                        required: true,
+                        placeholder: '1',
+                        min: 1
+                    },
+                    {
+                        id: 'chapter',
+                        label: 'Chapter',
+                        type: 'number',
+                        required: true,
+                        placeholder: '1',
+                        min: 1
+                    }
+                ]
+            },
+            {
+                id: 'date',
+                label: 'Date',
+                type: 'date',
+                required: true
+            },
+            {
+                id: 'notes',
+                label: 'DM Notes',
+                type: 'textarea',
+                rows: 4,
+                help: 'Optional notes about this point in the story'
+            }
+        ],
+        options: {
+            footerButtons: [
+                { id: 'cancel', text: 'Cancel', class: 'btn btn-secondary', action: 'close' },
+                { id: 'save', text: 'Save Snapshot', class: 'btn btn-primary', icon: 'fas fa-save', action: 'submit' }
+            ]
+        }
+    },
+
+    /**
+     * Bookmarklet Instructions Modal Configuration
+     */
+    bookmarklet: {
+        id: 'bookmarklet-modal',
+        title: 'D&D Beyond Character Importer',
+        fields: [
+            {
+                type: 'html',
+                content: `
+                    <div class="bookmarklet-instructions">
+                        <p><strong>How to use:</strong></p>
+                        <ol>
+                            <li>Drag the button below to your bookmarks bar</li>
+                            <li>Navigate to any D&D Beyond character sheet</li>
+                            <li>Click the bookmark to import the character</li>
+                        </ol>
+
+                        <div class="bookmarklet-button-container" style="text-align: center; margin: 20px 0; padding: 20px; background: var(--bg-tertiary); border-radius: 8px;">
+                            <a href="" id="bookmarklet-link" class="btn btn-lg btn-primary" style="font-size: 18px; padding: 15px 30px;">
+                                <i class="fas fa-dragon"></i> Import from D&D Beyond
+                            </a>
+                            <p style="margin-top: 15px; font-size: 14px; color: var(--text-secondary);">
+                                ⬆️ Drag this button to your bookmarks bar
+                            </p>
+                        </div>
+
+                        <div class="alert alert-info" style="margin-top: 20px; padding: 15px; background: rgba(13, 110, 253, 0.1); border-left: 4px solid #0d6efd; border-radius: 4px;">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Note:</strong> Make sure you're logged in to this admin panel before using the bookmarklet.
+                        </div>
+
+                        <details style="margin-top: 20px;">
+                            <summary style="cursor: pointer; font-weight: bold; padding: 10px; background: var(--bg-secondary); border-radius: 4px;">
+                                <i class="fas fa-code"></i> Manual Installation
+                            </summary>
+                            <div style="margin-top: 10px; padding: 15px; background: var(--bg-tertiary); border-radius: 4px;">
+                                <p>If drag-and-drop doesn't work, follow these steps:</p>
+                                <ol>
+                                    <li>Create a new bookmark in your browser</li>
+                                    <li>Set the bookmark name to: <code>Import D&D Character</code></li>
+                                    <li>Copy the code below and paste it as the URL</li>
+                                </ol>
+                                <textarea id="bookmarklet-code" readonly style="width: 100%; height: 150px; font-family: monospace; font-size: 12px; margin-top: 10px; padding: 10px; background: #1a1a1a; color: #0f0; border: 1px solid #444; border-radius: 4px;"></textarea>
+                                <button id="copy-bookmarklet" class="btn btn-secondary" style="margin-top: 10px;">
+                                    <i class="fas fa-copy"></i> Copy Code
+                                </button>
+                            </div>
+                        </details>
+                    </div>
+                `
+            }
+        ],
+        options: {
+            footerButtons: [
+                { id: 'close', text: 'Close', class: 'btn btn-primary', action: 'close' }
+            ]
+        }
     }
 };
 
