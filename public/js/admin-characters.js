@@ -259,6 +259,25 @@
         },
 
         /**
+         * Format classes array for display
+         * @param {Array} classes - Classes array
+         * @returns {string} - Formatted classes string
+         */
+        formatClasses(classes) {
+            if (!classes || !Array.isArray(classes) || classes.length === 0) {
+                return '';
+            }
+
+            return classes.map(cls => {
+                let str = `${cls.name} ${cls.level}`;
+                if (cls.subclass) {
+                    str += ` (${cls.subclass})`;
+                }
+                return str;
+            }).join(' / ');
+        },
+
+        /**
          * Render a character card
          * @param {Object} character - Character data
          * @returns {string} - HTML for character card
@@ -272,6 +291,7 @@
             const level = latestSnapshot && latestSnapshot.data ? latestSnapshot.data.level || '?' : '?';
 
             const accentColor = character.accentColor || '#7F0EBD';
+            const classesString = this.formatClasses(character.classes);
 
             return `
                 <div class="item-card character-card" data-character-id="${character.id}">
@@ -291,9 +311,9 @@
                                     Level ${level} ${character.race || ''}
                                 </span>
                             </p>
-                            ${character.classes ? `
+                            ${classesString ? `
                                 <p class="character-classes">
-                                    <i class="fas fa-shield-alt"></i> ${character.classes}
+                                    <i class="fas fa-shield-alt"></i> ${classesString}
                                 </p>
                             ` : ''}
                         </div>
