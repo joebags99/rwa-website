@@ -12,7 +12,7 @@
  * 5. Click the bookmark to import the character
  */
 
-(function() {
+(async function() {
     'use strict';
 
     // Configuration - Update this with your website URL
@@ -22,6 +22,20 @@
     if (!window.location.hostname.includes('dndbeyond.com') || !window.location.pathname.includes('/characters/')) {
         alert('⚠️ Please navigate to a D&D Beyond character sheet first!');
         return;
+    }
+
+    // Helper function to wait for a specified time
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Helper function to click a tab and wait for content to load
+    async function switchTab(tabName) {
+        const tabButton = document.querySelector(`button[data-testid="${tabName}"]`);
+        if (tabButton && tabButton.getAttribute('aria-checked') !== 'true') {
+            tabButton.click();
+            await wait(500); // Wait for content to load
+        }
     }
 
     // Helper function to safely get text content
@@ -193,6 +207,9 @@
         });
         console.log('🎯 Skills:', characterData.skills.length, 'skills extracted');
 
+        // Switch to EQUIPMENT tab to extract inventory
+        await switchTab('EQUIPMENT');
+
         // Extract Equipment (try new structure first, fall back to old)
         const inventoryItems = document.querySelectorAll('.ct-inventory-item, .ddbc-inventory-slot');
         inventoryItems.forEach(itemElement => {
@@ -242,10 +259,17 @@
 
         console.log('💰 Currency:', characterData.currency);
 
-        // Extract Features & Traits
-        document.querySelectorAll('.ct-feature-snippet, .ddbc-feature-list__item').forEach(featureElement => {
-            const featureName = getText('.ct-feature-snippet__heading, .ddbc-feature-list__name', featureElement);
-            const featureDescription = getText('.ct-feature-snippet__content, .ddbc-feature-list__description', featureElement);
+        // Switch to FEATURES_TRAITS tab to extract features
+        await switchTab('FEATURES_TRAITS');
+
+        // Extract Features & Traits (using new selectors for tab content)
+        document.querySelectorAll('.ct-feature-snippet, .styles_snippet__CzYh\\+, .ddbc-feature-list__item').forEach(featureElement => {
+            const featureName = getText('[class*="heading"]', featureElement) ||
+                               getText('.ct-feature-snippet__heading', featureElement) ||
+                               getText('.ddbc-feature-list__name', featureElement);
+            const featureDescription = getText('[class*="content"]', featureElement) ||
+                                      getText('.ct-feature-snippet__content', featureElement) ||
+                                      getText('.ddbc-feature-list__description', featureElement);
 
             if (featureName) {
                 characterData.features.push({
@@ -255,6 +279,9 @@
             }
         });
         console.log('⭐ Features:', characterData.features.length, 'features extracted');
+
+        // Switch to SPELLS tab to extract spells
+        await switchTab('SPELLS');
 
         // Extract Spells
         document.querySelectorAll('.ct-spells__spell').forEach(spellElement => {
