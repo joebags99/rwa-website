@@ -212,8 +212,17 @@ window.CharacterViewer = {
     renderCharacters() {
         if (!this.elements.characterLineup) return;
 
-        // Sort characters by creation date
+        // Sort characters by displayOrder (if set), then by creation date
         const sortedCharacters = [...this.characters].sort((a, b) => {
+            // If both have displayOrder, sort by that
+            if (a.displayOrder != null && b.displayOrder != null) {
+                return a.displayOrder - b.displayOrder;
+            }
+            // If only a has displayOrder, it comes first
+            if (a.displayOrder != null) return -1;
+            // If only b has displayOrder, it comes first
+            if (b.displayOrder != null) return 1;
+            // Otherwise sort by creation date
             return new Date(a.createdAt) - new Date(b.createdAt);
         });
 
@@ -223,47 +232,28 @@ window.CharacterViewer = {
             .join('');
 
         // Show lineup
-        this.elements.characterLineup.style.display = 'grid';
+        this.elements.characterLineup.style.display = 'flex';
 
         // Attach click listeners
         this.attachCharacterListeners();
     },
 
     /**
-     * Render a character card
+     * Render a character card - redesigned as standing character
      */
     renderCharacterCard(character, index) {
-        const accentColor = character.accentColor || '#7F0EBD';
         const avatarUrl = character.avatarUrl || '/assets/images/unknown.png';
-
-        // Get latest snapshot for level
-        const latestSnapshot = character.snapshots && character.snapshots.length > 0
-            ? character.snapshots[character.snapshots.length - 1]
-            : null;
-
-        const level = latestSnapshot && latestSnapshot.data ? latestSnapshot.data.level || '?' : '?';
 
         return `
             <div class="character-card"
                  data-character-id="${character.id}"
-                 data-accent-color="${accentColor}"
-                 style="border-top-color: ${accentColor};">
+                 data-character-name="${character.name}">
                 <div class="character-avatar-container">
+                    <div class="character-name-hover">${character.name}</div>
                     <img src="${avatarUrl}"
                          alt="${character.name}"
                          class="character-avatar"
                          onerror="this.src='/assets/images/unknown.png'">
-                    <div class="character-level-badge">
-                        Level ${level}
-                    </div>
-                </div>
-                <div class="character-info">
-                    <h2 class="character-name">${character.name}</h2>
-                    <p class="character-class">${character.classes || 'Unknown Class'}</p>
-                    <p class="character-player">
-                        <i class="fas fa-user"></i>
-                        ${character.player || 'Unknown Player'}
-                    </p>
                 </div>
             </div>
         `;
@@ -284,7 +274,7 @@ window.CharacterViewer = {
     },
 
     /**
-     * Focus on a specific character
+     * Focus on a specific character - redesigned with fade transitions
      */
     async focusCharacter(characterId) {
         try {
@@ -310,14 +300,20 @@ window.CharacterViewer = {
                 this.currentSnapshot = null;
             }
 
-            // Hide party lineup
-            this.elements.partyLineup.classList.add('hidden');
+            // Get all character cards
+            const characterCards = document.querySelectorAll('.character-card');
 
-            // Show character focus
+            // Fade out ALL characters (including selected)
+            characterCards.forEach(card => {
+                card.classList.add('fading');
+            });
+
+            // Wait for fade out, then show focus view
             setTimeout(() => {
                 this.elements.characterFocus.classList.add('active');
                 this.renderCharacterSheet();
-            }, 300);
+                this.addCharacterImageToFocus(character);
+            }, 600);
 
         } catch (error) {
             console.error('Error focusing character:', error);
@@ -325,16 +321,75 @@ window.CharacterViewer = {
     },
 
     /**
-     * Return to party lineup
+     * Add character image to the right side of focus view
+     */
+    addCharacterImageToFocus(character) {
+        // Remove any existing character image
+        const existingImage = this.elements.characterFocus.querySelector('.character-image-right');
+        if (existingImage) {
+            existingImage.remove();
+        }
+
+        // Create new character image element
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'character-image-right';
+        imageContainer.setAttribute('data-character-name', character.name);
+
+        const img = document.createElement('img');
+        img.src = character.avatarUrl || '/assets/images/unknown.png';
+        img.alt = character.name;
+        img.onerror = function() { this.src = '/assets/images/unknown.png'; };
+
+        imageContainer.appendChild(img);
+        this.elements.characterFocus.appendChild(imageContainer);
+    },
+
+    /**
+     * Return to party lineup - redesigned with smooth animations
      */
     returnToParty() {
-        // Hide character focus
-        this.elements.characterFocus.classList.remove('active');
+        // Add fade-out class to character image
+        const characterImage = this.elements.characterFocus.querySelector('.character-image-right');
+        if (characterImage) {
+            characterImage.classList.add('fade-out');
+        }
 
-        // Show party lineup
+        // Hide character focus after a delay
         setTimeout(() => {
-            this.elements.partyLineup.classList.remove('hidden');
-        }, 300);
+            this.elements.characterFocus.classList.remove('active');
+
+            // Remove character image after fade
+            if (characterImage) {
+                characterImage.remove();
+            }
+        }, 500);
+
+        // Restore character cards with staggered fade-in animation
+        setTimeout(() => {
+            const characterCards = document.querySelectorAll('.character-card');
+            characterCards.forEach((card, index) => {
+                // Remove existing classes
+                card.classList.remove('fading');
+                card.classList.remove('selected');
+
+                // Force a reflow to ensure clean state
+                void card.offsetWidth;
+
+                // Add fade-in class
+                card.classList.add('fade-in');
+
+                // Stagger the animation
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                // Remove fade-in class and clean up after animation completes
+                setTimeout(() => {
+                    card.classList.remove('fade-in');
+                    card.style.animationDelay = '';
+                    // Force reflow again to ensure transition re-enables
+                    void card.offsetWidth;
+                }, 600 + (index * 100));
+            });
+        }, 800);
 
         // Clear current character
         this.currentCharacter = null;
@@ -356,6 +411,18 @@ window.CharacterViewer = {
         // Get snapshot data or use empty data
         const data = snapshot ? snapshot.data : {};
 
+        // Format classes - handle both string and object/array
+        let classesText = '';
+        if (character.classes) {
+            if (typeof character.classes === 'string') {
+                classesText = character.classes;
+            } else if (Array.isArray(character.classes)) {
+                classesText = character.classes.map(c => typeof c === 'string' ? c : c.name || c.class).join('/');
+            } else if (typeof character.classes === 'object') {
+                classesText = character.classes.name || character.classes.class || '';
+            }
+        }
+
         const html = `
             <div class="character-sheet" style="border-top-color: ${accentColor};">
                 <!-- Header -->
@@ -370,7 +437,7 @@ window.CharacterViewer = {
                             ${character.name}
                         </h1>
                         <p class="character-sheet-subtitle">
-                            Level ${data.level || '?'} ${character.race || ''} ${character.classes || ''}
+                            Level ${data.level || '?'} ${character.race || ''} ${classesText}
                         </p>
                         <p class="character-sheet-player">
                             <i class="fas fa-user"></i>

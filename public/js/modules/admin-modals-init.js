@@ -167,7 +167,8 @@
                         race: data.race,
                         classes: classesArray,
                         avatarUrl: data.avatarUrl,
-                        accentColor: data.accentColor || '#7F0EBD'
+                        accentColor: data.accentColor || '#7F0EBD',
+                        displayOrder: data.displayOrder ? parseInt(data.displayOrder, 10) : null
                     };
 
                     if (data.id) {
@@ -209,7 +210,8 @@
                         race: character.race || '',
                         classes: classesString,
                         avatarUrl: character.avatarUrl || '',
-                        accentColor: character.accentColor || '#7F0EBD'
+                        accentColor: character.accentColor || '#7F0EBD',
+                        displayOrder: character.displayOrder || ''
                     };
 
                     characterModal.setData(displayData);
