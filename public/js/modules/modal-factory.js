@@ -427,19 +427,32 @@ window.ModalFactory = {
      */
     setData(modalId, data) {
         const modal = this.modals.get(modalId);
-        if (!modal) return;
+        if (!modal) {
+            console.warn(`⚠️ setData: Modal "${modalId}" not found`);
+            return;
+        }
 
         const form = modal.element.querySelector('form');
-        if (!form) return;
+        if (!form) {
+            console.warn(`⚠️ setData: Form not found in modal "${modalId}"`);
+            return;
+        }
+
+        console.log(`📝 setData for ${modalId}:`, data);
 
         Object.keys(data).forEach(key => {
-            const input = form.querySelector(`[data-field-id="${key}"], #${modalId}-${key}, #${modalId}-id`);
+            const selector = `[data-field-id="${key}"], #${modalId}-${key}, #${modalId}-id`;
+            const input = form.querySelector(selector);
+
+            console.log(`  - Field "${key}":`, input ? '✓ Found' : '✗ Not found', `(selector: ${selector})`);
+
             if (input) {
                 if (input.type === 'checkbox') {
                     input.checked = data[key];
                 } else {
                     input.value = data[key] || '';
                 }
+                console.log(`    Set value to:`, input.value || input.checked);
             }
         });
     },

@@ -7276,6 +7276,9 @@ AdminDashboard.initKeyboardShortcuts = function() {
         // Check if user is typing in an input field
         const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
 
+        // Guard against undefined key (can happen with certain keyboard events)
+        if (!e.key) return;
+
         // Build the shortcut key combination
         const key = e.key.toLowerCase();
         const shortcut = (e.ctrlKey || e.metaKey ? 'ctrl+' : '') + key;
