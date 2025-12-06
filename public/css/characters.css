@@ -364,7 +364,7 @@
 }
 
 .back-button {
-    position: fixed;
+    position: sticky;
     top: 2rem;
     left: 2rem;
     z-index: 300;
