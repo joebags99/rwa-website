@@ -175,7 +175,19 @@
         console.log('💪 Abilities extracted:', characterData.abilities);
 
         // Extract HP (try new selectors first, fall back to old)
-        let hpCurrent = parseNumber(getText('button[aria-label*="Current hit points"]') || getText('.ct-health-summary__hp-current'));
+        // New D&D Beyond structure: label "Current" is linked to button via 'for' attribute
+        let hpCurrent = 0;
+        const currentHpLabel = Array.from(document.querySelectorAll('label.styles_label__ysVMP'))
+            .find(label => label.textContent.trim() === 'Current');
+        if (currentHpLabel && currentHpLabel.getAttribute('for')) {
+            const buttonId = currentHpLabel.getAttribute('for');
+            hpCurrent = parseNumber(getText(`#${buttonId}`));
+        }
+        // Fallback to old selectors
+        if (!hpCurrent) {
+            hpCurrent = parseNumber(getText('button[aria-label*="Current hit points"]') || getText('.ct-health-summary__hp-current'));
+        }
+
         let hpMax = parseNumber(getText('[data-testid="max-hp"]') || getText('.ct-health-summary__hp-max'));
         let hpTemp = parseNumber(getText('.ct-health-summary__hp-temp'));
         characterData.hp = { current: hpCurrent, max: hpMax, temp: hpTemp };
@@ -293,30 +305,48 @@
         // Switch to SPELLS tab to extract spells
         await switchTab('SPELLS');
 
-        // Extract Spells
-        document.querySelectorAll('.ct-spells-spell').forEach(spellElement => {
-            const spellName = getText('[class*="spellName"]', spellElement) ||
-                             getText('.ct-spell-name__text, .ct-spells__spell-name', spellElement);
-            const spellLevel = getText('.ct-spell-level-casting__level', spellElement);
-
-            if (spellName) {
-                characterData.spells.push({
-                    name: spellName,
-                    level: spellLevel || 'Cantrip',
-                    prepared: true // All visible spells on D&D Beyond are prepared/granted
-                });
-            }
-        });
-        console.log('🔮 Spells:', characterData.spells.length, 'spells extracted');
-
-        // Extract spell slots - D&D Beyond shows spell level headers with slot checkboxes
+        // Extract Spells by iterating through spell level groups
+        // D&D Beyond organizes spells in .ct-content-group containers with level headers
         const spellLevelSections = document.querySelectorAll('.ct-content-group');
         spellLevelSections.forEach(section => {
             const levelText = getText('.ct-content-group__header-content', section);
-            const levelMatch = levelText.match(/(\d+)(?:st|nd|rd|th)\s+Level/i);
 
-            if (levelMatch) {
-                const level = parseInt(levelMatch[1], 10);
+            // Determine spell level from header text
+            let spellLevel = 'Cantrip';
+            if (levelText) {
+                // Check if it's a numbered level (1st, 2nd, etc.)
+                const levelMatch = levelText.match(/(\d+)(?:st|nd|rd|th)\s+Level/i);
+                if (levelMatch) {
+                    spellLevel = parseInt(levelMatch[1], 10);
+                } else if (levelText.toLowerCase().includes('cantrip')) {
+                    spellLevel = 'Cantrip';
+                }
+            }
+
+            // Extract all spells in this level group
+            const spellsInGroup = section.querySelectorAll('.ct-spells-spell');
+            spellsInGroup.forEach(spellElement => {
+                // Skip "scaled" spells - these are duplicates showing spells cast at higher levels
+                // For example, a 1st level spell that appears in the 2nd level section with upcast notation
+                const isScaledSpell = spellElement.querySelector('.ct-spells-spell__label--scaled');
+                if (isScaledSpell) {
+                    return; // Skip this duplicate
+                }
+
+                const spellName = getText('[class*="spellName"]', spellElement) ||
+                                 getText('.ct-spell-name__text, .ct-spells__spell-name', spellElement);
+
+                if (spellName) {
+                    characterData.spells.push({
+                        name: spellName,
+                        level: spellLevel,
+                        prepared: true // All visible spells on D&D Beyond are prepared/granted
+                    });
+                }
+            });
+
+            // Extract spell slots for numbered levels
+            if (typeof spellLevel === 'number') {
                 const slotManager = section.querySelector('.ct-slot-manager');
 
                 if (slotManager) {
@@ -327,7 +357,7 @@
                     ).length;
 
                     if (totalSlots > 0) {
-                        characterData.spellSlots[`${level}`] = {
+                        characterData.spellSlots[`${spellLevel}`] = {
                             total: totalSlots,
                             used: usedSlots
                         };
@@ -335,6 +365,7 @@
                 }
             }
         });
+        console.log('🔮 Spells:', characterData.spells.length, 'spells extracted');
         console.log('✨ Spell Slots:', characterData.spellSlots);
 
         // Extract avatar/portrait URL

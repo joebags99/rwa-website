@@ -138,6 +138,11 @@
      */
     AdminDashboard.Characters = {
         /**
+         * Cached characters data
+         */
+        data: [],
+
+        /**
          * Current character being viewed/edited
          */
         currentCharacter: null,
@@ -218,6 +223,9 @@
                 // Fetch characters from API
                 const characters = await AdminDashboard.API.Characters.getAll();
 
+                // Cache the data
+                this.data = characters;
+
                 // Update character count in dashboard
                 const countElement = document.getElementById('characters-count');
                 if (countElement) {
@@ -259,6 +267,25 @@
         },
 
         /**
+         * Format classes array for display
+         * @param {Array} classes - Classes array
+         * @returns {string} - Formatted classes string
+         */
+        formatClasses(classes) {
+            if (!classes || !Array.isArray(classes) || classes.length === 0) {
+                return '';
+            }
+
+            return classes.map(cls => {
+                let str = `${cls.name} ${cls.level}`;
+                if (cls.subclass) {
+                    str += ` (${cls.subclass})`;
+                }
+                return str;
+            }).join(' / ');
+        },
+
+        /**
          * Render a character card
          * @param {Object} character - Character data
          * @returns {string} - HTML for character card
@@ -272,6 +299,7 @@
             const level = latestSnapshot && latestSnapshot.data ? latestSnapshot.data.level || '?' : '?';
 
             const accentColor = character.accentColor || '#7F0EBD';
+            const classesString = this.formatClasses(character.classes);
 
             return `
                 <div class="item-card character-card" data-character-id="${character.id}">
@@ -291,9 +319,9 @@
                                     Level ${level} ${character.race || ''}
                                 </span>
                             </p>
-                            ${character.classes ? `
+                            ${classesString ? `
                                 <p class="character-classes">
-                                    <i class="fas fa-shield-alt"></i> ${character.classes}
+                                    <i class="fas fa-shield-alt"></i> ${classesString}
                                 </p>
                             ` : ''}
                         </div>
@@ -391,7 +419,7 @@
                 }
             } catch (error) {
                 console.error('Error loading character:', error);
-                AdminDashboard.showToast('Error loading character', 'error');
+                AdminDashboard.UI.showToast('error', 'Error loading character');
             }
         },
 
@@ -409,7 +437,7 @@
 
             } catch (error) {
                 console.error('Error loading character snapshots:', error);
-                AdminDashboard.showToast('Error loading snapshots', 'error');
+                AdminDashboard.UI.showToast('error', 'Error loading snapshots');
             }
         },
 
@@ -604,7 +632,7 @@
                 this.openSnapshotDataEditor(characterId, snapshot);
             } catch (error) {
                 console.error('Error loading snapshot:', error);
-                AdminDashboard.showToast('Error loading snapshot', 'error');
+                AdminDashboard.UI.showToast('error', 'Error loading snapshot');
             }
         },
 
@@ -837,7 +865,7 @@
 
                 // Save via API
                 await AdminDashboard.API.Characters.updateSnapshot(characterId, snapshotId, snapshotData);
-                AdminDashboard.showToast('Snapshot updated successfully', 'success');
+                AdminDashboard.UI.showToast('success', 'Snapshot updated successfully');
 
                 // Close editor
                 this.closeSnapshotDataEditor();
@@ -848,7 +876,7 @@
 
             } catch (error) {
                 console.error('Error saving snapshot:', error);
-                AdminDashboard.showToast('Error saving snapshot', 'error');
+                AdminDashboard.UI.showToast('error', 'Error saving snapshot');
             }
         },
 
@@ -961,11 +989,11 @@
         async _deleteCharacter(characterId) {
             try {
                 await AdminDashboard.API.Characters.delete(characterId);
-                AdminDashboard.showToast('Character deleted successfully', 'success');
+                AdminDashboard.UI.showToast('success', 'Character deleted successfully');
                 this.loadCharacters();
             } catch (error) {
                 console.error('Error deleting character:', error);
-                AdminDashboard.showToast('Error deleting character', 'error');
+                AdminDashboard.UI.showToast('error', 'Error deleting character');
             }
         },
 
@@ -988,14 +1016,14 @@
         async _deleteSnapshot(characterId, snapshotId) {
             try {
                 await AdminDashboard.API.Characters.deleteSnapshot(characterId, snapshotId);
-                AdminDashboard.showToast('Snapshot deleted successfully', 'success');
+                AdminDashboard.UI.showToast('success', 'Snapshot deleted successfully');
 
                 // Reload the snapshots view
                 const character = await AdminDashboard.API.Characters.get(characterId);
                 this.showSnapshotsView(character);
             } catch (error) {
                 console.error('Error deleting snapshot:', error);
-                AdminDashboard.showToast('Error deleting snapshot', 'error');
+                AdminDashboard.UI.showToast('error', 'Error deleting snapshot');
             }
         },
 
@@ -1006,7 +1034,7 @@
         async _createCharacter(characterData) {
             try {
                 await AdminDashboard.API.Characters.create(characterData);
-                AdminDashboard.showToast('Character created successfully', 'success');
+                AdminDashboard.UI.showToast('success', 'Character created successfully');
                 this.loadCharacters();
 
                 // Close modal
@@ -1015,7 +1043,7 @@
                 }
             } catch (error) {
                 console.error('Error creating character:', error);
-                AdminDashboard.showToast('Error creating character', 'error');
+                AdminDashboard.UI.showToast('error', 'Error creating character');
             }
         },
 
@@ -1026,7 +1054,7 @@
         async _updateCharacter(characterData) {
             try {
                 await AdminDashboard.API.Characters.update(characterData.id, characterData);
-                AdminDashboard.showToast('Character updated successfully', 'success');
+                AdminDashboard.UI.showToast('success', 'Character updated successfully');
                 this.loadCharacters();
 
                 // Close modal
@@ -1035,7 +1063,7 @@
                 }
             } catch (error) {
                 console.error('Error updating character:', error);
-                AdminDashboard.showToast('Error updating character', 'error');
+                AdminDashboard.UI.showToast('error', 'Error updating character');
             }
         },
 
@@ -1047,7 +1075,7 @@
         async _createSnapshot(characterId, snapshotData) {
             try {
                 await AdminDashboard.API.Characters.createSnapshot(characterId, snapshotData);
-                AdminDashboard.showToast('Snapshot added successfully', 'success');
+                AdminDashboard.UI.showToast('success', 'Snapshot added successfully');
 
                 // Close modal
                 if (window.AdminModals && window.AdminModals.snapshot) {
@@ -1059,7 +1087,7 @@
                 this.showSnapshotsView(character);
             } catch (error) {
                 console.error('Error creating snapshot:', error);
-                AdminDashboard.showToast('Error creating snapshot', 'error');
+                AdminDashboard.UI.showToast('error', 'Error creating snapshot');
             }
         },
 
@@ -1071,7 +1099,7 @@
         async _updateSnapshot(characterId, snapshotData) {
             try {
                 await AdminDashboard.API.Characters.updateSnapshot(characterId, snapshotData.id, snapshotData);
-                AdminDashboard.showToast('Snapshot updated successfully', 'success');
+                AdminDashboard.UI.showToast('success', 'Snapshot updated successfully');
 
                 // Close modal
                 if (window.AdminModals && window.AdminModals.snapshot) {
@@ -1083,7 +1111,7 @@
                 this.showSnapshotsView(character);
             } catch (error) {
                 console.error('Error updating snapshot:', error);
-                AdminDashboard.showToast('Error updating snapshot', 'error');
+                AdminDashboard.UI.showToast('error', 'Error updating snapshot');
             }
         },
 
@@ -1192,7 +1220,7 @@
                     copyBtn.addEventListener('click', () => {
                         textarea.select();
                         document.execCommand('copy');
-                        AdminDashboard.showToast('Bookmarklet code copied!', 'success');
+                        AdminDashboard.UI.showToast('success', 'Bookmarklet code copied!');
                     });
                 }
 
@@ -1203,7 +1231,7 @@
 
             } catch (error) {
                 console.error('Error loading bookmarklet code:', error);
-                AdminDashboard.showToast('Error loading bookmarklet', 'error');
+                AdminDashboard.UI.showToast('error', 'Error loading bookmarklet');
             }
         },
 

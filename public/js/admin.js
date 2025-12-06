@@ -7150,6 +7150,24 @@ AdminDashboard.updateDashboardStats = function() {
                     });
             }
         }
+
+        // Update characters count
+        const charactersCount = document.getElementById('characters-count');
+        if (charactersCount) {
+            if (this.Characters.data && this.Characters.data.length > 0) {
+                charactersCount.textContent = this.Characters.data.length;
+            } else {
+                // Fetch from API if not cached
+                this.API.Characters.getAll()
+                    .then(characters => {
+                        charactersCount.textContent = characters.length;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching characters count:', error);
+                        charactersCount.textContent = '?';
+                    });
+            }
+        }
     } catch (error) {
         console.error('Error updating dashboard stats:', error);
     }
@@ -7275,6 +7293,9 @@ AdminDashboard.initKeyboardShortcuts = function() {
     document.addEventListener('keydown', (e) => {
         // Check if user is typing in an input field
         const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
+
+        // Guard against undefined key (can happen with certain keyboard events)
+        if (!e.key) return;
 
         // Build the shortcut key combination
         const key = e.key.toLowerCase();

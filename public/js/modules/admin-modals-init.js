@@ -139,11 +139,33 @@
             ...ModalConfigs.character,
             onSave: (data) => {
                 if (window.AdminDashboard && window.AdminDashboard.Characters) {
+                    // Parse classes string into array format
+                    // Expected input: "Cleric 3" or "Fighter 3 / Wizard 2" or "Cleric 3 (Life Domain)"
+                    let classesArray = [];
+                    if (data.classes && typeof data.classes === 'string') {
+                        const classParts = data.classes.split('/').map(s => s.trim());
+                        classesArray = classParts.map(part => {
+                            // Match: "ClassName Level" or "ClassName Level (Subclass)"
+                            const match = part.match(/^(.+?)\s+(\d+)(?:\s+\((.+)\))?$/);
+                            if (match) {
+                                return {
+                                    name: match[1].trim(),
+                                    level: parseInt(match[2], 10),
+                                    subclass: match[3] || ''
+                                };
+                            }
+                            // Fallback if format doesn't match
+                            return { name: part, level: 1, subclass: '' };
+                        });
+                    } else if (Array.isArray(data.classes)) {
+                        classesArray = data.classes;
+                    }
+
                     const characterData = {
                         name: data.name,
                         player: data.player,
                         race: data.race,
-                        classes: data.classes,
+                        classes: classesArray,
                         avatarUrl: data.avatarUrl,
                         accentColor: data.accentColor || '#7F0EBD'
                     };
@@ -157,6 +179,51 @@
                 }
             }
         });
+
+        // Override the open method to handle data conversion
+        const originalCharacterOpen = characterModal.open;
+        characterModal.open = function(character) {
+            // Open the modal first
+            originalCharacterOpen.call(this);
+
+            // Then populate data after modal is visible
+            if (character) {
+                // Use setTimeout to ensure modal DOM is fully rendered
+                setTimeout(() => {
+                    // Convert classes array to display string
+                    let classesString = '';
+                    if (Array.isArray(character.classes) && character.classes.length > 0) {
+                        classesString = character.classes.map(cls => {
+                            let str = `${cls.name} ${cls.level}`;
+                            if (cls.subclass) {
+                                str += ` (${cls.subclass})`;
+                            }
+                            return str;
+                        }).join(' / ');
+                    }
+
+                    // Build display data WITHOUT id (we'll set it separately to avoid selector bug)
+                    const displayData = {
+                        name: character.name || '',
+                        player: character.player || '',
+                        race: character.race || '',
+                        classes: classesString,
+                        avatarUrl: character.avatarUrl || '',
+                        accentColor: character.accentColor || '#7F0EBD'
+                    };
+
+                    characterModal.setData(displayData);
+
+                    // Set ID directly on the hidden input
+                    const idInput = document.getElementById('character-modal-id');
+                    if (idInput && character.id) {
+                        idInput.value = character.id;
+                    }
+                }, 50); // Small delay to ensure DOM is ready
+            } else {
+                characterModal.reset();
+            }
+        };
 
         // Create Snapshot Modal
         const snapshotModal = ModalFactory.create({

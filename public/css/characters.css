@@ -521,6 +521,7 @@
     text-align: center;
     border: 2px solid var(--primary-purple, #7F0EBD);
     transition: all 0.3s ease;
+    overflow: visible;
 }
 
 .stat-box:hover {
@@ -543,6 +544,8 @@
     font-size: 2.5rem;
     color: var(--primary-purple, #7F0EBD);
     font-weight: bold;
+    line-height: 1.2;
+    overflow: visible;
 }
 
 .stat-modifier {
@@ -564,6 +567,7 @@
     border-radius: 12px;
     text-align: center;
     border: 2px solid var(--primary-purple, #7F0EBD);
+    overflow: visible;
 }
 
 .ability-name {
@@ -581,6 +585,8 @@
     font-size: 2rem;
     color: var(--primary-purple, #7F0EBD);
     font-weight: bold;
+    line-height: 1.2;
+    overflow: visible;
 }
 
 .ability-modifier {
@@ -771,6 +777,7 @@
     border-radius: 8px;
     padding: 1rem;
     text-align: center;
+    overflow: visible;
 }
 
 .slot-level {
@@ -866,6 +873,8 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-dark, #333);
+    line-height: 1.2;
+    overflow: visible;
 }
 
 .currency-type {

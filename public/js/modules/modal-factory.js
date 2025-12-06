@@ -392,6 +392,13 @@ window.ModalFactory = {
             return;
         }
 
+        // Remove focus from any focused element inside the modal before hiding
+        // This prevents aria-hidden accessibility warnings
+        const focusedElement = modal.element.querySelector(':focus');
+        if (focusedElement) {
+            focusedElement.blur();
+        }
+
         modal.element.classList.remove('active');
         modal.element.setAttribute('aria-hidden', 'true');
 
@@ -420,13 +427,26 @@ window.ModalFactory = {
      */
     setData(modalId, data) {
         const modal = this.modals.get(modalId);
-        if (!modal) return;
+        if (!modal) {
+            console.warn(`⚠️ setData: Modal "${modalId}" not found`);
+            return;
+        }
 
         const form = modal.element.querySelector('form');
-        if (!form) return;
+        if (!form) {
+            console.warn(`⚠️ setData: Form not found in modal "${modalId}"`);
+            return;
+        }
 
         Object.keys(data).forEach(key => {
-            const input = form.querySelector(`[data-field-id="${key}"], #${modalId}-${key}, #${modalId}-id`);
+            // Build selector - only include #modalId-id for the 'id' key specifically
+            let selector = `[data-field-id="${key}"], #${modalId}-${key}`;
+            if (key === 'id') {
+                selector += `, #${modalId}-id`;
+            }
+
+            const input = form.querySelector(selector);
+
             if (input) {
                 if (input.type === 'checkbox') {
                     input.checked = data[key];

@@ -51,23 +51,33 @@ function requireAuth(req, res, next) {
 
 // Set up admin routes
 module.exports = function(app) {
+    // Trust proxy if configured (needed for req.secure to work behind reverse proxy)
+    if (process.env.TRUST_PROXY === 'true') {
+        app.set('trust proxy', 1);
+    }
+
     // Add session support before defining routes
-    // Note: For bookmarklet to work in production with cross-origin requests,
-    // you'll need to set sameSite: 'none' and secure: true when using HTTPS
-    app.use(session({
+    // Note: For bookmarklet to work with cross-origin requests from D&D Beyond,
+    // we need sameSite: 'none' and secure: true (requires HTTPS)
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    // In production with HTTPS, use sameSite: 'none' for cross-origin requests
+    // Otherwise use 'lax' for normal same-site operations
+    const sessionConfig = {
         secret: process.env.SESSION_SECRET || 'crimson-court-secret',
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: false, // Set to true in production with HTTPS
+            secure: isProduction, // Only send cookie over HTTPS in production
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,
-            path: '/'
-            // sameSite defaults to 'lax' which works for local development
-            // For production with HTTPS, add: sameSite: 'none', secure: true
+            path: '/',
+            sameSite: isProduction ? 'none' : 'lax' // 'none' allows cross-origin (requires HTTPS)
         },
         rolling: true
-    }));
+    };
+
+    app.use(session(sessionConfig));
 
     // ============================================================================
     // Authentication Routes
