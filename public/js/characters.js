@@ -223,47 +223,28 @@ window.CharacterViewer = {
             .join('');
 
         // Show lineup
-        this.elements.characterLineup.style.display = 'grid';
+        this.elements.characterLineup.style.display = 'flex';
 
         // Attach click listeners
         this.attachCharacterListeners();
     },
 
     /**
-     * Render a character card
+     * Render a character card - redesigned as standing character
      */
     renderCharacterCard(character, index) {
-        const accentColor = character.accentColor || '#7F0EBD';
         const avatarUrl = character.avatarUrl || '/assets/images/unknown.png';
-
-        // Get latest snapshot for level
-        const latestSnapshot = character.snapshots && character.snapshots.length > 0
-            ? character.snapshots[character.snapshots.length - 1]
-            : null;
-
-        const level = latestSnapshot && latestSnapshot.data ? latestSnapshot.data.level || '?' : '?';
 
         return `
             <div class="character-card"
                  data-character-id="${character.id}"
-                 data-accent-color="${accentColor}"
-                 style="border-top-color: ${accentColor};">
+                 data-character-name="${character.name}">
                 <div class="character-avatar-container">
+                    <div class="character-name-hover">${character.name}</div>
                     <img src="${avatarUrl}"
                          alt="${character.name}"
                          class="character-avatar"
                          onerror="this.src='/assets/images/unknown.png'">
-                    <div class="character-level-badge">
-                        Level ${level}
-                    </div>
-                </div>
-                <div class="character-info">
-                    <h2 class="character-name">${character.name}</h2>
-                    <p class="character-class">${character.classes || 'Unknown Class'}</p>
-                    <p class="character-player">
-                        <i class="fas fa-user"></i>
-                        ${character.player || 'Unknown Player'}
-                    </p>
                 </div>
             </div>
         `;
@@ -284,7 +265,7 @@ window.CharacterViewer = {
     },
 
     /**
-     * Focus on a specific character
+     * Focus on a specific character - redesigned with new animations
      */
     async focusCharacter(characterId) {
         try {
@@ -310,10 +291,23 @@ window.CharacterViewer = {
                 this.currentSnapshot = null;
             }
 
-            // Hide party lineup
-            this.elements.partyLineup.classList.add('hidden');
+            // Get all character cards
+            const characterCards = document.querySelectorAll('.character-card');
+            const selectedCard = document.querySelector(`[data-character-id="${characterId}"]`);
 
-            // Show character focus
+            // Fade out other characters
+            characterCards.forEach(card => {
+                if (card.dataset.characterId !== characterId) {
+                    card.classList.add('fading');
+                }
+            });
+
+            // Expand and move selected character to the right
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            // Wait for character animation to start, then show focus view
             setTimeout(() => {
                 this.elements.characterFocus.classList.add('active');
                 this.renderCharacterSheet();
@@ -325,16 +319,18 @@ window.CharacterViewer = {
     },
 
     /**
-     * Return to party lineup
+     * Return to party lineup - redesigned to reset animations
      */
     returnToParty() {
         // Hide character focus
         this.elements.characterFocus.classList.remove('active');
 
-        // Show party lineup
-        setTimeout(() => {
-            this.elements.partyLineup.classList.remove('hidden');
-        }, 300);
+        // Remove all character card classes
+        const characterCards = document.querySelectorAll('.character-card');
+        characterCards.forEach(card => {
+            card.classList.remove('fading');
+            card.classList.remove('selected');
+        });
 
         // Clear current character
         this.currentCharacter = null;
