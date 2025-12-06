@@ -138,6 +138,11 @@
      */
     AdminDashboard.Characters = {
         /**
+         * Cached characters data
+         */
+        data: [],
+
+        /**
          * Current character being viewed/edited
          */
         currentCharacter: null,
@@ -217,6 +222,9 @@
 
                 // Fetch characters from API
                 const characters = await AdminDashboard.API.Characters.getAll();
+
+                // Cache the data
+                this.data = characters;
 
                 // Update character count in dashboard
                 const countElement = document.getElementById('characters-count');
