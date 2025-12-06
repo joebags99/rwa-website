@@ -402,6 +402,18 @@ window.CharacterViewer = {
         // Get snapshot data or use empty data
         const data = snapshot ? snapshot.data : {};
 
+        // Format classes - handle both string and object/array
+        let classesText = '';
+        if (character.classes) {
+            if (typeof character.classes === 'string') {
+                classesText = character.classes;
+            } else if (Array.isArray(character.classes)) {
+                classesText = character.classes.map(c => typeof c === 'string' ? c : c.name || c.class).join('/');
+            } else if (typeof character.classes === 'object') {
+                classesText = character.classes.name || character.classes.class || '';
+            }
+        }
+
         const html = `
             <div class="character-sheet" style="border-top-color: ${accentColor};">
                 <!-- Header -->
@@ -416,7 +428,7 @@ window.CharacterViewer = {
                             ${character.name}
                         </h1>
                         <p class="character-sheet-subtitle">
-                            Level ${data.level || '?'} ${character.race || ''} ${character.classes || ''}
+                            Level ${data.level || '?'} ${character.race || ''} ${classesText}
                         </p>
                         <p class="character-sheet-player">
                             <i class="fas fa-user"></i>
