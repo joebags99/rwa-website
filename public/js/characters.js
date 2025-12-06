@@ -359,17 +359,25 @@ window.CharacterViewer = {
         setTimeout(() => {
             const characterCards = document.querySelectorAll('.character-card');
             characterCards.forEach((card, index) => {
+                // Remove existing classes
                 card.classList.remove('fading');
                 card.classList.remove('selected');
+
+                // Force a reflow to ensure clean state
+                void card.offsetWidth;
+
+                // Add fade-in class
                 card.classList.add('fade-in');
 
                 // Stagger the animation
                 card.style.animationDelay = `${index * 0.1}s`;
 
-                // Remove fade-in class after animation completes
+                // Remove fade-in class and clean up after animation completes
                 setTimeout(() => {
                     card.classList.remove('fade-in');
                     card.style.animationDelay = '';
+                    // Force reflow again to ensure transition re-enables
+                    void card.offsetWidth;
                 }, 600 + (index * 100));
             });
         }, 800);
