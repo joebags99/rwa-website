@@ -438,8 +438,6 @@ window.ModalFactory = {
             return;
         }
 
-        console.log(`📝 setData for ${modalId}:`, data);
-
         Object.keys(data).forEach(key => {
             // Build selector - only include #modalId-id for the 'id' key specifically
             let selector = `[data-field-id="${key}"], #${modalId}-${key}`;
@@ -449,35 +447,14 @@ window.ModalFactory = {
 
             const input = form.querySelector(selector);
 
-            console.log(`  - Field "${key}":`, input ? '✓ Found' : '✗ Not found', `(selector: ${selector})`);
-
             if (input) {
                 if (input.type === 'checkbox') {
                     input.checked = data[key];
                 } else {
                     input.value = data[key] || '';
                 }
-                console.log(`    Set value to:`, input.value || input.checked);
             }
         });
-
-        // Verify values persist after a short delay
-        setTimeout(() => {
-            console.log(`🔍 Verifying values after 100ms:`);
-            Object.keys(data).forEach(key => {
-                let selector = `[data-field-id="${key}"], #${modalId}-${key}`;
-                if (key === 'id') {
-                    selector += `, #${modalId}-id`;
-                }
-                const input = form.querySelector(selector);
-                if (input) {
-                    const currentValue = input.type === 'checkbox' ? input.checked : input.value;
-                    const expectedValue = data[key] || '';
-                    const matches = currentValue == expectedValue;
-                    console.log(`  - ${key}: ${matches ? '✓' : '✗'} (expected: "${expectedValue}", actual: "${currentValue}")`);
-                }
-            });
-        }, 100);
     },
 
     /**

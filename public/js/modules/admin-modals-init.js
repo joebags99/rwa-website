@@ -188,8 +188,6 @@
 
             // Then populate data after modal is visible
             if (character) {
-                console.log('Opening character modal with:', character);
-
                 // Use setTimeout to ensure modal DOM is fully rendered
                 setTimeout(() => {
                     // Convert classes array to display string
@@ -214,15 +212,12 @@
                         accentColor: character.accentColor || '#7F0EBD'
                     };
 
-                    console.log('Setting modal data:', displayData);
                     characterModal.setData(displayData);
 
-                    // Set ID directly on the hidden input to avoid setData selector bug
-                    // Bug: setData's selector `#${modalId}-id` matches for ALL keys, causing overwrites
+                    // Set ID directly on the hidden input
                     const idInput = document.getElementById('character-modal-id');
                     if (idInput && character.id) {
                         idInput.value = character.id;
-                        console.log('Set character ID to:', character.id);
                     }
                 }, 50); // Small delay to ensure DOM is ready
             } else {
