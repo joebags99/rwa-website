@@ -455,6 +455,21 @@ window.ModalFactory = {
                 console.log(`    Set value to:`, input.value || input.checked);
             }
         });
+
+        // Verify values persist after a short delay
+        setTimeout(() => {
+            console.log(`🔍 Verifying values after 100ms:`);
+            Object.keys(data).forEach(key => {
+                const selector = `[data-field-id="${key}"], #${modalId}-${key}, #${modalId}-id`;
+                const input = form.querySelector(selector);
+                if (input) {
+                    const currentValue = input.type === 'checkbox' ? input.checked : input.value;
+                    const expectedValue = data[key] || '';
+                    const matches = currentValue == expectedValue;
+                    console.log(`  - ${key}: ${matches ? '✓' : '✗'} (expected: "${expectedValue}", actual: "${currentValue}")`);
+                }
+            });
+        }, 100);
     },
 
     /**
