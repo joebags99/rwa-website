@@ -175,7 +175,19 @@
         console.log('💪 Abilities extracted:', characterData.abilities);
 
         // Extract HP (try new selectors first, fall back to old)
-        let hpCurrent = parseNumber(getText('button[aria-label*="Current hit points"]') || getText('.ct-health-summary__hp-current'));
+        // New D&D Beyond structure: label "Current" is linked to button via 'for' attribute
+        let hpCurrent = 0;
+        const currentHpLabel = Array.from(document.querySelectorAll('label.styles_label__ysVMP'))
+            .find(label => label.textContent.trim() === 'Current');
+        if (currentHpLabel && currentHpLabel.getAttribute('for')) {
+            const buttonId = currentHpLabel.getAttribute('for');
+            hpCurrent = parseNumber(getText(`#${buttonId}`));
+        }
+        // Fallback to old selectors
+        if (!hpCurrent) {
+            hpCurrent = parseNumber(getText('button[aria-label*="Current hit points"]') || getText('.ct-health-summary__hp-current'));
+        }
+
         let hpMax = parseNumber(getText('[data-testid="max-hp"]') || getText('.ct-health-summary__hp-max'));
         let hpTemp = parseNumber(getText('.ct-health-summary__hp-temp'));
         characterData.hp = { current: hpCurrent, max: hpMax, temp: hpTemp };
