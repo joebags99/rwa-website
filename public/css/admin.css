@@ -2823,7 +2823,8 @@ input[type="text"].form-control:focus {
 
 /* Larger modal */
 .modal-xl .modal-dialog {
-    max-width: 1200px;
+    max-width: 1400px;
+    width: 95%;
 }
 
 /* Fade in animation */
