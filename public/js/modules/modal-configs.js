@@ -412,6 +412,14 @@ window.ModalConfigs = {
                 type: 'text',
                 placeholder: '#7F0EBD',
                 help: 'Hex color code for character theme (e.g., #FF5733)'
+            },
+            {
+                id: 'displayOrder',
+                label: 'Display Order',
+                type: 'number',
+                placeholder: '1',
+                min: 1,
+                help: 'Order to display character in the lineup (1 = first, lower numbers appear first)'
             }
         ],
         options: {

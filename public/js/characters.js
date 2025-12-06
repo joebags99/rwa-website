@@ -212,8 +212,17 @@ window.CharacterViewer = {
     renderCharacters() {
         if (!this.elements.characterLineup) return;
 
-        // Sort characters by creation date
+        // Sort characters by displayOrder (if set), then by creation date
         const sortedCharacters = [...this.characters].sort((a, b) => {
+            // If both have displayOrder, sort by that
+            if (a.displayOrder != null && b.displayOrder != null) {
+                return a.displayOrder - b.displayOrder;
+            }
+            // If only a has displayOrder, it comes first
+            if (a.displayOrder != null) return -1;
+            // If only b has displayOrder, it comes first
+            if (b.displayOrder != null) return 1;
+            // Otherwise sort by creation date
             return new Date(a.createdAt) - new Date(b.createdAt);
         });
 
