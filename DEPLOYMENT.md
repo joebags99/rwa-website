@@ -13,7 +13,8 @@
 ### Security
 - [ ] Change default admin password from `rollwithadvantage`
 - [ ] Set secure `SESSION_SECRET` in environment variables
-- [ ] Enable HTTPS/SSL certificate
+- [ ] Enable HTTPS/SSL certificate (REQUIRED for D&D Beyond bookmarklet)
+- [ ] Set `NODE_ENV=production` (REQUIRED for D&D Beyond bookmarklet)
 - [ ] Set `TRUST_PROXY=true` if behind reverse proxy
 - [ ] Review and restrict CORS settings if needed
 - [ ] Ensure `.env` files are in `.gitignore`
@@ -294,6 +295,39 @@ Recommended tools:
 - **New Relic**: Application performance monitoring
 - **LogRocket**: Session replay and error tracking
 - **Sentry**: Error tracking and debugging
+
+## 🎲 D&D Beyond Bookmarklet Setup
+
+### Requirements
+The D&D Beyond character importer bookmarklet requires specific configuration to work with cross-origin requests:
+
+1. **HTTPS is REQUIRED**: The site must be accessed via HTTPS (not HTTP)
+   - Session cookies with `sameSite: 'none'` require secure connections
+   - Use Let's Encrypt for free SSL certificates
+
+2. **NODE_ENV must be set to 'production'**:
+   ```bash
+   NODE_ENV=production
+   ```
+   - This enables `sameSite: 'none'` cookies for cross-origin requests
+   - Without this, the bookmarklet cannot authenticate from dndbeyond.com
+
+3. **CORS is already configured** in `server.js` to allow credentials
+
+### Testing the Bookmarklet
+1. Log in to your admin panel at `https://your-domain.com/admin`
+2. Navigate to the Characters section
+3. Copy the bookmarklet code
+4. Create a browser bookmark with the code as the URL
+5. Visit a D&D Beyond character sheet
+6. Click the bookmarklet to import the character
+
+### Troubleshooting Bookmarklet Authentication
+If you get "401 Unauthorized" errors:
+- ✅ Verify `NODE_ENV=production` is set
+- ✅ Verify site is accessed via HTTPS (not HTTP)
+- ✅ Check that you're logged into the admin panel in the same browser
+- ✅ Clear browser cache and cookies, then log in again
 
 ## 🆘 Troubleshooting
 

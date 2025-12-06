@@ -395,7 +395,8 @@ window.ModalConfigs = {
                         label: 'Class(es)',
                         type: 'text',
                         required: true,
-                        help: 'e.g., "Fighter 5" or "Fighter 3 / Wizard 2"'
+                        placeholder: 'Cleric 3 (Life Domain)',
+                        help: 'Format: "Class Level" or "Class Level (Subclass)". For multiclass use "/" - e.g., "Fighter 3 / Wizard 2"'
                     }
                 ]
             },
