@@ -197,7 +197,7 @@
 
 .character-focus .character-image-right img {
     width: auto;
-    height: 500px;
+    height: 1000px;
     object-fit: contain;
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))
             drop-shadow(0 0 30px var(--character-glow, rgba(255, 255, 255, 0.5)))
@@ -233,7 +233,7 @@
 
 .character-avatar {
     width: auto;
-    height: 350px;
+    height: 525px;
     object-fit: contain;
     transition: all 0.4s ease;
     filter: drop-shadow(0 0 0 transparent);
@@ -1041,7 +1041,7 @@
     }
 
     .character-avatar {
-        height: 250px;
+        height: 375px;
     }
 
     .character-focus .character-image-right {
@@ -1057,7 +1057,7 @@
     }
 
     .character-focus .character-image-right img {
-        height: 300px;
+        height: 600px;
     }
 
     .character-sheet-header {
