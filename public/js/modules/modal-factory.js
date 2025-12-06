@@ -441,7 +441,12 @@ window.ModalFactory = {
         console.log(`📝 setData for ${modalId}:`, data);
 
         Object.keys(data).forEach(key => {
-            const selector = `[data-field-id="${key}"], #${modalId}-${key}, #${modalId}-id`;
+            // Build selector - only include #modalId-id for the 'id' key specifically
+            let selector = `[data-field-id="${key}"], #${modalId}-${key}`;
+            if (key === 'id') {
+                selector += `, #${modalId}-id`;
+            }
+
             const input = form.querySelector(selector);
 
             console.log(`  - Field "${key}":`, input ? '✓ Found' : '✗ Not found', `(selector: ${selector})`);
@@ -460,7 +465,10 @@ window.ModalFactory = {
         setTimeout(() => {
             console.log(`🔍 Verifying values after 100ms:`);
             Object.keys(data).forEach(key => {
-                const selector = `[data-field-id="${key}"], #${modalId}-${key}, #${modalId}-id`;
+                let selector = `[data-field-id="${key}"], #${modalId}-${key}`;
+                if (key === 'id') {
+                    selector += `, #${modalId}-id`;
+                }
                 const input = form.querySelector(selector);
                 if (input) {
                     const currentValue = input.type === 'checkbox' ? input.checked : input.value;
