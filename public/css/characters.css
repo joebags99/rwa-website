@@ -80,19 +80,20 @@
     font-family: var(--font-titles, 'Uncial Antiqua', cursive);
     font-size: 3.5rem;
     margin: 0 0 1rem 0;
-    color: var(--primary-purple, #7F0EBD);
-    text-shadow: 2px 2px 4px rgba(127, 14, 189, 0.2);
+    color: #2d1f47;
+    text-shadow: 2px 2px 4px rgba(45, 31, 71, 0.3);
 }
 
 .page-title i {
-    color: var(--primary-purple, #7F0EBD);
+    color: #2d1f47;
 }
 
 .page-subtitle {
     font-family: var(--font-body, 'EB Garamond', serif);
     font-size: 1.3rem;
-    color: var(--text-dark, #333);
+    color: #3d3d3d;
     margin: 0;
+    font-weight: 600;
 }
 
 /* ============================================
@@ -167,17 +168,61 @@
 
 /* Character states for transitions */
 .character-card.fading {
-    opacity: 0.1;
-    filter: blur(2px) grayscale(0.5);
+    opacity: 0;
+    filter: blur(3px) grayscale(0.8);
     pointer-events: none;
+    transition: all 0.6s ease;
 }
 
 .character-card.selected {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Character image on right side when focused */
+.character-focus .character-image-right {
     position: fixed;
     right: 5%;
     top: 50%;
-    transform: translateY(-50%) scale(2);
-    z-index: 100;
+    transform: translateY(-50%) scale(0.8);
+    z-index: 250;
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.character-focus.active .character-image-right {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+}
+
+.character-focus .character-image-right img {
+    width: auto;
+    height: 500px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))
+            drop-shadow(0 0 30px var(--character-glow, rgba(255, 255, 255, 0.5)))
+            drop-shadow(0 0 60px var(--character-glow, rgba(255, 255, 255, 0.3)));
+}
+
+/* Apply character-specific glow colors to right-side image */
+.character-image-right[data-character-name="Edwinn Falkrest"] {
+    --character-glow: rgb(255, 255, 255);
+}
+
+.character-image-right[data-character-name="Via"] {
+    --character-glow: rgba(230, 217, 98, 0.6);
+}
+
+.character-image-right[data-character-name="Marik"] {
+    --character-glow: rgba(184, 65, 65, 0.6);
+}
+
+.character-image-right[data-character-name="Xanthe"] {
+    --character-glow: rgba(76, 158, 169, 0.6);
+}
+
+.character-image-right[data-character-name="Cailynn"] {
+    --character-glow: rgba(103, 210, 117, 0.6);
 }
 
 .character-avatar-container {
@@ -196,7 +241,9 @@
 
 /* Hover state - add glow */
 .character-card:hover .character-avatar {
-    filter: drop-shadow(0 0 30px var(--character-glow, rgba(255, 255, 255, 0.8)));
+    filter: drop-shadow(0 0 20px var(--character-glow, rgba(255, 255, 255, 0.8)))
+            drop-shadow(0 0 40px var(--character-glow, rgba(255, 255, 255, 0.6)))
+            drop-shadow(0 0 60px var(--character-glow, rgba(255, 255, 255, 0.4)));
     transform: translateY(-10px);
 }
 
@@ -208,9 +255,10 @@
     transform: translateX(-50%);
     font-family: var(--font-headers, 'Cinzel', serif);
     font-size: 1.5rem;
-    color: var(--character-color, #f3f3e5);
-    text-shadow: 0 0 10px var(--character-glow, rgba(255, 255, 255, 0.8)),
-                 0 2px 4px rgba(0, 0, 0, 0.5);
+    color: #2d1f47;
+    text-shadow: 0 0 15px var(--character-glow, rgba(255, 255, 255, 0.9)),
+                 0 0 30px var(--character-glow, rgba(255, 255, 255, 0.7)),
+                 0 2px 6px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transition: all 0.3s ease;
     pointer-events: none;
@@ -359,12 +407,7 @@
 }
 
 .character-sheet-avatar {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid;
-    box-shadow: var(--shadow-lg);
+    display: none;
 }
 
 .character-sheet-title {
@@ -1001,13 +1044,20 @@
         height: 250px;
     }
 
-    .character-card.selected {
-        position: fixed;
+    .character-focus .character-image-right {
         right: auto;
         left: 50%;
         top: auto;
-        bottom: 10%;
-        transform: translateX(-50%) scale(1.5);
+        bottom: 5%;
+        transform: translateX(-50%) scale(0.6);
+    }
+
+    .character-focus.active .character-image-right {
+        transform: translateX(-50%) scale(0.8);
+    }
+
+    .character-focus .character-image-right img {
+        height: 300px;
     }
 
     .character-sheet-header {

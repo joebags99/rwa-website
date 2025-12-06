@@ -265,7 +265,7 @@ window.CharacterViewer = {
     },
 
     /**
-     * Focus on a specific character - redesigned with new animations
+     * Focus on a specific character - redesigned with fade transitions
      */
     async focusCharacter(characterId) {
         try {
@@ -293,29 +293,46 @@ window.CharacterViewer = {
 
             // Get all character cards
             const characterCards = document.querySelectorAll('.character-card');
-            const selectedCard = document.querySelector(`[data-character-id="${characterId}"]`);
 
-            // Fade out other characters
+            // Fade out ALL characters (including selected)
             characterCards.forEach(card => {
-                if (card.dataset.characterId !== characterId) {
-                    card.classList.add('fading');
-                }
+                card.classList.add('fading');
             });
 
-            // Expand and move selected character to the right
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-            }
-
-            // Wait for character animation to start, then show focus view
+            // Wait for fade out, then show focus view
             setTimeout(() => {
                 this.elements.characterFocus.classList.add('active');
                 this.renderCharacterSheet();
-            }, 300);
+                this.addCharacterImageToFocus(character);
+            }, 600);
 
         } catch (error) {
             console.error('Error focusing character:', error);
         }
+    },
+
+    /**
+     * Add character image to the right side of focus view
+     */
+    addCharacterImageToFocus(character) {
+        // Remove any existing character image
+        const existingImage = this.elements.characterFocus.querySelector('.character-image-right');
+        if (existingImage) {
+            existingImage.remove();
+        }
+
+        // Create new character image element
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'character-image-right';
+        imageContainer.setAttribute('data-character-name', character.name);
+
+        const img = document.createElement('img');
+        img.src = character.avatarUrl || '/assets/images/unknown.png';
+        img.alt = character.name;
+        img.onerror = function() { this.src = '/assets/images/unknown.png'; };
+
+        imageContainer.appendChild(img);
+        this.elements.characterFocus.appendChild(imageContainer);
     },
 
     /**
@@ -325,12 +342,20 @@ window.CharacterViewer = {
         // Hide character focus
         this.elements.characterFocus.classList.remove('active');
 
-        // Remove all character card classes
-        const characterCards = document.querySelectorAll('.character-card');
-        characterCards.forEach(card => {
-            card.classList.remove('fading');
-            card.classList.remove('selected');
-        });
+        // Remove character image from focus view
+        const characterImage = this.elements.characterFocus.querySelector('.character-image-right');
+        if (characterImage) {
+            characterImage.remove();
+        }
+
+        // Wait a bit, then restore character cards
+        setTimeout(() => {
+            const characterCards = document.querySelectorAll('.character-card');
+            characterCards.forEach(card => {
+                card.classList.remove('fading');
+                card.classList.remove('selected');
+            });
+        }, 300);
 
         // Clear current character
         this.currentCharacter = null;
