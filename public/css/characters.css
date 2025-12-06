@@ -197,7 +197,8 @@
 
 .character-focus .character-image-right img {
     width: auto;
-    height: 1000px;
+    height: 70vh;
+    max-height: 800px;
     object-fit: contain;
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))
             drop-shadow(0 0 30px var(--character-glow, rgba(255, 255, 255, 0.5)))
@@ -233,7 +234,8 @@
 
 .character-avatar {
     width: auto;
-    height: 525px;
+    height: 40vh;
+    max-height: 525px;
     object-fit: contain;
     transition: all 0.4s ease;
     filter: drop-shadow(0 0 0 transparent);
@@ -367,7 +369,7 @@
    ============================================ */
 
 .character-sheet-container {
-    max-width: 50%;
+    max-width: 60%;
     margin: 2rem;
     padding: 0;
     opacity: 0;
@@ -1041,23 +1043,30 @@
     }
 
     .character-avatar {
-        height: 375px;
+        height: 30vh;
+        max-height: 300px;
     }
 
     .character-focus .character-image-right {
         right: auto;
         left: 50%;
-        top: auto;
-        bottom: 5%;
-        transform: translateX(-50%) scale(0.6);
+        top: 2rem;
+        bottom: auto;
+        transform: translateX(-50%) scale(0.9);
     }
 
     .character-focus.active .character-image-right {
-        transform: translateX(-50%) scale(0.8);
+        transform: translateX(-50%) scale(1);
     }
 
     .character-focus .character-image-right img {
-        height: 600px;
+        height: 35vh;
+        max-height: 400px;
+    }
+
+    .character-sheet-container {
+        max-width: 95%;
+        margin: 45vh auto 2rem;
     }
 
     .character-sheet-header {
