@@ -314,6 +314,13 @@
             // Extract all spells in this level group
             const spellsInGroup = section.querySelectorAll('.ct-spells-spell');
             spellsInGroup.forEach(spellElement => {
+                // Skip "scaled" spells - these are duplicates showing spells cast at higher levels
+                // For example, a 1st level spell that appears in the 2nd level section with upcast notation
+                const isScaledSpell = spellElement.querySelector('.ct-spells-spell__label--scaled');
+                if (isScaledSpell) {
+                    return; // Skip this duplicate
+                }
+
                 const spellName = getText('[class*="spellName"]', spellElement) ||
                                  getText('.ct-spell-name__text, .ct-spells__spell-name', spellElement);
 
