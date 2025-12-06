@@ -336,26 +336,43 @@ window.CharacterViewer = {
     },
 
     /**
-     * Return to party lineup - redesigned to reset animations
+     * Return to party lineup - redesigned with smooth animations
      */
     returnToParty() {
-        // Hide character focus
-        this.elements.characterFocus.classList.remove('active');
-
-        // Remove character image from focus view
+        // Add fade-out class to character image
         const characterImage = this.elements.characterFocus.querySelector('.character-image-right');
         if (characterImage) {
-            characterImage.remove();
+            characterImage.classList.add('fade-out');
         }
 
-        // Wait a bit, then restore character cards
+        // Hide character focus after a delay
+        setTimeout(() => {
+            this.elements.characterFocus.classList.remove('active');
+
+            // Remove character image after fade
+            if (characterImage) {
+                characterImage.remove();
+            }
+        }, 500);
+
+        // Restore character cards with staggered fade-in animation
         setTimeout(() => {
             const characterCards = document.querySelectorAll('.character-card');
-            characterCards.forEach(card => {
+            characterCards.forEach((card, index) => {
                 card.classList.remove('fading');
                 card.classList.remove('selected');
+                card.classList.add('fade-in');
+
+                // Stagger the animation
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                // Remove fade-in class after animation completes
+                setTimeout(() => {
+                    card.classList.remove('fade-in');
+                    card.style.animationDelay = '';
+                }, 600 + (index * 100));
             });
-        }, 300);
+        }, 800);
 
         // Clear current character
         this.currentCharacter = null;
