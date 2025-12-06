@@ -311,6 +311,8 @@ window.CharacterViewer = {
             // Wait for fade out, then show focus view
             setTimeout(() => {
                 this.elements.characterFocus.classList.add('active');
+                // Prevent body scroll when character focus is active
+                document.body.classList.add('focus-active');
                 this.renderCharacterSheet();
                 this.addCharacterImageToFocus(character);
             }, 600);
@@ -357,6 +359,8 @@ window.CharacterViewer = {
         // Hide character focus after a delay
         setTimeout(() => {
             this.elements.characterFocus.classList.remove('active');
+            // Re-enable body scroll when exiting character focus
+            document.body.classList.remove('focus-active');
 
             // Remove character image after fade
             if (characterImage) {
