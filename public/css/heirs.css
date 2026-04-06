@@ -406,7 +406,8 @@ DETAILED HEIR VIEW
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 8rem 2rem 4rem;
+    padding: 2rem 2rem 4rem;
+    overflow-y: auto;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--detailed-view-transition) ease;
