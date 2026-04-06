@@ -1077,48 +1077,4 @@ RESPONSIVE DESIGN
     }
 }
 
-/* 
-======================
-HEADER VISIBILITY FIXES
-======================
-*/
-
-/* Override the initial hidden state from crimson-court.css */
-.royal-bloodlines-page .royal-header {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    transition: none !important;
-}
-
-/* Ensure the return to court link is visible */
-.royal-bloodlines-page .return-court {
-    opacity: 1 !important;
-    color: var(--royal-gold);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* Make sure the text is visible */
-.royal-bloodlines-page .return-court span {
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Fix nav items */
-.royal-bloodlines-page .court-nav ul {
-    display: flex !important;
-}
-
-.banner-emblem {
-opacity: 1 !important;
-}
-
-.royal-title {
-opacity: 1 !important;
-}
-
-.royal-subtitle {
-opacity: 1 !important;
-}
+/* Header visibility is handled by the .cc-subpage class in crimson-court.css */

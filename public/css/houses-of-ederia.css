@@ -50,74 +50,12 @@ Page Base Styling - Inherits from crimson-court.css
     background-repeat: repeat;
 }
 
-/* Simple navigation buttons */
-.houses-navigation {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 15px;
-    z-index: 100;
-}
-
-.nav-button {
-    background-color: rgba(15, 15, 26, 0.85);
-    color: var(--royal-gold);
-    border: 2px solid var(--royal-gold);
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-family: var(--font-headers);
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.nav-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6), 0 0 10px rgba(212, 175, 55, 0.4);
-}
-
-.court-button {
-    border-color: var(--crimson-blood);
-}
-
-.court-button:hover {
-    color: var(--crimson-light);
-}
-
-.home-button:hover {
-    color: var(--royal-gold-light);
-}
-
-/* Main content area */
+/* Main content area — heraldic-banner above provides top spacing */
 .houses-content {
-    padding: 8rem 0 4rem;
+    padding: 2rem 0 4rem;
     min-height: calc(100vh - 12rem);
     position: relative;
     z-index: 5;
-}
-
-/* Page title styling */
-.houses-title {
-    text-align: center;
-    margin-bottom: 3rem;
-    position: relative;
-}
-
-.houses-title .royal-title {
-    margin-bottom: 0.5rem;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-}
-
-.houses-title .royal-subtitle {
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
-    color: var(--royal-silver);
-    margin-top: 0.5rem;
 }
 
 /* 

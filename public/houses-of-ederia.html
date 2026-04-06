@@ -34,27 +34,37 @@
     <!-- Font Awesome from CDN -->
     <script src="https://kit.fontawesome.com/dc61b6198d.js" crossorigin="anonymous"></script>
 </head>
-<body class="houses-page">
+<body class="houses-page cc-subpage">
     <!-- Magical Particles Background -->
     <div class="house-particles-container"></div>
-    
-    <!-- Simple Navigation Buttons -->
-    <div class="houses-navigation">
-        <a href="/crimson-court" class="nav-button court-button">
-            <i class="fas fa-crown"></i> Return to The Crimson Court
-        </a>
-        <a href="/" class="nav-button home-button">
-            <i class="fas fa-home"></i> Return to Roll With Advantage
-        </a>
+
+    <!-- Royal Header (Crimson Court Style) -->
+    <header class="royal-header" role="banner">
+        <div class="container">
+            <div class="court-logo">
+                <a href="/crimson-court" class="return-court">
+                    <img src="assets/images/cc-logo.png" alt="The Crimson Court" class="cc-logo-image">
+                </a>
+            </div>
+            <nav class="court-nav" role="navigation" aria-label="Crimson Court navigation">
+                <ul>
+                    <li><a href="/crimson-court" class="court-nav-item"><i class="fas fa-crown"></i> <span>Court Portal</span></a></li>
+                    <li><a href="/" class="court-nav-item"><i class="fas fa-home"></i> <span>Main Site</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Heraldic Banner -->
+    <div class="heraldic-banner">
+        <div class="banner-emblem">
+            <div class="royal-crest cc-icon-image"></div>
+        </div>
+        <h1 class="royal-title">The Houses of Ederia</h1>
+        <p class="royal-subtitle">Six Houses, One Kingdom</p>
     </div>
 
     <main class="houses-content">
-        <!-- Page Title -->
-        <div class="houses-title">
-            <h1 class="royal-title">The Houses of Ederia</h1>
-            <div class="royal-subtitle">Six Houses, One Kingdom</div>
-        </div>
-        
         <!-- Interactive House Selection Circle -->
         <div class="house-selection-container">
             <div class="selection-prompt">
