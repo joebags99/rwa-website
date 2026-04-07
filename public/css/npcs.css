@@ -42,17 +42,7 @@ section.npcs-section,
     overflow: visible !important;
 }
 
-/* Force the court portal to be visible immediately on this page */
-.court-portal {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* Adjust banner for NPCs page */
-.npcs-page .heraldic-banner {
-    padding: 8rem 0 3rem;
-}
+/* Court portal and header visibility handled by .cc-subpage in crimson-court.css */
 
 /* Container styling */
 .npcs-section .container {

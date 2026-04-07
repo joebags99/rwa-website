@@ -1177,20 +1177,63 @@ RESPONSIVE ADJUSTMENTS
     .heraldic-banner {
         padding: 6rem 0 2rem;
     }
-    
+
     .portal-navigation {
         padding: 2rem 0;
     }
-    
+
     .royal-portal {
         padding: 2rem 1rem;
     }
-    
+
     .portal-title {
         font-size: 1.5rem;
     }
-    
+
     .portal-description {
         font-size: 0.9rem;
     }
+}
+
+/*
+======================
+SUBPAGE OVERRIDES
+Applies to all CC subpages — makes headers immediately visible
+without the animated entrance sequence used on the main portal.
+======================
+*/
+.cc-subpage .court-portal {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+    animation: none;
+}
+
+.cc-subpage .royal-header {
+    opacity: 1;
+    transform: translateY(0);
+    transition: none;
+}
+
+.cc-subpage .banner-emblem,
+.cc-subpage .royal-title,
+.cc-subpage .royal-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+    transition: none;
+}
+
+.cc-subpage .royal-title::after {
+    width: 200px;
+    transition: none;
+}
+
+.cc-subpage .court-nav ul {
+    display: flex;
+}
+
+.cc-subpage .royal-footer {
+    opacity: 1;
+    transform: translateY(0);
+    animation: none;
 }
