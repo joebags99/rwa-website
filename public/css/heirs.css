@@ -1,948 +1,371 @@
-/*
-=======================================
-THE HEIRS - ROYAL STYLING
-=======================================
-*/
+/* ============================================================
+   HEIRS DOSSIER — heirs.css
+   Dossier-style layout for the five heirs of Ederia
+   ============================================================ */
 
-/* 
-Heir Selection Page Specific Variables 
-*/
-:root {
-    /* Heir-specific colors */
-    --edwinn-color: #f3f3e5;
-    --edwinn-glow: rgb(255, 255, 255);
-    --via-color: #e6d962;
-    --via-glow: rgba(230, 217, 98, 0.6);
-    --marik-color: #b84141;
-    --marik-glow: rgba(184, 65, 65, 0.6);
-    --xanthe-color: #4c9ba9;
-    --xanthe-glow: rgba(76, 158, 169, 0.6);
-    --cailynn-color: #67d279;
-    --cailynn-glow: rgba(103, 210, 117, 0.6);
-    
-    /* Animation timings */
-    --circle-appear-duration: 1.2s;
-    --section-appear-delay: 0.3s;
-    --section-hover-duration: 0.4s;
-    --detailed-view-transition: 0.8s;
-}
-
-/* 
-Page Base Styling - Inherits from crimson-court.css 
-*/
+/* ── Page shell ──────────────────────────────────────────── */
 .heirs-page {
-    background-color: var(--royal-black);
-    position: relative;
-    overflow-x: hidden;
+    background: var(--cc-bg-deep, #0b0714);
     min-height: 100vh;
 }
 
-/* Main content area — heraldic-banner above provides top spacing */
-.heirs-content {
-    padding: 2rem 0 4rem;
-    min-height: calc(100vh - 12rem);
-    position: relative;
-    z-index: 5;
-}
-
-/* 
-======================
-HEIR SELECTION CIRCLE
-======================
-*/
-.heir-selection-container {
-    position: relative;
-    max-width: 800px;
-    height: 700px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity var(--detailed-view-transition) ease;
-}
-
-.heir-selection-container.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Prompt text that appears above the circle */
-.selection-prompt {
-    position: absolute;
-    top: -18%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid var(--royal-gold);
-    border-radius: 20px;
-    color: var(--royal-gold-light);
-    font-family: var(--font-headers);
-    font-style: italic;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 2s;
-    z-index: 10;
-    text-align: center;
-    width: max-content;
-}
-
-.selection-prompt::before, 
-.selection-prompt::after {
-    content: '✧';
-    margin: 0 0.5rem;
-    opacity: 0.8;
-}
-
-/* Main circle container */
-.heir-circle {
-    position: relative;
-    width: 800px;
-    height: 800px;
-    border-radius: 50%;
-    background-color: rgba(15, 15, 26, 0.7);
-    box-shadow: 
-        0 0 40px rgba(0, 0, 0, 0.8),
-        0 0 70px rgba(195, 10, 61, 0.3),
-        inset 0 0 50px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: circleAppear var(--circle-appear-duration) cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
-    margin: 0 auto;
-}
-
-@keyframes circleAppear {
-    0% {
-        opacity: 0;
-        transform: scale(0.8) rotate(-10deg);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-    }
-}
-
-/* Circle border with pulsating glow */
-.circle-border {
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border: 2px solid var(--royal-gold);
-    border-radius: 50%;
-    opacity: 0.7;
-    animation: pulseBorder 4s ease-in-out infinite;
-}
-
-@keyframes pulseBorder {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.7;
-    }
-    50% {
-        transform: scale(1.02);
-        opacity: 0.9;
-    }
-}
-
-/* Crown decorations around the circle */
-.crown-decoration {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background-image: url('../assets/images/crown.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
-    opacity: 0;
-    animation: fadeIn 1s ease forwards;
-}
-
-.crown-decoration.top {
-    top: -20px;
-    left: calc(50% - 20px);
-    animation-delay: 1.5s;
-}
-
-.crown-decoration.right {
-    top: calc(50% - 20px);
-    right: -20px;
-    animation-delay: 1.7s;
-}
-
-.crown-decoration.bottom {
-    bottom: -20px;
-    left: calc(50% - 20px);
-    animation-delay: 1.9s;
-}
-
-.crown-decoration.left {
-    top: calc(50% - 20px);
-    left: -20px;
-    animation-delay: 2.1s;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Center royal crest */
-.center-crest {
-    position: absolute;
-    width: 160px;
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    opacity: 0;
-    animation: crownGlow 2s ease-in-out infinite, fadeIn 1s ease forwards 1s;
-}
-
-.center-crest img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
-}
-
-@keyframes crownGlow {
-    0%, 100% {
-        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
-    }
-    50% {
-        filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
-    }
-}
-
-/* 
-======================
-HEIR SECTIONS WITHIN CIRCLE
-======================
-*/
-.heir-section {
-    position: absolute;
-    width: 260px;
-    height: 120px;
-    cursor: pointer;
-    z-index: 2;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Position each heir in a circle around the center */
-.heir-section[data-heir="edwinn"] {
-    top: 40px;
-    left: calc(50% - 130px);
-    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 1);
-}
-
-.heir-section[data-heir="via"] {
-    top: calc(50% - 130px);
-    right: 40px;
-    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 2);
-}
-
-.heir-section[data-heir="marik"] {
-    bottom: 40px;
-    right: calc(50% - 300px);
-    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 3);
-}
-
-.heir-section[data-heir="xanthe"] {
-    bottom: 40px;
-    left: calc(50% - 300px);
-    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 4);
-}
-
-.heir-section[data-heir="cailynn"] {
-    top: calc(50% - 130px);
-    left: 40px;
-    animation: sectionAppear 0.8s ease forwards calc(var(--section-appear-delay) * 5);
-}
-
-@keyframes sectionAppear {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Heir silhouette (grayscale version) */
-img.heir-silhouette {
-    position: absolute;
-    width: auto;
-    height: 150px;
-    opacity: 0.5;
-    filter: grayscale(100%) brightness(0.7);
-    transition: all var(--section-hover-duration) ease;
-    z-index: 1;
-}
-
-/* Heir full-color portrait (initially hidden) */
-img.heir-portrait {
-    position: absolute;
-    width: auto;
-    height: 150px;
-    opacity: 0;
-    transition: all var(--section-hover-duration) ease;
-    z-index: 3;
-    transform: scale(0.95);
-}
-
-/* Heir name and title */
-.heir-name, .heir-title {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    font-family: var(--font-headers);
-    color: var(--royal-gold-light);
-    opacity: 0.7;
-    transition: all var(--section-hover-duration) ease;
-    z-index: 2;
-}
-
-.heir-name {
-    bottom: 50px;
-    font-size: 1.6rem;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
-}
-
-.heir-title {
-    bottom: 20px;
-    font-size: 1.1rem;
-    font-style: italic;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-/* Hover effects for each heir section */
-.heir-section:hover .heir-silhouette {
-    opacity: 0;
-}
-
-.heir-section:hover .heir-portrait {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.heir-section:hover .heir-name,
-.heir-section:hover .heir-title {
-    opacity: 1;
-}
-
-/* Individual heir hover effects with custom colors */
-.heir-section[data-heir="edwinn"]:hover {
-    filter: drop-shadow(0 0 15px var(--edwinn-glow));
-}
-
-.heir-section[data-heir="edwinn"]:hover .heir-name,
-.heir-section[data-heir="edwinn"]:hover .heir-title {
-    color: var(--edwinn-color);
-}
-
-.heir-section[data-heir="via"]:hover {
-    filter: drop-shadow(0 0 15px var(--via-glow));
-}
-
-.heir-section[data-heir="via"]:hover .heir-name,
-.heir-section[data-heir="via"]:hover .heir-title {
-    color: var(--via-color);
-}
-
-.heir-section[data-heir="marik"]:hover {
-    filter: drop-shadow(0 0 15px var(--marik-glow));
-}
-
-.heir-section[data-heir="marik"]:hover .heir-name,
-.heir-section[data-heir="marik"]:hover .heir-title {
-    color: var(--marik-color);
-}
-
-.heir-section[data-heir="xanthe"]:hover {
-    filter: drop-shadow(0 0 15px var(--xanthe-glow));
-}
-
-.heir-section[data-heir="xanthe"]:hover .heir-name,
-.heir-section[data-heir="xanthe"]:hover .heir-title {
-    color: var(--xanthe-color);
-}
-
-.heir-section[data-heir="cailynn"]:hover {
-    filter: drop-shadow(0 0 15px var(--cailynn-glow));
-}
-
-.heir-section[data-heir="cailynn"]:hover .heir-name,
-.heir-section[data-heir="cailynn"]:hover .heir-title {
-    color: var(--cailynn-color);
-}
-
-/* 
-======================
-DETAILED HEIR VIEW
-======================
-*/
-.detailed-view-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding: 2rem 2rem 4rem;
-    overflow-y: auto;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--detailed-view-transition) ease;
-}
-
-.detailed-view-container.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Back button */
-.back-to-circle {
-    position: fixed;
-    top: 120px;
-    left: 30px;
-    width: 50px;
-    height: 50px;
-    background: rgba(15, 15, 26, 0.7);
-    border: 2px solid var(--royal-gold);
-    border-radius: 50%;
-    color: var(--royal-gold);
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 100;
-    opacity: 0;
-    transform: translateX(-20px);
-}
-
-.detailed-view-container.active .back-to-circle {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 0.5s;
-}
-
-.back-to-circle:hover {
-    background: rgba(15, 15, 26, 0.9);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-    transform: translateX(5px);
-}
-
-.back-to-circle i {
-    transition: transform 0.3s ease;
-}
-
-.back-to-circle:hover i {
-    transform: translateX(-3px);
-}
-
-/* Individual heir detailed views */
-.heir-detailed-view {
-    display: none;
+/* ── Dossier main wrapper ────────────────────────────────── */
+.heirs-dossier-main {
     max-width: 1200px;
     margin: 0 auto;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all var(--detailed-view-transition) ease;
+    padding: 1.5rem 1.5rem 3rem;
 }
 
-.heir-detailed-view.active {
-    display: grid;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Left side - Heir information */
-.heir-info {
-    color: var(--divine-light-white);
-    padding: 2rem;
-    background: rgba(15, 15, 26, 0.7);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    border-radius: 10px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-}
-
-.heir-info::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../assets/images/parchment-texture.png');
-    opacity: 0.05;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.heir-full-name {
-    font-family: var(--font-titles);
-    color: var(--royal-gold);
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-}
-
-.heir-epithet {
-    font-family: var(--font-headers);
-    color: var(--royal-silver);
-    font-size: 1.4rem;
-    font-style: italic;
+/* ── Tab Navigation ──────────────────────────────────────── */
+.heir-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
     margin-bottom: 1.5rem;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+    flex-wrap: wrap;
 }
 
-.heir-description {
-    font-family: var(--font-body);
-    line-height: 1.7;
-    color: var(--royal-silver);
-}
-
-.intro-paragraph {
-    font-size: 1.15rem;
-    color: var(--divine-light-white);
-    margin-bottom: 1.5rem;
-}
-
-.section-title {
-    color: var(--royal-gold-light);
-    font-family: var(--font-headers);
-    font-size: 1.3rem;
-    margin: 1.5rem 0 0.8rem;
-    position: relative;
-    display: inline-block;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gradient-gold);
-    border-radius: 2px;
-}
-
-.conclusion-paragraph {
-    font-style: italic;
-    color: var(--divine-light-white);
-    margin-top: 1.5rem;
-}
-
-/* Right side - Heir portrait */
-.heir-portrait-large {
+.heir-tab {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(139,90,43,0.3);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s, transform 0.15s;
+    min-width: 90px;
+}
+
+.heir-tab:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(212,175,55,0.5);
+    transform: translateY(-2px);
+}
+
+/* Per-heir active colors */
+.heir-tab[data-heir="edwinn"].active  { border-color:#5b8cff; box-shadow:0 0 12px rgba(91,140,255,0.35);  background:rgba(91,140,255,0.1);  }
+.heir-tab[data-heir="via"].active     { border-color:#e662a0; box-shadow:0 0 12px rgba(230,98,160,0.35);  background:rgba(230,98,160,0.1);  }
+.heir-tab[data-heir="marik"].active   { border-color:#41b87f; box-shadow:0 0 12px rgba(65,184,127,0.35);  background:rgba(65,184,127,0.1);  }
+.heir-tab[data-heir="xanthe"].active  { border-color:#c47c6a; box-shadow:0 0 12px rgba(196,124,106,0.35); background:rgba(196,124,106,0.1); }
+.heir-tab[data-heir="cailynn"].active { border-color:#9a67d2; box-shadow:0 0 12px rgba(154,103,210,0.35); background:rgba(154,103,210,0.1); }
+
+.tab-portrait {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 2px solid rgba(212,175,55,0.4);
+    transition: border-color 0.25s;
+}
+
+.heir-tab[data-heir="edwinn"].active  .tab-portrait { border-color:#5b8cff; }
+.heir-tab[data-heir="via"].active     .tab-portrait { border-color:#e662a0; }
+.heir-tab[data-heir="marik"].active   .tab-portrait { border-color:#41b87f; }
+.heir-tab[data-heir="xanthe"].active  .tab-portrait { border-color:#c47c6a; }
+.heir-tab[data-heir="cailynn"].active .tab-portrait { border-color:#9a67d2; }
+
+.tab-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: #c9a84c;
+    text-transform: uppercase;
+}
+
+/* ── Dossier Stage ───────────────────────────────────────── */
+.dossier-stage {
     position: relative;
 }
 
-.portrait-frame {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    aspect-ratio: 3/4;
-    border: 3px solid var(--royal-gold);
-    box-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.7),
-        0 0 15px rgba(212, 175, 55, 0.5);
+/* ── Individual Dossier Panel ────────────────────────────── */
+.heir-dossier {
+    display: none;
+    grid-template-columns: 280px 1fr;
+    gap: 0;
+    background: linear-gradient(135deg,
+        rgba(20,10,38,0.97) 0%,
+        rgba(12,6,24,0.99) 100%);
+    border: 1px solid rgba(139,90,43,0.35);
+    border-top: 3px solid var(--heir-color, #d4af37);
+    border-radius: 4px;
+    box-shadow:
+        0 0 40px rgba(0,0,0,0.6),
+        inset 0 0 60px rgba(0,0,0,0.4),
+        0 0 20px var(--heir-glow, rgba(212,175,55,0.15));
     overflow: hidden;
+    animation: dossierFadeIn 0.35s ease;
 }
 
-.portrait-frame img {
+.heir-dossier.active {
+    display: grid;
+}
+
+@keyframes dossierFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Portrait Column ─────────────────────────────────────── */
+.dossier-portrait-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid rgba(139,90,43,0.25);
+    background: rgba(0,0,0,0.25);
+}
+
+.dossier-frame {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 2px solid var(--heir-color, #d4af37);
+    box-shadow:
+        0 0 0 4px rgba(0,0,0,0.5),
+        0 0 20px var(--heir-glow, rgba(212,175,55,0.2));
+    background: #0a0515;
+}
+
+.dossier-portrait-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scale(1.05);
     object-position: top center;
-    transition: all 0.5s ease;
+    display: block;
 }
 
-.portrait-frame:hover img {
-    transform: scale(3.5);
-    object-position: center 220px;
-
-}
-
-/* Ornamental corners for the portrait frame */
-.frame-corner {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-image: url('../assets/images/corner-ornament.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 2;
-}
-
-.frame-corner.top-left {
-    top: -5px;
-    left: -5px;
-    transform: rotate(0deg);
-}
-
-.frame-corner.top-right {
-    top: -5px;
-    right: -5px;
-    transform: rotate(90deg);
-}
-
-.frame-corner.bottom-left {
-    bottom: -5px;
-    left: -5px;
-    transform: rotate(270deg);
-}
-
-.frame-corner.bottom-right {
-    bottom: -5px;
-    right: -5px;
-    transform: rotate(180deg);
-}
-
-/* Heir emblem below portrait */
-.heir-emblem {
-    width: 80px;
-    height: 80px;
-    margin-top: 1rem;
-    background-image: url('../assets/images/royal-seal.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.7;
-}
-
-/* 
-======================
-HEIR-SPECIFIC DETAIL STYLING
-======================
-*/
-/* Edwinn Falkrest */
-#edwinn-view .heir-full-name,
-#edwinn-view .section-title {
-    color: var(--edwinn-color);
-}
-
-#edwinn-view .section-title::after {
-    background: linear-gradient(90deg, var(--edwinn-color), var(--royal-gold));
-}
-
-#edwinn-view .portrait-frame {
-    border-color: var(--edwinn-color);
-    box-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.7),
-        0 0 15px var(--edwinn-glow);
-}
-
-/* Via Falkrest */
-#via-view .heir-full-name,
-#via-view .section-title {
-    color: var(--via-color);
-}
-
-#via-view .section-title::after {
-    background: linear-gradient(90deg, var(--via-color), var(--royal-gold));
-}
-
-#via-view .portrait-frame {
-    border-color: var(--via-color);
-    box-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.7),
-        0 0 15px var(--via-glow);
-}
-
-/* Marik Falkrest */
-#marik-view .heir-full-name,
-#marik-view .section-title {
-    color: var(--marik-color);
-}
-
-#marik-view .section-title::after {
-    background: linear-gradient(90deg, var(--marik-color), var(--royal-gold));
-}
-
-#marik-view .portrait-frame {
-    border-color: var(--marik-color);
-    box-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.7),
-        0 0 15px var(--marik-glow);
-}
-
-/* Xanthe Falkrest */
-#xanthe-view .heir-full-name,
-#xanthe-view .section-title {
-    color: var(--xanthe-color);
-}
-
-#xanthe-view .section-title::after {
-    background: linear-gradient(90deg, var(--xanthe-color), var(--royal-gold));
-}
-
-#xanthe-view .portrait-frame {
-    border-color: var(--xanthe-color);
-    box-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.7),
-        0 0 15px var(--xanthe-glow);
-}
-
-/* Cailynn Falkrest */
-#cailynn-view .heir-full-name,
-#cailynn-view .section-title {
-    color: var(--cailynn-color);
-}
-
-#cailynn-view .section-title::after {
-    background: linear-gradient(90deg, var(--cailynn-color), var(--royal-gold));
-}
-
-#cailynn-view .portrait-frame {
-    transform: scale(1.15);
-    border-color: var(--cailynn-color);
-    box-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.7),
-        0 0 15px var(--cailynn-glow);
-}
-
-/* 
-======================
-PARTICLES & BACKGROUND EFFECTS
-======================
-*/
-.heir-particles-container {
-    position: fixed;
-    top: 0;
-    left: 0;
+/* ── Nameplate ───────────────────────────────────────────── */
+.dossier-nameplate {
     width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    background: url('../assets/images/dark-texture.png');
+    text-align: center;
+    padding-top: 1.25rem;
 }
 
-.heir-particles-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(circle at 20% 30%, rgba(195, 10, 61, 0.2) 0%, transparent 50%),
-        radial-gradient(circle at 80% 40%, rgba(212, 175, 55, 0.15) 0%, transparent 50%);
-    pointer-events: none;
+.nameplate-rule {
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--heir-color, #d4af37) 50%,
+        transparent 100%);
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
 }
 
-/* 
-======================
-RESPONSIVE ADJUSTMENTS
-======================
-*/
-@media (max-width: 1200px) {
-    .heir-detailed-view {
+.nameplate-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #f0e0b0;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.3rem;
+    line-height: 1.2;
+}
+
+.nameplate-epithet {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--heir-color, #c9a84c);
+    margin: 0 0 0.75rem;
+    opacity: 0.9;
+}
+
+/* ── Content Column ──────────────────────────────────────── */
+.dossier-content-col {
+    padding: 2rem 2rem 2rem 2rem;
+    overflow-y: auto;
+    max-height: 620px;
+}
+
+.dossier-content-col::-webkit-scrollbar { width: 4px; }
+.dossier-content-col::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+.dossier-content-col::-webkit-scrollbar-thumb {
+    background: var(--heir-color, #d4af37);
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+/* ── Stamp / Badge ───────────────────────────────────────── */
+.dossier-stamp {
+    float: right;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--heir-color, #d4af37);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--heir-color, #d4af37);
+    background: rgba(0,0,0,0.5);
+    box-shadow: 0 0 14px var(--heir-glow, rgba(212,175,55,0.2));
+    margin: 0 0 1rem 1.5rem;
+    opacity: 0.85;
+}
+
+/* ── Dossier Text ────────────────────────────────────────── */
+.dossier-text {
+    color: #c8b89a;
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.dossier-intro {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #d8c8a8;
+    margin-bottom: 1.25rem;
+}
+
+.dossier-section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--heir-color, #c9a84c);
+    border-bottom: 1px solid rgba(139,90,43,0.3);
+    padding-bottom: 0.3rem;
+    margin: 1.5rem 0 0.6rem;
+    clear: both;
+}
+
+.dossier-text p {
+    margin: 0 0 0.9rem;
+}
+
+.dossier-closing {
+    font-style: italic;
+    color: #b8a888;
+    border-left: 2px solid var(--heir-color, #d4af37);
+    padding-left: 1rem;
+    margin-top: 1.5rem;
+    opacity: 0.9;
+}
+
+/* ── Prev / Next Controls ────────────────────────────────── */
+.dossier-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+}
+
+.dossier-prev,
+.dossier-next {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(212,175,55,0.35);
+    color: #c9a84c;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.dossier-prev:hover,
+.dossier-next:hover {
+    background: rgba(212,175,55,0.12);
+    border-color: #d4af37;
+    transform: scale(1.1);
+}
+
+.dossier-prev:disabled,
+.dossier-next:disabled {
+    opacity: 0.3;
+    cursor: default;
+    transform: none;
+}
+
+/* ── Dots ────────────────────────────────────────────────── */
+.dossier-dots {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(212,175,55,0.25);
+    border: 1px solid rgba(212,175,55,0.4);
+    transition: background 0.25s, transform 0.2s;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: #c9a84c;
+    transform: scale(1.35);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 860px) {
+    .heir-dossier.active {
         grid-template-columns: 1fr;
-        gap: 2rem;
     }
-    
-    .heir-portrait-large {
-        grid-row: 1;
+
+    .dossier-portrait-col {
+        padding: 1.5rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(139,90,43,0.25);
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1.5rem;
     }
-    
-    .heir-info {
-        grid-row: 2;
+
+    .dossier-frame {
+        width: 140px;
+        min-width: 140px;
+        aspect-ratio: 2 / 3;
+    }
+
+    .dossier-nameplate {
+        padding-top: 0;
+        text-align: left;
+        align-self: center;
+    }
+
+    .nameplate-rule {
+        background: linear-gradient(90deg,
+            var(--heir-color, #d4af37) 0%,
+            transparent 100%);
+    }
+
+    .dossier-content-col {
+        padding: 1.5rem;
         max-height: none;
     }
 }
 
-@media (max-width: 900px) {
-    .heir-circle {
-        width: 90vw;
-        height: 90vw;
-        max-width: 600px;
-        max-height: 600px;
-    }
-    
-    .heir-selection-container {
-        height: auto;
-        padding: 2rem 0;
-    }
-    
-    .heir-section {
-        width: 33vw;
-        height: 33vw;
-        max-width: 180px;
-        max-height: 180px;
-    }
-    
-    .heir-section[data-heir="edwinn"] {
-        top: 20px;
-        left: calc(50% - 16.5vw);
-    }
-    
-    .heir-section[data-heir="via"] {
-        top: calc(50% - 16.5vw);
-        right: 20px;
-    }
-    
-    .heir-section[data-heir="marik"] {
-        bottom: 20px;
-        right: calc(50% - 16.5vw - 50px);
-    }
-    
-    .heir-section[data-heir="xanthe"] {
-        bottom: 20px;
-        left: calc(50% - 16.5vw - 50px);
-    }
-    
-    .heir-section[data-heir="cailynn"] {
-        top: calc(50% - 16.5vw);
-        left: 20px;
-    }
-    
-    .center-crest {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .heirs-navigation {
+@media (max-width: 560px) {
+    .heir-tabs { gap: 0.25rem; }
+    .heir-tab { min-width: 60px; padding: 0.4rem 0.4rem; }
+    .tab-portrait { width: 42px; height: 42px; }
+    .tab-name { font-size: 0.58rem; }
+    .heirs-dossier-main { padding: 1rem 0.5rem 2rem; }
+
+    .dossier-portrait-col {
         flex-direction: column;
+        align-items: center;
     }
-    
-    .heirs-title .royal-title {
-        margin-bottom: 0.5rem;
-    }
-    
-    .back-to-circle {
-        top: 80px;
-        left: 20px;
-    }
-    
-    .heir-full-name {
-        font-size: 2rem;
-    }
-    
-    .heir-epithet {
-        font-size: 1.2rem;
-    }
-    
-    .portrait-frame {
-        max-width: 300px;
-    }
-}
-
-@media (max-width: 768px) {
-    .heir-circle {
-        width: 95vw;
-        height: 95vw;
-        max-width: 500px;
-        max-height: 500px;
-    }
-    
-    .heir-section {
-        width: 33vw;
-        height: 33vw;
-        max-width: 150px;
-        max-height: 150px;
-    }
-    
-    .heir-name {
-        bottom: 30px;
-        font-size: 1.2rem;
-    }
-    
-    .heir-title {
-        bottom: 10px;
-        font-size: 0.8rem;
-    }
-    
-    .center-crest {
-        width: 80px;
-        height: 80px;
-    }
-}
-
-@media (max-width: 576px) {
-    .selection-prompt {
-        font-size: 0.9rem;
-        padding: 0.4rem 1rem;
-    }
-    
-    .heir-section {
-        width: 30vw;
-        height: 30vw;
-    }
-    
-    .center-crest {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .heir-name {
-        font-size: 1rem;
-        bottom: 25px;
-    }
-    
-    .heir-title {
-        font-size: 0.7rem;
-        bottom: 8px;
-    }
-    
-    .crown-decoration {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .back-to-circle {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
-    .heir-info {
-        padding: 1.5rem;
-    }
-    
-    .heir-full-name {
-        font-size: 1.7rem;
-    }
-    
-    .heir-epithet {
-        font-size: 1.1rem;
-    }
-    
-    .intro-paragraph {
-        font-size: 1rem;
-    }
-    
-    .section-title {
-        font-size: 1.2rem;
+    .dossier-frame { width: 160px; }
+    .dossier-nameplate { text-align: center; }
+    .nameplate-rule {
+        background: linear-gradient(90deg,
+            transparent 0%,
+            var(--heir-color, #d4af37) 50%,
+            transparent 100%);
     }
 }
