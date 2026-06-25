@@ -519,8 +519,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function showResults() {
         
         const results = calculateResults();
-        
-        
+
+        // Track quiz completion (no-op if GA isn't loaded)
+        if (typeof window.trackEvent === 'function') {
+            window.trackEvent('quiz_complete', { quiz: 'character', result: results.topCharacter });
+        }
+
         // Hide questions, show results
         quizQuestionsSection.style.display = 'none';
         quizResults.style.display = 'block';

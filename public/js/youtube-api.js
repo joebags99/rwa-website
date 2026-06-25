@@ -107,16 +107,9 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
     </div>
   `;
 
-  if (!playlistId || playlistId === 'YOUR_CRIMSON_COURT_PLAYLIST_ID' || 
-      playlistId === 'YOUR_DM_ADVICE_PLAYLIST_ID' || playlistId === 'YOUR_FEATURED_PLAYLIST_ID') {
-    // Display message if playlist ID is not set
-    
-    container.innerHTML = `
-      <div class="api-key-message">
-        <p>YouTube playlist ID not configured. Using preview mode with dummy videos.</p>
-      </div>
-    `;
-    renderDummyVideos(container, maxResults);
+  if (!playlistId || String(playlistId).startsWith('YOUR_')) {
+    // Playlist not configured yet - show a real link to YouTube instead of fake videos
+    renderYouTubeFallback(container, playlistId);
     return;
   }
 
@@ -150,13 +143,8 @@ function fetchPlaylistVideos(playlistId, container, maxResults = 6) {
     })
     .catch(error => {
       console.error('Error fetching YouTube videos:', error);
-      container.innerHTML = `
-        <div class="api-key-message">
-          <p>Error loading videos: ${error.message}</p>
-          <p>Using preview mode with dummy videos instead.</p>
-        </div>
-      `;
-      renderDummyVideos(container, maxResults);
+      // Never show fake episodes - fall back to a real "Watch on YouTube" link
+      renderYouTubeFallback(container, playlistId);
     });
 }
 
@@ -198,7 +186,7 @@ function inspectYouTubeResponse(data) {
  */
 function renderVideos(videos, container) {
   if (!videos || videos.length === 0) {
-    container.innerHTML = '<p>No videos found.</p>';
+    renderYouTubeFallback(container);
     return;
   }
   
@@ -317,73 +305,35 @@ function handleThumbnailError(img, videoId) {
 }
 
 /**
- * Render dummy videos for development and preview purposes
- * @param {HTMLElement} container - The container to render videos into
- * @param {number} count - Number of dummy videos to render
+ * Render a real "Watch on YouTube" fallback when videos can't be loaded.
+ * Never shows fake/dummy episodes - links to the real playlist or channel.
+ * @param {HTMLElement} container - The container to render into
+ * @param {string} [playlistId] - The playlist to link to (falls back to the channel)
  */
-function renderDummyVideos(container, count) {
-  
-  
-  const titles = [
-    'The Crimson Court: Episode 1 - The Gathering Storm',
-    'The Crimson Court: Episode 2 - Secrets of the Palace',
-    'DM Advice: Creating Memorable NPCs',
-    'DM Advice: Building Political Intrigue in Your Campaign',
-    'The Crimson Court: Episode 3 - Betrayal at the Council',
-    'DM Advice: Combat Strategies for Challenging Encounters'
-  ];
-  
-  const descriptions = [
-    'Our heroes meet for the first time as political tensions rise in the kingdom.',
-    'The court politics intensify as our adventurers discover hidden alliances.',
-    'Learn how to create NPCs that your players will remember long after the session ends.',
-    'Add depth to your world with these political intrigue tips and tricks.',
-    'A shocking betrayal changes everything for our heroes as they navigate the royal court.',
-    'Make your combat encounters more dynamic and engaging with these DM tips.'
-  ];
-  
-  // Base64 encoded placeholder image (small 320x180 gray rectangle with text)
-  const placeholderImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAC0CAMAAADROZcIAAAAMFBMVEXy8vL6+vr19fX4+Pjt7e3v7+/r6+v29vb8/Pzp6eno6Oj7+/vz8/Px8fHu7u7q6urfXciFAAACFUlEQVR4nO3a61LDIBCA0YY2Ul/3f7Ga6YxttOhaDsGZ5ftlQnYJEJMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAZ5jQJIaQ0jV3H3GrXAVSTPXIdc4vvOoA08sBjq5nHXceHrDyy2Hrby04DKOqRh6pHbtN1AFnLI4stu8suA0hdB1BnPPKr6/dBjxxejWXeZQA+hqHrAGq6G8u86wD2m17/G0t9Ky3xysV39XfyRlz//AZVebzSLO887wcBAAAAAAAAAAAAAID3YuO49K6/1D2t93DXW3T5tW3b9vq75qp52TaWaTR5qbcMdbxnGT+Wsc01QI90a8cRzrK8lNvE+FjmFnmpu92tbeRHo5vj0g8w9pj9GDfywy0R+jLjSJkfJZnxrOG6PuNXfLBr4cdGkZ9mHKh4udv11IvnMbpd6LvOIu/1I75Jkb/OLnHPNznyGd+a3fTF+hSJvf8y7kMvQ4/uUVvJzMa3O6RY5Ne9xUfxrTRN0x+qNnnKbwxLmbMsPXzwVxWnPLk8yfE/bv1+C3PxxdcU+aLrPlPkC6XkPi9ZfrxSfmD8kOUbCwAAAAAAAAAAAAAAb+/8+YXz1ydenF7/euT4sU9+6Lv4AZc/gn3m/MsXJa+Dj19/EjlfvNKYpnl+c+KVqXn98+nnbxM//wWv8O/56S8JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAnfQPuQgV9cnTEJQAAAABJRU5ErkJggg==';
-  
-  // Indexed placeholder images with text
-  const thumbnailTexts = [
-    'The Gathering Storm', 
-    'Palace Secrets', 
-    'Memorable NPCs', 
-    'Political Intrigue', 
-    'Council Betrayal', 
-    'Combat Strategies'
-  ];
-  
-  container.innerHTML = '';
-  
-  for (let i = 0; i < Math.min(count, titles.length); i++) {
-    const videoCard = document.createElement('div');
-    videoCard.className = 'video-card';
-    
-    videoCard.innerHTML = `
-      <a href="#" class="video-thumbnail">
-        <img src="${placeholderImage}" alt="${titles[i]}">
+function renderYouTubeFallback(container, playlistId) {
+  const cfg = window.RWA_CONFIG || {};
+  const channelUrl = (cfg.socialLinks && cfg.socialLinks.youtube) || 'https://www.youtube.com/@RollWithAdvantage5e';
+  const isRealPlaylist = playlistId && !String(playlistId).startsWith('YOUR_');
+  const destination = isRealPlaylist
+    ? `https://www.youtube.com/playlist?list=${playlistId}`
+    : channelUrl;
+
+  container.innerHTML = `
+    <div class="youtube-fallback">
+      <i class="fab fa-youtube youtube-fallback-icon" aria-hidden="true"></i>
+      <h3>Watch on YouTube</h3>
+      <p>Catch our latest episodes and videos over on our YouTube channel.</p>
+      <a href="${destination}" target="_blank" rel="noopener" class="btn btn-primary magical-btn youtube-fallback-btn" data-yt-cta="fallback">
+        <span class="btn-text"><i class="fab fa-youtube" aria-hidden="true"></i> Watch on YouTube</span>
       </a>
-      <div class="video-info">
-        <h3><a href="#">${titles[i]}</a></h3>
-        <p>${descriptions[i]}</p>
-        <div class="video-meta">
-          <span>Published: Jan ${i + 1}, 2025</span>
-        </div>
-      </div>
-    `;
-    
-    container.appendChild(videoCard);
-  }
-  
-  // Initialize video thumbnail previews with slight delay
-  setTimeout(() => {
-    if (window.enhanceVideoThumbnails) {
-      
-      window.enhanceVideoThumbnails();
-    }
-  }, 300);
+    </div>
+  `;
+}
+
+// Deprecated: dummy/preview videos are no longer shown. Any legacy callers now
+// get the real "Watch on YouTube" fallback instead of fake episodes.
+function renderDummyVideos(container) {
+  renderYouTubeFallback(container);
 }
 
 // Make these functions available globally
@@ -392,3 +342,4 @@ window.getThumbnailUrl = getThumbnailUrl;
 window.handleThumbnailError = handleThumbnailError;
 window.fetchPlaylistVideos = fetchPlaylistVideos;
 window.inspectYouTubeResponse = inspectYouTubeResponse;
+window.renderYouTubeFallback = renderYouTubeFallback;

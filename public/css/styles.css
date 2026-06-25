@@ -2671,3 +2671,55 @@ textarea:focus-visible {
     border-width: 0;
 }
 
+/* ===== YouTube fallback card (shown instead of fake/dummy videos) ===== */
+.youtube-fallback {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 2.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--border-radius-lg, 12px);
+}
+.youtube-fallback-icon {
+    font-size: 3rem;
+    color: #FF0000;
+}
+.youtube-fallback h3 {
+    margin: 0;
+}
+.youtube-fallback p {
+    margin: 0 0 0.5rem;
+    max-width: 38ch;
+    opacity: 0.85;
+}
+
+/* ===== YouTube Subscribe button (brand red) ===== */
+.youtube-subscribe-btn {
+    background: #FF0000;
+    color: #fff;
+    border: none;
+}
+.youtube-subscribe-btn:hover,
+.youtube-subscribe-btn:focus {
+    background: #cc0000;
+    color: #fff;
+}
+.footer-subscribe-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    margin-bottom: 1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background var(--transition-fast, 0.2s) ease, transform var(--transition-fast, 0.2s) ease;
+}
+.footer-subscribe-btn:hover {
+    transform: translateY(-2px);
+}
+

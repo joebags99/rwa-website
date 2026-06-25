@@ -97,6 +97,43 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
+// Newsletter signup - validates and stores emails in data/subscribers.json.
+// (Swap the file write for a Mailchimp/Buttondown API call to forward to a provider.)
+app.post('/api/newsletter', (req, res) => {
+  const email = (req.body && req.body.email ? String(req.body.email) : '').trim().toLowerCase();
+  const source = req.body && req.body.source ? String(req.body.source).slice(0, 120) : 'website';
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email) || email.length > 254) {
+    return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
+  }
+
+  const subscribersFile = path.join(__dirname, 'data', 'subscribers.json');
+  try {
+    let data = { subscribers: [] };
+    if (fs.existsSync(subscribersFile)) {
+      data = JSON.parse(fs.readFileSync(subscribersFile, 'utf8'));
+      if (!Array.isArray(data.subscribers)) data.subscribers = [];
+    }
+
+    if (data.subscribers.some(s => (s.email || '').toLowerCase() === email)) {
+      return res.status(200).json({ success: true, message: "You're already on the list!" });
+    }
+
+    data.subscribers.push({
+      email,
+      source,
+      subscribedAt: new Date().toISOString()
+    });
+    fs.writeFileSync(subscribersFile, JSON.stringify(data, null, 2), 'utf8');
+
+    return res.status(201).json({ success: true, message: "Thank you for subscribing! You'll receive updates soon." });
+  } catch (error) {
+    console.error('Error saving newsletter subscription:', error);
+    return res.status(500).json({ success: false, message: 'Something went wrong. Please try again later.' });
+  }
+});
+
 // Check for .env files and log their existence
 function checkEnvFiles() {
   const envFiles = ['.env', '.env.local'];
@@ -304,9 +341,89 @@ app.get('/api/public/locations', (req, res) => {
   }
 });
 
-// Add this route to serve the article.html page
+// Escape a string for safe use inside an HTML attribute
+function escapeAttr(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// Serve the article.html page. When an article id is supplied we inject
+// per-article SEO / Open Graph / Twitter meta tags server-side so that social
+// crawlers (which do not execute JavaScript) get a proper link preview.
 app.get('/article', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'article.html'));
+    const articlePath = path.join(__dirname, 'public', 'article.html');
+    const articleId = req.query.id;
+
+    if (!articleId) {
+        return res.sendFile(articlePath);
+    }
+
+    fs.readFile(articlePath, 'utf8', (err, html) => {
+        if (err) return res.sendFile(articlePath);
+
+        try {
+            // Read fresh from disk so previews reflect the latest admin edits
+            const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'articles.json'), 'utf8'));
+            const article = (data.articles || []).find(a => a.id === articleId && a.status === 'published');
+            if (!article) return res.send(html);
+
+            const seo = article.seo || {};
+            const title = escapeAttr(seo.metaTitle || article.title || 'Article');
+            const fullTitle = `${title} - Roll With Advantage`;
+            const desc = escapeAttr(seo.metaDescription || article.excerpt || article.subtitle || '');
+            const image = escapeAttr(article.image || 'https://rollwithadvantage.co/assets/images/social-banner.png');
+            const url = `https://rollwithadvantage.co/article?id=${encodeURIComponent(articleId)}`;
+
+            const jsonLd = JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Article',
+                headline: article.title,
+                description: seo.metaDescription || article.excerpt || article.subtitle || '',
+                image: article.image || undefined,
+                datePublished: article.date || article.createdAt,
+                dateModified: article.updatedAt || article.date,
+                author: { '@type': 'Person', name: article.author || 'Roll With Advantage' },
+                publisher: {
+                    '@type': 'Organization',
+                    name: 'Roll With Advantage',
+                    logo: { '@type': 'ImageObject', url: 'https://rollwithadvantage.co/assets/images/logo.png' }
+                },
+                mainEntityOfPage: { '@type': 'WebPage', '@id': url }
+            }).replace(/</g, '\\u003c'); // prevent breaking out of the <script> tag
+
+            const meta = `
+    <link rel="canonical" href="${url}">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="${url}">
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${desc}">
+    <meta property="og:image" content="${image}">
+    <meta property="og:site_name" content="Roll With Advantage">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="${url}">
+    <meta property="twitter:title" content="${title}">
+    <meta property="twitter:description" content="${desc}">
+    <meta property="twitter:image" content="${image}">
+    <!-- Article structured data -->
+    <script type="application/ld+json">${jsonLd}</script>
+`;
+
+            html = html
+                .replace(/<title id="page-title">[^<]*<\/title>/, `<title id="page-title">${fullTitle}</title>`)
+                .replace(/<meta name="description" content="[^"]*" id="meta-description">/, `<meta name="description" content="${desc}" id="meta-description">`)
+                .replace('</head>', `${meta}</head>`);
+
+            res.send(html);
+        } catch (e) {
+            console.error('Error injecting article meta tags:', e);
+            res.send(html);
+        }
+    });
 });
 
 // API endpoint to list images in the artist folder

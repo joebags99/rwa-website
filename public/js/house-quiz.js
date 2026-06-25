@@ -565,8 +565,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function showResults() {
         
         const results = calculateResults();
-        
-        
+
+        // Track quiz completion (no-op if GA isn't loaded)
+        if (typeof window.trackEvent === 'function') {
+            window.trackEvent('quiz_complete', { quiz: 'house', result: results.topHouse });
+        }
+
         // Hide name form, show results
         nameInputForm.style.display = 'none';
         quizResults.style.display = 'block';

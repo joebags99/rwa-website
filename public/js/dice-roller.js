@@ -381,7 +381,13 @@ function initializeDiceRoller() {
      */
     function displayRollResults(results, total, modifier) {
         resultsArea.classList.add('has-results');
-        
+
+        // Track dice roll usage (no-op if GA isn't loaded)
+        if (typeof window.trackEvent === 'function') {
+            const diceTypes = results.map(r => r.type).join('+');
+            window.trackEvent('dice_roll', { dice: diceTypes, total: total });
+        }
+
         let html = '<div class="roll-details">';
         
         results.forEach(result => {
