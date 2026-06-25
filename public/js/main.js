@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNewsletterForm();
     initializeScrollToTop();
     initializeCardEffects();
+    initializeEventTracking();
     
     // We'll initialize thumbnails after a slight delay to ensure DOM is loaded
     setTimeout(enhanceVideoThumbnails, 300);
@@ -48,6 +49,63 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeInteractiveMap();
     }
 });
+
+/**
+ * Send an event to Google Analytics (GA4 / gtag).
+ * Safe no-op if gtag isn't loaded (e.g. in local development).
+ * @param {string} eventName - GA4 event name
+ * @param {Object} [params] - Optional event parameters
+ */
+function trackEvent(eventName, params = {}) {
+    if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, params);
+    }
+}
+window.trackEvent = trackEvent;
+
+/**
+ * Initialize engagement event tracking.
+ * Uses a single delegated click listener so links added dynamically
+ * (e.g. the YouTube video cards) are tracked without re-binding.
+ */
+function initializeEventTracking() {
+    const TOOL_PATHS = /^\/(dice-roller|character-quiz|house-quiz|interactive-map|world-builder|tools)\b/;
+
+    document.addEventListener('click', function(event) {
+        const link = event.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href') || '';
+        const ctaType = link.dataset.ytCta;
+
+        // YouTube subscribe CTAs (checked before generic YouTube so we know it's a subscribe)
+        if (ctaType) {
+            trackEvent('youtube_subscribe_click', { location: ctaType, link_url: href });
+            return;
+        }
+        if (/youtube\.com|youtu\.be/i.test(href)) {
+            trackEvent('youtube_click', { link_url: href });
+            return;
+        }
+        if (/discord\.(gg|com)/i.test(href)) {
+            trackEvent('discord_join', { link_url: href });
+            return;
+        }
+        if (/twitch\.tv/i.test(href)) {
+            trackEvent('social_click', { network: 'twitch', link_url: href });
+            return;
+        }
+        if (/instagram\.com/i.test(href)) {
+            trackEvent('social_click', { network: 'instagram', link_url: href });
+            return;
+        }
+        // Internal navigation to an interactive tool/quiz
+        const toolMatch = href.match(TOOL_PATHS);
+        if (toolMatch) {
+            trackEvent('tool_open', { tool: toolMatch[1] });
+        }
+    }, true);
+}
 
 /**
  * Initialize Device Detection
@@ -283,51 +341,71 @@ function initializeNewsletterForm() {
     const newsletterForm = document.getElementById('newsletter-form');
     
     if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const emailInput = this.querySelector('input[type="email"]');
-            const email = emailInput.value.trim();
-            
-            if (validateEmail(email)) {
-                // Add submission animation
-                newsletterForm.classList.add('submitted');
-                
-                // In a real implementation, you would send this to your backend or email service
-                // For now, we'll just show a success message after a short delay
-                setTimeout(() => {
-                    newsletterForm.innerHTML = '<p class="success-message">Thank you for subscribing! You\'ll receive updates soon.</p>';
-                }, 1000);
-            } else {
-                // Show error message with animation
-                const errorMessage = document.createElement('p');
-                errorMessage.classList.add('error-message');
-                errorMessage.style.color = 'yellow';
-                errorMessage.style.marginTop = '10px';
-                errorMessage.textContent = 'Please enter a valid email address.';
-                errorMessage.style.opacity = '0';
-                errorMessage.style.transform = 'translateY(-10px)';
-                errorMessage.style.transition = 'all 0.3s ease';
-                
-                // Remove any existing error messages
-                const existingError = newsletterForm.querySelector('.error-message');
-                if (existingError) {
-                    existingError.remove();
-                }
-                
-                newsletterForm.appendChild(errorMessage);
-                
-                // Trigger animation
-                setTimeout(() => {
-                    errorMessage.style.opacity = '1';
-                    errorMessage.style.transform = 'translateY(0)';
-                }, 10);
-                
-                // Add shake animation to input
+        // Show an inline error with the existing animation + input shake
+        const showFormError = (emailInput, message) => {
+            const existingError = newsletterForm.querySelector('.error-message');
+            if (existingError) existingError.remove();
+
+            const errorMessage = document.createElement('p');
+            errorMessage.classList.add('error-message');
+            errorMessage.style.color = 'yellow';
+            errorMessage.style.marginTop = '10px';
+            errorMessage.textContent = message;
+            errorMessage.style.opacity = '0';
+            errorMessage.style.transform = 'translateY(-10px)';
+            errorMessage.style.transition = 'all 0.3s ease';
+            newsletterForm.appendChild(errorMessage);
+            setTimeout(() => {
+                errorMessage.style.opacity = '1';
+                errorMessage.style.transform = 'translateY(0)';
+            }, 10);
+
+            if (emailInput) {
                 emailInput.classList.add('shake');
-                setTimeout(() => {
-                    emailInput.classList.remove('shake');
-                }, 500);
+                setTimeout(() => emailInput.classList.remove('shake'), 500);
+            }
+        };
+
+        newsletterForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const emailInput = this.querySelector('input[type="email"]');
+            const submitButton = this.querySelector('button[type="submit"], button');
+            const email = emailInput.value.trim();
+
+            if (!validateEmail(email)) {
+                showFormError(emailInput, 'Please enter a valid email address.');
+                return;
+            }
+
+            // Disable the button while we submit to prevent double-sends
+            if (submitButton) submitButton.disabled = true;
+            newsletterForm.classList.add('submitted');
+
+            try {
+                const response = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: window.location.pathname })
+                });
+                const result = await response.json().catch(() => ({}));
+
+                if (response.ok && result.success) {
+                    // Track the conversion (no-op if GA isn't loaded)
+                    if (typeof window.trackEvent === 'function') {
+                        window.trackEvent('newsletter_signup', { source: window.location.pathname });
+                    }
+                    newsletterForm.innerHTML = `<p class="success-message">${result.message || "Thank you for subscribing! You'll receive updates soon."}</p>`;
+                } else {
+                    newsletterForm.classList.remove('submitted');
+                    if (submitButton) submitButton.disabled = false;
+                    showFormError(emailInput, result.message || 'Something went wrong. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Newsletter signup failed:', error);
+                newsletterForm.classList.remove('submitted');
+                if (submitButton) submitButton.disabled = false;
+                showFormError(emailInput, 'Network error. Please try again later.');
             }
         });
     }

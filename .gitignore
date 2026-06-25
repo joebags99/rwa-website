@@ -40,6 +40,9 @@ shield-border.psd
 CC Website Portrait.psd
 admin-config.json
 
+# Newsletter subscriber list (contains personal data - do not commit)
+data/subscribers.json
+
 # Logs
 logs
 *.log

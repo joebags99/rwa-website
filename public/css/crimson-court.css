@@ -804,7 +804,6 @@ NAVIGATION PORTALS
     position: absolute;
     width: 30px;
     height: 30px;
-    background-image: url("../assets/images/corner-ornament.png");
     background-size: contain;
     background-repeat: no-repeat;
     opacity: 0.7;
@@ -979,7 +978,6 @@ DECORATIVE ELEMENTS
 .floating-scroll {
     width: 40px;
     height: 40px;
-    background-image: url("../assets/images/scroll.png");
     background-size: contain;
     background-repeat: no-repeat;
     filter: drop-shadow(0 0 5px rgba(244, 233, 201, 0.3));
@@ -1000,7 +998,6 @@ DECORATIVE ELEMENTS
 .floating-sword {
     width: 60px;
     height: 60px;
-    background-image: url("../assets/images/sword.png");
     background-size: contain;
     background-repeat: no-repeat;
     filter: drop-shadow(0 0 5px rgba(192, 192, 192, 0.3));
@@ -1021,7 +1018,6 @@ DECORATIVE ELEMENTS
 .candle {
     width: 20px;
     height: 40px;
-    background-image: url("../assets/images/candle.png");
     background-size: contain;
     background-repeat: no-repeat;
     filter: drop-shadow(0 0 10px rgba(255, 200, 100, 0.8));

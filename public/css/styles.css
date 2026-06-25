@@ -2219,6 +2219,14 @@ footer {
     gap: var(--spacing-sm);
 }
 
+/* Connect column: subscribe button stacked above the social icons */
+.footer-connect {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-sm);
+}
+
 .social-icon {
     width: 40px;
     height: 40px;
@@ -2409,10 +2417,14 @@ RESPONSIVE STYLES
         margin-bottom: var(--spacing-md);
     }
     
+    .footer-connect {
+        grid-column: 1 / -1;
+        align-items: center;
+        margin-top: var(--spacing-md);
+    }
+
     .social-links {
         justify-content: center;
-        margin-top: var(--spacing-md);
-        grid-column: 1 / -1;
     }
     
     .float-element, .float-dice {
@@ -2669,5 +2681,71 @@ textarea:focus-visible {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+
+/* ===== YouTube fallback card (shown instead of fake/dummy videos) ===== */
+.youtube-fallback {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 2.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--border-radius-lg, 12px);
+}
+.youtube-fallback-icon {
+    font-size: 3rem;
+    color: #FF0000;
+}
+.youtube-fallback h3 {
+    margin: 0;
+}
+.youtube-fallback p {
+    margin: 0 0 0.5rem;
+    max-width: 38ch;
+    opacity: 0.85;
+}
+
+/* ===== YouTube Subscribe button (brand red) ===== */
+.youtube-subscribe-btn {
+    background: #FF0000;
+    color: #fff;
+    border: none;
+}
+.youtube-subscribe-btn:hover,
+.youtube-subscribe-btn:focus {
+    background: #cc0000;
+    color: #fff;
+}
+/* Compact, low-key subscribe button that matches the site's button styling
+   (Cinzel, uppercase, 8px radius) using the brand crimson rather than bright
+   YouTube red. Fixed size - no hover grow. */
+.footer-subscribe-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: var(--border-radius);
+    font-family: var(--font-headers);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: var(--text-light);
+    background: var(--primary-red);
+    border: 1px solid var(--primary-red-light);
+    box-shadow: var(--shadow-sm);
+    transition: background var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+.footer-subscribe-btn:hover,
+.footer-subscribe-btn:focus {
+    background: var(--primary-red-dark);
+    color: var(--text-light);
+    box-shadow: var(--shadow-red);
 }
 
