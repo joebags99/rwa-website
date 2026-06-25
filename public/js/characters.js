@@ -250,7 +250,7 @@ window.CharacterViewer = {
                  data-character-name="${character.name}">
                 <div class="character-avatar-container">
                     <div class="character-name-hover">${character.name}</div>
-                    <img src="${avatarUrl}"
+                    <img loading="lazy" decoding="async" src="${avatarUrl}"
                          alt="${character.name}"
                          class="character-avatar"
                          onerror="this.src='/assets/images/unknown.png'">
