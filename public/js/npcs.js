@@ -186,10 +186,6 @@ function createNPCCards(npcs, container) {
             <div class="npc-portrait">
                 <div class="portrait-frame">
                     <img loading="lazy" decoding="async" src="${npc.imageSrc || 'assets/images/npcs/unknown.png'}" alt="${npc.name}">
-                    <div class="frame-ornament top-left"></div>
-                    <div class="frame-ornament top-right"></div>
-                    <div class="frame-ornament bottom-left"></div>
-                    <div class="frame-ornament bottom-right"></div>
                 </div>
             </div>
             <div class="npc-details">

@@ -2219,6 +2219,14 @@ footer {
     gap: var(--spacing-sm);
 }
 
+/* Connect column: subscribe button stacked above the social icons */
+.footer-connect {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-sm);
+}
+
 .social-icon {
     width: 40px;
     height: 40px;
@@ -2409,10 +2417,14 @@ RESPONSIVE STYLES
         margin-bottom: var(--spacing-md);
     }
     
+    .footer-connect {
+        grid-column: 1 / -1;
+        align-items: center;
+        margin-top: var(--spacing-md);
+    }
+
     .social-links {
         justify-content: center;
-        margin-top: var(--spacing-md);
-        grid-column: 1 / -1;
     }
     
     .float-element, .float-dice {
@@ -2708,28 +2720,32 @@ textarea:focus-visible {
     background: #cc0000;
     color: #fff;
 }
+/* Compact, low-key subscribe button that matches the site's button styling
+   (Cinzel, uppercase, 8px radius) using the brand crimson rather than bright
+   YouTube red. Fixed size - no hover grow. */
 .footer-subscribe-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.8rem;
-    margin-bottom: 0.9rem;
-    border-radius: 999px;
-    font-size: 0.82rem;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: var(--border-radius);
+    font-family: var(--font-headers);
+    font-size: 0.78rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     text-decoration: none;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    transition: background var(--transition-fast, 0.2s) ease, border-color var(--transition-fast, 0.2s) ease, color var(--transition-fast, 0.2s) ease;
-}
-.footer-subscribe-btn i {
-    color: #FF0000;
+    color: var(--text-light);
+    background: var(--primary-red);
+    border: 1px solid var(--primary-red-light);
+    box-shadow: var(--shadow-sm);
+    transition: background var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 .footer-subscribe-btn:hover,
 .footer-subscribe-btn:focus {
-    background: rgba(255, 0, 0, 0.1);
-    border-color: rgba(255, 0, 0, 0.55);
-    color: #fff;
+    background: var(--primary-red-dark);
+    color: var(--text-light);
+    box-shadow: var(--shadow-red);
 }
 
