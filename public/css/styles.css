@@ -2711,15 +2711,25 @@ textarea:focus-visible {
 .footer-subscribe-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.1rem;
-    margin-bottom: 1rem;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 0.9rem;
     border-radius: 999px;
-    font-weight: 700;
+    font-size: 0.82rem;
+    font-weight: 600;
     text-decoration: none;
-    transition: background var(--transition-fast, 0.2s) ease, transform var(--transition-fast, 0.2s) ease;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: background var(--transition-fast, 0.2s) ease, border-color var(--transition-fast, 0.2s) ease, color var(--transition-fast, 0.2s) ease;
 }
-.footer-subscribe-btn:hover {
-    transform: translateY(-2px);
+.footer-subscribe-btn i {
+    color: #FF0000;
+}
+.footer-subscribe-btn:hover,
+.footer-subscribe-btn:focus {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.55);
+    color: #fff;
 }
 
